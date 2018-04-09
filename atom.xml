@@ -5,9 +5,9 @@
   <subtitle>行到水穷处,坐看云起时</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="cocowh.github.io/"/>
-  <updated>2018-04-08T15:02:45.949Z</updated>
-  <id>cocowh.github.io/</id>
+  <link href="bighua.top/"/>
+  <updated>2018-04-09T10:19:26.071Z</updated>
+  <id>bighua.top/</id>
   
   <author>
     <name>cocowh</name>
@@ -18,32 +18,30 @@
   
   <entry>
     <title>启航</title>
-    <link href="cocowh.github.io/2018/04/05/%E5%90%AF%E8%88%AA/"/>
-    <id>cocowh.github.io/2018/04/05/启航/</id>
+    <link href="bighua.top/2018/04/05/%E5%90%AF%E8%88%AA/"/>
+    <id>bighua.top/2018/04/05/启航/</id>
     <published>2018-04-05T13:48:46.000Z</published>
-    <updated>2018-04-08T15:02:45.949Z</updated>
+    <updated>2018-04-09T10:19:26.071Z</updated>
     
-    <content type="html"><![CDATA[<h4 id="本博客由hexo驱动，尝试过很多主题，例如yilia、material等，最终选择了next主题。之前也尝试过rubuy的jekyll，但是更偏向于比较熟悉的基于node的hexo。使用yilia主题时，强迫症改liyia的侧滑抖动动画，改侧滑背景颜色，最终还是感觉界面不理想，在移动端每个页面上都挂着个人prefile，有种特沙比的感觉，非常浪费空间影响阅读体验，而且作者留了个badjs-report收集异常信息和用户信息，感觉很是不爽，并且对应的提交端口貌似没有在维护了，调试时一个红色的eroor简直逼死强迫症。使用material主题时也有类似yilia冗余的一点，有个logo-perfile简直累赘，而且对应的官方网站相应文档总是加载不出来，貌似被墙了，很遗憾，没完整的搭建完美就放弃了。后来用到next主题，对于用户来说要比前两个友好很多，留给了用户更多的配置项，在移动端浏览更简洁舒服，封装了更多的第三方插件。评论插件建议畅言，加载快多了。"><a href="#本博客由hexo驱动，尝试过很多主题，例如yilia、material等，最终选择了next主题。之前也尝试过rubuy的jekyll，但是更偏向于比较熟悉的基于node的hexo。使用yilia主题时，强迫症改liyia的侧滑抖动动画，改侧滑背景颜色，最终还是感觉界面不理想，在移动端每个页面上都挂着个人prefile，有种特沙比的感觉，非常浪费空间影响阅读体验，而且作者留了个badjs-report收集异常信息和用户信息，感觉很是不爽，并且对应的提交端口貌似没有在维护了，调试时一个红色的eroor简直逼死强迫症。使用material主题时也有类似yilia冗余的一点，有个logo-perfile简直累赘，而且对应的官方网站相应文档总是加载不出来，貌似被墙了，很遗憾，没完整的搭建完美就放弃了。后来用到next主题，对于用户来说要比前两个友好很多，留给了用户更多的配置项，在移动端浏览更简洁舒服，封装了更多的第三方插件。评论插件建议畅言，加载快多了。" class="headerlink" title="本博客由hexo驱动，尝试过很多主题，例如yilia、material等，最终选择了next主题。之前也尝试过rubuy的jekyll，但是更偏向于比较熟悉的基于node的hexo。使用yilia主题时，强迫症改liyia的侧滑抖动动画，改侧滑背景颜色，最终还是感觉界面不理想，在移动端每个页面上都挂着个人prefile，有种特沙比的感觉，非常浪费空间影响阅读体验，而且作者留了个badjs report收集异常信息和用户信息，感觉很是不爽，并且对应的提交端口貌似没有在维护了，调试时一个红色的eroor简直逼死强迫症。使用material主题时也有类似yilia冗余的一点，有个logo perfile简直累赘，而且对应的官方网站相应文档总是加载不出来，貌似被墙了，很遗憾，没完整的搭建完美就放弃了。后来用到next主题，对于用户来说要比前两个友好很多，留给了用户更多的配置项，在移动端浏览更简洁舒服，封装了更多的第三方插件。评论插件建议畅言，加载快多了。"></a>本博客由hexo驱动，尝试过很多主题，例如yilia、material等，最终选择了next主题。之前也尝试过rubuy的jekyll，但是更偏向于比较熟悉的基于node的hexo。使用yilia主题时，强迫症改liyia的侧滑抖动动画，改侧滑背景颜色，最终还是感觉界面不理想，在移动端每个页面上都挂着个人prefile，有种特沙比的感觉，非常浪费空间影响阅读体验，而且作者留了个badjs report收集异常信息和用户信息，感觉很是不爽，并且对应的提交端口貌似没有在维护了，调试时一个红色的eroor简直逼死强迫症。使用material主题时也有类似yilia冗余的一点，有个logo perfile简直累赘，而且对应的官方网站相应文档总是加载不出来，貌似被墙了，很遗憾，没完整的搭建完美就放弃了。后来用到next主题，对于用户来说要比前两个友好很多，留给了用户更多的配置项，在移动端浏览更简洁舒服，封装了更多的第三方插件。评论插件建议畅言，加载快多了。</h4><h4 id="在前段时间又重新搭建了一系列的环境，安装了数遍双系统和虚拟机，折腾ubuntu和centos，搭建php-nginx-go-mariadb-node等等，期间遇到了很多的新问题，也有一些老问题，学到了很多东西，越来越感觉到笔记的重要性。想要自己搭建一套博客，怕是ui丑到自己都下不去笔。另外耽误时间、服务器配置以及相关稳定性长久性等也是个问题。从今开始，将所学所得所感记录在此。"><a href="#在前段时间又重新搭建了一系列的环境，安装了数遍双系统和虚拟机，折腾ubuntu和centos，搭建php-nginx-go-mariadb-node等等，期间遇到了很多的新问题，也有一些老问题，学到了很多东西，越来越感觉到笔记的重要性。想要自己搭建一套博客，怕是ui丑到自己都下不去笔。另外耽误时间、服务器配置以及相关稳定性长久性等也是个问题。从今开始，将所学所得所感记录在此。" class="headerlink" title="在前段时间又重新搭建了一系列的环境，安装了数遍双系统和虚拟机，折腾ubuntu和centos，搭建php+nginx+go+mariadb+node等等，期间遇到了很多的新问题，也有一些老问题，学到了很多东西，越来越感觉到笔记的重要性。想要自己搭建一套博客，怕是ui丑到自己都下不去笔。另外耽误时间、服务器配置以及相关稳定性长久性等也是个问题。从今开始，将所学所得所感记录在此。"></a>在前段时间又重新搭建了一系列的环境，安装了数遍双系统和虚拟机，折腾ubuntu和centos，搭建php+nginx+go+mariadb+node等等，期间遇到了很多的新问题，也有一些老问题，学到了很多东西，越来越感觉到笔记的重要性。想要自己搭建一套博客，怕是ui丑到自己都下不去笔。另外耽误时间、服务器配置以及相关稳定性长久性等也是个问题。从今开始，将所学所得所感记录在此。</h4>]]></content>
+    <content type="html"><![CDATA[<h3 id="搭建缘由"><a href="#搭建缘由" class="headerlink" title="搭建缘由"></a>搭建缘由</h3><p> 在前段时间又重新搭建了一系列的开发环境，安装了数遍双系统和虚拟机，折腾ubuntu和centos，搭建php+nginx+go+mariadb+node等等，期间遇到了很多的新问题，也有一些老问题，学到了很多东西，越来越感觉到笔记的重要性。想要自己搭建一套博客，怕是ui丑到自己都下不去笔。另外耽误时间、服务器配置以及相关稳定性长久性等也是个问题。从今开始，将所学所得所感记录在此。</p><h3 id="关于本博客"><a href="#关于本博客" class="headerlink" title="关于本博客"></a>关于本博客</h3><p>本博客由hexo驱动，尝试过很多主题，例如yilia、material等，最终选择了next主题。之前也尝试过rubuy的jekyll，但是更偏向于比较熟悉的基于node的hexo。使用yilia主题时，强迫症改liyia的侧滑抖动动画，改侧滑背景颜色，最终还是感觉界面不理想，在移动端每个页面上都挂着个人prefile，有种特沙比的感觉，非常浪费空间影响阅读体验，而且作者留了个badjs report收集异常信息和用户信息，感觉很是不爽，并且对应的提交端口貌似没有在维护了，调试时一个红色的eroor简直逼死强迫症。</p><p>使用material主题时也有类似yilia冗余的一点，有个logo perfile简直累赘，而且对应的官方网站相应文档总是加载不出来，貌似被墙了，很遗憾，没搭建完美就放弃了。</p><p>后来用到next主题，对于用户来说要比前两个友好很多，简洁大方，留给了用户更多的配置项，在移动端浏览更简洁舒服，封装了更多的第三方插件。评论插件建议畅言，加载快多了。但是目前有个问题，编写tags、about等page页面时，在page页面配置comments为false，编译后对应的页面虽然不出现畅言插件，即没加入相应的html页面块，但是却加入了相应的js用，然后在控制台会一直报js未寻找到畅言对应html节点的错误。使用来必力虽然也加入了相应的js调用，但是不会出现此类错误，应该编译过程未处理好。等以后有机会再探究修改一番，作为强迫症，把所有的页面评论功能都打开了。。。</p><h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>希望自己能够</p><blockquote><p>勤操代码多读书，善用时间少偷懒。</p></blockquote>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h4 id=&quot;本博客由hexo驱动，尝试过很多主题，例如yilia、material等，最终选择了next主题。之前也尝试过rubuy的jekyll，但是更偏向于比较熟悉的基于node的hexo。使用yilia主题时，强迫症改liyia的侧滑抖动动画，改侧滑背景颜色，最终还是感
+        &lt;h3 id=&quot;搭建缘由&quot;&gt;&lt;a href=&quot;#搭建缘由&quot; class=&quot;headerlink&quot; title=&quot;搭建缘由&quot;&gt;&lt;/a&gt;搭建缘由&lt;/h3&gt;&lt;p&gt; 在前段时间又重新搭建了一系列的开发环境，安装了数遍双系统和虚拟机，折腾ubuntu和centos，搭建php+nginx+
       
     
     </summary>
     
-      <category term="随笔" scheme="cocowh.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
+      <category term="随笔" scheme="bighua.top/categories/%E9%9A%8F%E7%AC%94/"/>
     
     
-      <category term="随笔" scheme="cocowh.github.io/tags/%E9%9A%8F%E7%AC%94/"/>
+      <category term="博客" scheme="bighua.top/tags/%E5%8D%9A%E5%AE%A2/"/>
     
-      <category term="博客" scheme="cocowh.github.io/tags/%E5%8D%9A%E5%AE%A2/"/>
+      <category term="hexo" scheme="bighua.top/tags/hexo/"/>
     
-      <category term="hexo" scheme="cocowh.github.io/tags/hexo/"/>
-    
-      <category term="next" scheme="cocowh.github.io/tags/next/"/>
+      <category term="next" scheme="bighua.top/tags/next/"/>
     
   </entry>
   
