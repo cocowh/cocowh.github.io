@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="博客,hexo,next," />
+  <meta name="keywords" content="Golang,学习,基础," />
 
 
 
@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="搭建缘由 在前段时间又重新搭建了一系列的开发环境，安装了数遍双系统和虚拟机，折腾ubuntu和centos，搭建php+nginx+go+mariadb+node等等，期间遇到了很多的新问题，也有一些老问题，学到了很多东西，越来越感觉到笔记的重要性。想要自己搭建一套博客，怕是ui丑到自己都下不去笔。另外耽误时间、服务器配置以及相关稳定性长久性等也是个问题。从今开始，将所学所得所感记录在此。 关于本">
-<meta name="keywords" content="博客,hexo,next">
+<meta name="description" content="基本词法标识符预定义标识符   基本数据类型名称。 接口类型error。 常量true、false和iota。 所有内建函数的名称，即append、cap、close、complex、copy、delete、imag、len、make、new、panic、print、peintln、real和recover。   空标识符，由一个下划线_表示。一般用在不需要引入一个新邦定的声明中。例如在代码中存在">
+<meta name="keywords" content="Golang,学习,基础">
 <meta property="og:type" content="article">
-<meta property="og:title" content="启航">
-<meta property="og:url" content="bighua.top/2018/04/05/启航/index.html">
+<meta property="og:title" content="Golang学习（语法基础笔记）">
+<meta property="og:url" content="bighua.top/2018/04/10/Golang学习（语法基础笔记）/index.html">
 <meta property="og:site_name" content="水木年华">
-<meta property="og:description" content="搭建缘由 在前段时间又重新搭建了一系列的开发环境，安装了数遍双系统和虚拟机，折腾ubuntu和centos，搭建php+nginx+go+mariadb+node等等，期间遇到了很多的新问题，也有一些老问题，学到了很多东西，越来越感觉到笔记的重要性。想要自己搭建一套博客，怕是ui丑到自己都下不去笔。另外耽误时间、服务器配置以及相关稳定性长久性等也是个问题。从今开始，将所学所得所感记录在此。 关于本">
+<meta property="og:description" content="基本词法标识符预定义标识符   基本数据类型名称。 接口类型error。 常量true、false和iota。 所有内建函数的名称，即append、cap、close、complex、copy、delete、imag、len、make、new、panic、print、peintln、real和recover。   空标识符，由一个下划线_表示。一般用在不需要引入一个新邦定的声明中。例如在代码中存在">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-09T10:19:26.071Z">
+<meta property="og:updated_time" content="2018-04-10T12:41:55.863Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="启航">
-<meta name="twitter:description" content="搭建缘由 在前段时间又重新搭建了一系列的开发环境，安装了数遍双系统和虚拟机，折腾ubuntu和centos，搭建php+nginx+go+mariadb+node等等，期间遇到了很多的新问题，也有一些老问题，学到了很多东西，越来越感觉到笔记的重要性。想要自己搭建一套博客，怕是ui丑到自己都下不去笔。另外耽误时间、服务器配置以及相关稳定性长久性等也是个问题。从今开始，将所学所得所感记录在此。 关于本">
+<meta name="twitter:title" content="Golang学习（语法基础笔记）">
+<meta name="twitter:description" content="基本词法标识符预定义标识符   基本数据类型名称。 接口类型error。 常量true、false和iota。 所有内建函数的名称，即append、cap、close、complex、copy、delete、imag、len、make、new、panic、print、peintln、real和recover。   空标识符，由一个下划线_表示。一般用在不需要引入一个新邦定的声明中。例如在代码中存在">
 
 
 
@@ -126,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="bighua.top/2018/04/05/启航/"/>
+  <link rel="canonical" href="bighua.top/2018/04/10/Golang学习（语法基础笔记）/"/>
 
 
 
 
 
-  <title>启航 | 水木年华</title>
+  <title>Golang学习（语法基础笔记） | 水木年华</title>
   
 
 
@@ -313,7 +313,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="bighua.top/2018/04/05/启航/">
+    <link itemprop="mainEntityOfPage" href="bighua.top/2018/04/10/Golang学习（语法基础笔记）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="cocowh">
@@ -330,7 +330,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">启航</h2>
+          <h2 class="post-title" itemprop="name headline">Golang学习（语法基础笔记）</h2>
         
 
         <div class="post-meta">
@@ -342,8 +342,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-05T21:48:46+08:00">
-                2018-04-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T15:24:09+08:00">
+                2018-04-10
               </time>
             
 
@@ -365,8 +365,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/随笔/" itemprop="url" rel="index">
-                    <span itemprop="name">随笔</span>
+                  <a href="/categories/Golang/" itemprop="url" rel="index">
+                    <span itemprop="name">Golang</span>
                   </a>
                 </span>
 
@@ -384,8 +384,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2018/04/05/启航/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/04/05/启航/" itemprop="commentsCount"></span>
+                <a href="/2018/04/10/Golang学习（语法基础笔记）/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/04/10/Golang学习（语法基础笔记）/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -393,7 +393,7 @@
 
           
           
-             <span id="/2018/04/05/启航/" class="leancloud_visitors" data-flag-title="启航">
+             <span id="/2018/04/10/Golang学习（语法基础笔记）/" class="leancloud_visitors" data-flag-title="Golang学习（语法基础笔记）">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -423,7 +423,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  643
+                  4,280
                 </span>
               
 
@@ -439,7 +439,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2
+                  16
                 </span>
               
             </div>
@@ -460,14 +460,155 @@
       
 
       
-        <h3 id="搭建缘由"><a href="#搭建缘由" class="headerlink" title="搭建缘由"></a>搭建缘由</h3><p> 在前段时间又重新搭建了一系列的开发环境，安装了数遍双系统和虚拟机，折腾ubuntu和centos，搭建php+nginx+go+mariadb+node等等，期间遇到了很多的新问题，也有一些老问题，学到了很多东西，越来越感觉到笔记的重要性。想要自己搭建一套博客，怕是ui丑到自己都下不去笔。另外耽误时间、服务器配置以及相关稳定性长久性等也是个问题。从今开始，将所学所得所感记录在此。</p>
-<h3 id="关于本博客"><a href="#关于本博客" class="headerlink" title="关于本博客"></a>关于本博客</h3><p>本博客由hexo驱动，尝试过很多主题，例如yilia、material等，最终选择了next主题。之前也尝试过rubuy的jekyll，但是更偏向于比较熟悉的基于node的hexo。使用yilia主题时，强迫症改liyia的侧滑抖动动画，改侧滑背景颜色，最终还是感觉界面不理想，在移动端每个页面上都挂着个人prefile，有种特沙比的感觉，非常浪费空间影响阅读体验，而且作者留了个badjs report收集异常信息和用户信息，感觉很是不爽，并且对应的提交端口貌似没有在维护了，调试时一个红色的eroor简直逼死强迫症。</p>
-<p>使用material主题时也有类似yilia冗余的一点，有个logo perfile简直累赘，而且对应的官方网站相应文档总是加载不出来，貌似被墙了，很遗憾，没搭建完美就放弃了。</p>
-<p>后来用到next主题，对于用户来说要比前两个友好很多，简洁大方，留给了用户更多的配置项，在移动端浏览更简洁舒服，封装了更多的第三方插件。评论插件建议畅言，加载快多了。但是目前有个问题，编写tags、about等page页面时，在page页面配置comments为false，编译后对应的页面虽然不出现畅言插件，即没加入相应的html页面块，但是却加入了相应的js用，然后在控制台会一直报js未寻找到畅言对应html节点的错误。使用来必力虽然也加入了相应的js调用，但是不会出现此类错误，应该编译过程未处理好。等以后有机会再探究修改一番，作为强迫症，把所有的页面评论功能都打开了。。。</p>
-<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>希望自己能够</p>
+        <h2 id="基本词法"><a href="#基本词法" class="headerlink" title="基本词法"></a>基本词法</h2><h3 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h3><p>预定义标识符</p>
 <blockquote>
-<p>勤操代码多读书，善用时间少偷懒。</p>
+<ul>
+<li>基本数据类型名称。</li>
+<li>接口类型error。</li>
+<li>常量true、false和iota。</li>
+<li>所有内建函数的名称，即append、cap、close、complex、copy、delete、imag、len、make、new、panic、print、peintln、real和recover。</li>
+</ul>
 </blockquote>
+<p>空标识符，由一个下划线_表示。一般用在不需要引入一个新邦定的声明中。例如在代码中存在一个变量x，但是却不存在对它的使用。这样的代码会使编译器报错。在变量x的声明代码后添加：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_ = x</span><br></pre></td></tr></table></figure></p>
+<p>可以绕过编译器检查，使它不产生任何编译错误。因为x在此处被使用到，但是对x未进行任何操作。在导入声明中，当我们只想执行一下某个代码包中的初始化函数，而不需要使用这个代码包中的任何程序实体的时候，可以编写导入语句为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import _ &quot;runtime/cgo&quot;</span><br></pre></td></tr></table></figure></p>
+<p>引入了这个代码包所需的所有操作，没有绑定到一个具体的名称上，在当前的源码文件中，我们无法对这个代码包中的任何程序实体进行调用。<br>以上，”_”会导致赋值或导入操作的相关准备工作的进行。</p>
+<h3 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h3><ol>
+<li><p>程序声明 ：</p>
+<blockquote>
+<p>import、package</p>
+</blockquote>
+</li>
+<li><p>程序实体声明和定义：</p>
+<blockquote>
+<p>chan、const、func、interface、map、struct、type、var</p>
+</blockquote>
+</li>
+<li><p>程序流程控制：</p>
+<blockquote>
+<p>go、select、break、case、continue、default、defer、else、fallthrough、for、goto、if、range、return、switch</p>
+</blockquote>
+<h3 id="字面量"><a href="#字面量" class="headerlink" title="字面量"></a>字面量</h3><ol>
+<li>用于表示基础数据类型值的各种字面量。基本数据类型。</li>
+<li>用于构造各种自定义的符合数据类型的类型字面量。自定义数据类型如结构体。</li>
+<li>用于表示符合数据类型的值的符合字面量。会被用来构造类型Struct结构体、Array(数组)、Slice(切片)、Map(字典)的值。<h3 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h3>基本类型（预定义类型）：<blockquote>
+<p>string、bool、byte、rune、int/uint、int8/uint8、int16\uint16、int32/uint32、int64/uint64、float32、float64、complex64、complex128</p>
+</blockquote>
+</li>
+</ol>
+</li>
+</ol>
+<p>复合类型:</p>
+<blockquote>
+<p>Array(数组)、Struct(结构体)、Function(函数)、Interface(接口)、Slice(切片)、Map(字典)、Channel(通道)、Pointer(指针)</p>
+</blockquote>
+<p>静态类型，在变量声明中示出的类型。动态类型，在运行时与改变量绑定在一起的实际类型，实际类型可以是实现了这个接口的任何类型。接口类型的变量既拥有静态类型，也有动态类型。接口类型的变量的动态类型可以在执行期间变化，但是变量的静态类型永远只能是它声明时被指定的那个类型。</p>
+<p>潜在类型。每一个类型都会有一个潜在类型，若是预定义类型或者由类型字面量构造的符合类型，潜在类型就是它自身。</p>
+<p>可以用type声明自定义类型:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">type MyString string</span><br><span class="line">type iString MyString</span><br><span class="line">type MyStrings [3]string</span><br></pre></td></tr></table></figure></p>
+<p>可以把MyString看作string类型的一个别名类型，MyStrings、iString和MyString的潜在类型都是string。</p>
+<h3 id="操作符"><a href="#操作符" class="headerlink" title="操作符"></a>操作符</h3><p>与C语言基本一致。新增：</p>
+<blockquote>
+<p>&amp;^     按位清除操作，即根据第二个操作数的二进制值对第一个操作数的二进制值进行相应的清零操作。二元操作符，属于算术操作符。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> 7       &amp;^ 13       = 2</span><br><span class="line">00000111 &amp;^ 00001101 = 00000010</span><br><span class="line">      00000111</span><br><span class="line">&amp;^    00001101</span><br><span class="line">=     00000010</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>&lt;- 接收操作，一元操作符，属于接收操作符。只作用于通道类型的值。对于通道ch，表达式&lt;-的含义是从此通道中接收一个值。前提是通道的方向必须允许接收操作，并且该操作的结果的类型必须与通道元素的类型之间存在可赋予的关系。这个表达式会被阻塞直到通道中有一个值可用。<br>需要注意：</p>
+<ul>
+<li>从一个通道类型的空值（即nil）接收值的表达式将会永远阻塞.</li>
+<li>从一个已经被关闭的通道类型值接收值会永远成功并且立即返回一个其元素类型的零值。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">v1 := &lt;-ch</span><br><span class="line">v2 = &lt;-ch</span><br><span class="line">v,ok  = &lt;-ch</span><br><span class="line">v,ok := &lt;-ch</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>“=”用于将一个值赋给一个已被声明的变量或常量，”:=”用于在声明一个变量的同时对这个变量进行赋值，”:=”只能在函数体内使用。v1，v2，v用于接收值，ok为布尔类型的值，代表了接收操作的成功与否，可用来判断一个通道是否被关闭了，为false时表明通道已经关闭。</p>
+</blockquote>
+<p>操作符优先级：</p>
+<blockquote>
+<p>5      * / % &lt;&lt; &gt;&gt; &amp; &amp;^<br>4     + - | ^<br>3      == !=  &lt;  &lt;=  &gt;  &gt;=<br>2     &amp;&amp;<br>1     ||</p>
+</blockquote>
+<h3 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h3><h4 id="1-基本表达式"><a href="#1-基本表达式" class="headerlink" title="1. 基本表达式"></a>1. 基本表达式</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[]int&#123;1,2,3,4,5&#125;</span><br><span class="line">[]int&#123;1,2,3,4,5&#125;[2]</span><br><span class="line">int(v1) + v2</span><br><span class="line">len(v3)</span><br><span class="line">x.f</span><br><span class="line">[]int&#123;1,2,3,4,5&#125;[1:3]</span><br><span class="line">interface&#123;&#125;(num).(int)</span><br><span class="line">os.Open(&quot;/etc/profile&quot;)</span><br></pre></td></tr></table></figure>
+<h4 id="2-选择符号和选择表达式"><a href="#2-选择符号和选择表达式" class="headerlink" title="2. 选择符号和选择表达式"></a>2. 选择符号和选择表达式</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x.f      ##深度0</span><br><span class="line">x.f.f2   ##深度1</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>规则</p>
+<ul>
+<li>对于一个类型T或者对应的指针类型*T的值x，表达式x.f表示类型T的最浅深度（即深度0）的字段或者方法。前提是：T不能是接口类型；类型T必须要有名称为f的字段或者方法。</li>
+<li>对于一个接口类型I的变量x，表达式x.f表示赋给x的那个值(实现了接口类型I的那个类型的值)的方法f。如果接口类型I的方法法集合中不包含名称为f的方法，那么选择表达式x.f非法。<br>其它情况</li>
+<li>如果x是一个与某个构体类型对应的指针类型的变量，并且它的值为nil，那么针对表达式x.f的赋值和求值都会引起一个运行时的恐慌。不论f是字段还是方法。</li>
+<li>如果x是一个接口类型的变量且它的值为nil，那么针对表达式x.f的调用和求值都会引起一个运行时恐慌，前提是f是该接口类型的一个方法。</li>
+</ul>
+</blockquote>
+<p>自动解引用：如果x是一个结构体类型对应的指针类型的值，那么x.f就是表达式(<em>x).f的一个速记法，不论f代表的是一个字段还是一个方法，如果f代表了一个字段且也是一个与结构体类型对应的指针类型，那么x.f.f2就是表达式(</em>(*x.f).f2的一个速记法，不论f2是一个字段还是方法。</p>
+<h4 id="3-索引符号和索引表达式"><a href="#3-索引符号和索引表达式" class="headerlink" title="3. 索引符号和索引表达式"></a>3. 索引符号和索引表达式</h4><p>一个索引表达式有一个基本表达式和一个索引符号组成，形如a[x]，会求索引值为x的a中的那个元素的值。</p>
+<blockquote>
+<p>规则</p>
+<ul>
+<li>a不是字典类型的值，x必须是一个int类型或者无类型的证书字面量，x大于0且小于a的长度。否则引起一个与越界有关的运行时的恐慌。</li>
+<li>a是一个数组类型A的变量，x需满足上条，若a为nil或x超范围，引起一个运行时恐慌。</li>
+<li>a是一个切片S类型的变量，x需满足上条，若a为nil或x超范围，引起一个运行时恐慌。</li>
+<li>a是一个字符串类型T的变量，x必须在a的长度的有效范围内，a[x]表示字符串a中索引值为x对应的那个字节类型值。不能对a[x]进行赋值操作，字符串类型值是不能改变的。</li>
+<li>a是一个字典类型M的变量，x的类型必须是可以赋值给M的键的类型，即键x的类型可以通过类型推断符号判定为M的键的类型。a[x]表示a中的、与键x对应的那个值，且a[x]的类型与字典M的元素的类型相同。若a为nil或者其中不包含以x为键的键值对，那么a[x]的求值结果就会是字典M的元素的类型的零值。通过赋值语句<br>v,ok := a[x]<br>判断是因为上方原因导致的零值还是与键x对应的值本身就是这个零值。ok为true表示赋值成功，原本就是零值，为false则表明由上方情况引起。当a为nil时对a[x]赋值会引起一个运行时恐慌。</li>
+</ul>
+</blockquote>
+<h4 id="4-切片符号和切片表达式"><a href="#4-切片符号和切片表达式" class="headerlink" title="4. 切片符号和切片表达式"></a>4. 切片符号和切片表达式</h4><p>切片符号可以是操作字符串、数组、数组的指针以及切片类型的值。<br>对于这样一个类型的值a，切片表达式为a[x:y:z]。<br>x代表元素下界索引，y代表元素上界索引，z代表切片的容量上界索引。<br>有如下约束：</p>
+<blockquote>
+<p>0 &lt;= 元素下界索引 &lt;= 元素上界索引 &lt;= 容量上界索引 &lt;= 操作对象的容量  </p>
+</blockquote>
+<p>若不满足，则在表达式求值时造成一个越界错误并引发一个运行时恐慌。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[]int&#123;1,2,3,4,5&#125;[1:3] = []int&#123;2,3&#125;</span><br><span class="line">[]int&#123;1,2,3,4,5&#125;[3:] = []int&#123;1,2,3,4,5&#125;[3:5] = []int&#123;4,5&#125;</span><br><span class="line">[]int&#123;1,2,3,4,5&#125;[:3] = []int&#123;1,2,3,4,5&#125;[0:3] = []int&#123;1,2,3&#125;</span><br></pre></td></tr></table></figure></p>
+<p>若a代表的是一个切片类型的值，那么表达式a[:]就等同于复制a所代表的值并将其作为此表达式的求值结果。否则表达式a[:]就意味着有一个包含了指向a的第一个元素的指针的切片类型值被创建。</p>
+<h4 id="5-类型断言"><a href="#5-类型断言" class="headerlink" title="5. 类型断言"></a>5. 类型断言</h4><p>对于一个求值结果为接口类型值表达式x和一个类型T，对应的类型断言为：<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x.(T)</span><br></pre></td></tr></table></figure></p>
+<p>用于判断“x不为nil且存储在其中的值是T类型的”这一假设是否成立。如果T不是一个接口类型，那么x.(T)将会判断x的动态类型是否与类型T一致，即为关于“类型T是否为x的动态类型”的判断。  类型T必须是x的一个实现类型，x必须是一个接口类型的值。<br>int(123).(int)引发编译错误:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">invalid type assertion: 123.(int)(non-interface type int on left )</span><br></pre></td></tr></table></figure></p>
+<p>即表达式int(123)的求值结果是int类型，而int类型并不是一个接口类型。将表达式改为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">interface&#123;&#125;(123).(int)</span><br></pre></td></tr></table></figure></p>
+<p>则会顺利通过编译，表达式interface{}(123)将字面量123转换为interface{}类型的值。interface{}是一个特殊的接口类型，代表空接口，所有类型都是他的实现类型。<br>如果T不是一个接口类型且类型T不是x的类型的一个实现，那么类型断言x.(T)就是失败的，会引发一个运行时恐慌。</p>
+<blockquote>
+<p>只有在程序运行期间，x的动态类型才能够被获知，而在编译期间能够确定的只有T所代表的类型。  </p>
+</blockquote>
+<p>使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">v,ok := x.(T)</span><br><span class="line">``` </span><br><span class="line">断言成功v为已经被转换为T类型的表达式x的求值结果，否着为类型T的零值。ok可以判断断言是否成功，此时类型断言失败也不会引发运行时恐慌。</span><br><span class="line">#### 6. 调用</span><br><span class="line">如果由函数类型F的值f，表达式f(a1,a2,a3)表达了对函数f的调用，同时以a1、a2和a3作为参数传递给函数f。  </span><br><span class="line">方法是函数的一种，比函数多了一个接收者。接收者可以是该方法所属的结构体类型的值，或者与该结构体类型对应的那个指针类型的值。</span><br><span class="line">&gt;在求值一个表达式、赋值语句或者返回语句中包含的操作数的时候，所有的函数调用、方法调用和通信调用都会按照从左到右的顺序被求值。</span><br><span class="line">```code</span><br><span class="line">a := 10</span><br><span class="line">f := func()int&#123; a = a*2;return 5&#125;</span><br><span class="line">x := []int&#123;a,f()&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在上例中，x的值可能是[]int{10,5},也可能是[]int{20,5}。（有待考证</p>
+<h4 id="7-可变长参数"><a href="#7-可变长参数" class="headerlink" title="7. 可变长参数"></a>7. 可变长参数</h4><p>如果函数f可以接受的参数的数量是不固定的，那么函数f就是一个能够接受可变长参数的函数，简称为可变参函数。<br>在可变函数的参数列表的最后总会出现一个可变长参数，这个可变长参数的类型声明形如…T。用于接受数量不定但类型均为T或其实现类型的参数值。等同于一个元素类型为T的切片类型的参数。对于函数f的每一次调用，被传递给可变长参数的值实际上都是包含了实际参数、元素类型为T的切片类型值。对可变参函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func appendIfAbsent(s []string,t ...string)[]string</span><br></pre></td></tr></table></figure></p>
+<p>可以这样编写针对他的调用表达式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">appendIfAbsent([]string&#123;&quot;A&quot;,&quot;B&quot;,&quot;C&quot;&#125;,&quot;C&quot;,&quot;N&quot;,&quot;E&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>其中，与可变长参数t绑定的切片类型值为[]string{“C”,”B”,”E”}。<br>可以直接把一个类型T的切片类型值赋给…T类型的可变长参数，需要在欲赋予可变长参数的那个切片类型值的后面追加…。例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">appendIfAbsent([]string&#123;&quot;A&quot;,&quot;B&quot;,&quot;C&quot;&#125;,[]string&#123;&quot;C&quot;,&quot;B&quot;,&quot;E&quot;&#125;...)</span><br></pre></td></tr></table></figure></p>
+<p>若有元素类型为string的切片类型的变量s，则可以：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">appendIfAbsent([]string&#123;&quot;A&quot;,&quot;B&quot;,&quot;C&quot;&#125;,s...)</span><br></pre></td></tr></table></figure></p>
+<p>此时可变长参数t的值就是变量s的值，即不会专门创建于个切片类型值来存储其中的实际参数。</p>
+<hr>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><h3 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h3><blockquote>
+<p>string、bool、byte、rune、int/uint、int8/uint8、int16\uint16、int32/uint32、int64/uint64、float32、float64、<br> complex64、complex128  </p>
+</blockquote>
+<p> 分为三类：</p>
+<ol>
+<li>布尔类型<blockquote>
+<p>bool：true、false</p>
+</blockquote>
+</li>
+<li><p>数值类型<br> 特殊rune：</p>
+<blockquote>
+<p>类型rune的值由rune类型字面量代表，专用于存储经过Unicode编码的字符。<br> 一个rune常量即是一个Unicode编码值，使用十六进制表示法来表示与Unicode对应的数字值，并使用“U+”作为前缀。<br> 一个rune字面量由外层的单引号和内层的一个或多个字符组成，在包裹字符的单引号中不能出现单引号“’”和换行符“\n”。    </p>
+</blockquote>
+<p> 可以用5种方式来表示一个rune字面量：  </p>
+<ol>
+<li>该rune字面量所对应的字符。如：’a’、’-‘，字符必须是Unicode编码规范所支持。</li>
+<li>使用“\x”为前导并后跟两位十六进制数。可以表示宽度为一个字皆的值，即一个ASCII编码值。</li>
+<li>使用“\”为前导并后跟三位八进制数。宽度限制为一个字皆，只能用于表示对应数值在0和255之间的值。</li>
+<li>使用“\u”为前导并后跟四位十六进制数。只能用于表示两个字节宽度的值，为Unicode编码规范中的UCS-2表示法。</li>
+<li><p>使用“\U”为前导并后跟八位十六进制数。为Unicode编码规范中的UCS-4表示法。为Unicode编码规范和相关国际标准中的规范编码格式。  </p>
+<p>rune字面量可以支持转义符，有固定的几个，在规定之外的以“\”为前导的字符序列都是不合法的，转义符“\””也不能出现在rune字面量中。</p>
+</li>
+</ol>
+</li>
+<li><p>字符串类型<br>字符串的长度即是底层字节序列中字节的个数，一个字符串常量的长度在编译期间就能够确定。<br>字符串代表了一个连续的字符序列，每一个字符都会被隐含地以Unicode编码规范的UTF-8编码个是编码为若干字节。<br>字符串字面量的两种表示格式：原生字符串字面量和解释型字符串字面量。    </p>
+<blockquote>
+<p>原生字符串字面量在两个反引号“`”之间的字符序列。在反引号之间，除了反引号之外的其他字符都是合法的，两个反引号之间的所有内容都看作是这个原生字符串字面量的值，其内容由在编译期间就可以确定的字符（非解释型字符）组成。原生字符串字面量中，不存在任何转义字符，所有内容都是所见即所得，也包括换行符。原生字符串字面量中的回车符会被编译器移除。    </p>
+</blockquote>
+<blockquote>
+<p>解释型字符串字面量是被两个双引号“””包含的字符序列。解释型字符串中的转义字符都会被成功转义。在解释型字符串字面量中，转义符“\’”是不合法的，而转义字符“\””却是合法的，与rune字面量相反。在字符串字面量中可以包含rune字面量。  </p>
+</blockquote>
+<p> 字符串字面量与rune字面量的本质区别是在于他们所代表的Unicode字符的数量上。</p>
+<blockquote>
+<p>字符串值是不可变的，不可能改变一个字符串的内容，对字符串的操作只会返回一个新字符串，而不是改变原字符串并返回</p>
+</blockquote>
+<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>一个数组就是一个由若干个相同类型的元素组成的序列。  </p>
+</li>
+<li>类型表示法</li>
+<li>值表示法</li>
+<li>属性和基本操作</li>
+</ol>
 
       
     </div>
@@ -485,11 +626,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/博客/" rel="tag"><i class="fa fa-tag"></i> 博客</a>
+            <a href="/tags/Golang/" rel="tag"><i class="fa fa-tag"></i> Golang</a>
           
-            <a href="/tags/hexo/" rel="tag"><i class="fa fa-tag"></i> hexo</a>
+            <a href="/tags/学习/" rel="tag"><i class="fa fa-tag"></i> 学习</a>
           
-            <a href="/tags/next/" rel="tag"><i class="fa fa-tag"></i> next</a>
+            <a href="/tags/基础/" rel="tag"><i class="fa fa-tag"></i> 基础</a>
           
         </div>
       
@@ -502,15 +643,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/04/05/启航/" rel="next" title="启航">
+                <i class="fa fa-chevron-left"></i> 启航
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/10/Golang学习（语法基础笔记）/" rel="prev" title="Golang学习（语法基础笔记）">
-                Golang学习（语法基础笔记） <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -694,7 +835,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#搭建缘由"><span class="nav-number">1.</span> <span class="nav-text">搭建缘由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于本博客"><span class="nav-number">2.</span> <span class="nav-text">关于本博客</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后"><span class="nav-number">3.</span> <span class="nav-text">最后</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本词法"><span class="nav-number">1.</span> <span class="nav-text">基本词法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标识符"><span class="nav-number">1.1.</span> <span class="nav-text">标识符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关键字"><span class="nav-number">1.2.</span> <span class="nav-text">关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字面量"><span class="nav-number">1.3.</span> <span class="nav-text">字面量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型"><span class="nav-number">1.4.</span> <span class="nav-text">类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作符"><span class="nav-number">1.5.</span> <span class="nav-text">操作符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表达式"><span class="nav-number">1.6.</span> <span class="nav-text">表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-基本表达式"><span class="nav-number">1.6.1.</span> <span class="nav-text">1. 基本表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-选择符号和选择表达式"><span class="nav-number">1.6.2.</span> <span class="nav-text">2. 选择符号和选择表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-索引符号和索引表达式"><span class="nav-number">1.6.3.</span> <span class="nav-text">3. 索引符号和索引表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-切片符号和切片表达式"><span class="nav-number">1.6.4.</span> <span class="nav-text">4. 切片符号和切片表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-类型断言"><span class="nav-number">1.6.5.</span> <span class="nav-text">5. 类型断言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-可变长参数"><span class="nav-number">1.6.6.</span> <span class="nav-text">7. 可变长参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型"><span class="nav-number">2.</span> <span class="nav-text">数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本数据类型"><span class="nav-number">2.1.</span> <span class="nav-text">基本数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组"><span class="nav-number">2.2.</span> <span class="nav-text">数组</span></a></li></ol></li></ol></div>
             
 
           </div>
