@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="基本词法标识符预定义标识符   基本数据类型名称。 接口类型error。 常量true、false和iota。 所有内建函数的名称，即append、cap、close、complex、copy、delete、imag、len、make、new、panic、print、peintln、real和recover。   空标识符，由一个下划线_表示。一般用在不需要引入一个新邦定的声明中。例如在代码中存在">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-10T12:41:55.863Z">
+<meta property="og:updated_time" content="2018-04-10T12:55:29.508Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang学习（语法基础笔记）">
 <meta name="twitter:description" content="基本词法标识符预定义标识符   基本数据类型名称。 接口类型error。 常量true、false和iota。 所有内建函数的名称，即append、cap、close、complex、copy、delete、imag、len、make、new、panic、print、peintln、real和recover。   空标识符，由一个下划线_表示。一般用在不需要引入一个新邦定的声明中。例如在代码中存在">
@@ -487,22 +487,25 @@
 <blockquote>
 <p>go、select、break、case、continue、default、defer、else、fallthrough、for、goto、if、range、return、switch</p>
 </blockquote>
+</li>
+</ol>
 <h3 id="字面量"><a href="#字面量" class="headerlink" title="字面量"></a>字面量</h3><ol>
 <li>用于表示基础数据类型值的各种字面量。基本数据类型。</li>
 <li>用于构造各种自定义的符合数据类型的类型字面量。自定义数据类型如结构体。</li>
-<li>用于表示符合数据类型的值的符合字面量。会被用来构造类型Struct结构体、Array(数组)、Slice(切片)、Map(字典)的值。<h3 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h3>基本类型（预定义类型）：<blockquote>
+<li>用于表示符合数据类型的值的符合字面量。会被用来构造类型Struct结构体、Array(数组)、Slice(切片)、Map(字典)的值。</li>
+</ol>
+<h3 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h3><h4 id="基本类型（预定义类型）："><a href="#基本类型（预定义类型）：" class="headerlink" title="基本类型（预定义类型）："></a>基本类型（预定义类型）：</h4><blockquote>
 <p>string、bool、byte、rune、int/uint、int8/uint8、int16\uint16、int32/uint32、int64/uint64、float32、float64、complex64、complex128</p>
 </blockquote>
-</li>
-</ol>
-</li>
-</ol>
-<p>复合类型:</p>
-<blockquote>
+<h4 id="复合类型"><a href="#复合类型" class="headerlink" title="复合类型:"></a>复合类型:</h4><blockquote>
 <p>Array(数组)、Struct(结构体)、Function(函数)、Interface(接口)、Slice(切片)、Map(字典)、Channel(通道)、Pointer(指针)</p>
 </blockquote>
-<p>静态类型，在变量声明中示出的类型。动态类型，在运行时与改变量绑定在一起的实际类型，实际类型可以是实现了这个接口的任何类型。接口类型的变量既拥有静态类型，也有动态类型。接口类型的变量的动态类型可以在执行期间变化，但是变量的静态类型永远只能是它声明时被指定的那个类型。</p>
-<p>潜在类型。每一个类型都会有一个潜在类型，若是预定义类型或者由类型字面量构造的符合类型，潜在类型就是它自身。</p>
+<h4 id="静态类型"><a href="#静态类型" class="headerlink" title="静态类型:"></a>静态类型:</h4><blockquote>
+<p>在变量声明中示出的类型。动态类型，在运行时与改变量绑定在一起的实际类型，实际类型可以是实现了这个接口的任何类型。接口类型的变量既拥有静态类型，也有动态类型。接口类型的变量的动态类型可以在执行期间变化，但是变量的静态类型永远只能是它声明时被指定的那个类型。</p>
+</blockquote>
+<h4 id="潜在类型"><a href="#潜在类型" class="headerlink" title="潜在类型:"></a>潜在类型:</h4><blockquote>
+<p>每一个类型都会有一个潜在类型，若是预定义类型或者由类型字面量构造的符合类型，潜在类型就是它自身。</p>
+</blockquote>
 <p>可以用type声明自定义类型:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">type MyString string</span><br><span class="line">type iString MyString</span><br><span class="line">type MyStrings [3]string</span><br></pre></td></tr></table></figure></p>
 <p>可以把MyString看作string类型的一个别名类型，MyStrings、iString和MyString的潜在类型都是string。</p>
 <h3 id="操作符"><a href="#操作符" class="headerlink" title="操作符"></a>操作符</h3><p>与C语言基本一致。新增：</p>
@@ -572,44 +575,34 @@
 <p>string、bool、byte、rune、int/uint、int8/uint8、int16\uint16、int32/uint32、int64/uint64、float32、float64、<br> complex64、complex128  </p>
 </blockquote>
 <p> 分为三类：</p>
-<ol>
-<li>布尔类型<blockquote>
-<p>bool：true、false</p>
+<h4 id="1-布尔类型"><a href="#1-布尔类型" class="headerlink" title="1. 布尔类型"></a>1. 布尔类型</h4><pre><code>&gt;bool：true、false
+</code></pre><h4 id="2-数值类型"><a href="#2-数值类型" class="headerlink" title="2. 数值类型"></a>2. 数值类型</h4><h5 id="特殊rune："><a href="#特殊rune：" class="headerlink" title="特殊rune："></a>特殊rune：</h5><blockquote>
+<p>类型rune的值由rune类型字面量代表，专用于存储经过Unicode编码的字符。<br>    一个rune常量即是一个Unicode编码值，使用十六进制表示法来表示与Unicode对应的数字值，并使用“U+”作为前缀。<br>    一个rune字面量由外层的单引号和内层的一个或多个字符组成，在包裹字符的单引号中不能出现单引号“’”和换行符“\n”。    </p>
 </blockquote>
-</li>
-<li><p>数值类型<br> 特殊rune：</p>
-<blockquote>
-<p>类型rune的值由rune类型字面量代表，专用于存储经过Unicode编码的字符。<br> 一个rune常量即是一个Unicode编码值，使用十六进制表示法来表示与Unicode对应的数字值，并使用“U+”作为前缀。<br> 一个rune字面量由外层的单引号和内层的一个或多个字符组成，在包裹字符的单引号中不能出现单引号“’”和换行符“\n”。    </p>
-</blockquote>
-<p> 可以用5种方式来表示一个rune字面量：  </p>
-<ol>
+<h5 id="可以用5种方式来表示一个rune字面量："><a href="#可以用5种方式来表示一个rune字面量：" class="headerlink" title="可以用5种方式来表示一个rune字面量："></a>可以用5种方式来表示一个rune字面量：</h5><ol>
 <li>该rune字面量所对应的字符。如：’a’、’-‘，字符必须是Unicode编码规范所支持。</li>
-<li>使用“\x”为前导并后跟两位十六进制数。可以表示宽度为一个字皆的值，即一个ASCII编码值。</li>
+<li>使用“\x”为前导并后跟两位十六进制数。可以表示宽度为一个字皆的值，即一个ASCII编码值。<ol start="3">
 <li>使用“\”为前导并后跟三位八进制数。宽度限制为一个字皆，只能用于表示对应数值在0和255之间的值。</li>
+</ol>
+</li>
 <li>使用“\u”为前导并后跟四位十六进制数。只能用于表示两个字节宽度的值，为Unicode编码规范中的UCS-2表示法。</li>
 <li><p>使用“\U”为前导并后跟八位十六进制数。为Unicode编码规范中的UCS-4表示法。为Unicode编码规范和相关国际标准中的规范编码格式。  </p>
 <p>rune字面量可以支持转义符，有固定的几个，在规定之外的以“\”为前导的字符序列都是不合法的，转义符“\””也不能出现在rune字面量中。</p>
 </li>
 </ol>
-</li>
-<li><p>字符串类型<br>字符串的长度即是底层字节序列中字节的个数，一个字符串常量的长度在编译期间就能够确定。<br>字符串代表了一个连续的字符序列，每一个字符都会被隐含地以Unicode编码规范的UTF-8编码个是编码为若干字节。<br>字符串字面量的两种表示格式：原生字符串字面量和解释型字符串字面量。    </p>
+<h4 id="3-字符串类型"><a href="#3-字符串类型" class="headerlink" title="3. 字符串类型"></a>3. 字符串类型</h4><p>字符串的长度即是底层字节序列中字节的个数，一个字符串常量的长度在编译期间就能够确定。<br>字符串代表了一个连续的字符序列，每一个字符都会被隐含地以Unicode编码规范的UTF-8编码个是编码为若干字节。<br>字符串字面量的两种表示格式：原生字符串字面量和解释型字符串字面量。    </p>
 <blockquote>
 <p>原生字符串字面量在两个反引号“`”之间的字符序列。在反引号之间，除了反引号之外的其他字符都是合法的，两个反引号之间的所有内容都看作是这个原生字符串字面量的值，其内容由在编译期间就可以确定的字符（非解释型字符）组成。原生字符串字面量中，不存在任何转义字符，所有内容都是所见即所得，也包括换行符。原生字符串字面量中的回车符会被编译器移除。    </p>
 </blockquote>
 <blockquote>
 <p>解释型字符串字面量是被两个双引号“””包含的字符序列。解释型字符串中的转义字符都会被成功转义。在解释型字符串字面量中，转义符“\’”是不合法的，而转义字符“\””却是合法的，与rune字面量相反。在字符串字面量中可以包含rune字面量。  </p>
 </blockquote>
-<p> 字符串字面量与rune字面量的本质区别是在于他们所代表的Unicode字符的数量上。</p>
+<p>字符串字面量与rune字面量的本质区别是在于他们所代表的Unicode字符的数量上。</p>
 <blockquote>
 <p>字符串值是不可变的，不可能改变一个字符串的内容，对字符串的操作只会返回一个新字符串，而不是改变原字符串并返回</p>
 </blockquote>
-<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>一个数组就是一个由若干个相同类型的元素组成的序列。  </p>
-</li>
-<li>类型表示法</li>
-<li>值表示法</li>
-<li>属性和基本操作</li>
-</ol>
-
+<h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>一个数组就是一个由若干个相同类型的元素组成的序列。    </p>
+<h4 id="1-类型表示法"><a href="#1-类型表示法" class="headerlink" title="1. 类型表示法"></a>1. 类型表示法</h4><h4 id="2-值表示法"><a href="#2-值表示法" class="headerlink" title="2. 值表示法"></a>2. 值表示法</h4><h4 id="3-属性和基本操作"><a href="#3-属性和基本操作" class="headerlink" title="3. 属性和基本操作"></a>3. 属性和基本操作</h4>
       
     </div>
     
@@ -835,7 +828,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本词法"><span class="nav-number">1.</span> <span class="nav-text">基本词法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标识符"><span class="nav-number">1.1.</span> <span class="nav-text">标识符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关键字"><span class="nav-number">1.2.</span> <span class="nav-text">关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字面量"><span class="nav-number">1.3.</span> <span class="nav-text">字面量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型"><span class="nav-number">1.4.</span> <span class="nav-text">类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作符"><span class="nav-number">1.5.</span> <span class="nav-text">操作符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表达式"><span class="nav-number">1.6.</span> <span class="nav-text">表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-基本表达式"><span class="nav-number">1.6.1.</span> <span class="nav-text">1. 基本表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-选择符号和选择表达式"><span class="nav-number">1.6.2.</span> <span class="nav-text">2. 选择符号和选择表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-索引符号和索引表达式"><span class="nav-number">1.6.3.</span> <span class="nav-text">3. 索引符号和索引表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-切片符号和切片表达式"><span class="nav-number">1.6.4.</span> <span class="nav-text">4. 切片符号和切片表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-类型断言"><span class="nav-number">1.6.5.</span> <span class="nav-text">5. 类型断言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-可变长参数"><span class="nav-number">1.6.6.</span> <span class="nav-text">7. 可变长参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型"><span class="nav-number">2.</span> <span class="nav-text">数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本数据类型"><span class="nav-number">2.1.</span> <span class="nav-text">基本数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组"><span class="nav-number">2.2.</span> <span class="nav-text">数组</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本词法"><span class="nav-number">1.</span> <span class="nav-text">基本词法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标识符"><span class="nav-number">1.1.</span> <span class="nav-text">标识符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关键字"><span class="nav-number">1.2.</span> <span class="nav-text">关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字面量"><span class="nav-number">1.3.</span> <span class="nav-text">字面量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型"><span class="nav-number">1.4.</span> <span class="nav-text">类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本类型（预定义类型）："><span class="nav-number">1.4.1.</span> <span class="nav-text">基本类型（预定义类型）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复合类型"><span class="nav-number">1.4.2.</span> <span class="nav-text">复合类型:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态类型"><span class="nav-number">1.4.3.</span> <span class="nav-text">静态类型:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#潜在类型"><span class="nav-number">1.4.4.</span> <span class="nav-text">潜在类型:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作符"><span class="nav-number">1.5.</span> <span class="nav-text">操作符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表达式"><span class="nav-number">1.6.</span> <span class="nav-text">表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-基本表达式"><span class="nav-number">1.6.1.</span> <span class="nav-text">1. 基本表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-选择符号和选择表达式"><span class="nav-number">1.6.2.</span> <span class="nav-text">2. 选择符号和选择表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-索引符号和索引表达式"><span class="nav-number">1.6.3.</span> <span class="nav-text">3. 索引符号和索引表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-切片符号和切片表达式"><span class="nav-number">1.6.4.</span> <span class="nav-text">4. 切片符号和切片表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-类型断言"><span class="nav-number">1.6.5.</span> <span class="nav-text">5. 类型断言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-可变长参数"><span class="nav-number">1.6.6.</span> <span class="nav-text">7. 可变长参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型"><span class="nav-number">2.</span> <span class="nav-text">数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本数据类型"><span class="nav-number">2.1.</span> <span class="nav-text">基本数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-布尔类型"><span class="nav-number">2.1.1.</span> <span class="nav-text">1. 布尔类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-数值类型"><span class="nav-number">2.1.2.</span> <span class="nav-text">2. 数值类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#特殊rune："><span class="nav-number">2.1.2.1.</span> <span class="nav-text">特殊rune：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#可以用5种方式来表示一个rune字面量："><span class="nav-number">2.1.2.2.</span> <span class="nav-text">可以用5种方式来表示一个rune字面量：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-字符串类型"><span class="nav-number">2.1.3.</span> <span class="nav-text">3. 字符串类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组"><span class="nav-number">2.2.</span> <span class="nav-text">数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-类型表示法"><span class="nav-number">2.2.1.</span> <span class="nav-text">1. 类型表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-值表示法"><span class="nav-number">2.2.2.</span> <span class="nav-text">2. 值表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-属性和基本操作"><span class="nav-number">2.2.3.</span> <span class="nav-text">3. 属性和基本操作</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
