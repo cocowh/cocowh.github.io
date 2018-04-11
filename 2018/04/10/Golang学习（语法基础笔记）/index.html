@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="Golang,学习,基础," />
+  <meta name="keywords" content="Golang,笔记," />
 
 
 
@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="基本词法标识符预定义标识符   基本数据类型名称。 接口类型error。 常量true、false和iota。 所有内建函数的名称，即append、cap、close、complex、copy、delete、imag、len、make、new、panic、print、peintln、real和recover。   空标识符，由一个下划线_表示。一般用在不需要引入一个新邦定的声明中。例如在代码中存在">
-<meta name="keywords" content="Golang,学习,基础">
+<meta name="description" content="基本词法标识符预定义标识符 1.基本数据类型名称。2.接口类型error。3.常量true、false和iota。4.所有内建函数的名称，即append、cap、close、complex、copy、delete、imag、len、make、new、panic、print、peintln、real和recover。  空标识符由一个下划线_表示。一般用在不需要引入一个新邦定的声明中。例如在代码中存">
+<meta name="keywords" content="Golang,笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Golang学习（语法基础笔记）">
 <meta property="og:url" content="bighua.top/2018/04/10/Golang学习（语法基础笔记）/index.html">
 <meta property="og:site_name" content="水木年华">
-<meta property="og:description" content="基本词法标识符预定义标识符   基本数据类型名称。 接口类型error。 常量true、false和iota。 所有内建函数的名称，即append、cap、close、complex、copy、delete、imag、len、make、new、panic、print、peintln、real和recover。   空标识符，由一个下划线_表示。一般用在不需要引入一个新邦定的声明中。例如在代码中存在">
+<meta property="og:description" content="基本词法标识符预定义标识符 1.基本数据类型名称。2.接口类型error。3.常量true、false和iota。4.所有内建函数的名称，即append、cap、close、complex、copy、delete、imag、len、make、new、panic、print、peintln、real和recover。  空标识符由一个下划线_表示。一般用在不需要引入一个新邦定的声明中。例如在代码中存">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-10T12:55:29.508Z">
+<meta property="og:updated_time" content="2018-04-11T10:27:38.737Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang学习（语法基础笔记）">
-<meta name="twitter:description" content="基本词法标识符预定义标识符   基本数据类型名称。 接口类型error。 常量true、false和iota。 所有内建函数的名称，即append、cap、close、complex、copy、delete、imag、len、make、new、panic、print、peintln、real和recover。   空标识符，由一个下划线_表示。一般用在不需要引入一个新邦定的声明中。例如在代码中存在">
+<meta name="twitter:description" content="基本词法标识符预定义标识符 1.基本数据类型名称。2.接口类型error。3.常量true、false和iota。4.所有内建函数的名称，即append、cap、close、complex、copy、delete、imag、len、make、new、panic、print、peintln、real和recover。  空标识符由一个下划线_表示。一般用在不需要引入一个新邦定的声明中。例如在代码中存">
 
 
 
@@ -423,7 +423,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  4,280
+                  8,365
                 </span>
               
 
@@ -439,7 +439,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  16
+                  31
                 </span>
               
             </div>
@@ -460,40 +460,18 @@
       
 
       
-        <h2 id="基本词法"><a href="#基本词法" class="headerlink" title="基本词法"></a>基本词法</h2><h3 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h3><p>预定义标识符</p>
-<blockquote>
-<ul>
-<li>基本数据类型名称。</li>
-<li>接口类型error。</li>
-<li>常量true、false和iota。</li>
-<li>所有内建函数的名称，即append、cap、close、complex、copy、delete、imag、len、make、new、panic、print、peintln、real和recover。</li>
-</ul>
+        <h2 id="基本词法"><a href="#基本词法" class="headerlink" title="基本词法"></a>基本词法</h2><h3 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h3><h4 id="预定义标识符"><a href="#预定义标识符" class="headerlink" title="预定义标识符"></a>预定义标识符</h4><blockquote>
+<p>1.基本数据类型名称。<br>2.接口类型error。<br>3.常量true、false和iota。<br>4.所有内建函数的名称，即append、cap、close、complex、copy、delete、imag、len、make、new、panic、print、peintln、real和recover。</p>
 </blockquote>
-<p>空标识符，由一个下划线_表示。一般用在不需要引入一个新邦定的声明中。例如在代码中存在一个变量x，但是却不存在对它的使用。这样的代码会使编译器报错。在变量x的声明代码后添加：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_ = x</span><br></pre></td></tr></table></figure></p>
+<h4 id="空标识符"><a href="#空标识符" class="headerlink" title="空标识符"></a>空标识符</h4><p>由一个下划线_表示。一般用在不需要引入一个新邦定的声明中。例如在代码中存在一个变量x，但是却不存在对它的使用。这样的代码会使编译器报错。在变量x的声明代码后添加：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_ = x</span><br></pre></td></tr></table></figure></p>
 <p>可以绕过编译器检查，使它不产生任何编译错误。因为x在此处被使用到，但是对x未进行任何操作。在导入声明中，当我们只想执行一下某个代码包中的初始化函数，而不需要使用这个代码包中的任何程序实体的时候，可以编写导入语句为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import _ &quot;runtime/cgo&quot;</span><br></pre></td></tr></table></figure></p>
 <p>引入了这个代码包所需的所有操作，没有绑定到一个具体的名称上，在当前的源码文件中，我们无法对这个代码包中的任何程序实体进行调用。<br>以上，”_”会导致赋值或导入操作的相关准备工作的进行。</p>
-<h3 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h3><ol>
-<li><p>程序声明 ：</p>
-<blockquote>
-<p>import、package</p>
-</blockquote>
-</li>
-<li><p>程序实体声明和定义：</p>
-<blockquote>
-<p>chan、const、func、interface、map、struct、type、var</p>
-</blockquote>
-</li>
-<li><p>程序流程控制：</p>
-<blockquote>
-<p>go、select、break、case、continue、default、defer、else、fallthrough、for、goto、if、range、return、switch</p>
-</blockquote>
-</li>
-</ol>
-<h3 id="字面量"><a href="#字面量" class="headerlink" title="字面量"></a>字面量</h3><ol>
-<li>用于表示基础数据类型值的各种字面量。基本数据类型。</li>
-<li>用于构造各种自定义的符合数据类型的类型字面量。自定义数据类型如结构体。</li>
-<li>用于表示符合数据类型的值的符合字面量。会被用来构造类型Struct结构体、Array(数组)、Slice(切片)、Map(字典)的值。</li>
-</ol>
+<h3 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h3><h4 id="1-程序声明-："><a href="#1-程序声明-：" class="headerlink" title="1. 程序声明 ："></a>1. 程序声明 ：</h4><pre><code>&gt; import、package
+</code></pre><h4 id="2-程序实体声明和定义："><a href="#2-程序实体声明和定义：" class="headerlink" title="2. 程序实体声明和定义："></a>2. 程序实体声明和定义：</h4><pre><code>&gt;chan、const、func、interface、map、struct、type、var
+</code></pre><h4 id="3-程序流程控制："><a href="#3-程序流程控制：" class="headerlink" title="3. 程序流程控制："></a>3. 程序流程控制：</h4><pre><code>&gt;go、select、break、case、continue、default、defer、else、fallthrough、for、goto、if、range、return、switch
+</code></pre><h3 id="字面量"><a href="#字面量" class="headerlink" title="字面量"></a>字面量</h3><h4 id="第一类"><a href="#第一类" class="headerlink" title="第一类"></a>第一类</h4><p>用于表示基础数据类型值的各种字面量。基本数据类型。</p>
+<h4 id="第二类"><a href="#第二类" class="headerlink" title="第二类"></a>第二类</h4><p> 用于构造各种自定义的符合数据类型的类型字面量。自定义数据类型如结构体。</p>
+<h4 id="第三类"><a href="#第三类" class="headerlink" title="第三类"></a>第三类</h4><p> 用于表示符合数据类型的值的符合字面量。会被用来构造类型Struct结构体、Array(数组)、Slice(切片)、Map(字典)的值。</p>
 <h3 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h3><h4 id="基本类型（预定义类型）："><a href="#基本类型（预定义类型）：" class="headerlink" title="基本类型（预定义类型）："></a>基本类型（预定义类型）：</h4><blockquote>
 <p>string、bool、byte、rune、int/uint、int8/uint8、int16\uint16、int32/uint32、int64/uint64、float32、float64、complex64、complex128</p>
 </blockquote>
@@ -508,8 +486,7 @@
 </blockquote>
 <p>可以用type声明自定义类型:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">type MyString string</span><br><span class="line">type iString MyString</span><br><span class="line">type MyStrings [3]string</span><br></pre></td></tr></table></figure></p>
 <p>可以把MyString看作string类型的一个别名类型，MyStrings、iString和MyString的潜在类型都是string。</p>
-<h3 id="操作符"><a href="#操作符" class="headerlink" title="操作符"></a>操作符</h3><p>与C语言基本一致。新增：</p>
-<blockquote>
+<h3 id="操作符"><a href="#操作符" class="headerlink" title="操作符"></a>操作符</h3><h4 id="与C语言基本一致。新增："><a href="#与C语言基本一致。新增：" class="headerlink" title="与C语言基本一致。新增："></a>与C语言基本一致。新增：</h4><blockquote>
 <p>&amp;^     按位清除操作，即根据第二个操作数的二进制值对第一个操作数的二进制值进行相应的清零操作。二元操作符，属于算术操作符。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> 7       &amp;^ 13       = 2</span><br><span class="line">00000111 &amp;^ 00001101 = 00000010</span><br><span class="line">      00000111</span><br><span class="line">&amp;^    00001101</span><br><span class="line">=     00000010</span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <blockquote>
@@ -575,8 +552,8 @@
 <p>string、bool、byte、rune、int/uint、int8/uint8、int16\uint16、int32/uint32、int64/uint64、float32、float64、<br> complex64、complex128  </p>
 </blockquote>
 <p> 分为三类：</p>
-<h4 id="1-布尔类型"><a href="#1-布尔类型" class="headerlink" title="1. 布尔类型"></a>1. 布尔类型</h4><pre><code>&gt;bool：true、false
-</code></pre><h4 id="2-数值类型"><a href="#2-数值类型" class="headerlink" title="2. 数值类型"></a>2. 数值类型</h4><h5 id="特殊rune："><a href="#特殊rune：" class="headerlink" title="特殊rune："></a>特殊rune：</h5><blockquote>
+<h4 id="布尔类型"><a href="#布尔类型" class="headerlink" title="布尔类型"></a>布尔类型</h4><pre><code>&gt;bool：true、false
+</code></pre><h4 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h4><h5 id="特殊rune："><a href="#特殊rune：" class="headerlink" title="特殊rune："></a>特殊rune：</h5><blockquote>
 <p>类型rune的值由rune类型字面量代表，专用于存储经过Unicode编码的字符。<br>    一个rune常量即是一个Unicode编码值，使用十六进制表示法来表示与Unicode对应的数字值，并使用“U+”作为前缀。<br>    一个rune字面量由外层的单引号和内层的一个或多个字符组成，在包裹字符的单引号中不能出现单引号“’”和换行符“\n”。    </p>
 </blockquote>
 <h5 id="可以用5种方式来表示一个rune字面量："><a href="#可以用5种方式来表示一个rune字面量：" class="headerlink" title="可以用5种方式来表示一个rune字面量："></a>可以用5种方式来表示一个rune字面量：</h5><ol>
@@ -590,7 +567,7 @@
 <p>rune字面量可以支持转义符，有固定的几个，在规定之外的以“\”为前导的字符序列都是不合法的，转义符“\””也不能出现在rune字面量中。</p>
 </li>
 </ol>
-<h4 id="3-字符串类型"><a href="#3-字符串类型" class="headerlink" title="3. 字符串类型"></a>3. 字符串类型</h4><p>字符串的长度即是底层字节序列中字节的个数，一个字符串常量的长度在编译期间就能够确定。<br>字符串代表了一个连续的字符序列，每一个字符都会被隐含地以Unicode编码规范的UTF-8编码个是编码为若干字节。<br>字符串字面量的两种表示格式：原生字符串字面量和解释型字符串字面量。    </p>
+<h4 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h4><p>字符串的长度即是底层字节序列中字节的个数，一个字符串常量的长度在编译期间就能够确定。<br>字符串代表了一个连续的字符序列，每一个字符都会被隐含地以Unicode编码规范的UTF-8编码个是编码为若干字节。<br>字符串字面量的两种表示格式：原生字符串字面量和解释型字符串字面量。    </p>
 <blockquote>
 <p>原生字符串字面量在两个反引号“`”之间的字符序列。在反引号之间，除了反引号之外的其他字符都是合法的，两个反引号之间的所有内容都看作是这个原生字符串字面量的值，其内容由在编译期间就可以确定的字符（非解释型字符）组成。原生字符串字面量中，不存在任何转义字符，所有内容都是所见即所得，也包括换行符。原生字符串字面量中的回车符会被编译器移除。    </p>
 </blockquote>
@@ -602,7 +579,86 @@
 <p>字符串值是不可变的，不可能改变一个字符串的内容，对字符串的操作只会返回一个新字符串，而不是改变原字符串并返回</p>
 </blockquote>
 <h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><p>一个数组就是一个由若干个相同类型的元素组成的序列。    </p>
-<h4 id="1-类型表示法"><a href="#1-类型表示法" class="headerlink" title="1. 类型表示法"></a>1. 类型表示法</h4><h4 id="2-值表示法"><a href="#2-值表示法" class="headerlink" title="2. 值表示法"></a>2. 值表示法</h4><h4 id="3-属性和基本操作"><a href="#3-属性和基本操作" class="headerlink" title="3. 属性和基本操作"></a>3. 属性和基本操作</h4>
+<h4 id="1-类型表示法"><a href="#1-类型表示法" class="headerlink" title="1. 类型表示法"></a>1. 类型表示法</h4><p> 声明要指明长度和元素类型<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[n]T  ##[非负整数字面量]元素类型</span><br><span class="line">[2*3*4]byte</span><br><span class="line">[5]struct&#123;name,address string&#125; ##自定义匿名结构体类型</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-值表示法"><a href="#2-值表示法" class="headerlink" title="2. 值表示法"></a>2. 值表示法</h4><p>值由符合字面量表示<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[6]string&#123;&quot;I&quot;, &quot;am&quot;, &quot;a&quot;, &quot;loser&quot;, &quot;.&quot;, &quot;yes&quot;&#125; </span><br><span class="line">=&gt;[6]string&#123;0:&quot;I&quot;, 1:&quot;am&quot;, 2:&quot;a&quot;, 3:&quot;loser&quot;, 4:&quot;.&quot;, 5:&quot;yes&quot;&#125;</span><br><span class="line">-&gt;[6]string&#123;2:&quot;I&quot;, 1:&quot;am&quot;, 5:&quot;a&quot;, 4:&quot;loser&quot;, 0:&quot;.&quot;, 3:&quot;yes&quot;&#125;</span><br><span class="line">-&gt;[6]string&#123;5:&quot;I&quot;, 0:&quot;am&quot;, &quot;a&quot;, &quot;loser&quot;, &quot;.&quot;, &quot;yes&quot;&#125;</span><br><span class="line"></span><br><span class="line">[6]string&#123;&quot;I&quot;, &quot;am&quot;, &quot;a&quot;, &quot;loser&quot;&#125;</span><br><span class="line">=&gt;[6]string&#123;0:&quot;I&quot;, 1:&quot;am&quot;, 2:&quot;a&quot;, 3:&quot;loser&quot;, 4:&quot;&quot;, 5:&quot;&quot;&#125;</span><br><span class="line"></span><br><span class="line">[6]string&#123;1:&quot;I&quot;, &quot;am&quot;, 4:&quot;a&quot;, &quot;loser&quot;&#125;</span><br><span class="line">=&gt;[6]string&#123;1:&quot;I&quot;, 2:&quot;am&quot;, 3:&quot;&quot;, 4:&quot;a&quot;, 5:&quot;loser&quot;&#125;</span><br><span class="line"></span><br><span class="line">[...]string&#123;&quot;I&quot;, &quot;am&quot;, &quot;a&quot;, &quot;loser&quot;&#125;</span><br><span class="line">=&gt;[4]string&#123;&quot;I&quot;, &quot;am&quot;, &quot;a&quot;, &quot;loser&quot;&#125;</span><br><span class="line">``` </span><br><span class="line">* 默认第一个元素值对应索引值0，之后的每个元素值的索引值都是在前一个元素值的索引值的基础上再加1，可以显示的指定索引值。</span><br><span class="line">* 在数组中未指定的元素将会被填充为元素类型的零值，可以通过显示地指定索引值来改变被填充元素值的位置。</span><br><span class="line">* 用特殊标记“...”替换为数组长度，意为并不显示地指定数组值的长度，而让Go语言编辑器为我们计算该值所包含的元素值的数量并以此确定这个长度的值。可以避免由于指定的长度和元素值的实际数量不相符而导致的多于零值元素或编译错误。</span><br><span class="line">&gt;0 &lt;= 索引值 &lt; 数组长度  </span><br><span class="line">指定的索引值不能与其他元素值的索引值重复，不论其他元素值的索引值是隐含对应的还是显示对应的。  </span><br><span class="line">####  3. 属性和基本操作  </span><br><span class="line">使用函数len计算数组值长度</span><br><span class="line">```code</span><br><span class="line">len([...]string&#123;&quot;I&quot;, &quot;am&quot;, &quot;a&quot;, &quot;loser&quot; &#125;)</span><br></pre></td></tr></table></figure></p>
+<p>通过索引值访问元素<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[...]string&#123;&quot;bighua&quot;, &quot;.&quot;, &quot;com&quot;&#125;[0] =&gt; &quot;bighua&quot;</span><br></pre></td></tr></table></figure></p>
+<p>通过索引值改变对应元素<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array1 := [...]string&#123;&quot;bighua&quot;, &quot;.&quot;, &quot;com&quot;&#125;</span><br><span class="line">array1[0] = &quot;cocowh.github&quot;</span><br><span class="line">array1[2] = &quot;io&quot;</span><br></pre></td></tr></table></figure></p>
+<h3 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h3><p>Slice可以看作是Array的一种包装形式，是针对其底层包装数组中某个连续片段的描述苻，包装的数组称为该切片的底层数组。</p>
+<h4 id="类型表示法"><a href="#类型表示法" class="headerlink" title="类型表示法"></a>类型表示法</h4><p>由一对中间没有任何内容的方括号和代表其元素类型的标识符组成。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[]T</span><br></pre></td></tr></table></figure></p>
+<p>长度并不是切片类型的一部分，不会出现在表示切片类型的类型字面量中，切片的长度是可变的，相同类型的切片值可能会有不同的长度。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[]rune</span><br><span class="line">[]struct&#123;name,department string&#125;</span><br></pre></td></tr></table></figure></p>
+<p>切片类型声明中的元素类型可以是任意一个有效的Go语言数据类型。</p>
+<h4 id="值表示法"><a href="#值表示法" class="headerlink" title="值表示法"></a>值表示法</h4><p>切片的零值为nil，在初始化之前，一个切片类型的变量值为nil。</p>
+<blockquote>
+<p>切片值的长度为其所含的元素值的实际数量，使用函数len获取切片值的长度。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">len([]string&#123;4:&quot;bighua&quot;, 2: &quot;.&quot;,  &quot;com&quot;&#125;)  ##= 5</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>在切片类型的零值（即nil）上应用内建函数len将会得到0。</p>
+<blockquote>
+<p>一个切片一旦被初始化，就会与一个包含了其中元素值的数组相关联，即一个切片值总会持有一个对某个数组值的引用。</p>
+</blockquote>
+<p>多个切片值可能会共用同一个底层数组。把一个切片值复制成多个，或者针对其中的某个连续片段再切片成新的值，这些切片值所引用的都会是同一个底层数组。对切片值中的元素值的修改，实质上就是对其底层数组上的对应元素的修改，作为底层数组中元素值的改变，也会体现到引用该底层数组且包含该元素值的所有切片之上。切片值类似于指向底层数组的指针。  </p>
+<blockquote>
+<p>切片值的容量是其能够访问到的当前底层数组中的元素值的最大数量，即从其中的指针指向的那个元素值到底层数组的最后一个元素值的计数值，用内建函数cap获取。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cap([]string&#123;4:&quot;bighua&quot;, 2:&quot;.&quot;, &quot;com&quot;&#125;)   ##=5</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>此例中切片值的容量就等于它的长度，对切片类型的零值应用内建函数cap也会得到0。</p>
+<blockquote>
+<p>一个切片值的底层数据结构中包含一个指向底层数组的指针类型值、一个代表切片长度的int类型值和一个代表切片容量的int类型值。  </p>
+</blockquote>
+<blockquote>
+<p>使用复合字面量初始化一个切片值的时候，首先创建的是这个切片值所引用的底层数组，该底层数组与这个切片值有相同的元素类型、元素值及其排列顺序和长度，因此切片值的长度和容量一定相同。  </p>
+</blockquote>
+<blockquote>
+<p>切片表达式的作用不是复制数组值中某个连续片段所包含的元素值，而是创建一个新的切片值，新的切片值中包含了指向这个连续片段中的第一个元素值的指针。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array := [...]string&#123;&quot;I&quot;, &quot;am&quot;, &quot;wuhua&quot;, &quot;a&quot;, &quot;loser&quot;&#125;     ##底层数组长度5，即切片容量5</span><br><span class="line">slice := array[:4]      ##切片长度4，能够访问前4个元素值</span><br><span class="line">slice = slice[:cap(slice)]  ##扩大窗口，改变长度为容量，能够访问所有元素值</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>通过切片的方式把slicede的窗口扩展到最大，此时slice的值的长度等于其容量，窗口只能向索引值递增的方向拓展。当一个切片的索引值不在切片的长度范围内时，会引起一个运行时恐慌。<br>使用内建函数append对切片值进行拓展：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">array := [...]string&#123;&quot;I&quot;, &quot;am&quot;, &quot;wuhua&quot;, &quot;I&quot;, &quot;am&quot;, &quot;a&quot;, &quot;loser&quot;&#125;  </span><br><span class="line">slice := array[:4]</span><br><span class="line">slice = append(slice, &quot;bughua&quot;, &quot;.&quot;, &quot;com&quot;)</span><br><span class="line">/*</span><br><span class="line">slice ===&gt; []string&#123;&quot;I&quot;, &quot;am&quot;, &quot;wuhua&quot;, &quot;I&quot;,&quot;bughua&quot;, &quot;.&quot;, &quot;com&quot;&#125;</span><br><span class="line">长度扩展到最大容量7，此时array第5、6、7元素被改变</span><br><span class="line">array ===&gt; [7]string&#123;&quot;I&quot;, &quot;am&quot;, &quot;wuhua&quot;, &quot;I&quot;,&quot;bughua&quot;, &quot;.&quot;, &quot;com&quot;&#125;  </span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line">slice1 := append(slice, &quot;bughua&quot;, &quot;.&quot;, &quot;com&quot;)</span><br><span class="line">/*</span><br><span class="line">不会改变slice的值，声明并初始化一个新变量slice1</span><br><span class="line">slice1 ===&gt; []string&#123;&quot;I&quot;, &quot;am&quot;, &quot;wuhua&quot;, &quot;I&quot;,&quot;bughua&quot;, &quot;.&quot;, &quot;com&quot;&#125;</span><br><span class="line">array第5、6、7元素被改变</span><br><span class="line">array ===&gt; [7]string&#123;&quot;I&quot;, &quot;am&quot;, &quot;wuhua&quot;, &quot;I&quot;,&quot;bughua&quot;, &quot;.&quot;, &quot;com&quot;&#125;  </span><br><span class="line">*/</span><br></pre></td></tr></table></figure></p>
+<p>第一个参数为将要被拓展的切片，第二个可变长参数类型应与第一个参数元素类型相同，与作为拓展内容的一个或多个元素值绑定。此函数又返回结果，结果的类型与其第一个参数的类型完全一致。<br>append函数不是在原始切片值上进行拓展，而是创建一个新的切片值，在无需扩容时，此切片值与原切片值共用一个底层数组，指针类型值和容量值与原切片值保持一致。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">array := [...]string&#123;&quot;I&quot;, &quot;am&quot;, &quot;wuhua&quot;, &quot;I&quot;, &quot;am&quot;, &quot;a&quot;, &quot;loser&quot;&#125;  </span><br><span class="line">slice := array</span><br><span class="line">slice = append(slice, &quot;bughua&quot;, &quot;.&quot;, &quot;com&quot;)</span><br><span class="line">/*</span><br><span class="line">此时长度超出容量，会创建一个新的长度大于需要存储的元素值总和的底层数组，新切片指针、长度、容量改变。</span><br><span class="line">*/相似</span><br></pre></td></tr></table></figure></p>
+<p>上例中slice长度超出容量，此时会有一个新的数组值被创建并初始化，新的数组值将作为在append函数新创建的切片值的底层数组，包含原切片之中的全部元素值以及作为拓展内容的所有元素值。此底层数组的长度总是大于需要存储的元素值的总和，新切片值中的指针将指向其底层数组的第一个元素值，长度和容量与其底层数组的长度相同。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">slice = append(slice, slice1...)</span><br><span class="line">---</span><br><span class="line">slice1 = nil</span><br><span class="line">slice1 = append(slice2, slice...)</span><br><span class="line">---</span><br><span class="line">var slice2 []string</span><br><span class="line">slice2 = append(slice2, slice...)</span><br></pre></td></tr></table></figure></p>
+<p>运用“…”符号，集合追加方式。</p>
+<blockquote>
+<p>如果容量上限索引被指定，作为切片表达式的求值结果的新切片值的容量则为容量上界索引与元素下界索引之间的差值。指定容量上界索引的目的是为了缩小新切片值的容量。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var arrray = [10]int&#123;0, 1, 2, 3, 4, 5, 6, 7, 8, 9&#125;</span><br><span class="line">slice := array[2:6]</span><br><span class="line">/*可直接修改array对应索引值在[2,6)的元素值，通过扩大slice窗口，可修改array对应索引值[6,8)的元素值*/</span><br><span class="line">---</span><br><span class="line">slice :=array[2:6:8]</span><br><span class="line">/*即使扩大长度也仅能访问修改array中对应索引值[2,8)的元素值*/</span><br><span class="line">---</span><br><span class="line">slice = append(slice, []int&#123;10 ,11, 12, 13, 14, 15&#125;...)</span><br><span class="line">/*拓展超出容量创建新的底层数组，指针指向新底层数组，彻底无法访问修改array的元素值*/</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>使用容量上限索引能有效的精细控制切片值对其底层数组的访问权限。<br>指定容量上限索引时，元素上界索引时不能够省略的，可以省略元素下界索引。</p>
+</blockquote>
+<p>使用内建函数copy批量赋值切片值中的元素。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">slice1 := []string&#123;&quot;I&quot;, &quot;love&quot;, &quot;my&quot;, &quot;family&quot;&#125;</span><br><span class="line">slice2 := []string&#123;&quot;bighua&quot;, &quot;.&quot;, &quot;com&quot;&#125;</span><br><span class="line">n1 := copy(slice1,slice2)</span><br><span class="line">/*</span><br><span class="line">n1 = 3</span><br><span class="line">slice =&gt; []string&#123;&quot;bighua&quot;, &quot;.&quot;, &quot;com&quot;, &quot;family&quot;&#125;</span><br><span class="line">*/</span><br></pre></td></tr></table></figure></p>
+<p>把原切片值（参数二）中的元素值复制到目标切片值（参数一）中，返回被复制的元素值的数量。参数一和参数二的元素类型必须一致，实际复制的元素值的数量等于长度较短的切片值的长度。<br>切片类型相当于于其他编程语言中的动态数组类型，扩展机制也与动态数组类型相似。</p>
+<h3 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h3><p>字典（Map）是哈希表（Hash Table）的一个实现。哈希表是一个实现了关联数组的数据结构，关联数组是用于代表键值对的集合的一种抽象数据类型，在一个键值对集合中，一个键最多能够出现一次。与这个抽象数据结构相关联的操作有：  </p>
+<ul>
+<li>向集合中添加键值对。</li>
+<li>从集合中删除键值对。</li>
+<li>修改集合中已存在的键值对的值。</li>
+<li>查找一个特定键所对应的值。</li>
+</ul>
+<p>哈希表通过哈希函数建立键值对的内部关联，键值对之间是没有顺序关系的。</p>
+<h4 id="类型表示法-1"><a href="#类型表示法-1" class="headerlink" title="类型表示法"></a>类型表示法</h4><p>如果一个字典类型中的键的类型为K，且元素的类型为T，字典类型的类型字面量为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">map[K]T</span><br><span class="line">---</span><br><span class="line">map[int]string</span><br><span class="line">map[string]struct&#123;name,department string&#125;</span><br><span class="line">map[string]interface&#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>字典类型的键类型和元素类型都需要在其声明中指定，元素类型可以是任意一个有效的Go语言数据类型，键类型不能是函数类型、字典类型或切片类型，键类型必须是可比较的。若键类型是接口类型，在程序运行期间，该类型的字典值中的每一个键值的动态类型都必须是可比较的，否则引起运行时异常。</p>
+<h4 id="值表示法-1"><a href="#值表示法-1" class="headerlink" title="值表示法"></a>值表示法</h4><p>由复合字面量表示。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">map[string]bool&#123;&quot;bighua&quot;:true, &quot;cool&quot;:true, &quot;smart&quot;:true, &quot;ugly&quot;:false&#125;</span><br><span class="line">---</span><br><span class="line">map[string]bool&#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="属性和基本操作"><a href="#属性和基本操作" class="headerlink" title="属性和基本操作"></a>属性和基本操作</h4><p>同指针类型和切片类型，字典类型是一个引用类型。字典会持有一个针对某个底层数据结构值的引用，将一个字典值传递给一个会改变它的函数，这个改变对于函数的调用方是可见的。  </p>
+<blockquote>
+<p>在Go语言中只有“传值”没有“传引用”，函数内部对参数值的改变是否会在该函数之外体现出来，只取决于这个被改变的值的类型是值类型还是引用类型。  </p>
+</blockquote>
+<p>字典的零值是nil，类似一个长度为零的字典，可对其进行读取操作，对其进行写操作引发运行时恐慌。为初始化的字典类型的变量的值为nil。<br>用内建函数len获取字典值的长度，代表当前所包含的键值对的数量。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">editorSign := map[string]bool&#123;&quot;cool&quot;:true, &quot;smart&quot;:true, &quot;stupid&quot;:false&#125;</span><br><span class="line">editorSign[&quot;ugly&quot;] = false</span><br><span class="line">/*新增*/</span><br><span class="line">---</span><br><span class="line">sign1 := editorSign[&quot;smart&quot;]</span><br><span class="line">sign1,ok := editorSign[&quot;smart&quot;]</span><br><span class="line">/*查找获取，消除不存在歧义*/</span><br><span class="line">---</span><br><span class="line">delete(editorSign,&quot;stupid&quot;)</span><br><span class="line">/*删除键为&quot;stupid&quot;的键值对，无返回结果，即使不存在要删的键值对也不引起恐慌*/</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>字典类型不是并发安全的，官方认为在大多数使用字典值的地方并不需要多线程场景下的安全访问控制，为了少数的并发使用场景而强制要求所有的字典都满足互斥操作将会降低大多数程序的速度。  </p>
+</blockquote>
+<blockquote>
+<p>对一个非并发安全的字典值进行不受控制的并发访问可能会导致程序行为错乱，可以使用标准库代码包sync中的结构体类型RWMutex扩展字典类来保证并发安全性。RWMutex是一个读写互斥量，常用于多线程环境下的并发读写控制。</p>
+</blockquote>
+<h3 id="函数和方法"><a href="#函数和方法" class="headerlink" title="函数和方法"></a>函数和方法</h3><p>函数类型是一等类型，可以把函数当作一个值来传递和使用，即可以作为其他函数的参数，也可以作为其他函数的结果，可以利用函数的和则以特性生成闭包。</p>
+<h4 id="类型表示法-2"><a href="#类型表示法-2" class="headerlink" title="类型表示法"></a>类型表示法</h4><p>函数类型指代了所有可以接受若干参数并能够返回若干结果的函数。<br>声明一个函数以关键字func作为开始，其后紧跟函数签名，包括参数声明列表和结果声明列表。参数声明一般参数名在前，参数类型在后，中间空格分隔，参数名称唯一。若相邻两个参数的类型一致，可以只写第二个参数的参数类型。可以在函数声明的参数列表中略去所有参数的名称。可添加可变长参数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(name string, age int)</span><br><span class="line">---</span><br><span class="line">(name string, age, seniority int)</span><br><span class="line">---</span><br><span class="line">(string,int,int)</span><br><span class="line">---</span><br><span class="line">(name string,age int,seniority int,informations ...string)</span><br></pre></td></tr></table></figure></p>
+<p>结果声明列表的编写规则与参数声明基本一致，区别于：  </p>
+<ul>
+<li>只存在可变长参数的声明不存在可变长结果的声明。</li>
+<li>如果结果声明列表中只有一个结果声明且这个结果声明中并不包含结果的名称，则可以忽略圆括号。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func (name string, age int, seniority int, informations ...string)bool</span><br><span class="line">-&gt;</span><br><span class="line">func (name string, age int, seniority int, informations ...string)(done bool)</span><br><span class="line">/*命名结果*/</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>Go语言的函数雷ixng可以由多个结果，为函数声明多个结果可以让每个结果的职责更单一。可以利用此特性将错误值作为结果返回给调用它的代码，而不是把错误抛出来，然后在调用它的地方编写代码处理这个错误。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func (name string, age int , seniority int)(effected uint, err error)</span><br></pre></td></tr></table></figure></p>
+<h4 id="值表示法-2"><a href="#值表示法-2" class="headerlink" title="值表示法"></a>值表示法</h4><p>函数类型的零值是nil，未被初始化的函数类型的变量的值为nil，在一个未被初始化的函数类型的变量上调用表达式会引发一个运行时的恐慌。<br>函数类型的值分为命名函数值和匿名函数值。<br>命名函数由关键字func、函数名、函数的签名和函数体组成。若签名中包含了结果声明列表，则在函数体中的任何可到达的流程分支的最后一条语句都必须是终止语句。终止语句有多种，return或goto开始的语句，针对内建函数panic的调用表达式的语句。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">func Module(x, y int) int&#123;</span><br><span class="line">    return x % y</span><br><span class="line">&#125;</span><br><span class="line">---</span><br><span class="line">func Module(x, y int) (result int)&#123;</span><br><span class="line">    return x % y</span><br><span class="line">&#125;</span><br><span class="line">---</span><br><span class="line">func Module(x, y int) (result int)&#123;</span><br><span class="line">    result =  x % y</span><br><span class="line">    return</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在关键字return之后的结果必须在数量上与该函数的结果声明列表中的内容完全一致，对应位置的结果的类型上存在可赋予的关系。</p>
+<blockquote>
+<p>函数的声明可以省略掉函数体，表示会由外部程序（如汇编语言程序）实现，而不会由Go语言程序实现。</p>
+</blockquote>
+<p>匿名函数由函数字面量表示，函数没有名字。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func (x, y int) (result int)&#123;</span><br><span class="line">    result =  x % y</span><br><span class="line">    return</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="属性和基本操作-1"><a href="#属性和基本操作-1" class="headerlink" title="属性和基本操作"></a>属性和基本操作</h4>
       
     </div>
     
@@ -621,9 +677,7 @@
           
             <a href="/tags/Golang/" rel="tag"><i class="fa fa-tag"></i> Golang</a>
           
-            <a href="/tags/学习/" rel="tag"><i class="fa fa-tag"></i> 学习</a>
-          
-            <a href="/tags/基础/" rel="tag"><i class="fa fa-tag"></i> 基础</a>
+            <a href="/tags/笔记/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
           
         </div>
       
@@ -754,7 +808,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -828,7 +882,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本词法"><span class="nav-number">1.</span> <span class="nav-text">基本词法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标识符"><span class="nav-number">1.1.</span> <span class="nav-text">标识符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关键字"><span class="nav-number">1.2.</span> <span class="nav-text">关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字面量"><span class="nav-number">1.3.</span> <span class="nav-text">字面量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型"><span class="nav-number">1.4.</span> <span class="nav-text">类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本类型（预定义类型）："><span class="nav-number">1.4.1.</span> <span class="nav-text">基本类型（预定义类型）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复合类型"><span class="nav-number">1.4.2.</span> <span class="nav-text">复合类型:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态类型"><span class="nav-number">1.4.3.</span> <span class="nav-text">静态类型:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#潜在类型"><span class="nav-number">1.4.4.</span> <span class="nav-text">潜在类型:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作符"><span class="nav-number">1.5.</span> <span class="nav-text">操作符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表达式"><span class="nav-number">1.6.</span> <span class="nav-text">表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-基本表达式"><span class="nav-number">1.6.1.</span> <span class="nav-text">1. 基本表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-选择符号和选择表达式"><span class="nav-number">1.6.2.</span> <span class="nav-text">2. 选择符号和选择表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-索引符号和索引表达式"><span class="nav-number">1.6.3.</span> <span class="nav-text">3. 索引符号和索引表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-切片符号和切片表达式"><span class="nav-number">1.6.4.</span> <span class="nav-text">4. 切片符号和切片表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-类型断言"><span class="nav-number">1.6.5.</span> <span class="nav-text">5. 类型断言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-可变长参数"><span class="nav-number">1.6.6.</span> <span class="nav-text">7. 可变长参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型"><span class="nav-number">2.</span> <span class="nav-text">数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本数据类型"><span class="nav-number">2.1.</span> <span class="nav-text">基本数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-布尔类型"><span class="nav-number">2.1.1.</span> <span class="nav-text">1. 布尔类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-数值类型"><span class="nav-number">2.1.2.</span> <span class="nav-text">2. 数值类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#特殊rune："><span class="nav-number">2.1.2.1.</span> <span class="nav-text">特殊rune：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#可以用5种方式来表示一个rune字面量："><span class="nav-number">2.1.2.2.</span> <span class="nav-text">可以用5种方式来表示一个rune字面量：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-字符串类型"><span class="nav-number">2.1.3.</span> <span class="nav-text">3. 字符串类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组"><span class="nav-number">2.2.</span> <span class="nav-text">数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-类型表示法"><span class="nav-number">2.2.1.</span> <span class="nav-text">1. 类型表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-值表示法"><span class="nav-number">2.2.2.</span> <span class="nav-text">2. 值表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-属性和基本操作"><span class="nav-number">2.2.3.</span> <span class="nav-text">3. 属性和基本操作</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本词法"><span class="nav-number">1.</span> <span class="nav-text">基本词法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标识符"><span class="nav-number">1.1.</span> <span class="nav-text">标识符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#预定义标识符"><span class="nav-number">1.1.1.</span> <span class="nav-text">预定义标识符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#空标识符"><span class="nav-number">1.1.2.</span> <span class="nav-text">空标识符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关键字"><span class="nav-number">1.2.</span> <span class="nav-text">关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-程序声明-："><span class="nav-number">1.2.1.</span> <span class="nav-text">1. 程序声明 ：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-程序实体声明和定义："><span class="nav-number">1.2.2.</span> <span class="nav-text">2. 程序实体声明和定义：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-程序流程控制："><span class="nav-number">1.2.3.</span> <span class="nav-text">3. 程序流程控制：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字面量"><span class="nav-number">1.3.</span> <span class="nav-text">字面量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一类"><span class="nav-number">1.3.1.</span> <span class="nav-text">第一类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二类"><span class="nav-number">1.3.2.</span> <span class="nav-text">第二类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三类"><span class="nav-number">1.3.3.</span> <span class="nav-text">第三类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型"><span class="nav-number">1.4.</span> <span class="nav-text">类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本类型（预定义类型）："><span class="nav-number">1.4.1.</span> <span class="nav-text">基本类型（预定义类型）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复合类型"><span class="nav-number">1.4.2.</span> <span class="nav-text">复合类型:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态类型"><span class="nav-number">1.4.3.</span> <span class="nav-text">静态类型:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#潜在类型"><span class="nav-number">1.4.4.</span> <span class="nav-text">潜在类型:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作符"><span class="nav-number">1.5.</span> <span class="nav-text">操作符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#与C语言基本一致。新增："><span class="nav-number">1.5.1.</span> <span class="nav-text">与C语言基本一致。新增：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表达式"><span class="nav-number">1.6.</span> <span class="nav-text">表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-基本表达式"><span class="nav-number">1.6.1.</span> <span class="nav-text">1. 基本表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-选择符号和选择表达式"><span class="nav-number">1.6.2.</span> <span class="nav-text">2. 选择符号和选择表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-索引符号和索引表达式"><span class="nav-number">1.6.3.</span> <span class="nav-text">3. 索引符号和索引表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-切片符号和切片表达式"><span class="nav-number">1.6.4.</span> <span class="nav-text">4. 切片符号和切片表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-类型断言"><span class="nav-number">1.6.5.</span> <span class="nav-text">5. 类型断言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-可变长参数"><span class="nav-number">1.6.6.</span> <span class="nav-text">7. 可变长参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型"><span class="nav-number">2.</span> <span class="nav-text">数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本数据类型"><span class="nav-number">2.1.</span> <span class="nav-text">基本数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#布尔类型"><span class="nav-number">2.1.1.</span> <span class="nav-text">布尔类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数值类型"><span class="nav-number">2.1.2.</span> <span class="nav-text">数值类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#特殊rune："><span class="nav-number">2.1.2.1.</span> <span class="nav-text">特殊rune：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#可以用5种方式来表示一个rune字面量："><span class="nav-number">2.1.2.2.</span> <span class="nav-text">可以用5种方式来表示一个rune字面量：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串类型"><span class="nav-number">2.1.3.</span> <span class="nav-text">字符串类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组"><span class="nav-number">2.2.</span> <span class="nav-text">数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-类型表示法"><span class="nav-number">2.2.1.</span> <span class="nav-text">1. 类型表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-值表示法"><span class="nav-number">2.2.2.</span> <span class="nav-text">2. 值表示法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#切片"><span class="nav-number">2.3.</span> <span class="nav-text">切片</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类型表示法"><span class="nav-number">2.3.1.</span> <span class="nav-text">类型表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#值表示法"><span class="nav-number">2.3.2.</span> <span class="nav-text">值表示法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字典"><span class="nav-number">2.4.</span> <span class="nav-text">字典</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类型表示法-1"><span class="nav-number">2.4.1.</span> <span class="nav-text">类型表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#值表示法-1"><span class="nav-number">2.4.2.</span> <span class="nav-text">值表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性和基本操作"><span class="nav-number">2.4.3.</span> <span class="nav-text">属性和基本操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数和方法"><span class="nav-number">2.5.</span> <span class="nav-text">函数和方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类型表示法-2"><span class="nav-number">2.5.1.</span> <span class="nav-text">类型表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#值表示法-2"><span class="nav-number">2.5.2.</span> <span class="nav-text">值表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性和基本操作-1"><span class="nav-number">2.5.3.</span> <span class="nav-text">属性和基本操作</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -867,7 +921,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">4.9k</span>
+    <span title="本站字数总计">9.0k</span>
   
 </div>
 
