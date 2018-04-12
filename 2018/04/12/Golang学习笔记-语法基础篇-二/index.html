@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="《Go并发编程实战》第三章 编程基础基本词法标识符预定义标识符 1.基本数据类型名称。2.接口类型error。3.常量true、false和iota。4.所有内建函数的名称，即append、cap、close、complex、copy、delete、imag、len、make、new、panic、print、peintln、real和recover。  空标识符由一个下划线_表示。一般用在不需要引">
+<meta name="description" content="数据类型基本数据类型 string、bool、byte、rune、int/uint、int8/uint8、int16\uint16、int32/uint32、int64/uint64、float32、float64、 complex64、complex128     分为三类。 布尔类型&amp;gt;bool：true、false 数值类型 特殊rune  类型rune的值由rune类型字面量代表，专用">
 <meta name="keywords" content="Golang,笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Golang学习（语法基础笔记）">
-<meta property="og:url" content="bighua.top/2018/04/10/Golang学习笔记-语法基础篇/index.html">
+<meta property="og:title" content="Golang学习笔记-语法基础篇(二)">
+<meta property="og:url" content="bighua.top/2018/04/12/Golang学习笔记-语法基础篇-二/index.html">
 <meta property="og:site_name" content="水木年华">
-<meta property="og:description" content="《Go并发编程实战》第三章 编程基础基本词法标识符预定义标识符 1.基本数据类型名称。2.接口类型error。3.常量true、false和iota。4.所有内建函数的名称，即append、cap、close、complex、copy、delete、imag、len、make、new、panic、print、peintln、real和recover。  空标识符由一个下划线_表示。一般用在不需要引">
+<meta property="og:description" content="数据类型基本数据类型 string、bool、byte、rune、int/uint、int8/uint8、int16\uint16、int32/uint32、int64/uint64、float32、float64、 complex64、complex128     分为三类。 布尔类型&amp;gt;bool：true、false 数值类型 特殊rune  类型rune的值由rune类型字面量代表，专用">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-12T10:17:04.765Z">
+<meta property="og:updated_time" content="2018-04-12T10:44:56.936Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Golang学习（语法基础笔记）">
-<meta name="twitter:description" content="《Go并发编程实战》第三章 编程基础基本词法标识符预定义标识符 1.基本数据类型名称。2.接口类型error。3.常量true、false和iota。4.所有内建函数的名称，即append、cap、close、complex、copy、delete、imag、len、make、new、panic、print、peintln、real和recover。  空标识符由一个下划线_表示。一般用在不需要引">
+<meta name="twitter:title" content="Golang学习笔记-语法基础篇(二)">
+<meta name="twitter:description" content="数据类型基本数据类型 string、bool、byte、rune、int/uint、int8/uint8、int16\uint16、int32/uint32、int64/uint64、float32、float64、 complex64、complex128     分为三类。 布尔类型&amp;gt;bool：true、false 数值类型 特殊rune  类型rune的值由rune类型字面量代表，专用">
 
 
 
@@ -126,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="bighua.top/2018/04/10/Golang学习笔记-语法基础篇/"/>
+  <link rel="canonical" href="bighua.top/2018/04/12/Golang学习笔记-语法基础篇-二/"/>
 
 
 
 
 
-  <title>Golang学习（语法基础笔记） | 水木年华</title>
+  <title>Golang学习笔记-语法基础篇(二) | 水木年华</title>
   
 
 
@@ -313,7 +313,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="bighua.top/2018/04/10/Golang学习笔记-语法基础篇/">
+    <link itemprop="mainEntityOfPage" href="bighua.top/2018/04/12/Golang学习笔记-语法基础篇-二/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="cocowh">
@@ -330,7 +330,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Golang学习（语法基础笔记）</h2>
+          <h2 class="post-title" itemprop="name headline">Golang学习笔记-语法基础篇(二)</h2>
         
 
         <div class="post-meta">
@@ -342,8 +342,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T15:24:09+08:00">
-                2018-04-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-12T18:20:24+08:00">
+                2018-04-12
               </time>
             
 
@@ -384,8 +384,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2018/04/10/Golang学习笔记-语法基础篇/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/04/10/Golang学习笔记-语法基础篇/" itemprop="commentsCount"></span>
+                <a href="/2018/04/12/Golang学习笔记-语法基础篇-二/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/04/12/Golang学习笔记-语法基础篇-二/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -393,7 +393,7 @@
 
           
           
-             <span id="/2018/04/10/Golang学习笔记-语法基础篇/" class="leancloud_visitors" data-flag-title="Golang学习（语法基础笔记）">
+             <span id="/2018/04/12/Golang学习笔记-语法基础篇-二/" class="leancloud_visitors" data-flag-title="Golang学习笔记-语法基础篇(二)">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -423,7 +423,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  17,042
+                  9,820
                 </span>
               
 
@@ -439,7 +439,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  65
+                  37
                 </span>
               
             </div>
@@ -460,108 +460,24 @@
       
 
       
-        <h1 id="《Go并发编程实战》第三章-编程基础"><a href="#《Go并发编程实战》第三章-编程基础" class="headerlink" title="《Go并发编程实战》第三章 编程基础"></a><center>《Go并发编程实战》第三章 编程基础<center></center></center></h1><h2 id="基本词法"><a href="#基本词法" class="headerlink" title="基本词法"></a>基本词法</h2><h3 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h3><h4 id="预定义标识符"><a href="#预定义标识符" class="headerlink" title="预定义标识符"></a>预定义标识符</h4><blockquote>
-<p>1.基本数据类型名称。<br>2.接口类型error。<br>3.常量true、false和iota。<br>4.所有内建函数的名称，即append、cap、close、complex、copy、delete、imag、len、make、new、panic、print、peintln、real和recover。</p>
-</blockquote>
-<h4 id="空标识符"><a href="#空标识符" class="headerlink" title="空标识符"></a>空标识符</h4><p>由一个下划线_表示。一般用在不需要引入一个新邦定的声明中。例如在代码中存在一个变量x，但是却不存在对它的使用。这样的代码会使编译器报错。在变量x的声明代码后添加：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_ = x</span><br></pre></td></tr></table></figure></p>
-<p>可以绕过编译器检查，使它不产生任何编译错误。因为x在此处被使用到，但是对x未进行任何操作。在导入声明中，当我们只想执行一下某个代码包中的初始化函数，而不需要使用这个代码包中的任何程序实体的时候，可以编写导入语句为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import _ &quot;runtime/cgo&quot;</span><br></pre></td></tr></table></figure></p>
-<p>引入了这个代码包所需的所有操作，没有绑定到一个具体的名称上，在当前的源码文件中，我们无法对这个代码包中的任何程序实体进行调用。<br>以上，”_”会导致赋值或导入操作的相关准备工作的进行。</p>
-<h3 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h3><h4 id="1-程序声明-："><a href="#1-程序声明-：" class="headerlink" title="1. 程序声明 ："></a>1. 程序声明 ：</h4><pre><code>&gt; import、package
-</code></pre><h4 id="2-程序实体声明和定义："><a href="#2-程序实体声明和定义：" class="headerlink" title="2. 程序实体声明和定义："></a>2. 程序实体声明和定义：</h4><pre><code>&gt;chan、const、func、interface、map、struct、type、var
-</code></pre><h4 id="3-程序流程控制："><a href="#3-程序流程控制：" class="headerlink" title="3. 程序流程控制："></a>3. 程序流程控制：</h4><pre><code>&gt;go、select、break、case、continue、default、defer、else、fallthrough、for、goto、if、range、return、switch
-</code></pre><h3 id="字面量"><a href="#字面量" class="headerlink" title="字面量"></a>字面量</h3><h4 id="第一类"><a href="#第一类" class="headerlink" title="第一类"></a>第一类</h4><p>用于表示基础数据类型值的各种字面量。基本数据类型。</p>
-<h4 id="第二类"><a href="#第二类" class="headerlink" title="第二类"></a>第二类</h4><p> 用于构造各种自定义的符合数据类型的类型字面量。自定义数据类型如结构体。</p>
-<h4 id="第三类"><a href="#第三类" class="headerlink" title="第三类"></a>第三类</h4><p> 用于表示符合数据类型的值的符合字面量。会被用来构造类型Struct结构体、Array(数组)、Slice(切片)、Map(字典)的值。</p>
-<h3 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h3><h4 id="基本类型（预定义类型）："><a href="#基本类型（预定义类型）：" class="headerlink" title="基本类型（预定义类型）："></a>基本类型（预定义类型）：</h4><blockquote>
-<p>string、bool、byte、rune、int/uint、int8/uint8、int16\uint16、int32/uint32、int64/uint64、float32、float64、complex64、complex128</p>
-</blockquote>
-<h4 id="复合类型"><a href="#复合类型" class="headerlink" title="复合类型"></a>复合类型</h4><blockquote>
-<p>Array(数组)、Struct(结构体)、Function(函数)、Interface(接口)、Slice(切片)、Map(字典)、Channel(通道)、Pointer(指针)</p>
-</blockquote>
-<h4 id="静态类型"><a href="#静态类型" class="headerlink" title="静态类型"></a>静态类型</h4><blockquote>
-<p>在变量声明中示出的类型。动态类型，在运行时与改变量绑定在一起的实际类型，实际类型可以是实现了这个接口的任何类型。接口类型的变量既拥有静态类型，也有动态类型。接口类型的变量的动态类型可以在执行期间变化，但是变量的静态类型永远只能是它声明时被指定的那个类型。</p>
-</blockquote>
-<h4 id="潜在类型"><a href="#潜在类型" class="headerlink" title="潜在类型"></a>潜在类型</h4><blockquote>
-<p>每一个类型都会有一个潜在类型，若是预定义类型或者由类型字面量构造的符合类型，潜在类型就是它自身。</p>
-</blockquote>
-<p>可以用type声明自定义类型:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">type MyString string</span><br><span class="line">type iString MyString</span><br><span class="line">type MyStrings [3]string</span><br></pre></td></tr></table></figure></p>
-<p>可以把MyString看作string类型的一个别名类型，MyStrings、iString和MyString的潜在类型都是string。</p>
-<h3 id="操作符"><a href="#操作符" class="headerlink" title="操作符"></a>操作符</h3><h4 id="与C语言基本一致。新增："><a href="#与C语言基本一致。新增：" class="headerlink" title="与C语言基本一致。新增："></a>与C语言基本一致。新增：</h4><blockquote>
-<p>&amp;^     按位清除操作，即根据第二个操作数的二进制值对第一个操作数的二进制值进行相应的清零操作。二元操作符，属于算术操作符。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> 7       &amp;^ 13       = 2</span><br><span class="line">00000111 &amp;^ 00001101 = 00000010</span><br><span class="line">      00000111</span><br><span class="line">&amp;^    00001101</span><br><span class="line">=     00000010</span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<blockquote>
-<p>&lt;- 接收操作，一元操作符，属于接收操作符。只作用于通道类型的值。对于通道ch，表达式&lt;-的含义是从此通道中接收一个值。前提是通道的方向必须允许接收操作，并且该操作的结果的类型必须与通道元素的类型之间存在可赋予的关系。这个表达式会被阻塞直到通道中有一个值可用。</p>
-</blockquote>
-<p>需要注意：</p>
-<ul>
-<li>从一个通道类型的空值（即nil）接收值的表达式将会永远阻塞.</li>
-<li>从一个已经被关闭的通道类型值接收值会永远成功并且立即返回一个其元素类型的零值。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">v1 := &lt;-ch</span><br><span class="line">v2 = &lt;-ch</span><br><span class="line">v,ok  = &lt;-ch</span><br><span class="line">v,ok := &lt;-ch</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>“=”用于将一个值赋给一个已被声明的变量或常量，”:=”用于在声明一个变量的同时对这个变量进行赋值，”:=”只能在函数体内使用。v1，v2，v用于接收值，ok为布尔类型的值，代表了接收操作的成功与否，可用来判断一个通道是否被关闭了，为false时表明通道已经关闭。</p>
-</blockquote>
-<p>操作符优先级：</p>
-<blockquote>
-<p>5      * / % &lt;&lt; &gt;&gt; &amp; &amp;^<br>4     + - | ^<br>3      == !=  &lt;  &lt;=  &gt;  &gt;=<br>2     &amp;&amp;<br>1     ||</p>
-</blockquote>
-<h3 id="表达式"><a href="#表达式" class="headerlink" title="表达式"></a>表达式</h3><h4 id="1-基本表达式"><a href="#1-基本表达式" class="headerlink" title="1. 基本表达式"></a>1. 基本表达式</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[]int&#123;1,2,3,4,5&#125;</span><br><span class="line">[]int&#123;1,2,3,4,5&#125;[2]</span><br><span class="line">int(v1) + v2</span><br><span class="line">len(v3)</span><br><span class="line">x.f</span><br><span class="line">[]int&#123;1,2,3,4,5&#125;[1:3]</span><br><span class="line">interface&#123;&#125;(num).(int)</span><br><span class="line">os.Open(&quot;/etc/profile&quot;)</span><br></pre></td></tr></table></figure>
-<h4 id="2-选择符号和选择表达式"><a href="#2-选择符号和选择表达式" class="headerlink" title="2. 选择符号和选择表达式"></a>2. 选择符号和选择表达式</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x.f      //深度0</span><br><span class="line">x.f.f2   //深度1</span><br></pre></td></tr></table></figure>
-<h5 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h5><ul>
-<li>对于一个类型T或者对应的指针类型*T的值x，表达式x.f表示类型T的最浅深度（即深度0）的字段或者方法。前提是：T不能是接口类型；类型T必须要有名称为f的字段或者方法。  </li>
-<li>对于一个接口类型I的变量x，表达式x.f表示赋给x的那个值(实现了接口类型I的那个类型的值)的方法f。如果接口类型I的方法法集合中不包含名称为f的方法，那么选择表达式x.f非法。</li>
-</ul>
-<h5 id="其它情况"><a href="#其它情况" class="headerlink" title="其它情况"></a>其它情况</h5><ul>
-<li>如果x是一个与某个构体类型对应的指针类型的变量，并且它的值为nil，那么针对表达式x.f的赋值和求值都会引起一个运行时的恐慌。不论f是字段还是方法。</li>
-<li>如果x是一个接口类型的变量且它的值为nil，那么针对表达式x.f的调用和求值都会引起一个运行时恐慌，前提是f是该接口类型的一个方法。</li>
-</ul>
-<p>自动解引用：如果x是一个结构体类型对应的指针类型的值，那么x.f就是表达式(<em>x).f的一个速记法，不论f代表的是一个字段还是一个方法，如果f代表了一个字段且也是一个与结构体类型对应的指针类型，那么x.f.f2就是表达式(</em>(*x.f).f2的一个速记法，不论f2是一个字段还是方法。</p>
-<h4 id="3-索引符号和索引表达式"><a href="#3-索引符号和索引表达式" class="headerlink" title="3. 索引符号和索引表达式"></a>3. 索引符号和索引表达式</h4><p>一个索引表达式有一个基本表达式和一个索引符号组成，形如a[x]，会求索引值为x的a中的那个元素的值。  </p>
-<h5 id="规则-1"><a href="#规则-1" class="headerlink" title="规则"></a>规则</h5><ul>
-<li>a不是字典类型的值，x必须是一个int类型或者无类型的证书字面量，x大于0且小于a的长度。否则引起一个与越界有关的运行时的恐慌。  </li>
-<li>a是一个数组类型A的变量，x需满足上条，若a为nil或x超范围，引起一个运行时恐慌。</li>
-<li>a是一个切片S类型的变量，x需满足上条，若a为nil或x超范围，引起一个运行时恐慌。</li>
-<li>a是一个字符串类型T的变量，x必须在a的长度的有效范围内，a[x]表示字符串a中索引值为x对应的那个字节类型值。不能对a[x]进行赋值操作，字符串类型值是不能改变的。</li>
-<li>a是一个字典类型M的变量，x的类型必须是可以赋值给M的键的类型，即键x的类型可以通过类型推断符号判定为M的键的类型。a[x]表示a中的、与键x对应的那个值，且a[x]的类型与字典M的元素的类型相同。若a为nil或者其中不包含以x为键的键值对，那么a[x]的求值结果就会是字典M的元素的类型的零值。通过赋值语句<br>v,ok := a[x]<br>判断是因为上方原因导致的零值还是与键x对应的值本身就是这个零值。ok为true表示赋值成功，原本就是零值，为false则表明由上方情况引起。当a为nil时对a[x]赋值会引起一个运行时恐慌。</li>
-</ul>
-<h4 id="4-切片符号和切片表达式"><a href="#4-切片符号和切片表达式" class="headerlink" title="4. 切片符号和切片表达式"></a>4. 切片符号和切片表达式</h4><p>切片符号可以是操作字符串、数组、数组的指针以及切片类型的值。<br>对于这样一个类型的值a，切片表达式为a[x:y:z]。<br>x代表元素下界索引，y代表元素上界索引，z代表切片的容量上界索引。<br>有如下约束：</p>
-<blockquote>
-<p>0 &lt;= 元素下界索引 &lt;= 元素上界索引 &lt;= 容量上界索引 &lt;= 操作对象的容量  </p>
-</blockquote>
-<p>若不满足，则在表达式求值时造成一个越界错误并引发一个运行时恐慌。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[]int&#123;1,2,3,4,5&#125;[1:3] = []int&#123;2,3&#125;</span><br><span class="line">[]int&#123;1,2,3,4,5&#125;[3:] = []int&#123;1,2,3,4,5&#125;[3:5] = []int&#123;4,5&#125;</span><br><span class="line">[]int&#123;1,2,3,4,5&#125;[:3] = []int&#123;1,2,3,4,5&#125;[0:3] = []int&#123;1,2,3&#125;</span><br></pre></td></tr></table></figure></p>
-<p>若a代表的是一个切片类型的值，那么表达式a[:]就等同于复制a所代表的值并将其作为此表达式的求值结果。否则表达式a[:]就意味着有一个包含了指向a的第一个元素的指针的切片类型值被创建。</p>
-<h4 id="5-类型断言"><a href="#5-类型断言" class="headerlink" title="5. 类型断言"></a>5. 类型断言</h4><p>对于一个求值结果为接口类型值表达式x和一个类型T，对应的类型断言为：<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x.(T)</span><br></pre></td></tr></table></figure></p>
-<p>用于判断“x不为nil且存储在其中的值是T类型的”这一假设是否成立。如果T不是一个接口类型，那么x.(T)将会判断x的动态类型是否与类型T一致，即为关于“类型T是否为x的动态类型”的判断。  类型T必须是x的一个实现类型，x必须是一个接口类型的值。<br>int(123).(int)引发编译错误:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">invalid type assertion: 123.(int)(non-interface type int on left )</span><br></pre></td></tr></table></figure></p>
-<p>即表达式int(123)的求值结果是int类型，而int类型并不是一个接口类型。将表达式改为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">interface&#123;&#125;(123).(int)</span><br></pre></td></tr></table></figure></p>
-<p>则会顺利通过编译，表达式interface{}(123)将字面量123转换为interface{}类型的值。interface{}是一个特殊的接口类型，代表空接口，所有类型都是他的实现类型。<br>如果T不是一个接口类型且类型T不是x的类型的一个实现，那么类型断言x.(T)就是失败的，会引发一个运行时恐慌。</p>
-<blockquote>
-<p>只有在程序运行期间，x的动态类型才能够被获知，而在编译期间能够确定的只有T所代表的类型。  </p>
-</blockquote>
-<p>使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">v,ok := x.(T)</span><br><span class="line">``` </span><br><span class="line">断言成功v为已经被转换为T类型的表达式x的求值结果，否着为类型T的零值。ok可以判断断言是否成功，此时类型断言失败也不会引发运行时恐慌。</span><br><span class="line">#### 6. 调用</span><br><span class="line">如果由函数类型F的值f，表达式f(a1,a2,a3)表达了对函数f的调用，同时以a1、a2和a3作为参数传递给函数f。  </span><br><span class="line">方法是函数的一种，比函数多了一个接收者。接收者可以是该方法所属的结构体类型的值，或者与该结构体类型对应的那个指针类型的值。</span><br><span class="line">&gt;在求值一个表达式、赋值语句或者返回语句中包含的操作数的时候，所有的函数调用、方法调用和通信调用都会按照从左到右的顺序被求值。</span><br><span class="line">```code</span><br><span class="line">a := 10</span><br><span class="line">f := func()int&#123; a = a*2;return 5&#125;</span><br><span class="line">x := []int&#123;a,f()&#125;</span><br></pre></td></tr></table></figure></p>
-<p>在上例中，x的值可能是[]int{10,5},也可能是[]int{20,5}。（有待考证</p>
-<h4 id="7-可变长参数"><a href="#7-可变长参数" class="headerlink" title="7. 可变长参数"></a>7. 可变长参数</h4><p>如果函数f可以接受的参数的数量是不固定的，那么函数f就是一个能够接受可变长参数的函数，简称为可变参函数。<br>在可变函数的参数列表的最后总会出现一个可变长参数，这个可变长参数的类型声明形如…T。用于接受数量不定但类型均为T或其实现类型的参数值。等同于一个元素类型为T的切片类型的参数。对于函数f的每一次调用，被传递给可变长参数的值实际上都是包含了实际参数、元素类型为T的切片类型值。对可变参函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func appendIfAbsent(s []string,t ...string)[]string</span><br></pre></td></tr></table></figure></p>
-<p>可以这样编写针对他的调用表达式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">appendIfAbsent([]string&#123;&quot;A&quot;,&quot;B&quot;,&quot;C&quot;&#125;,&quot;C&quot;,&quot;N&quot;,&quot;E&quot;)</span><br></pre></td></tr></table></figure></p>
-<p>其中，与可变长参数t绑定的切片类型值为[]string{“C”,”B”,”E”}。<br>可以直接把一个类型T的切片类型值赋给…T类型的可变长参数，需要在欲赋予可变长参数的那个切片类型值的后面追加…。例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">appendIfAbsent([]string&#123;&quot;A&quot;,&quot;B&quot;,&quot;C&quot;&#125;,[]string&#123;&quot;C&quot;,&quot;B&quot;,&quot;E&quot;&#125;...)</span><br></pre></td></tr></table></figure></p>
-<p>若有元素类型为string的切片类型的变量s，则可以：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">appendIfAbsent([]string&#123;&quot;A&quot;,&quot;B&quot;,&quot;C&quot;&#125;,s...)</span><br></pre></td></tr></table></figure></p>
-<p>此时可变长参数t的值就是变量s的值，即不会专门创建于个切片类型值来存储其中的实际参数。</p>
-<hr>
-<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><h3 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h3><blockquote>
+        <h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><h3 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h3><blockquote>
 <p>string、bool、byte、rune、int/uint、int8/uint8、int16\uint16、int32/uint32、int64/uint64、float32、float64、<br> complex64、complex128  </p>
 </blockquote>
 <p> 分为三类。</p>
 <h4 id="布尔类型"><a href="#布尔类型" class="headerlink" title="布尔类型"></a>布尔类型</h4><pre><code>&gt;bool：true、false
-</code></pre><h4 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h4><h5 id="特殊rune"><a href="#特殊rune" class="headerlink" title="特殊rune"></a>特殊rune</h5><blockquote>
+</code></pre><h4 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h4><p> 特殊rune</p>
+<blockquote>
 <p>类型rune的值由rune类型字面量代表，专用于存储经过Unicode编码的字符。<br>    一个rune常量即是一个Unicode编码值，使用十六进制表示法来表示与Unicode对应的数字值，并使用“U+”作为前缀。<br>    一个rune字面量由外层的单引号和内层的一个或多个字符组成，在包裹字符的单引号中不能出现单引号“’”和换行符“\n”。    </p>
 </blockquote>
-<h5 id="可以用5种方式来表示一个rune字面量"><a href="#可以用5种方式来表示一个rune字面量" class="headerlink" title="可以用5种方式来表示一个rune字面量"></a>可以用5种方式来表示一个rune字面量</h5><ol>
+<p>可以用5种方式来表示一个rune字面量  </p>
+<ol>
 <li>该rune字面量所对应的字符。如：’a’、’-‘，字符必须是Unicode编码规范所支持。</li>
 <li>使用“\x”为前导并后跟两位十六进制数。可以表示宽度为一个字皆的值，即一个ASCII编码值。  </li>
 <li>使用“\”为前导并后跟三位八进制数。宽度限制为一个字皆，只能用于表示对应数值在0和255之间的值。</li>
 <li>使用“\u”为前导并后跟四位十六进制数。只能用于表示两个字节宽度的值，为Unicode编码规范中的UCS-2表示法。</li>
-<li><p>使用“\U”为前导并后跟八位十六进制数。为Unicode编码规范中的UCS-4表示法。为Unicode编码规范和相关国际标准中的规范编码格式。   </p>
-<p>rune字面量可以支持转义符，有固定的几个，在规定之外的以“\”为前导的字符序列都是不合法的，转义符“\””也不能出现在rune字面量中。</p>
-</li>
+<li>使用“\U”为前导并后跟八位十六进制数。为Unicode编码规范中的UCS-4表示法。为Unicode编码规范和相关国际标准中的规范编码格式。 </li>
 </ol>
+<p> rune字面量可以支持转义符，有固定的几个，在规定之外的以“\”为前导的字符序列都是不合法的，转义符“\””也不能出现在rune字面量中。</p>
 <h4 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h4><p>字符串的长度即是底层字节序列中字节的个数，一个字符串常量的长度在编译期间就能够确定。<br>字符串代表了一个连续的字符序列，每一个字符都会被隐含地以Unicode编码规范的UTF-8编码个是编码为若干字节。<br>字符串字面量的两种表示格式：原生字符串字面量和解释型字符串字面量。    </p>
 <blockquote>
 <p>原生字符串字面量在两个反引号“`”之间的字符序列。在反引号之间，除了反引号之外的其他字符都是合法的，两个反引号之间的所有内容都看作是这个原生字符串字面量的值，其内容由在编译期间就可以确定的字符（非解释型字符）组成。原生字符串字面量中，不存在任何转义字符，所有内容都是所见即所得，也包括换行符。原生字符串字面量中的回车符会被编译器移除。    </p>
@@ -679,13 +595,11 @@
 <p>选择接收者的类型  </p>
 <ul>
 <li>在某个自定义数据类型上，值能够调用与这个数据类型相关联的值方法，在这个值的指针值上，能够调用与其数据类型相关联的值方法和指针方法。</li>
-<li><p>在指针方法中能够改变接收者的值，在值的方法中，对接收者的值的改变对于该方法之一般是无效的。  </p>
-<p>接收者的类型如果是引用类型的别名类型，在该类型值的值方法中对该值的改变也是对外有效的。</p>
-<h3 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h3><p>Go语言的接口由一个方法的集合代表。只要一个数据类型（或与其对应的指针类型）附带的方法集合是某一个接口的方法集合的超级，就可以判定该类型实现了这个接口。</p>
-<h4 id="类型表示法-3"><a href="#类型表示法-3" class="headerlink" title="类型表示法"></a>类型表示法</h4><p>接口由方法集合代表。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//标准库代码包sort中的接口类型Interface</span><br><span class="line">type Interface interface &#123;</span><br><span class="line">   Len() int</span><br><span class="line">   Less(i, j int) bool</span><br><span class="line">   Swap(i, j int)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
+<li>在指针方法中能够改变接收者的值，在值的方法中，对接收者的值的改变对于该方法之一般是无效的。  </li>
 </ul>
+<p>接收者的类型如果是引用类型的别名类型，在该类型值的值方法中对该值的改变也是对外有效的。</p>
+<h3 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h3><p> Go语言的接口由一个方法的集合代表。只要一个数据类型（或与其对应的指针类型）附带的方法集合是某一个接口的方法集合的超级，就可以判定该类型实现了这个接口。</p>
+<h4 id="类型表示法-3"><a href="#类型表示法-3" class="headerlink" title="类型表示法"></a>类型表示法</h4><p> 接口由方法集合代表。<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//标准库代码包sort中的接口类型Interface</span><br><span class="line">type Interface interface &#123;</span><br><span class="line">   Len() int</span><br><span class="line">   Less(i, j int) bool</span><br><span class="line">   Swap(i, j int)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>将一个接口类型嵌入到另一个接口类型中，亦接口间的继承。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">type Sortable interface &#123;</span><br><span class="line">    sort.Interface</span><br><span class="line">    Sort()</span><br><span class="line">&#125;</span><br><span class="line">//嵌入了sort中的接口类型Interface</span><br></pre></td></tr></table></figure></p>
 <blockquote>
 <p>接口的嵌入不能嵌入自身，包括直接的嵌入和间接的嵌入，当前接口类型中声明的方法也不能与任何被嵌入其中的接口类型的方法重名，错误的嵌入会造成编译错误。</p>
@@ -763,112 +677,6 @@
 <li><p>内建函数make仅能被用于切片、字典和通道类型的值的创建，结果值是被创建的值本身。</p>
 </li>
 </ul>
-<hr>
-<h2 id="数据的使用"><a href="#数据的使用" class="headerlink" title="数据的使用"></a>数据的使用</h2><h3 id="赋值语句"><a href="#赋值语句" class="headerlink" title="赋值语句"></a>赋值语句</h3><p>若值x可以被赋给类型为T的变量，则：</p>
-<ul>
-<li>值x的类型是T。</li>
-<li>值x的类型是V，V和T具有相同的潜在类型，V和T至少有一个是未命名的类型。</li>
-<li>类型T是一个接口类型，值x的类型实现了T。</li>
-<li>值x是一个双向通道类型的值，T是一个通道类型。</li>
-<li>值x是预定义标识符nil，可赋给切片、字典、函数、接口、指针、通道等类型的变量。</li>
-<li>值x是一个由某个数据类型的值代表的无类型的常量，可以被赋给该数据类型的变量。</li>
-<li>所有值都可以赋给空标识符“_”。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var ints = []int&#123;1, 2, 3&#125;</span><br><span class="line">ints[1], ints[2] = (ints[1] + 1), (ints[2] + 2)</span><br><span class="line">ints[1], _ = (ints[1] + 1), (ints[2] + 2)</span><br><span class="line">ints[1], ints[2] = (ints[1] * (ints[0] + 1)), (ints[2] * (ints[0] + 2))</span><br><span class="line">i1 += 1 //i1 = i1 + 2</span><br><span class="line">i2 &amp;= 2 &lt;&lt; 3 //i2 = i2 &amp; (2&lt;&lt;3)</span><br></pre></td></tr></table></figure>
-<p>“=”两边的表达式的数量不相等，左边可以有多个，对于右边的唯一表达式有：  </p>
-<ul>
-<li>表达式是一个调用会返回多个结果的函数或者方法的表达式。</li>
-<li>表达式是一个应用于字典之上的索引表达式。v, ok := map[“k”]。</li>
-<li>表达式是一个类型断言表达式。v, ok ：= x.(string)。</li>
-<li>表达式是一个由接收操作符和通道类型值组成的表达式。v,ok := &lt;-ch。  </li>
-</ul>
-<p>除此之外赋值操作符两边的表达式数量必须一致，并都都是单值表达式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">i := 1</span><br><span class="line">s := []string&#123;&quot;A&quot;, &quot;B&quot;, &quot;C&quot;&#125;</span><br><span class="line">i,s[i-1] = 2, &quot;Z&quot;</span><br></pre></td></tr></table></figure></p>
-<p>s值是[]string{“Z”, “B”, “C”}而不是[]string{“A”, “Z”, “C”}，对表达式i-1的求值先于赋值，在赋值之前，第二个赋值对象被确定为s[0]。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a, b = b, a             //交换变量值</span><br><span class="line">x := []int&#123;1, 2, 3&#125;     //切片初始化</span><br><span class="line">x[0], x[0] = 1, 2       //从做到有执行最终x[0=2</span><br><span class="line">x[2], x[3] = 4, 5       //索引超范围引发恐慌，但x[2]=4已被变更</span><br></pre></td></tr></table></figure></p>
-<h3 id="常量与变量"><a href="#常量与变量" class="headerlink" title="常量与变量"></a>常量与变量</h3><p>某量保持不变称为常量，否则称为变量。</p>
-<h4 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h4><p>常量在编译期间被创建，作为局部变量被定义在函数内部，由字面量或常量表达式赋值。<br>分为布尔常量、rune常量（字符常量）、整数常量、浮点数常量、复数常量和字符串常量。<br>常量可以是有类型的也可以是无类型，可以被显式地给定类型，也可以被隐含地给定类型。  </p>
-<h5 id="常量表达式"><a href="#常量表达式" class="headerlink" title="常量表达式"></a>常量表达式</h5><p>仅以常量作为操作数的表达式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">2 + 3.0         //无类型的浮点数常量5.0</span><br><span class="line">15 / 4.0        //无类型的浮点数常量3.75</span><br><span class="line">&apos;w&apos; + 1         //无类型的rune常量&apos;x&apos;</span><br><span class="line">---</span><br><span class="line">1 &lt;&lt; 3.0        //无类型整数常量8</span><br><span class="line">1.0 &lt;&lt;3         //无类型整数常量8</span><br><span class="line">1 &lt;&lt; 100        //无类型的整数常量1267650600228229401496703205376超出范围</span><br><span class="line">---</span><br><span class="line">&quot;A&quot; &gt; &quot;C&quot;       //无类型的布尔常量false</span><br></pre></td></tr></table></figure></p>
-<h5 id="常量的声明"><a href="#常量的声明" class="headerlink" title="常量的声明"></a>常量的声明</h5><p>使用关键字const将字面常量或常量表达式与标识符绑定在一起。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const untypedConstant = 10.0    //无类型常量</span><br><span class="line">const typedConstant int64 = 1024  //类型为int64的常量</span><br><span class="line"></span><br><span class="line">const tc1, tc2, tc3 int64 = 1024, -10, 88 //平行赋值</span><br></pre></td></tr></table></figure></p>
-<p>左侧只允许插入一个类型字面量，规定作则标识符的类型，右侧的常量类型需与其一致，未给定类型，则右侧常量类型彼此独立。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">const utc1, utc2, utc3 = 6.3, false, &quot;C&quot;</span><br><span class="line">=</span><br><span class="line">const (</span><br><span class="line">    utc  = 6.3</span><br><span class="line">    utc2 = false</span><br><span class="line">    utc3 = &quot;c&quot;</span><br><span class="line">)</span><br><span class="line">=</span><br><span class="line">const (</span><br><span class="line">    utc1, utc2 = 6.3, false</span><br><span class="line">    utc3       = &quot;c&quot;</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
-<p>并不需要显式的对所有常量赋值，被省略赋值的常量，会被隐含地赋与其上面的、最近的且被显式赋值的那个常量的值。递增<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">const (</span><br><span class="line">    utc1, utc2 = 6.3, false恒等</span><br><span class="line">    utc3       = &quot;C&quot;</span><br><span class="line">    utc4</span><br><span class="line">    utc5 </span><br><span class="line">)</span><br><span class="line">=</span><br><span class="line">const (</span><br><span class="line">    utc1, utc2 = 6.3, false</span><br><span class="line">    utc3       = &quot;C&quot;</span><br><span class="line">    utc4       = &quot;C&quot;</span><br><span class="line">    utc5       = &quot;C&quot;</span><br><span class="line">)</span><br><span class="line">---</span><br><span class="line">const (</span><br><span class="line">    utc1         =       6.3</span><br><span class="line">    utc2, ytc3   =   false, &quot;C&quot;</span><br><span class="line">    utc4, utc5</span><br><span class="line">)</span><br><span class="line">```  </span><br><span class="line">对此有规则：  </span><br><span class="line">* 若有未被显式赋值的常量，同一行的常量的赋值都必须被省略。</span><br><span class="line">* 未显式赋值的那一行的常量声明中的常量标识符数量必须与在它上面的、最近的且显式赋值的那一行常量声明中的常量标识符的数量相等。</span><br><span class="line"></span><br><span class="line">iota代表了连续的、无类型的整数常量，第一次出现在一个以const开始的常量声明语句中的时候总会表示整数常量0。随着在同一条常量声明语句中包含iota的常量的递增，iota所表示的整数值也会递增。</span><br><span class="line">```code</span><br><span class="line">const (</span><br><span class="line">    a = iota</span><br><span class="line">    b</span><br><span class="line">    c</span><br><span class="line">)</span><br><span class="line">=</span><br><span class="line">const (</span><br><span class="line">    a = 0</span><br><span class="line">    b = 1</span><br><span class="line">    c = 2</span><br><span class="line">)</span><br><span class="line">---</span><br><span class="line">const (</span><br><span class="line">    u = 1 &lt;&lt; iota</span><br><span class="line">    v</span><br><span class="line">    w</span><br><span class="line">)</span><br><span class="line">=</span><br><span class="line">const (</span><br><span class="line">    u = 1 &lt;&lt; 0</span><br><span class="line">    v = 1 &lt;&lt; 1</span><br><span class="line">    w = 1 &lt;&lt; 2恒等</span><br><span class="line">)</span><br><span class="line">=</span><br><span class="line">const (</span><br><span class="line">    u = 1</span><br><span class="line">    v = 2</span><br><span class="line">    w = 4</span><br><span class="line">)</span><br><span class="line">---</span><br><span class="line">const (</span><br><span class="line">    e, f = iota, 1 &lt;&lt; iota</span><br><span class="line">    g, h</span><br><span class="line">    i, j</span><br><span class="line">)</span><br><span class="line">=</span><br><span class="line">const (</span><br><span class="line">    e, f = 0, 1</span><br><span class="line">    g, h = 1, 2</span><br><span class="line">    i, j = 2, 4 </span><br><span class="line">)</span><br><span class="line">---</span><br><span class="line">const (</span><br><span class="line">    e, f = iota, 1 &lt;&lt; iota</span><br><span class="line">    _, _</span><br><span class="line">    g, h</span><br><span class="line">    i, j</span><br><span class="line">)</span><br><span class="line">=</span><br><span class="line">const (</span><br><span class="line">     e, f = 0, 1</span><br><span class="line">     g, h = 2, 4</span><br><span class="line">     i, j = 3, 8</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
-<p>在同一条常量声明语句中，iota代表的整数常量的是否递增取决于是否又有一个常量声明包含了它，而不是它是否又在常量声明中出现了一次。可用空标识符“_”跳过iota表示的递增序列中的某个或某些值。</p>
-<h4 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h4><p>在声明之后可以被赋值任意次，值在程序运行期间才被计算。</p>
-<h5 id="变量声明"><a href="#变量声明" class="headerlink" title="变量声明"></a>变量声明</h5><p>以关键字var开始：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var v int64 = 0 //声明变量的类型</span><br><span class="line">var x = 0       //省略变量的类型</span><br></pre></td></tr></table></figure></p>
-<p>变量的类型未被显示指定将由变量值推导得出。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var (</span><br><span class="line">    v1 = 0</span><br><span class="line">    v2 = -1</span><br><span class="line">)</span><br><span class="line">---</span><br><span class="line">var v3, v4, v5 float64</span><br><span class="line">=</span><br><span class="line">var v3, v4, v5 float64 = 0.0, 0.0, 0.0</span><br></pre></td></tr></table></figure></p>
-<p>隐式赋值在变量声明中不可用，未被显示赋值的变量值将会是与改变量的类型相对应的零值，此时变量的类型不可省略。</p>
-<h5 id="局部变量"><a href="#局部变量" class="headerlink" title="局部变量"></a>局部变量</h5><p>变量声明可以作为源码文件中的顶级元素，也可以称为函数体内容的一部分，前者全局变量，后者局部变量。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line">var v6 bool //全局变量</span><br><span class="line">func main()&#123;</span><br><span class="line">    var v6 bool = true  //局部变量</span><br><span class="line">    fmt.Printf(&quot;v6: %v\n&quot;, v6)恒等</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>在函数体内部，局部变量会遮蔽与其同名的全局变量。<br>函数体内部的短变量声明：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">v6 := true</span><br><span class="line">v7, v8 := &quot;Go&quot;, 1.2</span><br><span class="line">v8, v9 := 2.0, false    //v8重声明</span><br></pre></td></tr></table></figure></p>
-<p>重声明为对在当前上下文环境中的已存在变量的又一次赋值，赋的值与改变量的类型之间应满足赋值规则。<br>重声明仅出现在短变量声明中，不能用普通的声明方式重新声明一个在当前上下文环境中已存在的变量，不论改变量是一个全局变量还是一个局部变量。<br>短变量声明条件：  </p>
-<ul>
-<li>仅能够在函数体内部声明变量的时候使用。     </li>
-<li>:=的左边的标识符至少有一个代表在当前上下文环境中的新变量。</li>
-</ul>
-<p>空标识符“_”代表的不是新变量。短变量声明可以出现在if、for和switch等语句的初始化器中，并被用来声明仅存在于这些语句块中的局部临时变量。<br>在当前上下文环境中声明了某个局部变量但没有使用它，会造成一个编译错误，对变量的赋值不算对其使用。  </p>
-<h3 id="可比性与有序性"><a href="#可比性与有序性" class="headerlink" title="可比性与有序性"></a>可比性与有序性</h3><h4 id="类型的恒等"><a href="#类型的恒等" class="headerlink" title="类型的恒等"></a>类型的恒等</h4><p>对于两个命名类型来说，名称不同，肯定不恒等，名称相同且源于相同的类型声明，则是恒等的。别名类型与它的源类型是两个完全不同的类型，命名类型和匿名类型总是不相等的。<br>恒等判断规则：  </p>
-<ul>
-<li>数组类型，长度一致且元素的数据类型一致。</li>
-<li>切片类型，元素的数据类型一致。</li>
-<li>结构体类型，字段声明的数量相同且对应位置上的字段具有相同的字段名称和恒等的数据类型。字段声明的标签实际上是一个字符串字面量，标签一致也为判断恒等的依据。</li>
-<li>指针类型，基本类型（指向的那个类型）恒等。</li>
-<li>函数，包含了相同数量的参数和结果声明，并且对应位置上的参数和类型都是恒等的。不关注参数和结果名称，只关注数量、顺序和类型。若为可变参函数则都为可变参函数。</li>
-<li>接口类型，拥有相同的方法集合。</li>
-<li>字典类型，具有恒等的元素类型和键类型。</li>
-<li>通道类型，具有恒等的元素类型且方向相同。</li>
-</ul>
-<h4 id="数据的可比性和有序性"><a href="#数据的可比性和有序性" class="headerlink" title="数据的可比性和有序性"></a>数据的可比性和有序性</h4><p>可比性是可以判断相等与否，有序性是可以比较大小。  </p>
-<ul>
-<li>布尔值具有可比性。</li>
-<li>整数类型值具有可比性和有序性。</li>
-<li>浮点数类型值具有可比性和有序性。</li>
-<li>复数类型值具有可比性。</li>
-<li>字符串值具有可比性和有序性。</li>
-<li>指针值具有可比性。指向同一个变量或者都为空值nil。</li>
-<li>通道类型值具有可比性。元素类型和缓冲区大小都一致。</li>
-<li>接口类型值具有可比性。拥有相等的动态类型和相同的动态值。若都为空值也相等。</li>
-<li>非接口类型X的值可以与接口类型T的值t判断相等，当且仅当接口类型T具有可比性且类型性X式接口类型T的实现类型。</li>
-<li>结构体类型中的所有字段都具有可比性，则结构体类型的值具有可比性。</li>
-<li>数组类型值具有可比性。元素类型的值具有可比性。</li>
-</ul>
-<p>切片类型、字典类型和函数类型的值不具有可比性，这些值可以与空值nil进行判等。</p>
-<h3 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h3><p>把一个类型的值转换为另一个类型的值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">T(x)</span><br><span class="line">---</span><br><span class="line">*string(v)</span><br><span class="line">---</span><br><span class="line">&lt;-chan int(v) = &lt;-(chan int(v))//将v转换为chan int类型的值，在从此通道中接收一个int类型的值</span><br><span class="line"></span><br><span class="line">(&lt;-chan int)(v) //将v转换成通道类&lt;-chan int的值</span><br><span class="line">---</span><br><span class="line">func()(v) //结果为v的无参数匿名函数</span><br><span class="line"></span><br><span class="line">(func())(v) //将v转换为函数类型的值</span><br><span class="line"></span><br><span class="line">func() int(v)  = (func() int)(v) //将v转换为函数结果为int类型的函数类型。</span><br></pre></td></tr></table></figure></p>
-<h4 id="数值类型之间的转换"><a href="#数值类型之间的转换" class="headerlink" title="数值类型之间的转换"></a>数值类型之间的转换</h4><p>…</p>
-<h4 id="与string类型相关的转换"><a href="#与string类型相关的转换" class="headerlink" title="与string类型相关的转换"></a>与string类型相关的转换</h4><p>…</p>
-<h4 id="别名类型值之间的转换"><a href="#别名类型值之间的转换" class="headerlink" title="别名类型值之间的转换"></a>别名类型值之间的转换</h4><p>…</p>
-<h3 id="内建函数"><a href="#内建函数" class="headerlink" title="内建函数"></a>内建函数</h3><h4 id="close函数"><a href="#close函数" class="headerlink" title="close函数"></a>close函数</h4><p>只接受通道类型的值作为参数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ch := make(chan int,1)</span><br><span class="line">close(ch)</span><br></pre></td></tr></table></figure></p>
-<p>使作为参数的通道无法在接受任何元素值。若试图关闭一个仅能接受元素值的通道，则造成一个编译错误。通道关闭之后再向它发送元素值或者试图再次关闭它，都会引发一个运行时恐慌。试图关闭一个nil的通道值也会引发一个运行时恐慌。<br>关闭一个通道不会影响关闭之前已经发送的那些元素值，关闭之后所有的接收操作都会立即返回一个该通道的元素类型的零值。</p>
-<h4 id="len函数和cap函数"><a href="#len函数和cap函数" class="headerlink" title="len函数和cap函数"></a>len函数和cap函数</h4><p>len的使用：</p>
-<blockquote>
-<p>参数类型为字符串类型，返回string类型值的字节长度；<br>参数类型为数组类型或数组指针类型，返回数组类型值的长度；<br>参数类型为切片类型，返回切片类型的长度；<br>参数类型为字典类型，返回字典类型值的长度，即其中已包含的键的数量；<br>参数类型为通道类型，返回通道类型值当前包含的元素的数量。</p>
-</blockquote>
-<p>cap的使用：</p>
-<blockquote>
-<p>参数类型为数组类型或数组类型指针，返回数组类型的长度；<br>参数类型为切片类型，返回切片类型值的容量；<br>参数类型为通道类型，返回通道类型值的容量。</p>
-</blockquote>
-<h4 id="new函数和make函数"><a href="#new函数和make函数" class="headerlink" title="new函数和make函数"></a>new函数和make函数</h4><p>同前面数据初始化部分。</p>
-<h4 id="append函数和copy函数"><a href="#append函数和copy函数" class="headerlink" title="append函数和copy函数"></a>append函数和copy函数</h4><p>同切片部分。</p>
-<h4 id="delete函数"><a href="#delete函数" class="headerlink" title="delete函数"></a>delete函数</h4><p>专用于删除一个字典类型之中的某个键值对。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete(m, k)//m为字典类型值，k为要删除键值对的键</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li>参数k与m的键之间必须满足赋值规则。</li>
-<li>m是nil或者k所代表的键值对不存在与m中时，delete(m, k)不会做任何操作，删除操作被忽略，这种删除失败不会被反馈。<h4 id="complex函数、real函数和imag函数"><a href="#complex函数、real函数和imag函数" class="headerlink" title="complex函数、real函数和imag函数"></a>complex函数、real函数和imag函数</h4>专用于操作复数类型值。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var cplx128 complex128 = complex(2,-2) //根据浮点数类型的实部和虚部来构造复数类型值</span><br><span class="line"></span><br><span class="line">var im64 = imag(cplx128) //从浮点数类型值中抽取浮点数的虚部部分</span><br><span class="line">var r64 = imag(cplx128)  //从 浮点数类型值中抽取浮点数的实部部分</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h4 id="panic函数和recover函数"><a href="#panic函数和recover函数" class="headerlink" title="panic函数和recover函数"></a>panic函数和recover函数</h4><p>分别用于报告和处理运行时恐慌。  </p>
-<blockquote>
-<p>panic只接受一个参数，参数可以是任意类型的值。要生成和报告一个运行时的恐慌可以直接调用此函数并传递给他一个用以描述恐慌细节的值。参数的类型常常是接口类型error的某个实现类型。        </p>
-</blockquote>
-<blockquote>
-<p>recover不接受任何参数，返回一个interface{}类型的结果值。即其结果值可能是任何类型的，可能是nil。为nil时可能是因为： </p>
-<ul>
-<li>传递给panic函数的参数值就是nil。</li>
-<li>运行时的恐慌根本没有发生，即panic没有被调用。</li>
-<li>函数recover并没有在defer语句中被调用。</li>
-</ul>
-</blockquote>
-<h4 id="print和println函数"><a href="#print和println函数" class="headerlink" title="print和println函数"></a>print和println函数</h4><p>把参数值在标准输出上打印出来且不返回任何结果值。<br>print的作用是依次（从左到右）打印传递给它的参数值，每个参数值对应的打印内容都由它们的具体实现决定。peintln函数在print函数打印的内容基础上在每个参数只见加入空格“ ”，并在最后加入换行符。</p>
-<blockquote>
-<p>Go语言不保证会在以后每个版本中保留和则两个函数，尽量不要使用这两个函数，使用标准库代码包fmt中的函数Print和Println替代。</p>
-</blockquote>
-<hr>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Go语言的语法和C/C++、Java等有很大的不同，较类似于C。语法更为复杂，好处是使用起来会更加方便快捷。Go通过结构类和接口形成面向对象思想，吸取了Python中的切片、字典等数据类型，新增了通道，将函数也作为一等数据类型，能够实现闭包，通过语法特性可以很方便的实现策略模式等。后续待发掘。  </p>
 
       
     </div>
@@ -901,8 +709,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/05/启航/" rel="next" title="启航">
-                <i class="fa fa-chevron-left"></i> 启航
+              <a href="/2018/04/10/Golang学习笔记-语法基础篇(一)/" rel="next" title="Golang学习笔记-语法基础篇(一)">
+                <i class="fa fa-chevron-left"></i> Golang学习笔记-语法基础篇(一)
               </a>
             
           </div>
@@ -910,6 +718,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/12/Golang学习笔记-语法基础篇-三/" rel="prev" title="Golang学习笔记-语法基础篇(三)">
+                Golang学习笔记-语法基础篇(三) <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -997,7 +809,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1093,7 +905,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#《Go并发编程实战》第三章-编程基础"><span class="nav-number">1.</span> <span class="nav-text">《Go并发编程实战》第三章 编程基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本词法"><span class="nav-number">1.1.</span> <span class="nav-text">基本词法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标识符"><span class="nav-number">1.1.1.</span> <span class="nav-text">标识符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#预定义标识符"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">预定义标识符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#空标识符"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">空标识符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关键字"><span class="nav-number">1.1.2.</span> <span class="nav-text">关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-程序声明-："><span class="nav-number">1.1.2.1.</span> <span class="nav-text">1. 程序声明 ：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-程序实体声明和定义："><span class="nav-number">1.1.2.2.</span> <span class="nav-text">2. 程序实体声明和定义：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-程序流程控制："><span class="nav-number">1.1.2.3.</span> <span class="nav-text">3. 程序流程控制：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字面量"><span class="nav-number">1.1.3.</span> <span class="nav-text">字面量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一类"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">第一类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二类"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">第二类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三类"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">第三类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型"><span class="nav-number">1.1.4.</span> <span class="nav-text">类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本类型（预定义类型）："><span class="nav-number">1.1.4.1.</span> <span class="nav-text">基本类型（预定义类型）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复合类型"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">复合类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态类型"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">静态类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#潜在类型"><span class="nav-number">1.1.4.4.</span> <span class="nav-text">潜在类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作符"><span class="nav-number">1.1.5.</span> <span class="nav-text">操作符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#与C语言基本一致。新增："><span class="nav-number">1.1.5.1.</span> <span class="nav-text">与C语言基本一致。新增：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表达式"><span class="nav-number">1.1.6.</span> <span class="nav-text">表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-基本表达式"><span class="nav-number">1.1.6.1.</span> <span class="nav-text">1. 基本表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-选择符号和选择表达式"><span class="nav-number">1.1.6.2.</span> <span class="nav-text">2. 选择符号和选择表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#规则"><span class="nav-number">1.1.6.2.1.</span> <span class="nav-text">规则</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其它情况"><span class="nav-number">1.1.6.2.2.</span> <span class="nav-text">其它情况</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-索引符号和索引表达式"><span class="nav-number">1.1.6.3.</span> <span class="nav-text">3. 索引符号和索引表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#规则-1"><span class="nav-number">1.1.6.3.1.</span> <span class="nav-text">规则</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-切片符号和切片表达式"><span class="nav-number">1.1.6.4.</span> <span class="nav-text">4. 切片符号和切片表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-类型断言"><span class="nav-number">1.1.6.5.</span> <span class="nav-text">5. 类型断言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-可变长参数"><span class="nav-number">1.1.6.6.</span> <span class="nav-text">7. 可变长参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型"><span class="nav-number">1.2.</span> <span class="nav-text">数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本数据类型"><span class="nav-number">1.2.1.</span> <span class="nav-text">基本数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#布尔类型"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">布尔类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数值类型"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">数值类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#特殊rune"><span class="nav-number">1.2.1.2.1.</span> <span class="nav-text">特殊rune</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#可以用5种方式来表示一个rune字面量"><span class="nav-number">1.2.1.2.2.</span> <span class="nav-text">可以用5种方式来表示一个rune字面量</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串类型"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">字符串类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组"><span class="nav-number">1.2.2.</span> <span class="nav-text">数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-类型表示法"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">1. 类型表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-值表示法"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">2. 值表示法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#切片"><span class="nav-number">1.2.3.</span> <span class="nav-text">切片</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类型表示法"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">类型表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#值表示法"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">值表示法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字典"><span class="nav-number">1.2.4.</span> <span class="nav-text">字典</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类型表示法-1"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">类型表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#值表示法-1"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">值表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性和基本操作"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">属性和基本操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数和方法"><span class="nav-number">1.2.5.</span> <span class="nav-text">函数和方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类型表示法-2"><span class="nav-number">1.2.5.1.</span> <span class="nav-text">类型表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#值表示法-2"><span class="nav-number">1.2.5.2.</span> <span class="nav-text">值表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性和基本操作-1"><span class="nav-number">1.2.5.3.</span> <span class="nav-text">属性和基本操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法"><span class="nav-number">1.2.5.4.</span> <span class="nav-text">方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接口"><span class="nav-number">1.2.6.</span> <span class="nav-text">接口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类型表示法-3"><span class="nav-number">1.2.6.1.</span> <span class="nav-text">类型表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#值表示法-3"><span class="nav-number">1.2.6.2.</span> <span class="nav-text">值表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性和基本操作-2"><span class="nav-number">1.2.6.3.</span> <span class="nav-text">属性和基本操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结构体"><span class="nav-number">1.2.7.</span> <span class="nav-text">结构体</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类的表示法"><span class="nav-number">1.2.7.1.</span> <span class="nav-text">类的表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#值表示法-4"><span class="nav-number">1.2.7.2.</span> <span class="nav-text">值表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性和基本操作-3"><span class="nav-number">1.2.7.3.</span> <span class="nav-text">属性和基本操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指针"><span class="nav-number">1.2.8.</span> <span class="nav-text">指针</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类型表示法-4"><span class="nav-number">1.2.8.1.</span> <span class="nav-text">类型表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#值表示法-5"><span class="nav-number">1.2.8.2.</span> <span class="nav-text">值表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性和基本类型"><span class="nav-number">1.2.8.3.</span> <span class="nav-text">属性和基本类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据初始化"><span class="nav-number">1.2.9.</span> <span class="nav-text">数据初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#new"><span class="nav-number">1.2.9.1.</span> <span class="nav-text">new</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#make"><span class="nav-number">1.2.9.2.</span> <span class="nav-text">make</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据的使用"><span class="nav-number">1.3.</span> <span class="nav-text">数据的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#赋值语句"><span class="nav-number">1.3.1.</span> <span class="nav-text">赋值语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常量与变量"><span class="nav-number">1.3.2.</span> <span class="nav-text">常量与变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常量"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">常量</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#常量表达式"><span class="nav-number">1.3.2.1.1.</span> <span class="nav-text">常量表达式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常量的声明"><span class="nav-number">1.3.2.1.2.</span> <span class="nav-text">常量的声明</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#变量"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">变量</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#变量声明"><span class="nav-number">1.3.2.2.1.</span> <span class="nav-text">变量声明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#局部变量"><span class="nav-number">1.3.2.2.2.</span> <span class="nav-text">局部变量</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可比性与有序性"><span class="nav-number">1.3.3.</span> <span class="nav-text">可比性与有序性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类型的恒等"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">类型的恒等</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据的可比性和有序性"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">数据的可比性和有序性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型转换"><span class="nav-number">1.3.4.</span> <span class="nav-text">类型转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数值类型之间的转换"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">数值类型之间的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#与string类型相关的转换"><span class="nav-number">1.3.4.2.</span> <span class="nav-text">与string类型相关的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#别名类型值之间的转换"><span class="nav-number">1.3.4.3.</span> <span class="nav-text">别名类型值之间的转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内建函数"><span class="nav-number">1.3.5.</span> <span class="nav-text">内建函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#close函数"><span class="nav-number">1.3.5.1.</span> <span class="nav-text">close函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#len函数和cap函数"><span class="nav-number">1.3.5.2.</span> <span class="nav-text">len函数和cap函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#new函数和make函数"><span class="nav-number">1.3.5.3.</span> <span class="nav-text">new函数和make函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#append函数和copy函数"><span class="nav-number">1.3.5.4.</span> <span class="nav-text">append函数和copy函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#delete函数"><span class="nav-number">1.3.5.5.</span> <span class="nav-text">delete函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#complex函数、real函数和imag函数"><span class="nav-number">1.3.5.6.</span> <span class="nav-text">complex函数、real函数和imag函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#panic函数和recover函数"><span class="nav-number">1.3.5.7.</span> <span class="nav-text">panic函数和recover函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#print和println函数"><span class="nav-number">1.3.5.8.</span> <span class="nav-text">print和println函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型"><span class="nav-number">1.</span> <span class="nav-text">数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本数据类型"><span class="nav-number">1.1.</span> <span class="nav-text">基本数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#布尔类型"><span class="nav-number">1.1.1.</span> <span class="nav-text">布尔类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数值类型"><span class="nav-number">1.1.2.</span> <span class="nav-text">数值类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串类型"><span class="nav-number">1.1.3.</span> <span class="nav-text">字符串类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组"><span class="nav-number">1.2.</span> <span class="nav-text">数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-类型表示法"><span class="nav-number">1.2.1.</span> <span class="nav-text">1. 类型表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-值表示法"><span class="nav-number">1.2.2.</span> <span class="nav-text">2. 值表示法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#切片"><span class="nav-number">1.3.</span> <span class="nav-text">切片</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类型表示法"><span class="nav-number">1.3.1.</span> <span class="nav-text">类型表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#值表示法"><span class="nav-number">1.3.2.</span> <span class="nav-text">值表示法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字典"><span class="nav-number">1.4.</span> <span class="nav-text">字典</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类型表示法-1"><span class="nav-number">1.4.1.</span> <span class="nav-text">类型表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#值表示法-1"><span class="nav-number">1.4.2.</span> <span class="nav-text">值表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性和基本操作"><span class="nav-number">1.4.3.</span> <span class="nav-text">属性和基本操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数和方法"><span class="nav-number">1.5.</span> <span class="nav-text">函数和方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类型表示法-2"><span class="nav-number">1.5.1.</span> <span class="nav-text">类型表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#值表示法-2"><span class="nav-number">1.5.2.</span> <span class="nav-text">值表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性和基本操作-1"><span class="nav-number">1.5.3.</span> <span class="nav-text">属性和基本操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法"><span class="nav-number">1.5.4.</span> <span class="nav-text">方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接口"><span class="nav-number">1.6.</span> <span class="nav-text">接口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类型表示法-3"><span class="nav-number">1.6.1.</span> <span class="nav-text">类型表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#值表示法-3"><span class="nav-number">1.6.2.</span> <span class="nav-text">值表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性和基本操作-2"><span class="nav-number">1.6.3.</span> <span class="nav-text">属性和基本操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结构体"><span class="nav-number">1.7.</span> <span class="nav-text">结构体</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类的表示法"><span class="nav-number">1.7.1.</span> <span class="nav-text">类的表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#值表示法-4"><span class="nav-number">1.7.2.</span> <span class="nav-text">值表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性和基本操作-3"><span class="nav-number">1.7.3.</span> <span class="nav-text">属性和基本操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指针"><span class="nav-number">1.8.</span> <span class="nav-text">指针</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类型表示法-4"><span class="nav-number">1.8.1.</span> <span class="nav-text">类型表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#值表示法-5"><span class="nav-number">1.8.2.</span> <span class="nav-text">值表示法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性和基本类型"><span class="nav-number">1.8.3.</span> <span class="nav-text">属性和基本类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据初始化"><span class="nav-number">1.9.</span> <span class="nav-text">数据初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#new"><span class="nav-number">1.9.1.</span> <span class="nav-text">new</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#make"><span class="nav-number">1.9.2.</span> <span class="nav-text">make</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
