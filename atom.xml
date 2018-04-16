@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="bighua.top/"/>
-  <updated>2018-04-16T09:29:17.687Z</updated>
+  <updated>2018-04-16T11:56:43.264Z</updated>
   <id>bighua.top/</id>
   
   <author>
@@ -17,16 +17,56 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>编程学习资料库</title>
+    <link href="bighua.top/2018/04/16/%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99%E5%BA%93/"/>
+    <id>bighua.top/2018/04/16/编程学习资料库/</id>
+    <published>2018-04-16T11:32:12.000Z</published>
+    <updated>2018-04-16T11:56:43.264Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="编程资源收集"><a href="#编程资源收集" class="headerlink" title="编程资源收集"></a>编程资源收集</h2><ul><li><a href="https://github.com/EbookFoundation/free-programming-books/blob/master/free-programming-books-zh.md" target="_blank" rel="noopener">EbookFoundation编程中文书籍索引</a></li><li><a href="https://github.com/justjavac/free-programming-books-zh_CN" target="_blank" rel="noopener">justjavac编程中文书籍索引</a></li></ul><h2 id="语言社区"><a href="#语言社区" class="headerlink" title="语言社区"></a>语言社区</h2><ul><li><a href="https://studygolang.com/" target="_blank" rel="noopener">go语言中文网</a></li><li><a href="https://laravel-china.org/" target="_blank" rel="noopener">laravel-china</a></li></ul><h2 id="安全社区"><a href="#安全社区" class="headerlink" title="安全社区"></a>安全社区</h2><ul><li><a href="https://bbs.pediy.com/" target="_blank" rel="noopener">看雪论坛</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;编程资源收集&quot;&gt;&lt;a href=&quot;#编程资源收集&quot; class=&quot;headerlink&quot; title=&quot;编程资源收集&quot;&gt;&lt;/a&gt;编程资源收集&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/EbookFoundation/free
+      
+    
+    </summary>
+    
+      <category term="资料库" scheme="bighua.top/categories/%E8%B5%84%E6%96%99%E5%BA%93/"/>
+    
+    
+      <category term="资料库" scheme="bighua.top/tags/%E8%B5%84%E6%96%99%E5%BA%93/"/>
+    
+  </entry>
+  
+  <entry>
     <title>关于golang的一些资料整理</title>
     <link href="bighua.top/2018/04/16/%E5%85%B3%E4%BA%8Egolang%E7%9A%84%E4%B8%80%E4%BA%9B%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86/"/>
     <id>bighua.top/2018/04/16/关于golang的一些资料整理/</id>
     <published>2018-04-16T09:29:17.000Z</published>
-    <updated>2018-04-16T09:29:17.687Z</updated>
+    <updated>2018-04-16T11:54:13.211Z</updated>
+    
+    <content type="html"><![CDATA[<p>大多数采集于<a href="https://github.com/justjavac/free-programming-books-zh_CN#go" target="_blank" rel="noopener">justjavac</a></p><h3 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h3><ul><li><a href="https://github.com/cocowh/books" target="_blank" rel="noopener">英文版系列书籍(go实战、web等pdf格式)</a></li><li><a href="https://github.com/Unknwon/the-way-to-go_ZH_CN/blob/master/eBook/directory.md" target="_blank" rel="noopener">《Go入门指南》(gitpage)</a></li><li><a href="https://mikespook.com/learning-go/" target="_blank" rel="noopener">《学习Go语言》中文版(pdf+git)</a></li><li><a href="https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/preface.md" target="_blank" rel="noopener">《Go Web 编程》中文版(gitpage)</a></li><li><a href="https://github.com/astaxie/go-best-practice/blob/master/ebook/zh/preface.md" target="_blank" rel="noopener">《go实战开发》(gitpage半成品)</a></li><li><a href="https://github.com/astaxie/NPWG_zh" target="_blank" rel="noopener">《Network programming with Go》中文版(gitpage)</a></li><li><a href="https://books.studygolang.com/The-Golang-Standard-Library-by-Example/" target="_blank" rel="noopener">《Go语言标准库》(git)</a></li><li><a href="https://github.com/hyper0x/go_command_tutorial" target="_blank" rel="noopener">《GO 命令教程》(gitpage)</a></li><li><a href="https://github.com/achun/Go-Blog-In-Action" target="_blank" rel="noopener">《Go语言博客实践》(gitpage)</a></li><li><a href="https://www.ctolib.com/docs-magical-go-c-web-page-download.html" target="_blank" rel="noopener">《神奇的 Go 语言》(webpage)</a><!-- * [《深入解析Go》](https://github.com/tiancaiamao/go-internals) --></li></ul><h3 id="手册"><a href="#手册" class="headerlink" title="手册"></a>手册</h3><ul><li><a href="https://studygolang.com/pkgdoc" target="_blank" rel="noopener">Golang标准库文档</a></li><li><a href="http://gorevel.cn/docs/manual/index.html" target="_blank" rel="noopener">Revel 框架手册</a></li><li><a href="https://github.com/golang-china/golangdoc.translations" target="_blank" rel="noopener">Go 官方文档翻译</a></li></ul><h3 id="视频教程"><a href="#视频教程" class="headerlink" title="视频教程"></a>视频教程</h3><ul><li><a href="https://github.com/Unknwon/go-fundamental-programming" target="_blank" rel="noopener">《Go 编程基础》</a></li></ul>]]></content>
     
     <summary type="html">
     
+      
+      
+        &lt;p&gt;大多数采集于&lt;a href=&quot;https://github.com/justjavac/free-programming-books-zh_CN#go&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;justjavac&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;书籍&quot;
+      
+    
     </summary>
     
+      <category term="golang" scheme="bighua.top/categories/golang/"/>
+    
+    
+      <category term="golang" scheme="bighua.top/tags/golang/"/>
+    
+      <category term="资料库" scheme="bighua.top/tags/%E8%B5%84%E6%96%99%E5%BA%93/"/>
     
   </entry>
   
