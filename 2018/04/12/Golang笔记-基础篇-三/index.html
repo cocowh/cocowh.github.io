@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="数据的使用赋值语句若值x可以被赋给类型为T的变量，则：  值x的类型是T。 值x的类型是V，V和T具有相同的潜在类型，V和T至少有一个是未命名的类型。 类型T是一个接口类型，值x的类型实现了T。 值x是一个双向通道类型的值，T是一个通道类型。 值x是预定义标识符nil，可赋给切片、字典、函数、接口、指针、通道等类型的变量。 值x是一个由某个数据类型的值代表的无类型的常量，可以被赋给该数据类型的变量">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-12T15:02:05.082Z">
+<meta property="og:updated_time" content="2018-04-16T15:19:32.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-基础篇(三)">
 <meta name="twitter:description" content="数据的使用赋值语句若值x可以被赋给类型为T的变量，则：  值x的类型是T。 值x的类型是V，V和T具有相同的潜在类型，V和T至少有一个是未命名的类型。 类型T是一个接口类型，值x的类型实现了T。 值x是一个双向通道类型的值，T是一个通道类型。 值x是预定义标识符nil，可赋给切片、字典、函数、接口、指针、通道等类型的变量。 值x是一个由某个数据类型的值代表的无类型的常量，可以被赋给该数据类型的变量">
@@ -423,7 +423,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3,850
+                  4,168
                 </span>
               
 
@@ -439,7 +439,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  15
+                  16
                 </span>
               
             </div>
@@ -481,7 +481,9 @@
 <p>除此之外赋值操作符两边的表达式数量必须一致，并都都是单值表达式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">i := 1</span><br><span class="line">s := []string&#123;&quot;A&quot;, &quot;B&quot;, &quot;C&quot;&#125;</span><br><span class="line">i,s[i-1] = 2, &quot;Z&quot;</span><br></pre></td></tr></table></figure></p>
 <p>s值是[]string{“Z”, “B”, “C”}而不是[]string{“A”, “Z”, “C”}，对表达式i-1的求值先于赋值，在赋值之前，第二个赋值对象被确定为s[0]。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a, b = b, a             //交换变量值</span><br><span class="line">x := []int&#123;1, 2, 3&#125;     //切片初始化</span><br><span class="line">x[0], x[0] = 1, 2       //从做到有执行最终x[0=2</span><br><span class="line">x[2], x[3] = 4, 5       //索引超范围引发恐慌，但x[2]=4已被变更</span><br></pre></td></tr></table></figure></p>
 <h3 id="常量与变量"><a href="#常量与变量" class="headerlink" title="常量与变量"></a>常量与变量</h3><p>某量保持不变称为常量，否则称为变量。</p>
-<h4 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h4><p>常量在编译期间被创建，作为局部变量被定义在函数内部，由字面量或常量表达式赋值。<br>分为布尔常量、rune常量（字符常量）、整数常量、浮点数常量、复数常量和字符串常量。<br>常量可以是有类型的也可以是无类型，可以被显式地给定类型，也可以被隐含地给定类型。  </p>
+<h4 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h4><p>常量在编译期间被创建，作为局部变量被定义在函数内部，由字面量或常量表达式赋值。  </p>
+<p>分为布尔常量、rune常量（字符常量）、整数常量、浮点数常量、复数常量和字符串常量。  </p>
+<p>常量可以是有类型的也可以是无类型，可以被显式地给定类型，也可以被隐含地给定类型。  </p>
 <h5 id="常量表达式"><a href="#常量表达式" class="headerlink" title="常量表达式"></a>常量表达式</h5><p>仅以常量作为操作数的表达式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">2 + 3.0         //无类型的浮点数常量5.0</span><br><span class="line">15 / 4.0        //无类型的浮点数常量3.75</span><br><span class="line">&apos;w&apos; + 1         //无类型的rune常量&apos;x&apos;</span><br><span class="line">---</span><br><span class="line">1 &lt;&lt; 3.0        //无类型整数常量8</span><br><span class="line">1.0 &lt;&lt;3         //无类型整数常量8</span><br><span class="line">1 &lt;&lt; 100        //无类型的整数常量1267650600228229401496703205376超出范围</span><br><span class="line">---</span><br><span class="line">&quot;A&quot; &gt; &quot;C&quot;       //无类型的布尔常量false</span><br></pre></td></tr></table></figure></p>
 <h5 id="常量的声明"><a href="#常量的声明" class="headerlink" title="常量的声明"></a>常量的声明</h5><p>使用关键字const将字面常量或常量表达式与标识符绑定在一起。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const untypedConstant = 10.0    //无类型常量</span><br><span class="line">const typedConstant int64 = 1024  //类型为int64的常量</span><br><span class="line"></span><br><span class="line">const tc1, tc2, tc3 int64 = 1024, -10, 88 //平行赋值</span><br></pre></td></tr></table></figure></p>
 <p>左侧只允许插入一个类型字面量，规定作则标识符的类型，右侧的常量类型需与其一致，未给定类型，则右侧常量类型彼此独立。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">const utc1, utc2, utc3 = 6.3, false, &quot;C&quot;</span><br><span class="line">=</span><br><span class="line">const (</span><br><span class="line">    utc  = 6.3</span><br><span class="line">    utc2 = false</span><br><span class="line">    utc3 = &quot;c&quot;</span><br><span class="line">)</span><br><span class="line">=</span><br><span class="line">const (</span><br><span class="line">    utc1, utc2 = 6.3, false</span><br><span class="line">    utc3       = &quot;c&quot;</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
@@ -493,13 +495,16 @@
 <p>隐式赋值在变量声明中不可用，未被显示赋值的变量值将会是与改变量的类型相对应的零值，此时变量的类型不可省略。</p>
 <h5 id="局部变量"><a href="#局部变量" class="headerlink" title="局部变量"></a>局部变量</h5><p>变量声明可以作为源码文件中的顶级元素，也可以称为函数体内容的一部分，前者全局变量，后者局部变量。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line">var v6 bool //全局变量</span><br><span class="line">func main()&#123;</span><br><span class="line">    var v6 bool = true  //局部变量</span><br><span class="line">    fmt.Printf(&quot;v6: %v\n&quot;, v6)恒等</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>在函数体内部，局部变量会遮蔽与其同名的全局变量。<br>函数体内部的短变量声明：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">v6 := true</span><br><span class="line">v7, v8 := &quot;Go&quot;, 1.2</span><br><span class="line">v8, v9 := 2.0, false    //v8重声明</span><br></pre></td></tr></table></figure></p>
-<p>重声明为对在当前上下文环境中的已存在变量的又一次赋值，赋的值与改变量的类型之间应满足赋值规则。<br>重声明仅出现在短变量声明中，不能用普通的声明方式重新声明一个在当前上下文环境中已存在的变量，不论改变量是一个全局变量还是一个局部变量。<br>短变量声明条件：  </p>
+<p>重声明为对在当前上下文环境中的已存在变量的又一次赋值，赋的值与改变量的类型之间应满足赋值规则。  </p>
+<p>重声明仅出现在短变量声明中，不能用普通的声明方式重新声明一个在当前上下文环境中已存在的变量，不论改变量是一个全局变量还是一个局部变量。<br>短变量声明条件：  </p>
 <ul>
 <li>仅能够在函数体内部声明变量的时候使用。     </li>
 <li>:=的左边的标识符至少有一个代表在当前上下文环境中的新变量。</li>
 </ul>
-<p>空标识符“_”代表的不是新变量。短变量声明可以出现在if、for和switch等语句的初始化器中，并被用来声明仅存在于这些语句块中的局部临时变量。<br>在当前上下文环境中声明了某个局部变量但没有使用它，会造成一个编译错误，对变量的赋值不算对其使用。  </p>
-<h3 id="可比性与有序性"><a href="#可比性与有序性" class="headerlink" title="可比性与有序性"></a>可比性与有序性</h3><h4 id="类型的恒等"><a href="#类型的恒等" class="headerlink" title="类型的恒等"></a>类型的恒等</h4><p>对于两个命名类型来说，名称不同，肯定不恒等，名称相同且源于相同的类型声明，则是恒等的。别名类型与它的源类型是两个完全不同的类型，命名类型和匿名类型总是不相等的。<br>恒等判断规则：  </p>
+<p>空标识符“_”代表的不是新变量。短变量声明可以出现在if、for和switch等语句的初始化器中，并被用来声明仅存在于这些语句块中的局部临时变量。  </p>
+<p>在当前上下文环境中声明了某个局部变量但没有使用它，会造成一个编译错误，对变量的赋值不算对其使用。  </p>
+<h3 id="可比性与有序性"><a href="#可比性与有序性" class="headerlink" title="可比性与有序性"></a>可比性与有序性</h3><h4 id="类型的恒等"><a href="#类型的恒等" class="headerlink" title="类型的恒等"></a>类型的恒等</h4><p>对于两个命名类型来说，名称不同，肯定不恒等，名称相同且源于相同的类型声明，则是恒等的。别名类型与它的源类型是两个完全不同的类型，命名类型和匿名类型总是不相等的。  </p>
+<p>恒等判断规则：  </p>
 <ul>
 <li>数组类型，长度一致且元素的数据类型一致。</li>
 <li>切片类型，元素的数据类型一致。</li>
@@ -539,8 +544,8 @@
 <blockquote>
 <p>参数类型为数组类型或数组类型指针，返回数组类型的长度；<br>参数类型为切片类型，返回切片类型值的容量；<br>参数类型为通道类型，返回通道类型值的容量。</p>
 </blockquote>
-<h4 id="new函数和make函数"><a href="#new函数和make函数" class="headerlink" title="new函数和make函数"></a>new函数和make函数</h4><p>参见数据初始化部分。</p>
-<h4 id="append函数和copy函数"><a href="#append函数和copy函数" class="headerlink" title="append函数和copy函数"></a>append函数和copy函数</h4><p>参见切片部分。</p>
+<h4 id="new函数和make函数"><a href="#new函数和make函数" class="headerlink" title="new函数和make函数"></a>new函数和make函数</h4><p>参见<a href="/2018/04/11/Golang笔记-基础篇-二/" title="Golang笔记-基础篇(二)">Golang笔记-基础篇(二)</a>数据初始化部分。</p>
+<h4 id="append函数和copy函数"><a href="#append函数和copy函数" class="headerlink" title="append函数和copy函数"></a>append函数和copy函数</h4><p>参见<a href="/2018/04/11/Golang笔记-基础篇-二/" title="Golang笔记-基础篇(二)">Golang笔记-基础篇(二)</a>切片部分。</p>
 <h4 id="delete函数"><a href="#delete函数" class="headerlink" title="delete函数"></a>delete函数</h4><p>专用于删除一个字典类型之中的某个键值对。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete(m, k)//m为字典类型值，k为要删除键值对的键</span><br></pre></td></tr></table></figure></p>
 <ul>
 <li>参数k与m的键之间必须满足赋值规则。</li>
@@ -559,10 +564,14 @@
 <li>函数recover并没有在defer语句中被调用。</li>
 </ul>
 </blockquote>
-<h4 id="print和println函数"><a href="#print和println函数" class="headerlink" title="print和println函数"></a>print和println函数</h4><p>把参数值在标准输出上打印出来且不返回任何结果值。<br>print的作用是依次（从左到右）打印传递给它的参数值，每个参数值对应的打印内容都由它们的具体实现决定。peintln函数在print函数打印的内容基础上在每个参数只见加入空格“ ”，并在最后加入换行符。</p>
+<h4 id="print和println函数"><a href="#print和println函数" class="headerlink" title="print和println函数"></a>print和println函数</h4><p>把参数值在标准输出上打印出来且不返回任何结果值。  </p>
+<p>print的作用是依次（从左到右）打印传递给它的参数值，每个参数值对应的打印内容都由它们的具体实现决定。peintln函数在print函数打印的内容基础上在每个参数只见加入空格“ ”，并在最后加入换行符。</p>
 <blockquote>
 <p>Go语言不保证会在以后每个版本中保留和则两个函数，尽量不要使用这两个函数，使用标准库代码包fmt中的函数Print和Println替代。</p>
 </blockquote>
+<h4 id="main函数额init函数"><a href="#main函数额init函数" class="headerlink" title="main函数额init函数"></a>main函数额init函数</h4><p>init函数能够应用于所有的package，main函数只能应用于package main。这两个函数在定义时不能有任何的参数和返回值。一个package里面可以写任意多个init函数，为可读性和可维护性，建议在一个package中每个文件只写一个init函数。</p>
+<p>Go程序会自动调用init()和main()，不需要在任何地方调用这两个函数。每个package中的init函数都是可选的，但package main就必须包含一个main函数。  </p>
+<p>程序的初始化和执行都起始于main包，若main中还导入了其他的包，会在编译时将他们依次导入。若一个包被多个包同时导入，则只会被导入一次。若一个包被导入时该包还导入了其他的包，会先将其他包导入进来，然后再对这些包中的常量和变量进行初始化，接着执行init函数（若有），依次类推。所有被导入的包都加载完毕，开始对main包中的包级常量和变量进行初始化，然后执行main包中的init函数（若有），最后执行main函数。</p>
 <hr>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Go语言的语法和C/C++、Java等有很大的不同，较类似于C。语法设计更为复杂，好处是使用起来会更加方便快捷。Go通过结构类和接口形成面向对象思想，吸取了Python中的切片、字典等数据类型。新增了通道，Go中非常重要的一种数据类型。将函数也作为一等数据类型，能够实现闭包，通过语法特性可以很方便的实现策略模式、泛型等。</p>
 
@@ -793,7 +802,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据的使用"><span class="nav-number">1.</span> <span class="nav-text">数据的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#赋值语句"><span class="nav-number">1.1.</span> <span class="nav-text">赋值语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常量与变量"><span class="nav-number">1.2.</span> <span class="nav-text">常量与变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常量"><span class="nav-number">1.2.1.</span> <span class="nav-text">常量</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#常量表达式"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">常量表达式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常量的声明"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">常量的声明</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#变量"><span class="nav-number">1.2.2.</span> <span class="nav-text">变量</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#变量声明"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">变量声明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#局部变量"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">局部变量</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可比性与有序性"><span class="nav-number">1.3.</span> <span class="nav-text">可比性与有序性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类型的恒等"><span class="nav-number">1.3.1.</span> <span class="nav-text">类型的恒等</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据的可比性和有序性"><span class="nav-number">1.3.2.</span> <span class="nav-text">数据的可比性和有序性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型转换"><span class="nav-number">1.4.</span> <span class="nav-text">类型转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数值类型之间的转换"><span class="nav-number">1.4.1.</span> <span class="nav-text">数值类型之间的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#与string类型相关的转换"><span class="nav-number">1.4.2.</span> <span class="nav-text">与string类型相关的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#别名类型值之间的转换"><span class="nav-number">1.4.3.</span> <span class="nav-text">别名类型值之间的转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内建函数"><span class="nav-number">1.5.</span> <span class="nav-text">内建函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#close函数"><span class="nav-number">1.5.1.</span> <span class="nav-text">close函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#len函数和cap函数"><span class="nav-number">1.5.2.</span> <span class="nav-text">len函数和cap函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#new函数和make函数"><span class="nav-number">1.5.3.</span> <span class="nav-text">new函数和make函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#append函数和copy函数"><span class="nav-number">1.5.4.</span> <span class="nav-text">append函数和copy函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#delete函数"><span class="nav-number">1.5.5.</span> <span class="nav-text">delete函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#complex函数、real函数和imag函数"><span class="nav-number">1.5.6.</span> <span class="nav-text">complex函数、real函数和imag函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#panic函数和recover函数"><span class="nav-number">1.5.7.</span> <span class="nav-text">panic函数和recover函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#print和println函数"><span class="nav-number">1.5.8.</span> <span class="nav-text">print和println函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据的使用"><span class="nav-number">1.</span> <span class="nav-text">数据的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#赋值语句"><span class="nav-number">1.1.</span> <span class="nav-text">赋值语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常量与变量"><span class="nav-number">1.2.</span> <span class="nav-text">常量与变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常量"><span class="nav-number">1.2.1.</span> <span class="nav-text">常量</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#常量表达式"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">常量表达式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常量的声明"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">常量的声明</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#变量"><span class="nav-number">1.2.2.</span> <span class="nav-text">变量</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#变量声明"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">变量声明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#局部变量"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">局部变量</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可比性与有序性"><span class="nav-number">1.3.</span> <span class="nav-text">可比性与有序性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类型的恒等"><span class="nav-number">1.3.1.</span> <span class="nav-text">类型的恒等</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据的可比性和有序性"><span class="nav-number">1.3.2.</span> <span class="nav-text">数据的可比性和有序性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型转换"><span class="nav-number">1.4.</span> <span class="nav-text">类型转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数值类型之间的转换"><span class="nav-number">1.4.1.</span> <span class="nav-text">数值类型之间的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#与string类型相关的转换"><span class="nav-number">1.4.2.</span> <span class="nav-text">与string类型相关的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#别名类型值之间的转换"><span class="nav-number">1.4.3.</span> <span class="nav-text">别名类型值之间的转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内建函数"><span class="nav-number">1.5.</span> <span class="nav-text">内建函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#close函数"><span class="nav-number">1.5.1.</span> <span class="nav-text">close函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#len函数和cap函数"><span class="nav-number">1.5.2.</span> <span class="nav-text">len函数和cap函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#new函数和make函数"><span class="nav-number">1.5.3.</span> <span class="nav-text">new函数和make函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#append函数和copy函数"><span class="nav-number">1.5.4.</span> <span class="nav-text">append函数和copy函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#delete函数"><span class="nav-number">1.5.5.</span> <span class="nav-text">delete函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#complex函数、real函数和imag函数"><span class="nav-number">1.5.6.</span> <span class="nav-text">complex函数、real函数和imag函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#panic函数和recover函数"><span class="nav-number">1.5.7.</span> <span class="nav-text">panic函数和recover函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#print和println函数"><span class="nav-number">1.5.8.</span> <span class="nav-text">print和println函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#main函数额init函数"><span class="nav-number">1.5.9.</span> <span class="nav-text">main函数额init函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
@@ -832,7 +841,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">24.6k</span>
+    <span title="本站字数总计">25.7k</span>
   
 </div>
 
