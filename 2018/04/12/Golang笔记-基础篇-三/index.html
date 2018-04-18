@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="数据的使用赋值语句若值x可以被赋给类型为T的变量，则：  值x的类型是T。 值x的类型是V，V和T具有相同的潜在类型，V和T至少有一个是未命名的类型。 类型T是一个接口类型，值x的类型实现了T。 值x是一个双向通道类型的值，T是一个通道类型。 值x是预定义标识符nil，可赋给切片、字典、函数、接口、指针、通道等类型的变量。 值x是一个由某个数据类型的值代表的无类型的常量，可以被赋给该数据类型的变量">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-16T15:19:32.000Z">
+<meta property="og:updated_time" content="2018-04-18T14:21:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-基础篇(三)">
 <meta name="twitter:description" content="数据的使用赋值语句若值x可以被赋给类型为T的变量，则：  值x的类型是T。 值x的类型是V，V和T具有相同的潜在类型，V和T至少有一个是未命名的类型。 类型T是一个接口类型，值x的类型实现了T。 值x是一个双向通道类型的值，T是一个通道类型。 值x是预定义标识符nil，可赋给切片、字典、函数、接口、指针、通道等类型的变量。 值x是一个由某个数据类型的值代表的无类型的常量，可以被赋给该数据类型的变量">
@@ -565,7 +565,7 @@
 </ul>
 </blockquote>
 <h4 id="print和println函数"><a href="#print和println函数" class="headerlink" title="print和println函数"></a>print和println函数</h4><p>把参数值在标准输出上打印出来且不返回任何结果值。  </p>
-<p>print的作用是依次（从左到右）打印传递给它的参数值，每个参数值对应的打印内容都由它们的具体实现决定。peintln函数在print函数打印的内容基础上在每个参数只见加入空格“ ”，并在最后加入换行符。</p>
+<p>print的作用是依次（从左到右）打印传递给它的参数值，每个参数值对应的打印内容都由它们的具体实现决定。peintln函数在print函数打印的内容基础上在每个参数之间加入空格“ ”，并在最后加入换行符。</p>
 <blockquote>
 <p>Go语言不保证会在以后每个版本中保留和则两个函数，尽量不要使用这两个函数，使用标准库代码包fmt中的函数Print和Println替代。</p>
 </blockquote>
