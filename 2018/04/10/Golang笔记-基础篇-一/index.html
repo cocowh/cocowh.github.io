@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="初识GolangGo安装包文件夹 api文件夹：Go API检查器的辅助文件。 bin文件夹：官方提供的Go语言相关工具的可执行文件。 lib文件夹：特殊的库文件。 pkg文件夹：构架安装后，保存Go语言标准库的所有归档文件。 src文件夹：所有标准库、Go语言工具，以及相关底层（C语言实现）的源码。 test文件夹：测试Go语言自身代码的文件。安装注意事项需要将工作区目录路径添加至环境变量GOP">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-18T11:36:23.609Z">
+<meta property="og:updated_time" content="2018-04-18T14:49:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-基础篇(一)">
 <meta name="twitter:description" content="初识GolangGo安装包文件夹 api文件夹：Go API检查器的辅助文件。 bin文件夹：官方提供的Go语言相关工具的可执行文件。 lib文件夹：特殊的库文件。 pkg文件夹：构架安装后，保存Go语言标准库的所有归档文件。 src文件夹：所有标准库、Go语言工具，以及相关底层（C语言实现）的源码。 test文件夹：测试Go语言自身代码的文件。安装注意事项需要将工作区目录路径添加至环境变量GOP">
@@ -423,7 +423,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  4,130
+                  4,424
                 </span>
               
 
@@ -439,7 +439,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  15
+                  16
                 </span>
               
             </div>
@@ -476,7 +476,10 @@
 <blockquote>
 <p>Go通过标示符首字母的大小写控制对应程序实体的访问权限，标示符首字母大写则其对应的程序实体可被本代码包之外的代码访问到，即可导出的。小写则对应的程序实体就只能被本包内的代码访问。</p>
 </blockquote>
-<p>包初始化init函数和程序入口mian函数见<a href="/2018/04/12/Golang笔记-基础篇-三/" title="Golang笔记-基础篇(三)">Golang笔记-基础篇(三)</a>内建函数部分。</p>
+<p>init函数进行包初始化，main函数为程序入口。</p>
+<h3 id="main函数额init函数"><a href="#main函数额init函数" class="headerlink" title="main函数额init函数"></a>main函数额init函数</h3><p>init函数能够应用于所有的package，main函数只能应用于package main。这两个函数在定义时不能有任何的参数和返回值。一个package里面可以写任意多个init函数，为可读性和可维护性，建议在一个package中每个文件只写一个init函数。</p>
+<p>Go程序会自动调用init()和main()，不需要在任何地方调用这两个函数。每个package中的init函数都是可选的，但package main就必须包含一个main函数。  </p>
+<p>程序的初始化和执行都起始于main包，若main中还导入了其他的包，会在编译时将他们依次导入。若一个包被多个包同时导入，则只会被导入一次。若一个包被导入时该包还导入了其他的包，会先将其他包导入进来，然后再对这些包中的常量和变量进行初始化，接着执行init函数（若有），依次类推。所有被导入的包都加载完毕，开始对main包中的包级常量和变量进行初始化，然后执行main包中的init函数（若有），最后执行main函数。</p>
 <h3 id="标准命令"><a href="#标准命令" class="headerlink" title="标准命令"></a>标准命令</h3><p>go命令是Go语言的基本命令之一，于命令行中输入go，会直接输出所有常见的其他可用命令和相关信息。</p>
 <h2 id="基本词法"><a href="#基本词法" class="headerlink" title="基本词法"></a>基本词法</h2><h3 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h3><h4 id="预定义标识符"><a href="#预定义标识符" class="headerlink" title="预定义标识符"></a>预定义标识符</h4><ol>
 <li>基本数据类型名称。  </li>
@@ -702,7 +705,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -713,7 +716,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -724,7 +727,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -798,7 +801,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#初识Golang"><span class="nav-number">1.</span> <span class="nav-text">初识Golang</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Go安装包文件夹"><span class="nav-number">1.1.</span> <span class="nav-text">Go安装包文件夹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装注意事项"><span class="nav-number">1.2.</span> <span class="nav-text">安装注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码包"><span class="nav-number">1.3.</span> <span class="nav-text">代码包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准命令"><span class="nav-number">1.4.</span> <span class="nav-text">标准命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本词法"><span class="nav-number">2.</span> <span class="nav-text">基本词法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标识符"><span class="nav-number">2.1.</span> <span class="nav-text">标识符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#预定义标识符"><span class="nav-number">2.1.1.</span> <span class="nav-text">预定义标识符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#空标识符"><span class="nav-number">2.1.2.</span> <span class="nav-text">空标识符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关键字"><span class="nav-number">2.2.</span> <span class="nav-text">关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-程序声明-："><span class="nav-number">2.2.1.</span> <span class="nav-text">1. 程序声明 ：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-程序实体声明和定义："><span class="nav-number">2.2.2.</span> <span class="nav-text">2. 程序实体声明和定义：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-程序流程控制："><span class="nav-number">2.2.3.</span> <span class="nav-text">3. 程序流程控制：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字面量"><span class="nav-number">2.3.</span> <span class="nav-text">字面量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一类"><span class="nav-number">2.3.1.</span> <span class="nav-text">第一类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二类"><span class="nav-number">2.3.2.</span> <span class="nav-text">第二类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三类"><span class="nav-number">2.3.3.</span> <span class="nav-text">第三类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型"><span class="nav-number">2.4.</span> <span class="nav-text">类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本类型（预定义类型）："><span class="nav-number">2.4.1.</span> <span class="nav-text">基本类型（预定义类型）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复合类型"><span class="nav-number">2.4.2.</span> <span class="nav-text">复合类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态类型"><span class="nav-number">2.4.3.</span> <span class="nav-text">静态类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#潜在类型"><span class="nav-number">2.4.4.</span> <span class="nav-text">潜在类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作符"><span class="nav-number">2.5.</span> <span class="nav-text">操作符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#与C语言基本一致"><span class="nav-number">2.5.1.</span> <span class="nav-text">与C语言基本一致</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表达式"><span class="nav-number">2.6.</span> <span class="nav-text">表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-基本表达式"><span class="nav-number">2.6.1.</span> <span class="nav-text">1. 基本表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-选择符号和选择表达式"><span class="nav-number">2.6.2.</span> <span class="nav-text">2. 选择符号和选择表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#规则"><span class="nav-number">2.6.2.1.</span> <span class="nav-text">规则</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其它情况"><span class="nav-number">2.6.2.2.</span> <span class="nav-text">其它情况</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-索引符号和索引表达式"><span class="nav-number">2.6.3.</span> <span class="nav-text">3. 索引符号和索引表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#规则-1"><span class="nav-number">2.6.3.1.</span> <span class="nav-text">规则</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-切片符号和切片表达式"><span class="nav-number">2.6.4.</span> <span class="nav-text">4. 切片符号和切片表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-类型断言"><span class="nav-number">2.6.5.</span> <span class="nav-text">5. 类型断言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-可变长参数"><span class="nav-number">2.6.6.</span> <span class="nav-text">7. 可变长参数</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#初识Golang"><span class="nav-number">1.</span> <span class="nav-text">初识Golang</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Go安装包文件夹"><span class="nav-number">1.1.</span> <span class="nav-text">Go安装包文件夹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装注意事项"><span class="nav-number">1.2.</span> <span class="nav-text">安装注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码包"><span class="nav-number">1.3.</span> <span class="nav-text">代码包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#main函数额init函数"><span class="nav-number">1.4.</span> <span class="nav-text">main函数额init函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准命令"><span class="nav-number">1.5.</span> <span class="nav-text">标准命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本词法"><span class="nav-number">2.</span> <span class="nav-text">基本词法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标识符"><span class="nav-number">2.1.</span> <span class="nav-text">标识符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#预定义标识符"><span class="nav-number">2.1.1.</span> <span class="nav-text">预定义标识符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#空标识符"><span class="nav-number">2.1.2.</span> <span class="nav-text">空标识符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关键字"><span class="nav-number">2.2.</span> <span class="nav-text">关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-程序声明-："><span class="nav-number">2.2.1.</span> <span class="nav-text">1. 程序声明 ：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-程序实体声明和定义："><span class="nav-number">2.2.2.</span> <span class="nav-text">2. 程序实体声明和定义：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-程序流程控制："><span class="nav-number">2.2.3.</span> <span class="nav-text">3. 程序流程控制：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字面量"><span class="nav-number">2.3.</span> <span class="nav-text">字面量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一类"><span class="nav-number">2.3.1.</span> <span class="nav-text">第一类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二类"><span class="nav-number">2.3.2.</span> <span class="nav-text">第二类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三类"><span class="nav-number">2.3.3.</span> <span class="nav-text">第三类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型"><span class="nav-number">2.4.</span> <span class="nav-text">类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本类型（预定义类型）："><span class="nav-number">2.4.1.</span> <span class="nav-text">基本类型（预定义类型）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复合类型"><span class="nav-number">2.4.2.</span> <span class="nav-text">复合类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态类型"><span class="nav-number">2.4.3.</span> <span class="nav-text">静态类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#潜在类型"><span class="nav-number">2.4.4.</span> <span class="nav-text">潜在类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作符"><span class="nav-number">2.5.</span> <span class="nav-text">操作符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#与C语言基本一致"><span class="nav-number">2.5.1.</span> <span class="nav-text">与C语言基本一致</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表达式"><span class="nav-number">2.6.</span> <span class="nav-text">表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-基本表达式"><span class="nav-number">2.6.1.</span> <span class="nav-text">1. 基本表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-选择符号和选择表达式"><span class="nav-number">2.6.2.</span> <span class="nav-text">2. 选择符号和选择表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#规则"><span class="nav-number">2.6.2.1.</span> <span class="nav-text">规则</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其它情况"><span class="nav-number">2.6.2.2.</span> <span class="nav-text">其它情况</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-索引符号和索引表达式"><span class="nav-number">2.6.3.</span> <span class="nav-text">3. 索引符号和索引表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#规则-1"><span class="nav-number">2.6.3.1.</span> <span class="nav-text">规则</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-切片符号和切片表达式"><span class="nav-number">2.6.4.</span> <span class="nav-text">4. 切片符号和切片表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-类型断言"><span class="nav-number">2.6.5.</span> <span class="nav-text">5. 类型断言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-可变长参数"><span class="nav-number">2.6.6.</span> <span class="nav-text">7. 可变长参数</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -837,7 +840,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">25.7k</span>
+    <span title="本站字数总计">25.9k</span>
   
 </div>
 
