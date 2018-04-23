@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="程序测试可使用go test命令或者标准库提供的testing代码包。 功能测试测试源码文件应该与被测试源码文件处于同一代码包内。testing中的API和go test命令协同使用，testing提供自动化测试支持，自动执行目标代码包中的任何测试函数。 功能测试函数功能测试程序以函数为单位，被用于测试程序实体功能的函数的名称和签名形如:func TestXxx (t *testing.T) 常规">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-21T15:48:44.224Z">
+<meta property="og:updated_time" content="2018-04-23T10:08:18.365Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang-测试">
 <meta name="twitter:description" content="程序测试可使用go test命令或者标准库提供的testing代码包。 功能测试测试源码文件应该与被测试源码文件处于同一代码包内。testing中的API和go test命令协同使用，testing提供自动化测试支持，自动执行目标代码包中的任何测试函数。 功能测试函数功能测试程序以函数为单位，被用于测试程序实体功能的函数的名称和签名形如:func TestXxx (t *testing.T) 常规">
@@ -423,7 +423,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,969
+                  5,767
                 </span>
               
 
@@ -439,7 +439,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  13
+                  24
                 </span>
               
             </div>
@@ -465,8 +465,9 @@
 <h4 id="功能测试函数"><a href="#功能测试函数" class="headerlink" title="功能测试函数"></a>功能测试函数</h4><p>功能测试程序以函数为单位，被用于测试程序实体功能的函数的名称和签名形如:<br><code>func TestXxx (t *testing.T)</code></p>
 <h4 id="常规记录"><a href="#常规记录" class="headerlink" title="常规记录"></a>常规记录</h4><p>参数t上的Log和Logf方法一般用于记录一些常规信息，以展示测试程序的运行过程以及被测试程序的实时状态。  </p>
 <blockquote>
-<p>t.Logf方法与fmt.Printf函数的使用方法类似。<br>t.Log方法于fmt.Println函数的使用方法类似。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">t.Log(Test tcp listener &amp; sender(serverAddr= &quot;,&quot;127.0.0.1:8000&quot;,&quot;)...&quot;)</span><br><span class="line">t.Log(Test tcp listener &amp; sender(serverAddr= %s&quot;,&quot;127.0.0.1:8000&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>t.Logf方法与fmt.Printf函数的使用方法类似。<br>t.Log方法于fmt.Println函数的使用方法类似。</p>
 </blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">t.Log(Test tcp listener &amp; sender(serverAddr= &quot;,&quot;127.0.0.1:8000&quot;,&quot;)...&quot;)</span><br><span class="line">t.Log(Test tcp listener &amp; sender(serverAddr= %s&quot;,&quot;127.0.0.1:8000&quot;)</span><br></pre></td></tr></table></figure>
 <h4 id="错误记录"><a href="#错误记录" class="headerlink" title="错误记录"></a>错误记录</h4><p>Error,Errorf方法，当测试的程序实体的状态不正确的时候，及时对当前的错误状态进行记录。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">actLen := Len(s)</span><br><span class="line">if acrLen != expLen &#123;</span><br><span class="line">    t.Errorf(&quot;Error:The length of slice should be %d but %d.\n&quot;, expLen, actLen)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <blockquote>
 <p>t.Error方法相当于先后对t.Log和t.Fail方法进行调用。<br>t.Errof相当于先后t.Logf和t.Fail方法进行调用。</p>
@@ -503,37 +504,46 @@
 <p><code>b.StopTimer()</code>:使当前函数的计时器停止。</p>
 <p><code>b.ResetTimer()</code>:重置当前基准测试函数，即将函数的执行时间重值为0。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">package **</span><br><span class="line">import (</span><br><span class="line">    &quot;testing&quot;</span><br><span class="line">    &quot;time&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func BenchMark(b *testing.B) &#123;</span><br><span class="line">    customTimerTag := false</span><br><span class="line">    if customTimerTag &#123;</span><br><span class="line">        b.StopTimer()</span><br><span class="line">    &#125;</span><br><span class="line">    time.Sleep(time.Second)</span><br><span class="line">    if customTimerTag &#123;</span><br><span class="line">        b.StartTimer()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <blockquote>
-<p><code>[root@localhost bmt]# go test -bench=&quot;.&quot; -v</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Benchmark-2   	       1	1000200756 ns/op</span><br><span class="line">PASS</span><br><span class="line">ok  	testing/bmt	1.009s</span><br></pre></td></tr></table></figure></p>
+<p><code>[root@localhost bmt]# go test -bench=&quot;.&quot; -v</code></p>
 </blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Benchmark-2   	       1	1000200756 ns/op</span><br><span class="line">PASS</span><br><span class="line">ok  	testing/bmt	1.009s</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>testing包中限制：在基准测试函数单次执行时间超过指定值（默认1s，可由<code>-benchtime</code>标记自定义）的情况下，只执行该基准测试函数一次，即在不超过此执行时间上限的情况下尽可能多地执行一个基准测试函数。</p>
 </blockquote>
 <h4 id="内存分配统计"><a href="#内存分配统计" class="headerlink" title="内存分配统计"></a>内存分配统计</h4><p><code>b.ReportAllocs()</code>:判断在启动当前测试的<code>go test</code>命令的后面是否有<code>-benchmark</code>标记，返回bool值。  </p>
 <p><code>b.SetBytes()</code>:接受一个int64类型的值，用于记录在单次操作中被处理的字节的数量。帮助统计被测试的程序实体的实际性能。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func BenchMark(b *testing.B) &#123;</span><br><span class="line">    customTimerTag := false</span><br><span class="line">    if customTimerTag &#123;</span><br><span class="line">        b.StopTimer()</span><br><span class="line">    &#125;</span><br><span class="line">    b.SetBytes(12345678)</span><br><span class="line">    time.Sleep(time.Second)</span><br><span class="line">    if customTimerTag &#123;</span><br><span class="line">        b.StartTimer()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <blockquote>
-<p><code>[root@localhost bmt]# go test -bench=&quot;.&quot; -v</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Benchmark-2   	       1	1000449919 ns/op	  12.34 MB/s</span><br><span class="line">PASS</span><br><span class="line">ok  	testing/bmt	1.047s</span><br></pre></td></tr></table></figure></p>
+<p><code>[root@localhost bmt]# go test -bench=&quot;.&quot; -v</code></p>
 </blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Benchmark-2   	       1	1000449919 ns/op	  12.34 MB/s</span><br><span class="line">PASS</span><br><span class="line">ok  	testing/bmt	1.047s</span><br></pre></td></tr></table></figure>
 <p><code>12.34 MB/s</code>:每秒被处理的字节的数量（MB为单位）。等于测试运行程序在执行（可能是多次）Benchmark函数的过程中每秒调用b.SetBytes方法的次数乘以传入的整数值。</p>
-<h4 id="基准测试的运行"><a href="#基准测试的运行" class="headerlink" title="基准测试的运行"></a>基准测试的运行</h4><p>go test命令运行基准测试的标记：<br>标记名称 | 标记描述<br>:-: | :-:<br><code>-bench regexp</code> | 默认情况下不会运行任何基准测试，使用该标记以执行匹配“regexp”处的正则表达式所代表的基准测试函数。若需要运行所有的基准测试函数，可以写为:<code>-bench .</code>或<code>-bench=.</code>。<br><code>-benchmem</code> | 在输出内容中包含基准测试的内存分配统计信息。<br><code>-benchtime t</code> | 间接地控制单个基准测试函数的操作次数。<code>t</code>指执行单个测试函数的累计耗时上限，默认<code>1s</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost src]# go test -bench=Prime cnet/ctcp</span><br><span class="line">BenchmarkPrimeFuncs-2   	       1	3006791258 ns/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs-2</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=2, NUM_CPU=2, NUM_GOROUTINE=6]</span><br><span class="line">PASS</span><br><span class="line">ok  	cnet/ctcp	5.023s</span><br></pre></td></tr></table></figure></p>
+<h4 id="基准测试的运行"><a href="#基准测试的运行" class="headerlink" title="基准测试的运行"></a>基准测试的运行</h4><p>go test命令运行基准测试的标记：<br>标记名称 | 标记描述<br>:-: | :-:<br><code>-bench regexp</code> | 默认情况下不会运行任何基准测试，使用该标记以执行匹配“regexp”处的正则表达式所代表的基准测试函数。若需要运行所有的基准测试函数，可以写为:<code>-bench .</code>或<code>-bench=.</code>。<br><code>-benchmem</code> | 在输出内容中包含基准测试的内存分配统计信息。<br><code>-benchtime t</code> | 间接地控制单个基准测试函数的操作次数。<code>t</code>指执行单个测试函数的累计耗时上限，默认<code>1s</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost src]# go test -bench=Prime cnet/ctcp</span><br><span class="line">BenchmarkPrimeFuncs-2   	       1	3006791258 ns/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs-2</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=2, NUM_CPU=2, NUM_GOROUTINE=6]</span><br><span class="line">PASS</span><br><span class="line">ok  	cnet/ctcp	5.023s</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>结构体类型testing.B的字段N可以用于设置对基准测试函数中的某一个代码块重复执行的次数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for i := 0; i &lt; b.N; i++ &#123;</span><br><span class="line">    //todo</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>结构体类型testing.B的字段N可以用于设置对基准测试函数中的某一个代码块重复执行的次数：</p>
 </blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for i := 0; i &lt; b.N; i++ &#123;</span><br><span class="line">    //todo</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p><code>[root@localhost src]# go test -bench=Prime -benchtime 1s -v cnet/ctcp</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">=== RUN   TestPrimeFuncs</span><br><span class="line">--- PASS: TestPrimeFuncs (2.00s)</span><br><span class="line">	tcp_test.go:27: Test tcp listener &amp; sender (serverAddr=127.0.0.1:8080)... [GOMAXPROCS=2, NUM_CPU=2, NUM_GOROUTINE=4]</span><br><span class="line">BenchmarkPrimeFuncs-2   	       1	3003077128 ns/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs-2</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=2, NUM_CPU=2, NUM_GOROUTINE=6]</span><br><span class="line">PASS</span><br><span class="line">ok  	cnet/ctcp	5.020s</span><br></pre></td></tr></table></figure></p>
+<p><code>[root@localhost src]# go test -bench=Prime -benchtime 1s -v cnet/ctcp</code></p>
 </blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">=== RUN   TestPrimeFuncs</span><br><span class="line">--- PASS: TestPrimeFuncs (2.00s)</span><br><span class="line">	tcp_test.go:27: Test tcp listener &amp; sender (serverAddr=127.0.0.1:8080)... [GOMAXPROCS=2, NUM_CPU=2, NUM_GOROUTINE=4]</span><br><span class="line">BenchmarkPrimeFuncs-2   	       1	3003077128 ns/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs-2</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=2, NUM_CPU=2, NUM_GOROUTINE=6]</span><br><span class="line">PASS</span><br><span class="line">ok  	cnet/ctcp	5.020s</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p><code>[root@localhost src]# go test -bench=Prime -benchmem  cnet/ctcp</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">BenchmarkPrimeFuncs-2   	       1	3002297558 ns/op	   22184 B/op	     108 allocs/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs-2</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=2, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">PASS</span><br><span class="line">ok  	cnet/ctcp	5.048s</span><br></pre></td></tr></table></figure></p>
+<p><code>[root@localhost src]# go test -bench=Prime -benchmem  cnet/ctcp</code></p>
 </blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">BenchmarkPrimeFuncs-2   	       1	3002297558 ns/op	   22184 B/op	     108 allocs/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs-2</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=2, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">PASS</span><br><span class="line">ok  	cnet/ctcp	5.048s</span><br></pre></td></tr></table></figure>
 <p> <code>22184 B/op</code>:每次操作分配的字节的平均数为22184个。<br> <code>108 allocs/op</code>:没次操作分配内存的次数为108次。</p>
 <p> <code>-cpu</code>标记:自定义测试运行次数并在测试运行期间多次改变Go语言最大并发处理数。  </p>
 <ul>
 <li>设置Go最大并发处理数，即调用runtime.GOMAXPROCS函数并把对应的整数作为参数传入。</li>
-<li>运行目标代码包内的所有功能测试。<blockquote>
-<p>测试运行程序对<code>-cpu</code>标记的处理方式与<code>-parallel</code>标记正好相反。后者默认使用最大并发处理数，前者直接设置它。前者不会影响后者的默认值。<br><code>[root@localhost src]# go test -bench=Prime -cpu=1,2,4,8,12,16,20 cnet/ctcp</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">BenchmarkPrimeFuncs       	       1	3007500941 ns/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=20, NUM_CPU=2, NUM_GOROUTINE=4]</span><br><span class="line">BenchmarkPrimeFuncs-2     	   10000	    137119 ns/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs-2</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=2, NUM_CPU=2, NUM_GOROUTINE=6]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=2, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=2, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">BenchmarkPrimeFuncs-4     	   10000	    183526 ns/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs-4</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=4, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=4, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=4, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">BenchmarkPrimeFuncs-8     	   10000	    157748 ns/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs-8</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=8, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=8, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=8, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">BenchmarkPrimeFuncs-12    	   10000	    154919 ns/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs-12</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=12, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=12, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=12, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">BenchmarkPrimeFuncs-16    	   10000	    152336 ns/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs-16</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=16, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=16, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=16, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">BenchmarkPrimeFuncs-20    	   10000	    134758 ns/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs-20</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=20, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=20, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=20, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">PASS</span><br><span class="line">ok  	cnet/ctcp	26.474s</span><br></pre></td></tr></table></figure>
-</blockquote>
-</li>
+<li>运行目标代码包内的所有功能测试。</li>
 </ul>
+<blockquote>
+<p>测试运行程序对<code>-cpu</code>标记的处理方式与<code>-parallel</code>标记正好相反。后者默认使用最大并发处理数，前者直接设置它。前者不会影响后者的默认值。</p>
+</blockquote>
+<blockquote>
+<p><code>[root@localhost src]# go test -bench=Prime -cpu=1,2,4,8,12,16,20 cnet/ctcp</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">BenchmarkPrimeFuncs       	       1	3007500941 ns/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=20, NUM_CPU=2, NUM_GOROUTINE=4]</span><br><span class="line">BenchmarkPrimeFuncs-2     	   10000	    137119 ns/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs-2</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=2, NUM_CPU=2, NUM_GOROUTINE=6]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=2, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=2, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">BenchmarkPrimeFuncs-4     	   10000	    183526 ns/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs-4</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=4, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=4, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=4, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">BenchmarkPrimeFuncs-8     	   10000	    157748 ns/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs-8</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=8, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=8, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=8, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">BenchmarkPrimeFuncs-12    	   10000	    154919 ns/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs-12</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=12, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=12, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=12, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">BenchmarkPrimeFuncs-16    	   10000	    152336 ns/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs-16</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=16, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=16, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=16, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">BenchmarkPrimeFuncs-20    	   10000	    134758 ns/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs-20</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=20, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=20, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=20, NUM_CPU=2, NUM_GOROUTINE=3]</span><br><span class="line">PASS</span><br><span class="line">ok  	cnet/ctcp	26.474s</span><br></pre></td></tr></table></figure>
 <table>
 <thead>
 <tr>
@@ -556,8 +566,133 @@
 </tbody>
 </table>
 <blockquote>
-<p>这两个标记的作用域都是代码包。</p>
+<p>这两个标记的作用域都是代码包，只能用于控制某一个代码包内的测试的流程。多个代码包的功能测试是可并发执行，基准测试串行执行。</p>
 </blockquote>
+<h3 id="样本测试"><a href="#样本测试" class="headerlink" title="样本测试"></a>样本测试</h3><p>编写不需要testing代码包的API，使用<code>go test</code>命令解析和执行。</p>
+<h4 id="编写样本测试函数"><a href="#编写样本测试函数" class="headerlink" title="编写样本测试函数"></a>编写样本测试函数</h4><p>名称以<code>Example</code>开始，函数体最后可有若干个注释行，用于比较该测试函数被执行期间，标准输出上出现的内容是否与预期相符。</p>
+<p>注释被正确解析需满足:  </p>
+<ul>
+<li>必须出现在函数体的末尾，与结束符<code>}</code>之间没有代码。</li>
+<li>在第一行注释中紧跟在注释前导符<code>//</code>之后的永远应该是<code>Output:</code>。</li>
+<li>在<code>Output:</code>右边的内容以及后续注释中的内容都分别代表了标准输出中的一行内容。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">package et</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;testing&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func ExampleHello() &#123;</span><br><span class="line">	for i := 0; i &lt; 3; i++ &#123;</span><br><span class="line">		fmt.Println(&quot;Hello, Golang~&quot;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// Output: Hello, Golang~</span><br><span class="line">	// Hello, Golang~</span><br><span class="line">	// Hello, Golang~</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>若测试函数被执行的过程中向标准输出打印的内容是<code>Output:</code>右边内容”Hello, Golang~”，则该测试函数中的测试就是通过的，否则就是失败的。</p>
+<h4 id="样本测试的运行"><a href="#样本测试的运行" class="headerlink" title="样本测试的运行"></a>样本测试的运行</h4><blockquote>
+<p><code>[root@localhost et]# go test -v</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">=== RUN   TestOne</span><br><span class="line">--- PASS: TestOne (0.00s)</span><br><span class="line">	et_test.go:18: Hi~</span><br><span class="line">=== RUN   ExampleHello</span><br><span class="line">--- PASS: ExampleHello (0.00s)</span><br><span class="line">PASS</span><br><span class="line">ok  	testing/et	0.006s</span><br></pre></td></tr></table></figure>
+<p>修改<code>Output:</code>右边内容”Hello, Erlang”。</p>
+<blockquote>
+<p><code>[root@localhost et]# go test -v</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">=== RUN   TestOne</span><br><span class="line">--- PASS: TestOne (0.00s)</span><br><span class="line">	et_test.go:18: Hi~</span><br><span class="line">=== RUN   ExampleHello</span><br><span class="line">--- FAIL: ExampleHello (0.00s)</span><br><span class="line">got:</span><br><span class="line">Hello, Erlang~</span><br><span class="line">want:</span><br><span class="line">Hello, Golang~</span><br><span class="line">FAIL</span><br><span class="line">exit status 1</span><br><span class="line">FAIL	testing/et	0.026s</span><br></pre></td></tr></table></figure>
+<p>修改<code>Output:</code>右边内容多行，对应多行输出结果。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">func ExampleHello() &#123;</span><br><span class="line">	for i := 0; i &lt; 3; i++ &#123;</span><br><span class="line">		fmt.Println(&quot;Hello, Golang~&quot;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// Output: Hello, Golang~</span><br><span class="line">	// Hello, Golang~</span><br><span class="line">	// Hello, Golang~</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p><code>[root@localhost et]# go test -v</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">=== RUN   TestOne</span><br><span class="line">--- PASS: TestOne (0.00s)</span><br><span class="line">	et_test.go:19: Hi~</span><br><span class="line">=== RUN   ExampleHello</span><br><span class="line">--- PASS: ExampleHello (0.00s)</span><br><span class="line">PASS</span><br><span class="line">ok  	testing/et	0.007s</span><br></pre></td></tr></table></figure>
+<h4 id="样本测试函数的命名"><a href="#样本测试函数的命名" class="headerlink" title="样本测试函数的命名"></a>样本测试函数的命名</h4><ul>
+<li>被测试对像为整个代码包，名称<code>Example</code>。</li>
+<li>被测试对象为一个函数，对于函数F，名称<code>ExampleF</code>。</li>
+<li>被测试对象为一个类型，对于类型T，名称<code>ExampleT</code>。</li>
+<li>被测试对象为某个类型中的一个方法，对于类型T中的方法M，名称<code>ExampleT_M</code>。</li>
+<li>加入后缀需用下划线“_”隔开且后缀首字母小写。针对类型T的方法M加入后缀“basic”，名称<code>ExampleT_M_basic</code>。</li>
+</ul>
+<h3 id="测试运行记录"><a href="#测试运行记录" class="headerlink" title="测试运行记录"></a>测试运行记录</h3><p>在<code>go test</code>命令后跟标记的方式来启动和定制用于在测试运行时记录性能的方法。</p>
+<h4 id="收集资源使用情况"><a href="#收集资源使用情况" class="headerlink" title="收集资源使用情况"></a>收集资源使用情况</h4><table>
+<thead>
+<tr>
+<th style="text-align:center">标记名称</th>
+<th style="text-align:left">标记描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>-cpuprofile cpu.out</code></td>
+<td style="text-align:left">记录CPU使用情况，并写到指定的文件中直到测试退出。<code>cpu.out</code>作为指定文件的文件名可以被其他任何名称代替。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-memprofile mem.out</code></td>
+<td style="text-align:left">记录内存使用情况，并在测试通过后将内存使用概要写到指定文件<code>mem.out</code>中。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-memprofilerate n</code></td>
+<td style="text-align:left">控制着记录内存分配操作的行为，记录i将会被写到内存使用概要文件中。<code>n</code>代表着分析器的取样间隔，单位为字节，即当有n个字节的内存被分配时，分析器就会取样一次。</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><code>[root@localhost et]# go test -cpuprofile cpu.out et_test.go</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ok  	command-line-arguments	0.043s</span><br></pre></td></tr></table></figure>
+<p>在执行命令的当前目录中窜县一个用于运行测试的可执行文件<code>et.test</code>，可通过执行文件运行相应的测试。在目标代码包的所在目录中会出现一个名为<code>cpu.out</code>的文件，使用<code>go tool pprof</code>命令对来交互式的对这个概要文件进行查阅。</p>
+<blockquote>
+<p><code>go tool pprof ./**.test cpu.out</code></p>
+</blockquote>
+<p>标记<code>-cpuprofile</code>相当于一个开关，决定了在测试运行期间是否对CPU使用情况进行取样操作，取样操作的时间固定，每10毫秒进行一次取样，当<code>-cpuprofile</code>标记有效时，运行测试的程序会通过标准库代码包<code>runtime/pprof</code>中的API来控制该操作的启动和停止。<code>pprof.StartCPUProfile</code>用来启动CPU使用情况记录操作，<code>pprof.StopCPUProfile</code>同来停止CPU使用情况记录操作。</p>
+<p><code>-memprofile</code>标记有效时，测试运行程序会在测试运行的同时记录他们对内存的使用情况，即程序运行期间堆内存的分配情况，单位是字节，值越小意味着取样间隔会更短效果越好。<code>-memprofilerate</code>标记的值会赋给runtime包中的int类型的变量MemProfileRate，默认值为512*1024，即512K字节。如果设置为0则代表停止取样。</p>
+<blockquote>
+<p><code>go test -memprofile mem.out -memprofilerate 10 测试代码包</code></p>
+</blockquote>
+<p>会生成两个文件，一个在执行该命令所在目录下的可执行文件<code>测试代码包.test</code>，每次运行会重新生成替换原文件。另一个在目标代码包所在目录下的概要文件<code>mem.out</code>，可用<code>go tool pprof</code>命令对概要文件进行查询和分析。</p>
+<blockquote>
+<p><code>go tool pprof ./测试代码包.test 代码包路径/mem.out</code></p>
+</blockquote>
+<p>要获得最好的取样效果，可以将<code>-memprofilerate</code>标记的值设置为1，当有一个字节被分配，分析器就会进行一次取样。消耗比较大，可将<code>GOGC</code>设置为”off”，使垃圾回收器处于不可用状态。但会让程序运行在一个没有垃圾回收器的环境中，可用的内存只会不断的减少，没有可用的内存时程序会崩溃。</p>
+<h4 id="记录程序阻塞事件"><a href="#记录程序阻塞事件" class="headerlink" title="记录程序阻塞事件"></a>记录程序阻塞事件</h4><p>在<code>go test</code>命令添加<code>-blockprofile</code>和<code>-blockprofilerate</code>标记来达到记录线程阻塞事件。<br>标记名称 | 标记描述<br>:-: | :-<br><code>-blockprofile block.out</code> | 记录Goroutine阻塞事件，并在所有测试通过后将概要信息写到指定的文件<code>block.out</code>中。<br><code>-blockprofilerate b</code> | 用于控制记录Goroutine阻塞事件的时间间隔，单位为次，默认值为1</p>
+<blockquote>
+<p><code>go test -blockprofile block.out -blockprofilerate 100 代码包</code></p>
+</blockquote>
+<blockquote>
+<p><code>go tool pprof ./代码包.test 代码包路径/block.out</code></p>
+</blockquote>
+<p><code>-blockprofilerate</code>的值通过标准库代码包runtime中的API函数<code>SetBlockProfileRate</code>传递给Go运行时系统。传入参数0，意味着取消记录操作，传入参数1，每一个阻塞事件都将被记录。默认值1，可省略<code>-blockprofilerate</code>标记。</p>
+<h3 id="测试覆盖率"><a href="#测试覆盖率" class="headerlink" title="测试覆盖率"></a>测试覆盖率</h3><p>go test命令可接受的与测试覆盖率有关的标记。<br>标记名称 | 使用示例 | 说明<br>:- | :- | :-<br><code>-cover</code> | <code>-cover</code> | 启用测试覆盖率分析<br><code>-covermode</code> | <code>-covermode=set</code> | 自动添加<code>-cover</code>标记并设置不同的覆盖率统计模式。支持的模式有：set:只记录语句是否被执行过，count:记录语句被执行的次数，atomic:记录语句被执行次数并保证在并发时也能正确计数。模式不能同时使用，默认set。<br><code>-coverpkg</code> | <code>-coverpkg bufio,net</code> | 自动添加<code>-cover</code>标记并对该标记后所罗列的代码包中的程序进行测试覆盖率统计。默认情况下，测试运行程序只会被直接测试的代码包中的程序进行统计。意味着在测试中被间接使用到的其他代码包中的程序也可以被统计。代码包由导入路径指定，多个代码包之间“,”分隔。<br><code>-coverprofile</code> | <code>-coverprofile cover.out</code> | 自动添加<code>-cover</code>标记并将所有已经通过测试的覆盖率的概要写入指定文件中。</p>
+<blockquote>
+<p><code>root@localhost src]# go test -cover cnet/ctcp</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ok  	cnet/ctcp	2.010s	coverage: 68.6% of statements</span><br></pre></td></tr></table></figure>
+<p>标记<code>-coverpkg</code>使我们可以获得间接被使用的代码包中的程序在测试期间的执行率。</p>
+<blockquote>
+<p><code>[root@localhost src]# go test cnet/ctcp -coverpkg=bufio,net</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ok  	cnet/ctcp	2.015s	coverage: 14.8% of statements in bufio, net</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>[root@localhost src]# go test cnet/ctcp -coverprofile=cover.out</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ok  	cnet/ctcp	2.018s	coverage: 68.6% of statements</span><br></pre></td></tr></table></figure>
+<p>使用cover工具查看概要文件中的内容。  </p>
+<ul>
+<li>根据指定的规则重写某一个源码文件中的代码，并输出到指定的目标上。</li>
+<li>读取测试覆盖率的统计信息文件，并以指定的方式呈现。</li>
+</ul>
+<p>重写：计数器。</p>
+<p>可通过<code>-mode</code>标记将统计模式直接传递给cover工具，与<code>-covermode</code>标记的用法和含义一致。实际上go test命令将<code>-covermode</code>标记的值原封不动地作为运行cover工具时提送给它的<code>-mode</code>标记的值，<code>-mode</code>标记没有默认值。</p>
+<blockquote>
+<p><code>go test cover -mode=set -var=&quot;GoCover&quot; -o dst.go src.go</code></p>
+</blockquote>
+<p>查看覆盖率概要文件：</p>
+<blockquote>
+<p><code>go tool cover -func=cover.out</code></p>
+</blockquote>
+<p><code>-func</code>标记可以让cover工具把概要文件中包含的每个函数的测试覆盖率概要信息打印到标准输出上。</p>
+<blockquote>
+<p><code>go test cover -html=cover.out</code></p>
+</blockquote>
+<p><code>-html</code>标记用更加图形化的信息来反应统计情况，该命令会立即返回并且在标准输出上也不会出现任何内容，默认浏览器会被启动并显示cover工具根据概要文件生成的html格式的页面文件。被测试语句以绿色显示，未被测试的语句以红色显示，未参加测试覆盖率计算的语句以灰色表示。不同统计模式下生成的概要文件不同，对应的html文件也不同。</p>
+<p>cover工具可接受的标记。<br>标记名称 | 使用示例 | 说明<br>:- | :- | :-<br><code>-func</code> | <code>-func=cover.out</code> | 根据根要文件中的内容输出每一个被测试函数的测试覆盖率概要信息。<br><code>-html</code> | <code>-html=cover.out</code> | 把概要文件中的内容换成HTML格式的文件，并使用默认浏览器查看它。<br><code>-mode</code> | <code>-mode=count</code> | 被用于设置测试概要文件的统计模式。<br><code>-o</code> | <code>-o=cover.out</code> | 把重写后的源代码的输出到指定文件中，如果不添加此标记，那么重写后的源代码会输出到标准输出上。<br><code>-var</code> | <code>-var=GoCover</code> | 设置被添加到原先的源代码中的额外变量的名称</p>
+<h2 id="程序文档"><a href="#程序文档" class="headerlink" title="程序文档"></a>程序文档</h2><p>使用<code>godoc</code>命令在本机启动一个可被用于查看本机所有工作区域中的所有代码包文档的web服务。</p>
+<blockquote>
+<p><code>godoc -http=:9090 -index</code></p>
+</blockquote>
+<h3 id="编写程序注释"><a href="#编写程序注释" class="headerlink" title="编写程序注释"></a>编写程序注释</h3><p>行注释：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//行注释</span><br></pre></td></tr></table></figure></p>
+<p>块注释：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">块注释</span><br><span class="line">*/</span><br></pre></td></tr></table></figure></p>
+<h3 id="代码包的注释"><a href="#代码包的注释" class="headerlink" title="代码包的注释"></a>代码包的注释</h3><p>对当前代码包的功能和用途进行总体性的介绍。被存放到当前代码包目录下的<code>doc.go</code>文件中。应有与包中其他源码文件相同的代码包声明语句，并在声明语句之上以块注释的方式插入代码包注释。</p>
+<p>代码包注释总会出现在godoc命令生成的对应文档页面的首要位置上，即代码包注释会作为该代码包的文档的第一段说明出现。</p>
+<h3 id="程序实体的注释"><a href="#程序实体的注释" class="headerlink" title="程序实体的注释"></a>程序实体的注释</h3><p>程序实体的文档即是它的声明代码以及紧挨着在上面的行注释。</p>
+<h3 id="变量和变量的注释"><a href="#变量和变量的注释" class="headerlink" title="变量和变量的注释"></a>变量和变量的注释</h3><p>将注释描述统一放在常量或变量之上。</p>
+<h3 id="文档中的示例"><a href="#文档中的示例" class="headerlink" title="文档中的示例"></a>文档中的示例</h3><p>代码包的文档页面中包含有针对性的示例代码。是godoc命令程序自动从代码中的测试源码文件中取得的。</p>
 
       
     </div>
@@ -782,7 +917,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#程序测试"><span class="nav-number">1.</span> <span class="nav-text">程序测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#功能测试"><span class="nav-number">1.1.</span> <span class="nav-text">功能测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#功能测试函数"><span class="nav-number">1.1.1.</span> <span class="nav-text">功能测试函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常规记录"><span class="nav-number">1.1.2.</span> <span class="nav-text">常规记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#错误记录"><span class="nav-number">1.1.3.</span> <span class="nav-text">错误记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#致命错误记录"><span class="nav-number">1.1.4.</span> <span class="nav-text">致命错误记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#失败标记"><span class="nav-number">1.1.5.</span> <span class="nav-text">失败标记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#失败判断"><span class="nav-number">1.1.6.</span> <span class="nav-text">失败判断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#忽略测试"><span class="nav-number">1.1.7.</span> <span class="nav-text">忽略测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#并行运行"><span class="nav-number">1.1.8.</span> <span class="nav-text">并行运行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#功能测试的运行"><span class="nav-number">1.1.9.</span> <span class="nav-text">功能测试的运行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试运行时间"><span class="nav-number">1.1.10.</span> <span class="nav-text">测试运行时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试的并发执行"><span class="nav-number">1.1.11.</span> <span class="nav-text">测试的并发执行</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基准测试"><span class="nav-number">1.2.</span> <span class="nav-text">基准测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#编写基准测试函数"><span class="nav-number">1.2.1.</span> <span class="nav-text">编写基准测试函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#计时器"><span class="nav-number">1.2.2.</span> <span class="nav-text">计时器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存分配统计"><span class="nav-number">1.2.3.</span> <span class="nav-text">内存分配统计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基准测试的运行"><span class="nav-number">1.2.4.</span> <span class="nav-text">基准测试的运行</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#程序测试"><span class="nav-number">1.</span> <span class="nav-text">程序测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#功能测试"><span class="nav-number">1.1.</span> <span class="nav-text">功能测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#功能测试函数"><span class="nav-number">1.1.1.</span> <span class="nav-text">功能测试函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常规记录"><span class="nav-number">1.1.2.</span> <span class="nav-text">常规记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#错误记录"><span class="nav-number">1.1.3.</span> <span class="nav-text">错误记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#致命错误记录"><span class="nav-number">1.1.4.</span> <span class="nav-text">致命错误记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#失败标记"><span class="nav-number">1.1.5.</span> <span class="nav-text">失败标记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#失败判断"><span class="nav-number">1.1.6.</span> <span class="nav-text">失败判断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#忽略测试"><span class="nav-number">1.1.7.</span> <span class="nav-text">忽略测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#并行运行"><span class="nav-number">1.1.8.</span> <span class="nav-text">并行运行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#功能测试的运行"><span class="nav-number">1.1.9.</span> <span class="nav-text">功能测试的运行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试运行时间"><span class="nav-number">1.1.10.</span> <span class="nav-text">测试运行时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试的并发执行"><span class="nav-number">1.1.11.</span> <span class="nav-text">测试的并发执行</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基准测试"><span class="nav-number">1.2.</span> <span class="nav-text">基准测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#编写基准测试函数"><span class="nav-number">1.2.1.</span> <span class="nav-text">编写基准测试函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#计时器"><span class="nav-number">1.2.2.</span> <span class="nav-text">计时器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存分配统计"><span class="nav-number">1.2.3.</span> <span class="nav-text">内存分配统计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基准测试的运行"><span class="nav-number">1.2.4.</span> <span class="nav-text">基准测试的运行</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#样本测试"><span class="nav-number">1.3.</span> <span class="nav-text">样本测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#编写样本测试函数"><span class="nav-number">1.3.1.</span> <span class="nav-text">编写样本测试函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#样本测试的运行"><span class="nav-number">1.3.2.</span> <span class="nav-text">样本测试的运行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#样本测试函数的命名"><span class="nav-number">1.3.3.</span> <span class="nav-text">样本测试函数的命名</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试运行记录"><span class="nav-number">1.4.</span> <span class="nav-text">测试运行记录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#收集资源使用情况"><span class="nav-number">1.4.1.</span> <span class="nav-text">收集资源使用情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#记录程序阻塞事件"><span class="nav-number">1.4.2.</span> <span class="nav-text">记录程序阻塞事件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试覆盖率"><span class="nav-number">1.5.</span> <span class="nav-text">测试覆盖率</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序文档"><span class="nav-number">2.</span> <span class="nav-text">程序文档</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#编写程序注释"><span class="nav-number">2.1.</span> <span class="nav-text">编写程序注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码包的注释"><span class="nav-number">2.2.</span> <span class="nav-text">代码包的注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#程序实体的注释"><span class="nav-number">2.3.</span> <span class="nav-text">程序实体的注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#变量和变量的注释"><span class="nav-number">2.4.</span> <span class="nav-text">变量和变量的注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文档中的示例"><span class="nav-number">2.5.</span> <span class="nav-text">文档中的示例</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -821,7 +956,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">28.9k</span>
+    <span title="本站字数总计">31.7k</span>
   
 </div>
 
