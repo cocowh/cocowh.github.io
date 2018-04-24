@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="进程间的通讯常被称为IPC（Interprocess Communication）。Linux操作系统中分为基于通讯的IPC方法、基于信号的IPC方法以及基于同步的IPC方法。  基于通讯的IPC方法又分为以数据传送为手段的IPC方法和以共享内存为手段的IPC方法。    数据传送：管道（用以被传送子节流），消息队列（用以被传送结构化的消息对象）。 共享内存：共享内存区，最快的一种IPC方法。 基">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T10:57:19.373Z">
+<meta property="og:updated_time" content="2018-04-24T15:09:31.293Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-多进程编程">
 <meta name="twitter:description" content="进程间的通讯常被称为IPC（Interprocess Communication）。Linux操作系统中分为基于通讯的IPC方法、基于信号的IPC方法以及基于同步的IPC方法。  基于通讯的IPC方法又分为以数据传送为手段的IPC方法和以共享内存为手段的IPC方法。    数据传送：管道（用以被传送子节流），消息队列（用以被传送结构化的消息对象）。 共享内存：共享内存区，最快的一种IPC方法。 基">
@@ -423,7 +423,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  8,630
+                  11,731
                 </span>
               
 
@@ -439,7 +439,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  32
+                  43
                 </span>
               
             </div>
@@ -590,7 +590,55 @@
 </blockquote>
 <p>加入<code>grep -v &quot;go run&quot;</code>过滤掉原先进程列表中的与<code>go run</code>命令对应的进程。</p>
 <p>信号与管道都被称为基础的IPC方法。再基于数据传递的解决方案中，要保证数据的原子性，管道不提供这种原子性保证，Go标准库中提供的API也没有附加这种保证。</p>
-<h3 id="Socket"><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h3>
+<h3 id="Socket"><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h3><p>Socket，常被译为套接字，通过网络连接来使两个或更多的进程建立通讯并相互传递数据。使通讯端的位置透明化。</p>
+<h4 id="1-Socket的基本特征"><a href="#1-Socket的基本特征" class="headerlink" title="1.Socket的基本特征"></a>1.Socket的基本特征</h4><p>在Linux操作系统中存在一个名为Socket的系统调用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int socket(int domain, int type, int protocol)</span><br></pre></td></tr></table></figure></p>
+<p>接收三个参数分别代表了这个Socket的通讯域、类型和所用协议。通讯域决定了该Socket的地址格式和通讯范围。<br>通讯域 | 含义 | 地址形式 | 通讯范围<br> :- |:- |:- | :-<br> AF_INET | IPv4域 | IPv4地址（4个字节），端口号（两个字节）| 在基于IPv4协议的网络中的任意两台计算机之上的两个应用程序<br> AF_INET6 | IPv6域 | IPv6地址（16个字节），端口号（两个字节） | 在基于IPv6协议的网络中的任意两台计算机之上的两个应用程序<br> AF_UNIX | Unix域 | 路径名称 | 在同一台计算机上的两个应用程序</p>
+<p><code>AF</code>是“address family”的缩写。</p>
+<p>Socket的类型有SOCK_STREAM、SOCK_DGRAM、面向更底层的SOCK_RAW、针对某个新兴数据传输技术的SOCK_SEQPACKET。<br>特性 | SOCK_DGRAM | SOCK_RAW | SOCK_SEQPACKET | SOCK_STREAM<br>:- | :- |:- | :- | :-<br>数据形式 | 数据报 | 数据报 | 字节流 | 字节流<br>数据边界 | 有 | 有 | 有 | 没有<br>逻辑边界 | 没有 | 没有 | 有 | 有<br>数据有序性 | 不能保证 | 不能保证 | 能够保证 | 能够保证<br>传输可靠性 | 不具备 | 不具备 | 具备 | 具备</p>
+<blockquote>
+<p>以数据报为数据形式意味着数据接收方的Socket接口程序可以意识到数据的边界并会对他们进行切分。省去接收方的应用程序寻找数据边界和切分数据的工作量。</p>
+</blockquote>
+<blockquote>
+<p>以字节流为数据形式的数据传输传输的是一个字节接着一个字节的串，类似很长的字节数组。一般情况字节流并不能出哪些字节属于哪个数据包。Socket接口程序无法从中分离出独立的数据包。这一工作由应用程序完成。SOCK_SEQPACKET类型的Socket的接口程序不同，数据发送方的Socket接口程序可以记录数据边界，即应用程序每次发送的字节流片段之间的分界点。数据边界信息随着字节流一同被发往数据接收方。数据接收方的Socket接口程序会根据数据边界把字节流切分成（或者说还原成）若干个字节流片段并按照需要依次传递给应用程序。</p>
+</blockquote>
+<p>面向有连接的Socket之间在进行数据传输之前必须要先建立逻辑连接，之后通讯双方可以互相传输数据。连接暗含双方地址，在传输数据时不必再指定目标地址。面向无链接的Socket再进行通讯时无需建立连接，传递的每一个数据包都是独立的，被直接发送到网络上，每个数据包都含有目标地址，数据流是单向的。不能用同一个面向无连接的Socket实例既发送数据又接收数据。</p>
+<p>SOCK_RAW类型的Socket提供了一个可以直接通过底层（TCP/IP协议栈中的网络互联层）传递数据。应用程序必须具有操作系统的超级用户权限才能够使用这种方式，使用成本相对较高，应用程序一般需要自己构建数据传输格式（像TCP/IP协议栈中的TCP协议的数据段格式和UDP协议的数据报格式）。应用程序极少使用这种类型的Socket。</p>
+<p>一般把0作为Socket的第三个参数值，含义是让操作系统内核根据第一个参数和第二个参数的值自行决定Socket所使用的协议。既Socket的通讯域和类型与所使用的协议之间存在对应关系。<br>决定因素 | SOCK_DGRAM | SOCK_RAW | SOCK_SEQPACKET | SOCK_STREAM<br>:- | :- | :- | :- | :-<br>AF_INET | UDP | IPv4 | SCTP | TC或SCTP<br>AF_INET6 | UDP | IPv6 | SCTP | TCP或SCTP<br>AF_UNIX | 有效 | 无效 | 有效 | 有效</p>
+<p><code>有效</code>表示该通讯域和类型的组合会使内核选择某个内部的Socket协议。<br><code>无效</code>表示该通讯域和类型的组合是不合法的。</p>
+<p>在没有发生任何错误的情况下，系统调用socket会返回一个int类型的值，该值是作为socket唯一标示符的文件描述符。得到该标示符后，可以调用其他系统调用来进行各种相关操作，例如绑定和监听端口、发送和接收数据以及关闭Socket实例等等。</p>
+<p>通过系统调用来操作系统提供的Socket接口，Socket接口程序与TCP/IP协议栈的实现程序一样，是Linux操作系统内核的一部分。</p>
+<h4 id="基于TCP-IP协议栈的Socket通讯"><a href="#基于TCP-IP协议栈的Socket通讯" class="headerlink" title="基于TCP/IP协议栈的Socket通讯"></a>基于TCP/IP协议栈的Socket通讯</h4><p>通过Socket接口可以建立和监听TCP连接和UDP连接，可以直接与网络互联层的IP协议实现程序进行通讯。</p>
+<p>使用标准库代码包net中的API编写服务端和客户端程序。</p>
+<blockquote>
+<p><code>func Listen(net, laddr string)(Listener, error)</code></p>
+</blockquote>
+<p>函数net.Listen被用于获取一个监听器，接收两个string类型的参数，参数一表示以何种协议在给定的地址上监听，Go中用一些字符串字面量来表示。<br>字面量 | Socket协议 | 备注<br> :- | :- | :-<br> “tcp” | TCP | 无<br> “tcp4” | TCP | 网络互联层协议仅支持IPv4<br> “tcp6” | TCP | 网络互联层协议仅支持Ipv6<br> “udp”  | UDP | 无<br> “udp4” | UDP | 网络互联层协议仅支持IPv4<br> “udp6” | UDP | 网络互联层协议仅支持IPv6<br> “unix” | 有效 | 在通讯域协议为AF_UNIX且类型为SOCK_STREAM的时候内核采用的默认协议<br> “unixgram” | 有效 | 在通讯域协议为AF_UNIX且类型为SOCK_DGRAM的时候内核采用的默认协议<br> “unixpacket”  | 有效 | 在通讯域为AF_UNIX且类型为SOCK_SEQPACKET的时候内核采用的默认协议</p>
+<p>函数net.Listen的第一个参数的值所代表的协议必须是面向流的协议，TCP和SCTP都属于面向流的协议，TCP协议实现程序无法记录和意识到任何消息边界，无法从字节流分离出消息，SCTP协议可以做到，使得应用程序无需再在发送的字节流的中间加入额外的消息分隔符，也无需再去查找所谓的消息分隔符并据此对字节流进行切分。</p>
+<blockquote>
+<p>net.Listen函数的第一个参数的值必须是tcp、tcp4、tcp6、unix和unixpacket中的一个。代表的都是面向流的协议。tcp表示Socket所用的TCP协议会兼容基于IPv4协议的TCP协议和基于IPv6协议的TCP协议。unix和unixpacket代表两个通讯域为Unix域的内部的Socket协议，遵循它们的Socket实例即被用于在本地计算机上的不同应用程序之间的通讯。</p>
+</blockquote>
+<p>第二参数laddr的值代表当前程序在网络中的标识，是Local Address的简写，格式为“host:port”,”host”代表IP地址或主机名，”port”代表当前程序欲监听的端口号。”host”处的内容必须是与当前计算机对应的IP地址或主机名，若是主机名该API中的程序会先通过DNS找到与主机名对应的IP地址，若主机名没有在DNS中注册会造成一个错误。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">listener, err := net.Listen(&quot;TCP&quot;, &quot;127.0.0.1:8000&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>返回的第一个结果是net.Listener类型，是我们欲获取的监听器，第二个结果是一个error类型值，代表可能出现的错误。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conn, err := listener.Accept()</span><br></pre></td></tr></table></figure></p>
+<p>调用时流程会被阻塞，直到某台计算机上的某个应用程序与当前程序建立了一个TCP连接。返回的第一个结果值代表当前TCP连接的net.Conn类型值，第二个结果值是一个error类型值。</p>
+<p>代码包net的Dial函数用于向网络中的某个地址发送数据。  </p>
+<blockquote>
+<p><code>func Dial(network, address string)(Conn, error)</code>   </p>
+</blockquote>
+<p>参数一与net.Listen函数的第一个参数含义类似，拥有更多可选值。发送数据前不一定建立连接，UDP协议和IP协议都是面向无连接型的协议，udp、udp4、udp6、ip、ip4和ip6都可以作为network的值。unixgram也是network参数的可选值之一，代表了一个基于Unix域的内部Socket协议，以数据报作为传输形式。</p>
+<p>参数二与net.Listen函数的第二个参数laddr完全一致。名称可由raddr（Remote Address）代替。laddr与raddr相对，前者指当前程序所使用的地址（本地地址），后者指参与通讯的另一端所使用的地址（远程地址）。</p>
+<p>客户端的地址不用给出，端口号可以由程序指定，也可由操作系统内核动态分配。使用net.Dial建立Socket连接的客户端程序，占用的端口号由操作系统内核动态分配。客户端程序的地址中的”host”是本地计算机的主机名或IP地址，由操作系统内核指定。也可以自己去指定当前程序的地址，由另外的函数建立连接。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conn, err := net.Dial(&quot;tcp&quot;, &quot;127.0.0.1:8000&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>结果值一是net.Conn类型值，结果值二是一个error类型值。<br>网络延时表现在此行代码会一直阻塞，超过等待时间后函数的执行就会结束并返回相应的error类型值。不同操作系统对基于不同协议的连接请求的超时时间有不同的设定。Go可使用net包的DialTimeout函数设置超时时间。</p>
+<blockquote>
+<p><code>func DialTimeout(network, address string, timeout time.Duration ) (Conn, error)</code></p>
+</blockquote>
+<p>参数三设置超时间，类型为time.Duration，单位是纳秒。可用常量来表示时间，time.Nanosecond代表1纳秒，值为1。常量time.Microsecond代表1微秒，值为1000*Nanosecond，即1000纳秒。time.Second代表1秒。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conn, err := net.DialTimeout(&quot;tcp&quot;, &quot;127.0.0.1:8000&quot;, 2*time.Second)</span><br></pre></td></tr></table></figure></p>
+<p>此超时时间不是值此函数执行耗时，还包括DNS解析等耗时。</p>
+<p>使用操作系统内核提供的API创建Socket等操作被隐藏在Go提供的Socket API中。</p>
+<blockquote>
+<p>通过调用net.Listen函数得到一个net.Listener类型值之后，调用该值的Accept方法等待客户端连接请求的到来，收到客户端的连接请求后，服务端与客户端建立TCP连接（三次握手）。成功建立连接后，通过Accept方法得到一个代表了该TCP连接的net.Conn类型值。通讯两端可以分别利用各自获得的net.Conn类型值交换数据。</p>
+</blockquote>
+<p>Go的Socket编程API在底层获取的是一个非阻塞式的Socket实例，使用Socket接口在一个TCP连接上的数据读取操作是<code>非阻塞式</code>的。在应用程序试图通过系统调用read从Socket的接收缓冲区中读取数据时，即使接收缓冲区中没有任何数据，操作系统内核也不会使系统调用read进入阻塞状态，而是返回一个错误码为“<code>EAGAIN</code>”的错误，应用程序不会视其为真正的错误，稍等片刻后再去尝试读取。若有数据，系统调用read就会携带这些数据立即返回。即使当时接收缓冲区中只包含了一个字节的数据也会是这样，这一特性被称为<code>部分读</code>（partial read）。向发送缓冲区写入一段数据，即使发送缓冲区已经被填满系统调用write也不会被阻塞，而是直接返回错误码为“<code>EAGAIN</code>”的错误，应用程序忽略该错误并稍后再尝试写入数据。若发送缓冲区中有少许剩余空间但不足以放入这段数据，那么系统调用write会尽可能地写入一部分数据然后返回已写入的字节的数据梁，这一特性被称为<code>部分写</code>（partial write）。应用程序每次调用write之后都会区检查该结果值，并发现数据未被完全写入时继续写入剩下的数据。在非阻塞的Socket接口下，系统调用accept也会显示一致的非阻塞风格，不会被阻塞以等待新连接的到来，会直接返回错误码为“<code>EAGAIN</code>”的错误。</p>
+
       
     </div>
     
@@ -816,7 +864,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#进程"><span class="nav-number">1.</span> <span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的定义"><span class="nav-number">1.1.</span> <span class="nav-text">进程的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的衍生"><span class="nav-number">1.2.</span> <span class="nav-text">进程的衍生</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的标识"><span class="nav-number">1.3.</span> <span class="nav-text">进程的标识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的状态"><span class="nav-number">1.4.</span> <span class="nav-text">进程的状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的空间"><span class="nav-number">1.5.</span> <span class="nav-text">进程的空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#系统调用"><span class="nav-number">1.6.</span> <span class="nav-text">系统调用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的切换和调度"><span class="nav-number">1.7.</span> <span class="nav-text">进程的切换和调度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于同步"><span class="nav-number">2.</span> <span class="nav-text">关于同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管道"><span class="nav-number">3.</span> <span class="nav-text">管道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#信号"><span class="nav-number">4.</span> <span class="nav-text">信号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Socket"><span class="nav-number">5.</span> <span class="nav-text">Socket</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#进程"><span class="nav-number">1.</span> <span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的定义"><span class="nav-number">1.1.</span> <span class="nav-text">进程的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的衍生"><span class="nav-number">1.2.</span> <span class="nav-text">进程的衍生</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的标识"><span class="nav-number">1.3.</span> <span class="nav-text">进程的标识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的状态"><span class="nav-number">1.4.</span> <span class="nav-text">进程的状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的空间"><span class="nav-number">1.5.</span> <span class="nav-text">进程的空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#系统调用"><span class="nav-number">1.6.</span> <span class="nav-text">系统调用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的切换和调度"><span class="nav-number">1.7.</span> <span class="nav-text">进程的切换和调度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于同步"><span class="nav-number">2.</span> <span class="nav-text">关于同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管道"><span class="nav-number">3.</span> <span class="nav-text">管道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#信号"><span class="nav-number">4.</span> <span class="nav-text">信号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Socket"><span class="nav-number">5.</span> <span class="nav-text">Socket</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Socket的基本特征"><span class="nav-number">5.1.</span> <span class="nav-text">1.Socket的基本特征</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于TCP-IP协议栈的Socket通讯"><span class="nav-number">5.2.</span> <span class="nav-text">基于TCP/IP协议栈的Socket通讯</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -855,7 +903,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">41.2k</span>
+    <span title="本站字数总计">44.3k</span>
   
 </div>
 
