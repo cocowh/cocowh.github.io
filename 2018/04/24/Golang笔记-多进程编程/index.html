@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="hexo,博客,next," />
+  <meta name="keywords" content="Golang,笔记,多进程," />
 
 
 
@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="搭建缘由 在前段时间又重新搭建了一系列的开发环境，安装了数遍双系统和虚拟机，折腾ubuntu和centos，搭建php+nginx+go+mariadb+node等等，期间遇到了很多的新问题，也有一些老问题，学到了很多东西，越来越感觉到笔记的重要性。想要自己搭建一套博客，怕是ui丑到自己都下不去笔。另外耽误时间、服务器配置以及相关稳定性长久性等也是个问题。从今开始，将所学所得所感记录在此。 关于本">
-<meta name="keywords" content="hexo,博客,next">
+<meta name="description" content="进程间的通讯常被称为IPC（Interprocess Communication）。Linux操作系统中分为基于通讯的IPC方法、基于信号的IPC方法以及基于同步的IPC方法。  基于通讯的IPC方法又分为以数据传送为手段的IPC方法和以共享内存为手段的IPC方法。    数据传送：管道（用以被传送子节流），消息队列（用以被传送结构化的消息对象）。 共享内存：共享内存区，最快的一种IPC方法。 基">
+<meta name="keywords" content="Golang,笔记,多进程">
 <meta property="og:type" content="article">
-<meta property="og:title" content="启航">
-<meta property="og:url" content="bighua.top/2018/04/05/启航/index.html">
+<meta property="og:title" content="Golang笔记-多进程编程">
+<meta property="og:url" content="bighua.top/2018/04/24/Golang笔记-多进程编程/index.html">
 <meta property="og:site_name" content="水木年华">
-<meta property="og:description" content="搭建缘由 在前段时间又重新搭建了一系列的开发环境，安装了数遍双系统和虚拟机，折腾ubuntu和centos，搭建php+nginx+go+mariadb+node等等，期间遇到了很多的新问题，也有一些老问题，学到了很多东西，越来越感觉到笔记的重要性。想要自己搭建一套博客，怕是ui丑到自己都下不去笔。另外耽误时间、服务器配置以及相关稳定性长久性等也是个问题。从今开始，将所学所得所感记录在此。 关于本">
+<meta property="og:description" content="进程间的通讯常被称为IPC（Interprocess Communication）。Linux操作系统中分为基于通讯的IPC方法、基于信号的IPC方法以及基于同步的IPC方法。  基于通讯的IPC方法又分为以数据传送为手段的IPC方法和以共享内存为手段的IPC方法。    数据传送：管道（用以被传送子节流），消息队列（用以被传送结构化的消息对象）。 共享内存：共享内存区，最快的一种IPC方法。 基">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-09T10:19:26.071Z">
+<meta property="og:updated_time" content="2018-04-24T04:34:34.582Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="启航">
-<meta name="twitter:description" content="搭建缘由 在前段时间又重新搭建了一系列的开发环境，安装了数遍双系统和虚拟机，折腾ubuntu和centos，搭建php+nginx+go+mariadb+node等等，期间遇到了很多的新问题，也有一些老问题，学到了很多东西，越来越感觉到笔记的重要性。想要自己搭建一套博客，怕是ui丑到自己都下不去笔。另外耽误时间、服务器配置以及相关稳定性长久性等也是个问题。从今开始，将所学所得所感记录在此。 关于本">
+<meta name="twitter:title" content="Golang笔记-多进程编程">
+<meta name="twitter:description" content="进程间的通讯常被称为IPC（Interprocess Communication）。Linux操作系统中分为基于通讯的IPC方法、基于信号的IPC方法以及基于同步的IPC方法。  基于通讯的IPC方法又分为以数据传送为手段的IPC方法和以共享内存为手段的IPC方法。    数据传送：管道（用以被传送子节流），消息队列（用以被传送结构化的消息对象）。 共享内存：共享内存区，最快的一种IPC方法。 基">
 
 
 
@@ -126,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="bighua.top/2018/04/05/启航/"/>
+  <link rel="canonical" href="bighua.top/2018/04/24/Golang笔记-多进程编程/"/>
 
 
 
 
 
-  <title>启航 | 水木年华</title>
+  <title>Golang笔记-多进程编程 | 水木年华</title>
   
 
 
@@ -313,7 +313,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="bighua.top/2018/04/05/启航/">
+    <link itemprop="mainEntityOfPage" href="bighua.top/2018/04/24/Golang笔记-多进程编程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="cocowh">
@@ -330,7 +330,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">启航</h2>
+          <h2 class="post-title" itemprop="name headline">Golang笔记-多进程编程</h2>
         
 
         <div class="post-meta">
@@ -342,8 +342,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-05T21:48:46+08:00">
-                2018-04-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-24T12:30:56+08:00">
+                2018-04-24
               </time>
             
 
@@ -365,8 +365,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/随笔/" itemprop="url" rel="index">
-                    <span itemprop="name">随笔</span>
+                  <a href="/categories/Golang/" itemprop="url" rel="index">
+                    <span itemprop="name">Golang</span>
                   </a>
                 </span>
 
@@ -384,8 +384,8 @@
                 <i class="fa fa-comment-o"></i>
               </span>
               
-                <a href="/2018/04/05/启航/#SOHUCS" itemprop="discussionUrl">
-                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/04/05/启航/" itemprop="commentsCount"></span>
+                <a href="/2018/04/24/Golang笔记-多进程编程/#SOHUCS" itemprop="discussionUrl">
+                  <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/04/24/Golang笔记-多进程编程/" itemprop="commentsCount"></span>
                 </a>
               
             
@@ -393,7 +393,7 @@
 
           
           
-             <span id="/2018/04/05/启航/" class="leancloud_visitors" data-flag-title="启航">
+             <span id="/2018/04/24/Golang笔记-多进程编程/" class="leancloud_visitors" data-flag-title="Golang笔记-多进程编程">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -423,7 +423,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  643
+                  5,737
                 </span>
               
 
@@ -439,7 +439,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2
+                  21
                 </span>
               
             </div>
@@ -460,14 +460,97 @@
       
 
       
-        <h3 id="搭建缘由"><a href="#搭建缘由" class="headerlink" title="搭建缘由"></a>搭建缘由</h3><p> 在前段时间又重新搭建了一系列的开发环境，安装了数遍双系统和虚拟机，折腾ubuntu和centos，搭建php+nginx+go+mariadb+node等等，期间遇到了很多的新问题，也有一些老问题，学到了很多东西，越来越感觉到笔记的重要性。想要自己搭建一套博客，怕是ui丑到自己都下不去笔。另外耽误时间、服务器配置以及相关稳定性长久性等也是个问题。从今开始，将所学所得所感记录在此。</p>
-<h3 id="关于本博客"><a href="#关于本博客" class="headerlink" title="关于本博客"></a>关于本博客</h3><p>本博客由hexo驱动，尝试过很多主题，例如yilia、material等，最终选择了next主题。之前也尝试过rubuy的jekyll，但是更偏向于比较熟悉的基于node的hexo。使用yilia主题时，强迫症改liyia的侧滑抖动动画，改侧滑背景颜色，最终还是感觉界面不理想，在移动端每个页面上都挂着个人prefile，有种特沙比的感觉，非常浪费空间影响阅读体验，而且作者留了个badjs report收集异常信息和用户信息，感觉很是不爽，并且对应的提交端口貌似没有在维护了，调试时一个红色的eroor简直逼死强迫症。</p>
-<p>使用material主题时也有类似yilia冗余的一点，有个logo perfile简直累赘，而且对应的官方网站相应文档总是加载不出来，貌似被墙了，很遗憾，没搭建完美就放弃了。</p>
-<p>后来用到next主题，对于用户来说要比前两个友好很多，简洁大方，留给了用户更多的配置项，在移动端浏览更简洁舒服，封装了更多的第三方插件。评论插件建议畅言，加载快多了。但是目前有个问题，编写tags、about等page页面时，在page页面配置comments为false，编译后对应的页面虽然不出现畅言插件，即没加入相应的html页面块，但是却加入了相应的js用，然后在控制台会一直报js未寻找到畅言对应html节点的错误。使用来必力虽然也加入了相应的js调用，但是不会出现此类错误，应该编译过程未处理好。等以后有机会再探究修改一番，作为强迫症，把所有的页面评论功能都打开了。。。</p>
-<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>希望自己能够</p>
+        <p>进程间的通讯常被称为IPC（Interprocess Communication）。Linux操作系统中分为基于通讯的IPC方法、基于信号的IPC方法以及基于同步的IPC方法。  基于通讯的IPC方法又分为以数据传送为手段的IPC方法和以共享内存为手段的IPC方法。  </p>
+<ul>
+<li>数据传送：管道（用以被传送子节流），消息队列（用以被传送结构化的消息对象）。</li>
+<li>共享内存：共享内存区，最快的一种IPC方法。</li>
+<li>基于信号：信号（signal）机制。</li>
+<li>基于同步：信号灯（semaphore）。</li>
+</ul>
+<p>Go语言支持的IPC方法：管道、信号和Socket。</p>
+<h3 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h3><h4 id="进程的定义"><a href="#进程的定义" class="headerlink" title="进程的定义"></a>进程的定义</h4><p>用于描述程序的执行过程，程序与进程形成一对相依的概念，分别描述一个程序的静态形式和动态特征。进程是操作系统进行资源分配的一个基本单位。</p>
+<h4 id="进程的衍生"><a href="#进程的衍生" class="headerlink" title="进程的衍生"></a>进程的衍生</h4><p>一个进程可以使用系统调用fork创建若干个新的进程，前者被称为后者的父进程，后者被称为前者的子进程。</p>
 <blockquote>
-<p>勤操代码多读书，善用时间少偷懒。</p>
+<p>子进程源自它的父进程的一个副本，获得父进程的数据段、堆和栈的副本，并与父进程共享代码段。每一份副本都是独立的，子进程对属于它的副本的修改对其父进程和兄弟进程都是不可见的，反之亦然。</p>
 </blockquote>
+<p>Linux的操作内核使用写时复制（Copy On  Write，简称COW）等技术提高进程创建的效率。被创建的子进程可以通过系统调用exec把一个新的程序加载到自己的内存中，替换掉原先在其内存中的数据段、堆、栈以及代码段，之后子进程执行被加载进来的程序。</p>
+<p>内核启动进程作为进程树的根负责系统的初始化操作，是所有进程的祖先，其父进程是其自己。若一个进程先于它的子进程结束，那么这些子进程将会被内核启动进程“收养”，成为它的直接子进程。</p>
+<h4 id="进程的标识"><a href="#进程的标识" class="headerlink" title="进程的标识"></a>进程的标识</h4><p>为了进程管理，内核必须对每个进程的属性和行为进行详细的记录，包括优先级、状态、虚拟地址范围以及各种访问权限等等，被记录在每个进程的进程描述符中。</p>
+<p>进程描述符是一个复杂的数据结构，被保存在进程描述符中的进程ID（常被称为PID）是进程在操作系统中的唯一标识。进程ID为1的进程是内核启动进程。进程ID是一个非负整数且总是递增的编号，新创建的进程的ID是前一个被创建的进程的ID递增的结果。进程ID可以被重复使用。当进程ID达到最大限值，内核从头开始查找已被闲置的进程ID并使用最先找到的哪一个作为新进程的ID。进程描述符中还包含当前进程的父进程ID（常被称为PPID）。</p>
+<p>Go中使用标准库代码包os提供的API来查看当前进程的PID和PPPID。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pid := os.Getpid()</span><br><span class="line">ppid := os.Getppid()</span><br></pre></td></tr></table></figure></p>
+<p>PID不传达与进程有关的任何信息，仅是一个用来唯一标识进程的数字。进程属性信息只被包含在内核中的、与PID对应的进程描述符中。PPID也是，可用于查找守护进程的踪迹。</p>
+<p>进程ID对内核以外的程序非常有用，可以高效地把进程ID转换成对应进程的描述符。可以用shell命令kill终止某个进程ID所对应的进程，可以通过进程ID找到对应的进程并向它发送信号。</p>
+<h4 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h4><p>可运行状态、可中断的睡眠状体、不可中断的睡眠状体、暂停状态或跟踪状态、僵尸状态和退出状态。   </p>
+<ul>
+<li>可运行状态：（TASK_RUNNING，简称R）：处在该状态的进程将要、立即或正在CPU上运行。运行时机不确定由进程调度器来决定。</li>
+<li>可中断的睡眠状态（TASK_INTERRUPTIBLE，简称S）：当进程正在等待某个事件（网络连接或信号灯）的发生时会进入此状体。会被放入对应事件的等待队列中，事件发生时，一个或多个进程就会被唤醒。</li>
+<li>不可中断睡眠状态（TASK_UNINTERRUPTIBLE，简称D）:与可中断的睡眠状态的唯一区别是不可被打断，意味着处在此种状态的进程不会对任何信号作出响应。发送给处于此状态中进程的信号直到该进程转出该状态才会被传递过去。处于此状体的进程通常是由于在等待一个特殊的事件。例如等待同步的I/O操作（磁盘I/O等）的完成。</li>
+<li>暂停状态或跟踪状态（TASK_STOPPED或TASK_TRACED，简称T）：向进程发送SIGSTOP信号就会使该进程处于暂停状态，除非该进程正处于不可中断的睡眠状态。向处于暂停状态的进程发动SIGCONT信号会使进程转向可运形状体。处于被跟踪状态的进程会暂停并等待跟踪它的进程对它进行操作。跟踪状态与暂停状态非常相似，但是，向处于跟踪状态的进程发送SIGCONT信号并不能使它被恢复。只有当调试进程进行了相应的系统调用或退出之后，它才能够被恢复。</li>
+<li>僵尸进程（TASK_DEAD-EXIT_ZOMBIE，简称Z）：处于此状态的进程即将要结束。该进程占用的绝大多数资源也都已经被回收。还有一些信息还未被删除，例如退出码以及一些统计信息。保留这些信息考虑到该进程的父进程可能需要它们。由于此时的进程主体已经被删除而只留下了一个空壳，故此状态常被称为僵尸状态。</li>
+<li>退出状态（TASK_DAED-EXIT_DEAD，简称X）：在进程退出过程中，有可能连退出码和统计信息都不需要被保留。造成原因可能是显示地让该进程的父进程忽略掉SIGCHLD信号（当一个进程消亡的时候，内核会给其父进程发送一个SIGCHLD信号以告之），也可能是该进程已经被分离（让子进程和父进程分别独立的运行）。分离后的子进程将不会再使用和执行父进程共享的代码段中的指令，而是加载并运行一个全新的程序。在此情况下，改进程在退出的时候就不会转入僵尸状态，而会直接转入退出状态。处于退出状态的进程会被结束掉，所占用的系统资源会被操作系统自动回收。</li>
+</ul>
+<p>进程的状态只会在可运行状态和非可运行状态之间转换。</p>
+<h4 id="进程的空间"><a href="#进程的空间" class="headerlink" title="进程的空间"></a>进程的空间</h4><p>一个用户进程（程序的执行实例）总会生存于用户空间中，这些进程可以做很多事，但是却不能与其所在的计算机的硬件进行交互。内核可以与硬件交互，但是却生存在内核空间中。用户进程无法直接访问内核空间。用户空间和内核空间体现了Linux操作系统对物理内存的划分。即这两个空间指的都是操作系统在内存上划分出的一个范围，共同瓜分操作系统能够支配的内存区域。</p>
+<p>内存空间中的每一个单元都是有地址的，由指针来标识和定位。这里所指的地址并非物理内存中的真实地址，被称为虚拟地址。由虚拟地址来标识的内存区域又被称为虚拟地址空间，或虚拟内存。虚拟内存的最大容量与实际可用的物理内存的大小是无关的。内核和CPU会负责维护虚拟内存与物理内存之间的映射关系。</p>
+<p>内核为每个用户进程分配的是虚拟内存而不是物理内存，每个用户进程被分配到的虚拟内存总是在用户空间中的，而内核空间被留给内核专用。每个用户进程都会认为分配给它的虚拟内存就是整个用户空间。一个用户进程不可能操纵另一个用户进程的虚拟内存，因为后者的虚拟内存对于前者来说是不可见的。即进程间的虚拟内存几乎是彼此独立、互不干扰的。由于它们基本被映射到了不同的物理内存之上。</p>
+<p>内核把进程的虚拟内存划分为若干页（page）。物理内存单元的划分由CPU负责。一个物理内存单元被称为一个页框（page frame）。不同进程的大多数页都会与不同的页框相对应。</p>
+<p>进程之间共享页框是被允许的，是作为IPC方法之一的共享内存区的基础。</p>
+<h4 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h4><p>内核会暴露一些接口给用户进程，使用户进程能够使用操作系统更底层的功能，是用户进程能够使用内核功能（包括操纵计算机硬件）的唯一手段。用户进程使用这些接口的行为被称为系统调用，有时“系统调用”也指内核提供了这些接口。系统调用是向内核空间发出的一个明确的请求，而普通的函数只是定义了如何获取一个给定的服务。系统调用会导致内核空间中的数据的存取和指令的执行，而普通函数只能在用户空间中进行操作。系统调用是内核的一部分。</p>
+<p>为保证操作系统的稳定性和安全，内核依据CPU提供的、可以让进程驻留的特权级别建立了两个特权状态。即内核态和用户态。大部分时间里CPU都处于用户态，这时CPU只能对用户空间进行访问，即CPU在用户态下运行的用户进程不能与内核接触。当用户进程发出一个系统调用时，内核会把CPU从用户态切换到内核态，而后会让CPU执行对应的内核函数。CPU在内核态下由权限访问内核空间。相当于使用户进程通过系统调用使用到了内核提供的功能。当内核函数被执行完毕，内核会把CPU从内核态切换回用户态，并把执行结果返回给用户进程。</p>
+<blockquote>
+<p>只有当CPU被切换至内核态之后草可以执行内核空间中的函数，而在内核函数执行完毕后，CPU状态也会被及时地切换回用户态。</p>
+</blockquote>
+<h4 id="进程的切换和调度"><a href="#进程的切换和调度" class="headerlink" title="进程的切换和调度"></a>进程的切换和调度</h4><p>Linux操作系统通过CPU，可以在多个进程间进行切换（也称为进程间的上下文切换），以产生多个进程在同时运行的假象。每个进程会认为自己独占CPU。在进程切换时，需要保存当前进程的运行时状态，若要执行的另一个进程不是第一次运行则需要将该进程恢复到之前被换下时的运行时状态。进程切换主要是由内核来完成，除了进程切换之外，为了使各个生存着的进程都有被u运行的机会、让它们共享CPU，内核还需考虑把哪一个进程应该作为下一个被运行的进程、应该在哪一时刻进行切换，以及切换下的进程需要在哪一时刻再被换上，等等。解决类似问题的反感和任务被统称为进程调度。</p>
+<p>进程切换和进程调度是程序并发执行的基础。</p>
+<h3 id="关于同步"><a href="#关于同步" class="headerlink" title="关于同步"></a>关于同步</h3><p>当几个进程同时对同一个资源进行访问的时候，可能造成互相的干扰，即竟态条件。造成竟态条件的根本原因在于进程在进行某些操作的时候被中断了。虽然进程再次运行的时候其状态会恢复如初，但是外界环境很可能已经在这极短的时间内改变了。</p>
+<p>我们把执行过程中不能被中断的操作称为原子操作（atomic operation），把只能被串行化的访问或执行的某个资源或某段代码称为临界区（critical section）。原子操作是不能被中断的，临界区对是否可以被中断没有强制的规定。只要保证一个访问者在临界区中的时候其他访问者不被允许进入。所有的系统调用都属于原子操作，执行不会被中断。</p>
+<p>原子操作必须由一个单一的汇编指令代表，并且需要得到芯片级别的支持。原子操作能够做到绝对的并发安全，并且比其他同步机制要快很多。原子操作只适合细粒度的简单操作。Go在CPU和各个操作系统的底层支撑之上提供了对原子操作的支持。由标准库代码包<code>sync/atomic</code>中的一些函数代表。</p>
+<p>让要求被串行执行的若干代码形成临界区的做法更通用，保证只有一个进程或线程在临界区之内的做法是——互斥（mutual exclusion，简称mutex）。实现互斥的方法必须确保排他原则（exclusion principle），并且保证不能依赖于任何计算机硬件（包括CPU）。即互斥方法必须有效且通用。</p>
+<h3 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h3><p>管道（pipe）是一种半双工（单向）通讯方式。只能用于父进程与子进程以及同祖先的子进程之间的通讯。例如shell:</p>
+<blockquote>
+<p><code>ps aux | grep go</code></p>
+</blockquote>
+<p>shell为每个命令都创建一个进程，然后把左边的命令的标准输出用管道与右边的命令的标准输入连接起来。优点简单，缺点只能单向通讯以及通讯双方关系上的严格限制。</p>
+<p>使用标准库代码包os/exec中的API，可以执行操作系统命令并在此之上建立管道。</p>
+<blockquote>
+<p><code>cmd := exec.Command(&quot;echo&quot;,&quot;-n&quot;,&quot;command from golang.&quot;)</code></p>
+</blockquote>
+<p>cmd同操作系统命令</p>
+<blockquote>
+<p><code>echo -n &quot;command from golang&quot;</code></p>
+</blockquote>
+<p>对应。</p>
+<p>可以使用exec.Cmd类型之上的Start方法启动一个操作系统命令。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if err := cmd.Start();err != nil &#123;</span><br><span class="line">    fmt.Printf(&quot;Error: The command can not be startup:%s\n&quot;,err)</span><br><span class="line">    return</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用cmd的值的StdoutPipe方法创建一个能够获取此命令输出的管道：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">stdout, err := cmd.StdoutPipe()</span><br><span class="line">if err != nil &#123;</span><br><span class="line">    fmt.Printf(&quot;Error: Can not obtain the stdout pipe for command: %s\n&quot;,err)</span><br><span class="line">    return</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>输出管道stdout类型是io.ReadCloser，这是接口类型并扩展了接口类型io.Reader。启动命令之后可以调用stdout的值的Read方法获取命令的输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">output := make([]byte,30)</span><br><span class="line">n, err := stdout.Read(output)</span><br><span class="line">if err != nil &#123;</span><br><span class="line">    fmt.Printf(&quot;Error: Can not read data from the pipe: %s\n&quot;,err)</span><br><span class="line">    return</span><br><span class="line">&#125;</span><br><span class="line">fmt.Printf(&quot;%s\n&quot;, output[:n])</span><br><span class="line">----</span><br><span class="line">var outputBuf bytes.Buffer  //标准库代码包bytes</span><br><span class="line">for &#123;</span><br><span class="line">    tempOutput := make([]byte, 5)</span><br><span class="line">    n, err := stdout.Read(tempOutput)</span><br><span class="line">    if err != nil &#123;</span><br><span class="line">        if err == io.EOF &#123;</span><br><span class="line">            break</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            fmt.Printf(&quot;Error: Can not read data from the pipe: %s\n&quot;,err)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    if n &gt; 0 &#123;</span><br><span class="line">        outputBuf.Write(tempOutput[:n])</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">fmt.Printf(&quot;%s\n&quot;, outputBuf.String())</span><br></pre></td></tr></table></figure></p>
+<p>Read方法把读出的输出数据存入调用方法传递给它的字节切片中并返回一个int类型值和一个error类型值。命令输出小于output的值的长度，n的值代表命令实际输出的字节的数量。否则我们并没有完全读出输出管道中的数据，n的值等于output的值的长度，需要再去读取一次或者多次。若输出管道中没有可读数据，Read方法返回的第二个结果值为变量io.EOF的值，可判断是否被读完。</p>
+<p>使用带缓冲的读取器从输出管道中读取数据。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">putputBuf := bufio.NewReader(stdout)</span><br><span class="line">output, _, err := outputBuf.ReadLine()</span><br><span class="line">if err != nil &#123;</span><br><span class="line">    fmt.Printf(&quot;Error: Can not read data from the pipe: %s\n&quot;, err)</span><br><span class="line">    return</span><br><span class="line">&#125;</span><br><span class="line">fmt.Printf(&quot;%s\n&quot;,string(output))</span><br></pre></td></tr></table></figure></p>
+<p>stdout的值是io.Reader类型，作为bufio.NewReader函数的参数，返回一个bufio.Reader类型的值。即缓冲读取器。默认缓冲读取器携带一个长度4096的缓冲区，长度代表了一次可以读取的字节的最大数量。cmd代表的命令只有一行输出，使用outputBuf的ReadLine方法读取。第二个bool类型结果代表当前行是否还未被读完，若为false可以利用for语句读取剩余的数据。</p>
+<p>使用Go实现<code>ps aux | grep go</code>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">cmd1 := exec.Command(&quot;ps&quot;, &quot;aux&quot;)</span><br><span class="line">cmd2 := exec.Command(&quot;grep&quot;, &quot;go&quot;)</span><br><span class="line">stdout1, err := cmd1.StdoutPipe()</span><br><span class="line">if err != nil &#123;</span><br><span class="line">    fmt.Printf(&quot;Error: Can not obtain the stdout pipe for command: %s&quot;, err)</span><br><span class="line">    return</span><br><span class="line">&#125;</span><br><span class="line">if err := cmd1.Start(); err != nil &#123;</span><br><span class="line">    fmt.Printf(&quot;Error: The command can not running: %s\n&quot;, err)</span><br><span class="line">    return</span><br><span class="line">&#125;</span><br><span class="line">outputBuf1 := bufio.NewReader(stdout1)</span><br><span class="line">stdin2, err := cmd2.StdinPipe()</span><br><span class="line">if err != nil &#123;</span><br><span class="line">    fmt.Printf(&quot;Error: Can not obtain the stdin pipe for command: %s\n&quot;, err)</span><br><span class="line">    return</span><br><span class="line">&#125;</span><br><span class="line">outputBuf1.WriteTo(stdin2)</span><br><span class="line">var outputBuf2 bytes.Buffer</span><br><span class="line">cmd2.Stdout = &amp;outputBuf2</span><br><span class="line">if err := cmd2.Start(); err != nil &#123;</span><br><span class="line">    fmt.Printf(&quot;Error: The command can not be startup: %s\n&quot;, err)</span><br><span class="line">    return</span><br><span class="line">&#125;</span><br><span class="line">err = stdin2.Close()</span><br><span class="line">if err != nil &#123;</span><br><span class="line">    fmt.Printf(&quot;Error: Can not close the stdio pipe: %s\n&quot;, err)</span><br><span class="line">    return</span><br><span class="line">&#125;</span><br><span class="line">if err := cmd2.Wait(); err != nil &#123;</span><br><span class="line">    fmt.Printf(&quot;Error: Can not wait for the command: %s\n&quot;, err)</span><br><span class="line">    return</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>通过StdinPipe方法在cmd2之上创建一个输入管道，然后把cmd1连接的输出管道中的数据全部写入到这个输入管道中。返回与该命令连接的输入管道，是io.WriteCloser接口类型类型的值，扩展了io.Writer接口类型，可被作为outputBuf1的WriteTo方法的参数。把所属值中缓冲的数据全部写入到参数值代表的写入器中。等于把第一个命令的输出内容通过管道传递给第二个命令。之后需启动cmd2并关闭与它连接的输入通道。调用cmd2的Wait方法阻塞其所属的命令直到完全运行结束为止，然后再读取outputBuf2的内容。</p>
+<p>以上为<code>匿名管道</code>，对应的是<code>命名管道</code>，任何进程都可以通过命名管道交换数据，以文件的形式存在于文件系统中。linux中:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[joker@localhost Test]$ mkfifo -m 644 myfifo</span><br><span class="line">[joker@localhost Test]$ tee dst.log &lt; myfifo &amp;</span><br><span class="line">[1] 13315</span><br><span class="line">[joker@localhost Test]$ cat src.log &gt;myfifo</span><br><span class="line">12345</span><br><span class="line">[1]+  完成                  tee dst.log &lt; myfifo</span><br></pre></td></tr></table></figure></p>
+<p>创建命名管道myfifo，将src.log的内容写道dst.log。命名管道是阻塞式的，只有在对这个命令管道的读操作和写操作都已经准备就绪之后数据才会开始流转。相对于匿名管道，命名管道的通讯双方可以毫不相干，仍是单向的。可以使用它建立非线性的连接实现数据的多路复用，需要考虑多个进程同时向命名管道写数据的情况下的操作原子性问题。</p>
+<p>Go标准库代码包os中包含了可以创建独立管道的API。</p>
+<blockquote>
+<p><code>reader, writer, err := os.Pipe()</code></p>
+</blockquote>
+<p><code>reader</code>代表了该管道输出端的*os.File类型值。  </p>
+<p><code>writer</code>代表了该管道输入端的*os.File类型值。  </p>
+<p>可以在其之上调用*os.File类型包含的所有方法。  </p>
+<p>在Go底层使用系统函数来创建管道，并将两端封装成两的*os.File类型的值。</p>
+<p>命名管道默认在其中一端还未就绪的时候阻塞另一端的进程。不能反过来使用reader或者writer，在reader上调用Write方法或在writer上调用Read方法获取的第二个结果值都将是一个非nil的error类型值。无论在哪一方调用Close方法都不会影响另一方的读取或写入数据的操作。</p>
+<blockquote>
+<p>在exec.Cmd类型值上调用StdinPipe或StdoutPipe方法后得到的输入管道或输出管道也是通过os.Pipe函数生成的。在两个方法内部对生成的管道做了附加处理。输入管道的输出端在所属命令启动后被立即关闭，输入端在所属命令运行结束后被关闭。输出管道的两端的自动关闭时机与输入管道相反。有些命令会等到输入管道被关闭之后才结束运行，需要在数据被读取之后尽早地手动关闭输入管道。</p>
+</blockquote>
+<p>由于通过os.Pipe函数生成的管道在底由系统级别的管道支持，所以在使用时，要注意操作系统对管道的限制。例如匿名管道会在管道缓冲被写满之后使用写数据的进程阻塞，命名管道会在其中一端未就绪前阻塞另一端的进程。</p>
+<p>当有多个输入端同时写入数据时，需要考虑原子性问题。操作系统提供的管道不提供原子操作支持。Go在标准库代码包io中提供一个被存于内存中的、有原子性操作保证的管道（内存管道）。生成方法:  </p>
+<blockquote>
+<p><code>reader, writer := io.Pipe()</code></p>
+</blockquote>
+<p><code>reader</code>代表该管道输出端的*PipeReader类型值。  </p>
+<p><code>writer</code>代表该管道输入端的*PipeWriter类型值。</p>
+<p><em>PipeReader类型和 </em>PipeWriter类型分别对管道的输出端和输入端做了很好的限制。在 <em>PipeReader类型的值上只能使用Read方法从管道中读取数据，在 </em>PipeWriter类型的值上只能使用Write方法向管道写入数据，避免管道使用者对管道的反向使用。使用Close方法关闭管道的某一端之后，另一端在写入数据或者读取数据的时候会得到一个预定义的error类型值。可以通过调用CloseWithError来自定义另一端将会得到的error类型值。</p>
+<p>于os.Pipe函数生成的管道相同的是，仍然需要并发的运行被用来在内存管道的两端进行操作的代码。在内存管道的内部通过充分使用sync代码包中提供的API从根本上保证操作的原子性。这种管道不是基于文件系统，没有作为中介的缓冲区，通过它传递的数据只会被复制一次，提高数据的传递效率。</p>
 
       
     </div>
@@ -485,11 +568,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/hexo/" rel="tag"><i class="fa fa-tag"></i> hexo</a>
+            <a href="/tags/Golang/" rel="tag"><i class="fa fa-tag"></i> Golang</a>
           
-            <a href="/tags/博客/" rel="tag"><i class="fa fa-tag"></i> 博客</a>
+            <a href="/tags/笔记/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
           
-            <a href="/tags/next/" rel="tag"><i class="fa fa-tag"></i> next</a>
+            <a href="/tags/多进程/" rel="tag"><i class="fa fa-tag"></i> 多进程</a>
           
         </div>
       
@@ -502,15 +585,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/04/23/Golang笔记-并发理论/" rel="next" title="Golang笔记-并发理论">
+                <i class="fa fa-chevron-left"></i> Golang笔记-并发理论
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/10/Golang笔记-基础篇-一/" rel="prev" title="Golang笔记-基础篇(一)">
-                Golang笔记-基础篇(一) <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -694,7 +777,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#搭建缘由"><span class="nav-number">1.</span> <span class="nav-text">搭建缘由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于本博客"><span class="nav-number">2.</span> <span class="nav-text">关于本博客</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后"><span class="nav-number">3.</span> <span class="nav-text">最后</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#进程"><span class="nav-number">1.</span> <span class="nav-text">进程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的定义"><span class="nav-number">1.1.</span> <span class="nav-text">进程的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的衍生"><span class="nav-number">1.2.</span> <span class="nav-text">进程的衍生</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的标识"><span class="nav-number">1.3.</span> <span class="nav-text">进程的标识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的状态"><span class="nav-number">1.4.</span> <span class="nav-text">进程的状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的空间"><span class="nav-number">1.5.</span> <span class="nav-text">进程的空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#系统调用"><span class="nav-number">1.6.</span> <span class="nav-text">系统调用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进程的切换和调度"><span class="nav-number">1.7.</span> <span class="nav-text">进程的切换和调度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于同步"><span class="nav-number">2.</span> <span class="nav-text">关于同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管道"><span class="nav-number">3.</span> <span class="nav-text">管道</span></a></li></ol></div>
             
 
           </div>
