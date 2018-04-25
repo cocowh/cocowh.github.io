@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="Linux操作系统提供以POSIX（Portable Operating System Interface of Unix）标准中定义的线程为中心的各种系统调用，最贴近POSIX线程标准的线程实现称为NPTL（Native POSIX Threads Library），已成为Linux默认的线程实现。 Go语言的并发编程模型在底层是由操作系统所提供的线程库支撑的。 线程一个线程可以被看作是在某个进">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-25T12:57:13.554Z">
+<meta property="og:updated_time" content="2018-04-25T15:02:01.898Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-多线程编程">
 <meta name="twitter:description" content="Linux操作系统提供以POSIX（Portable Operating System Interface of Unix）标准中定义的线程为中心的各种系统调用，最贴近POSIX线程标准的线程实现称为NPTL（Native POSIX Threads Library），已成为Linux默认的线程实现。 Go语言的并发编程模型在底层是由操作系统所提供的线程库支撑的。 线程一个线程可以被看作是在某个进">
@@ -423,7 +423,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  4,169
+                  5,079
                 </span>
               
 
@@ -439,7 +439,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  14
+                  17
                 </span>
               
             </div>
@@ -491,8 +491,11 @@
 <h3 id="5-线程实现模型"><a href="#5-线程实现模型" class="headerlink" title="5.线程实现模型"></a>5.线程实现模型</h3><p>线程的实现模型主要有3个：用户级线程模型、内核级线程模型和两级线程模型。差异于线程与内核调度实体（Kernel Scheduling Entity,简称KSE）之间的对应关系上。内核调度实体是可以被内核的调度器调度的对象。也被称为内核级线程，是操作系统内核的最小调度单元。  </p>
 <ul>
 <li>用户级线程模型：由用户级别的线程库全权管理。线程库并不是内核的一部分，只被存储在进程的用户空间之中。进程中的线程的存在对于内核来说是无法感知的，不是内核调度器的调度对象。对线程的各种管理和协调是用户级程序的自主行为，与内核无关。应用程序在对线程进行创建、终止、切换或同步等操作的时候，并不需要让CPU从用户态切换到内核态。用户线程模型在线程操作的速度上存在优势，对线程的管理不需要内核参入，程序的移植性更强。在此模型下的多线程不能够被真正地并发运行。当线程在I/O操作过程中被阻塞，其所属进程也会被阻塞，由线程无法被内核调度造成。调度器将进程看作一个无法再被分割的调度单元，无论其中存在多少个线程。即使计算机上存在多个CPU进程中的多个CPU也无法被分配给不同的CPU运行。对于CPU的负载均衡来说，进程的粒度太粗，让不同的进程在不同的CPU上运行的意义微乎其微。线程的优先级页形同虚设。同一个进程中的所有线程的优先级只能由该进程的优先级来体现。线程库对线程的调度不受内核控制，与内核为进程设定的优先级是没有关系的。现代操作系统都不是使用这种模型来实现线程的。由于包含了多个用户级线程的进程只与一个KSE相对应，这种线程实现模式也被称为多对一（M：1）的线程实现。</li>
-<li>内核级线程模型：该模型下的线程由内核负责管理。是内核的一部分，应用程序对线程的创建、终止和同步都必须通过内核提供的系统调用来完成，进程中的每一个线程都与一个KSE相对应。内核可以分别对每一个线程进行调度。内核级线程模型又被称为一对一（1：1）的线程实现。线程完全由内核管理和调度，可以真正实现线程的并发运行。</li>
+<li>内核级线程模型：该模型下的线程由内核负责管理。是内核的一部分，应用程序对线程的创建、终止和同步都必须通过内核提供的系统调用来完成，进程中的每一个线程都与一个KSE相对应。内核可以分别对每一个线程进行调度。内核级线程模型又被称为一对一（1：1）的线程实现。线程完全由内核管理和调度，可以真正实现线程的并发运行。这些线程完全由内核来管理和调度，内核在极短的时间快速切换和运行各个线程使得它们看起来像正在被同时运行。即使进程中的一个线程由于某种原因进入到了阻塞状态，其他线程也不会受到影响并可以正常的运行。使得内核在多个CPU上进行负载平衡变得容易和有效。如果一个线程与被阻塞的线程之间存在同步关系，则可能受到影响。这是一种应用级别的干预，不属于线程本身的特质。内核对线程的全权接管使操作系统在库级别几乎无需为线程管理做什么事情。与用户级别线程模型形成鲜明的对比。内核线程的管理成本比用户级别线程高出很多。线程的创建会使用到内核资源。创建线程、切换线程、同步线程等操作所花费的时间也会更多。如果一个进程包含了大量的线程，会给内核的调度器造成非常大的负担，会影响到操作系统的整体性能。<code>采用内核级线程模型的操作系统对一个进程中可以创建的线程的数量有直接或间接的限制</code>。很多现代操作系统都是以内核级线程模型实现线程的，包括Linux操作系统。</li>
+<li>两级线程模型：两极线程模型的目标是取前两种模型的精华，去二者只糟粕。被称为多对多（M：N）的线程实现。在此模型下，一个进程可以与多个KSE相关联。这与内核级线程模型是相似的。不同的是，进程中的线程（应用程序线程）并不与KSE一一对应。应用程序线程可以被映射到同一个已关联的KSL上。已被加载到进程的虚拟内存中的实现两级线程模型的线程库会通过操作系统内核创建多个内核级线程。然后，通过这些内核级线程对应用程序线程进行调度。大多数此类线程库都可以为实际运行运行的应用程序线程动态地分配若干个内核级线程。使线程的管理工作更加复杂，需要内核和线程库的共同努力和协作才能正确、有效地进行。但是内核资源的消耗得以减少，使线程管理操作的效能提高。因实现的复杂性，往往不会被操作系统内核的开发者采纳。但可以很好地在编程语言层面上实现并发挥出其应有的作用。<code>Go的并发编程模型与两级线程模型在理念上相似</code>，具体实现方式更加高级优雅些。<code>Go的并发编程模型中</code>，不受操作系统内核管理的独立控制流并不被叫作应用程序线程或者线程，而被称为Goroutine(也可称为Go程)。</li>
 </ul>
+<h2 id="线程的同步"><a href="#线程的同步" class="headerlink" title="线程的同步"></a>线程的同步</h2><p>同步，永远是多线程编程中最核心和重要的话题之一。为多个线程更好地协同工作或者维持共享数据的一致性，以后者为目的的同步比较常见。</p>
+<h3 id="1-共享数据的一致性"><a href="#1-共享数据的一致性" class="headerlink" title="1.共享数据的一致性"></a>1.共享数据的一致性</h3><p>包含多个线程的程序（多线程程序）多以共享数据作为在线程之间传递数据的手段</p>
 
       
     </div>
@@ -723,7 +726,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">1.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-线程的标识"><span class="nav-number">1.1.</span> <span class="nav-text">1.线程的标识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-线程间的控制"><span class="nav-number">1.2.</span> <span class="nav-text">2.线程间的控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-线程的状态"><span class="nav-number">1.3.</span> <span class="nav-text">3.线程的状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-线程的调度"><span class="nav-number">1.4.</span> <span class="nav-text">4.线程的调度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-线程实现模型"><span class="nav-number">1.5.</span> <span class="nav-text">5.线程实现模型</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">1.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-线程的标识"><span class="nav-number">1.1.</span> <span class="nav-text">1.线程的标识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-线程间的控制"><span class="nav-number">1.2.</span> <span class="nav-text">2.线程间的控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-线程的状态"><span class="nav-number">1.3.</span> <span class="nav-text">3.线程的状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-线程的调度"><span class="nav-number">1.4.</span> <span class="nav-text">4.线程的调度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-线程实现模型"><span class="nav-number">1.5.</span> <span class="nav-text">5.线程实现模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程的同步"><span class="nav-number">2.</span> <span class="nav-text">线程的同步</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-共享数据的一致性"><span class="nav-number">2.1.</span> <span class="nav-text">1.共享数据的一致性</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -762,7 +765,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">50.4k</span>
+    <span title="本站字数总计">51.3k</span>
   
 </div>
 
