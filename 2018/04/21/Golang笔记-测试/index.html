@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="程序测试可使用go test命令或者标准库提供的testing代码包。 功能测试测试源码文件应该与被测试源码文件处于同一代码包内。testing中的API和go test命令协同使用，testing提供自动化测试支持，自动执行目标代码包中的任何测试函数。 功能测试函数功能测试程序以函数为单位，被用于测试程序实体功能的函数的名称和签名形如:func TestXxx (t *testing.T) 常规">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-23T10:15:03.612Z">
+<meta property="og:updated_time" content="2018-04-25T08:52:01.740Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-测试">
 <meta name="twitter:description" content="程序测试可使用go test命令或者标准库提供的testing代码包。 功能测试测试源码文件应该与被测试源码文件处于同一代码包内。testing中的API和go test命令协同使用，testing提供自动化测试支持，自动执行目标代码包中的任何测试函数。 功能测试函数功能测试程序以函数为单位，被用于测试程序实体功能的函数的名称和签名形如:func TestXxx (t *testing.T) 常规">
@@ -670,7 +670,7 @@
 <p>重写：计数器。</p>
 <p>可通过<code>-mode</code>标记将统计模式直接传递给cover工具，与<code>-covermode</code>标记的用法和含义一致。实际上go test命令将<code>-covermode</code>标记的值原封不动地作为运行cover工具时提送给它的<code>-mode</code>标记的值，<code>-mode</code>标记没有默认值。</p>
 <blockquote>
-<p><code>go test cover -mode=set -var=&quot;GoCover&quot; -o dst.go src.go</code></p>
+<p><code>go tool cover -mode=set -var=&quot;GoCover&quot; -o dst.go src.go</code></p>
 </blockquote>
 <p>查看覆盖率概要文件：</p>
 <blockquote>
@@ -678,7 +678,7 @@
 </blockquote>
 <p><code>-func</code>标记可以让cover工具把概要文件中包含的每个函数的测试覆盖率概要信息打印到标准输出上。</p>
 <blockquote>
-<p><code>go test cover -html=cover.out</code></p>
+<p><code>go tool cover -html=cover.out</code></p>
 </blockquote>
 <p><code>-html</code>标记用更加图形化的信息来反应统计情况，该命令会立即返回并且在标准输出上也不会出现任何内容，默认浏览器会被启动并显示cover工具根据概要文件生成的html格式的页面文件。被测试语句以绿色显示，未被测试的语句以红色显示，未参加测试覆盖率计算的语句以灰色表示。不同统计模式下生成的概要文件不同，对应的html文件也不同。</p>
 <p>cover工具可接受的标记。<br>标记名称 | 使用示例 | 说明<br>:- | :- | :-<br><code>-func</code> | <code>-func=cover.out</code> | 根据根要文件中的内容输出每一个被测试函数的测试覆盖率概要信息。<br><code>-html</code> | <code>-html=cover.out</code> | 把概要文件中的内容换成HTML格式的文件，并使用默认浏览器查看它。<br><code>-mode</code> | <code>-mode=count</code> | 被用于设置测试概要文件的统计模式。<br><code>-o</code> | <code>-o=cover.out</code> | 把重写后的源代码的输出到指定文件中，如果不添加此标记，那么重写后的源代码会输出到标准输出上。<br><code>-var</code> | <code>-var=GoCover</code> | 设置被添加到原先的源代码中的额外变量的名称</p>
@@ -825,7 +825,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -847,7 +847,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -960,7 +960,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">44.3k</span>
+    <span title="本站字数总计">46.2k</span>
   
 </div>
 
