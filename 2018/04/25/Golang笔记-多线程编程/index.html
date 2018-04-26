@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="Linux操作系统提供以POSIX（Portable Operating System Interface of Unix）标准中定义的线程为中心的各种系统调用，最贴近POSIX线程标准的线程实现称为NPTL（Native POSIX Threads Library），已成为Linux默认的线程实现。 Go语言的并发编程模型在底层是由操作系统所提供的线程库支撑的。 线程一个线程可以被看作是在某个进">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-25T15:02:01.898Z">
+<meta property="og:updated_time" content="2018-04-26T03:50:08.436Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-多线程编程">
 <meta name="twitter:description" content="Linux操作系统提供以POSIX（Portable Operating System Interface of Unix）标准中定义的线程为中心的各种系统调用，最贴近POSIX线程标准的线程实现称为NPTL（Native POSIX Threads Library），已成为Linux默认的线程实现。 Go语言的并发编程模型在底层是由操作系统所提供的线程库支撑的。 线程一个线程可以被看作是在某个进">
@@ -423,7 +423,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  5,079
+                  6,392
                 </span>
               
 
@@ -439,7 +439,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  17
+                  22
                 </span>
               
             </div>
@@ -495,7 +495,20 @@
 <li>两级线程模型：两极线程模型的目标是取前两种模型的精华，去二者只糟粕。被称为多对多（M：N）的线程实现。在此模型下，一个进程可以与多个KSE相关联。这与内核级线程模型是相似的。不同的是，进程中的线程（应用程序线程）并不与KSE一一对应。应用程序线程可以被映射到同一个已关联的KSL上。已被加载到进程的虚拟内存中的实现两级线程模型的线程库会通过操作系统内核创建多个内核级线程。然后，通过这些内核级线程对应用程序线程进行调度。大多数此类线程库都可以为实际运行运行的应用程序线程动态地分配若干个内核级线程。使线程的管理工作更加复杂，需要内核和线程库的共同努力和协作才能正确、有效地进行。但是内核资源的消耗得以减少，使线程管理操作的效能提高。因实现的复杂性，往往不会被操作系统内核的开发者采纳。但可以很好地在编程语言层面上实现并发挥出其应有的作用。<code>Go的并发编程模型与两级线程模型在理念上相似</code>，具体实现方式更加高级优雅些。<code>Go的并发编程模型中</code>，不受操作系统内核管理的独立控制流并不被叫作应用程序线程或者线程，而被称为Goroutine(也可称为Go程)。</li>
 </ul>
 <h2 id="线程的同步"><a href="#线程的同步" class="headerlink" title="线程的同步"></a>线程的同步</h2><p>同步，永远是多线程编程中最核心和重要的话题之一。为多个线程更好地协同工作或者维持共享数据的一致性，以后者为目的的同步比较常见。</p>
-<h3 id="1-共享数据的一致性"><a href="#1-共享数据的一致性" class="headerlink" title="1.共享数据的一致性"></a>1.共享数据的一致性</h3><p>包含多个线程的程序（多线程程序）多以共享数据作为在线程之间传递数据的手段</p>
+<h3 id="1-共享数据的一致性"><a href="#1-共享数据的一致性" class="headerlink" title="1.共享数据的一致性"></a>1.共享数据的一致性</h3><p>包含多个线程的程序（多线程程序）多以共享数据作为在线程之间传递数据的手段。一个进程所拥有的相当一部分虚拟内存地址都可以被该进程中的所有线程所共享，这些被共享的数据大多以内存空间作为载体。共享数据的一致性代表着某种约定，在该约定成立的前提下，多线程程序中的各个线程才能够使相应的流程被正确地执行。</p>
+<p>临界区是只能被串行化地访问或执行的某个资源或某段代码。亦被称作串行区域。保证临界区有效的最佳方式是利用同步机制，针对多线程的同步机制有：原子操作、互斥量、条件变量。</p>
+<h3 id="2-互斥量"><a href="#2-互斥量" class="headerlink" title="2.互斥量"></a>2.互斥量</h3><p>在同一时刻只允许一个线程处于临界区之内的约束被称为互斥。每一线程在进入临界区之前都必须先锁定某个对象。只有成功锁定对象的线程才会被允许进入到临界区之内，否则就会被阻塞。这个对象被称为互斥对象或互斥量。</p>
+<p>互斥量有两种可能的状态，锁定状态和未锁定状态。每次只能被锁定一次，任何线程都不能对它进行二次加锁。成功锁定互斥量的线程成为该互斥量的所有者，只有互斥量所有者才能对该互斥量进行解锁。锁定即对互斥量的获取，解锁即对互斥量的释放。</p>
+<p>为合理、安全使用共享数据，应把操作同一个共享数据的代码都置于一个或多个临界区之内，并使用一个互斥量对它们进行保护。互斥量必须能够被使用相应的共享资源的线程访问到，因此互斥量的变量或常量一般不是局部的。为尽量少的暴露程序的实现细节，应该在满足要求的前提下最小化互斥量的访问权限。初始化互斥量应该在任何线程真正使用它之前进行。若多个线程将要执行的代码中都包含了对同一个互斥量的初始化操作，必须保证该互斥量只会被初始化一次。互斥量对每个想要锁定它的线程都是平等的。</p>
+<blockquote>
+<p>对互斥量的初始化必须要保证唯一性，线程在离开临界区时候必须要及时解锁互斥量，以免造成不必要的性能损耗甚至死锁。</p>
+</blockquote>
+<p>在一般情况下，应该尽量少地使用互斥量。每个互斥量保护的临界区应该在合理范围内并尽量地大。若多个线程频繁地进入某个较大的临界区，并且之间经常存在访问冲突，应该把这个较大的临界区切分成若干个较小的临界区，并使用不同的互斥量加以保护。目的是让等待进入同一个临界区的线程数变少，降低线程被阻塞的几率，减少处于睡眠状态的时间。从一定程度上提高程序的整体性能。若切分后不同的互斥量保护的临界区中包含了对同一个共享资源的同一种操作，则临界区的切分是不成功的。尽量不要让不同的互斥量所保护的临界区重叠，会增加<code>死锁</code>发生的几率。</p>
+<p>当进程中的所有线程发生死锁，进程会停滞，只能重新启动，会丢失运行时数据甚至造成各种不一致的状态。</p>
+<p>使用操作系统提供的线程库的功能，<code>试锁定和回退</code>：在执行一个代码块的时候需要先后锁定两个互斥量，在锁定其中一个互斥量成功之后使用<code>试锁定</code>的方法锁定另一个互斥量，若<code>试锁定</code>第二个互斥量不成功，就把第一个互斥量解锁，并重新对这两个互斥量进行锁定和<code>试锁定</code>。若需要需定的互斥量有多个，则总是先锁定其中一个，再按照上述流程<code>试锁定</code>其他互斥量并在必要时进行回退。<code>试锁定</code>指操作系统的线程库提供的一个函数，会尝试对一个互斥量进行锁定，锁定失败函数直接返回一个错误码，而不是阻塞在那里。</p>
+<p><code>固定顺序锁定</code>：需要先后对多个对个互斥量进行锁定的场景下，总以固定不变的顺序锁定它们。避免因多个线程先后对多个互斥量锁定顺序不一致，导致互相等待对方释放锁并占用对方所需而造成的死锁。</p>
+<p>互斥量的实现会使用到机器语言级别的原子操作，并仅在锁定冲突时才会涉及系统调用的执行。互斥量比其他同步方法（例如信号灯）的速度快。</p>
+<h3 id="3-条件变量"><a href="#3-条件变量" class="headerlink" title="3.条件变量"></a>3.条件变量</h3><p>条件变量不保证在同一时刻仅有</p>
 
       
     </div>
@@ -726,7 +739,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">1.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-线程的标识"><span class="nav-number">1.1.</span> <span class="nav-text">1.线程的标识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-线程间的控制"><span class="nav-number">1.2.</span> <span class="nav-text">2.线程间的控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-线程的状态"><span class="nav-number">1.3.</span> <span class="nav-text">3.线程的状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-线程的调度"><span class="nav-number">1.4.</span> <span class="nav-text">4.线程的调度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-线程实现模型"><span class="nav-number">1.5.</span> <span class="nav-text">5.线程实现模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程的同步"><span class="nav-number">2.</span> <span class="nav-text">线程的同步</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-共享数据的一致性"><span class="nav-number">2.1.</span> <span class="nav-text">1.共享数据的一致性</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">1.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-线程的标识"><span class="nav-number">1.1.</span> <span class="nav-text">1.线程的标识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-线程间的控制"><span class="nav-number">1.2.</span> <span class="nav-text">2.线程间的控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-线程的状态"><span class="nav-number">1.3.</span> <span class="nav-text">3.线程的状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-线程的调度"><span class="nav-number">1.4.</span> <span class="nav-text">4.线程的调度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-线程实现模型"><span class="nav-number">1.5.</span> <span class="nav-text">5.线程实现模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程的同步"><span class="nav-number">2.</span> <span class="nav-text">线程的同步</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-共享数据的一致性"><span class="nav-number">2.1.</span> <span class="nav-text">1.共享数据的一致性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-互斥量"><span class="nav-number">2.2.</span> <span class="nav-text">2.互斥量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-条件变量"><span class="nav-number">2.3.</span> <span class="nav-text">3.条件变量</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -765,7 +778,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">51.3k</span>
+    <span title="本站字数总计">52.6k</span>
   
 </div>
 
