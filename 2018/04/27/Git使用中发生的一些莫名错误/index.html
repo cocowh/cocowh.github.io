@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="git push报错 Tags:[index,master]错误详情：1234fatal: index file smaller than expectedfatal: index file smaller than expectederror: unable to resolve reference refs/remotes/origin/master: ??error: Cannot lock">
+<meta name="description" content="git push报错 Tags:[index,master]背景：git add和git commit后未及时git push，第二天git push报错。错误详情：1234fatal: index file smaller than expectedfatal: index file smaller than expectederror: unable to resolve reference">
 <meta name="keywords" content="Git,shell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Git使用中发生的一些莫名错误">
 <meta property="og:url" content="bighua.top/2018/04/27/Git使用中发生的一些莫名错误/index.html">
 <meta property="og:site_name" content="水木年华">
-<meta property="og:description" content="git push报错 Tags:[index,master]错误详情：1234fatal: index file smaller than expectedfatal: index file smaller than expectederror: unable to resolve reference refs/remotes/origin/master: ??error: Cannot lock">
+<meta property="og:description" content="git push报错 Tags:[index,master]背景：git add和git commit后未及时git push，第二天git push报错。错误详情：1234fatal: index file smaller than expectedfatal: index file smaller than expectederror: unable to resolve reference">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-27T03:51:09.265Z">
+<meta property="og:updated_time" content="2018-04-27T03:52:33.281Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git使用中发生的一些莫名错误">
-<meta name="twitter:description" content="git push报错 Tags:[index,master]错误详情：1234fatal: index file smaller than expectedfatal: index file smaller than expectederror: unable to resolve reference refs/remotes/origin/master: ??error: Cannot lock">
+<meta name="twitter:description" content="git push报错 Tags:[index,master]背景：git add和git commit后未及时git push，第二天git push报错。错误详情：1234fatal: index file smaller than expectedfatal: index file smaller than expectederror: unable to resolve reference">
 
 
 
@@ -460,9 +460,8 @@
       
 
       
-        <h3 id="git-push报错-Tags-index-master"><a href="#git-push报错-Tags-index-master" class="headerlink" title="git push报错 Tags:[index,master]"></a>git push报错 Tags:[index,master]</h3><p>错误详情：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fatal: index file smaller than expected</span><br><span class="line">fatal: index file smaller than expected</span><br><span class="line">error: unable to resolve reference refs/remotes/origin/master: ??</span><br><span class="line">error: Cannot lock the ref &apos;refs/remotes/origin/master&apos;.</span><br></pre></td></tr></table></figure></p>
+        <h3 id="git-push报错-Tags-index-master"><a href="#git-push报错-Tags-index-master" class="headerlink" title="git push报错 Tags:[index,master]"></a>git push报错 Tags:[index,master]</h3><p>背景：<code>git add</code>和<code>git commit</code>后未及时<code>git push</code>，第二天<code>git push</code>报错。<br>错误详情：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fatal: index file smaller than expected</span><br><span class="line">fatal: index file smaller than expected</span><br><span class="line">error: unable to resolve reference refs/remotes/origin/master: ??</span><br><span class="line">error: Cannot lock the ref &apos;refs/remotes/origin/master&apos;.</span><br></pre></td></tr></table></figure></p>
 <p>解决方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rm .git/index</span><br><span class="line">rm .git/refs/remotes/origin/master</span><br><span class="line">git add -A</span><br><span class="line">git commit -m &quot;update&quot;</span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure></p>
-<p>背景：<code>git add</code>和<code>git commit</code>后未及时<code>git push</code>，第二天<code>git push</code>报错。</p>
 <p>原因：查询stackoverflow得上方解决结果，直接删除相应的报错文件，然后再重新将改变的工作提交到仓库中，最后再推倒远程仓库。可能原因猜测index文件和master文件被污染，不知具体原因。</p>
 
       
