@@ -194,7 +194,7 @@
     <link href="bighua.top/2018/04/16/%E5%85%B3%E4%BA%8EGolang%E7%9A%84%E4%B8%80%E4%BA%9B%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86/"/>
     <id>bighua.top/2018/04/16/关于Golang的一些资料整理/</id>
     <published>2018-04-16T09:29:17.000Z</published>
-    <updated>2018-04-27T03:33:42.059Z</updated>
+    <updated>2018-04-27T03:37:03.078Z</updated>
     
     <content type="html"><![CDATA[<p>大多数采集于<a href="https://github.com/justjavac/free-programming-books-zh_CN#go" target="_blank" rel="noopener">justjavac</a></p><h3 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h3><ul><li><a href="https://github.com/cocowh/books" target="_blank" rel="noopener">英文版系列书籍(go实战、web等pdf格式)</a></li><li><a href="https://github.com/Unknwon/the-way-to-go_ZH_CN/blob/master/eBook/directory.md" target="_blank" rel="noopener">《Go入门指南》(gitpage)</a></li><li><a href="https://mikespook.com/learning-go/" target="_blank" rel="noopener">《学习Go语言》中文版(pdf+git)</a></li><li><a href="https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/preface.md" target="_blank" rel="noopener">《Go Web 编程》中文版(gitpage)</a></li><li><a href="https://github.com/astaxie/go-best-practice/blob/master/ebook/zh/preface.md" target="_blank" rel="noopener">《go实战开发》(gitpage半成品)</a></li><li><a href="https://github.com/astaxie/NPWG_zh" target="_blank" rel="noopener">《Network programming with Go》中文版(gitpage)</a></li><li><a href="https://books.studygolang.com/The-Golang-Standard-Library-by-Example/" target="_blank" rel="noopener">《Go语言标准库》(git)</a></li><li><a href="https://github.com/hyper0x/go_command_tutorial" target="_blank" rel="noopener">《GO 命令教程》(gitpage)</a></li><li><a href="https://github.com/achun/Go-Blog-In-Action" target="_blank" rel="noopener">《Go语言博客实践》(gitpage)</a></li><li><a href="https://www.ctolib.com/docs-magical-go-c-web-page-download.html" target="_blank" rel="noopener">《神奇的 Go 语言》(webpage)</a><!-- * [《深入解析Go》](https://github.com/tiancaiamao/go-internals) --></li></ul><h3 id="手册"><a href="#手册" class="headerlink" title="手册"></a>手册</h3><ul><li><a href="https://studygolang.com/pkgdoc" target="_blank" rel="noopener">Golang标准库文档</a></li><li><a href="http://gorevel.cn/docs/manual/index.html" target="_blank" rel="noopener">Revel 框架手册</a></li><li><a href="https://github.com/golang-china/golangdoc.translations" target="_blank" rel="noopener">Go 官方文档翻译</a></li></ul><h3 id="视频教程"><a href="#视频教程" class="headerlink" title="视频教程"></a>视频教程</h3><ul><li><a href="https://github.com/Unknwon/go-fundamental-programming" target="_blank" rel="noopener">《Go 编程基础》</a></li></ul>]]></content>
     
@@ -209,8 +209,6 @@
     </summary>
     
       <category term="Golang" scheme="bighua.top/categories/Golang/"/>
-    
-      <category term="资料库" scheme="bighua.top/categories/Golang/%E8%B5%84%E6%96%99%E5%BA%93/"/>
     
     
       <category term="Golang" scheme="bighua.top/tags/Golang/"/>
