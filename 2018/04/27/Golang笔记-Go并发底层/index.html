@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="Go在操作系统提供的内核线程之上搭建了一个特有两级线程模型，称为Goroutine。其代表的含义为：  不要用共享内存的方式来通信，作为替代，应该以通信作为手段来共享内存。  Go不推荐以共享内存区的方式传递数据，作为替代，优先使用Channel。被用来在多个Goroutine之间传递数据，并且会保证其过程的同步。提供了一些传统的并发访问控制方式（互斥量、条件变量等）。">
+<meta name="description" content="Go在操作系统提供的内核线程之上搭建了一个特有两级线程模型，称为Goroutine。其代表的含义为：  不要用共享内存的方式来通信，作为替代，应该以通信作为手段来共享内存。  Go不推荐以共享内存区的方式传递数据，作为替代，优先使用Channel。被用来在多个Goroutine之间传递数据，并且会保证其过程的同步。提供了一些传统的并发访问控制方式（互斥量、条件变量等）。 线程实现模型Go语言的线程">
 <meta name="keywords" content="Golang,笔记,并发,底层">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Golang笔记-Go并发底层">
 <meta property="og:url" content="bighua.top/2018/04/27/Golang笔记-Go并发底层/index.html">
 <meta property="og:site_name" content="水木年华">
-<meta property="og:description" content="Go在操作系统提供的内核线程之上搭建了一个特有两级线程模型，称为Goroutine。其代表的含义为：  不要用共享内存的方式来通信，作为替代，应该以通信作为手段来共享内存。  Go不推荐以共享内存区的方式传递数据，作为替代，优先使用Channel。被用来在多个Goroutine之间传递数据，并且会保证其过程的同步。提供了一些传统的并发访问控制方式（互斥量、条件变量等）。">
+<meta property="og:description" content="Go在操作系统提供的内核线程之上搭建了一个特有两级线程模型，称为Goroutine。其代表的含义为：  不要用共享内存的方式来通信，作为替代，应该以通信作为手段来共享内存。  Go不推荐以共享内存区的方式传递数据，作为替代，优先使用Channel。被用来在多个Goroutine之间传递数据，并且会保证其过程的同步。提供了一些传统的并发访问控制方式（互斥量、条件变量等）。 线程实现模型Go语言的线程">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-27T09:53:05.063Z">
+<meta property="og:updated_time" content="2018-04-27T10:11:36.387Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-Go并发底层">
-<meta name="twitter:description" content="Go在操作系统提供的内核线程之上搭建了一个特有两级线程模型，称为Goroutine。其代表的含义为：  不要用共享内存的方式来通信，作为替代，应该以通信作为手段来共享内存。  Go不推荐以共享内存区的方式传递数据，作为替代，优先使用Channel。被用来在多个Goroutine之间传递数据，并且会保证其过程的同步。提供了一些传统的并发访问控制方式（互斥量、条件变量等）。">
+<meta name="twitter:description" content="Go在操作系统提供的内核线程之上搭建了一个特有两级线程模型，称为Goroutine。其代表的含义为：  不要用共享内存的方式来通信，作为替代，应该以通信作为手段来共享内存。  Go不推荐以共享内存区的方式传递数据，作为替代，优先使用Channel。被用来在多个Goroutine之间传递数据，并且会保证其过程的同步。提供了一些传统的并发访问控制方式（互斥量、条件变量等）。 线程实现模型Go语言的线程">
 
 
 
@@ -423,7 +423,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  143
+                  327
                 </span>
               
 
@@ -465,6 +465,13 @@
 <p>不要用共享内存的方式来通信，作为替代，应该以通信作为手段来共享内存。</p>
 </blockquote>
 <p>Go不推荐以共享内存区的方式传递数据，作为替代，优先使用Channel。被用来在多个Goroutine之间传递数据，并且会保证其过程的同步。提供了一些传统的并发访问控制方式（互斥量、条件变量等）。</p>
+<h2 id="线程实现模型"><a href="#线程实现模型" class="headerlink" title="线程实现模型"></a>线程实现模型</h2><p>Go语言的线程实现模型，有3个核心元素支撑线程实现模型的主框架：   </p>
+<ul>
+<li>M：Machine的缩写。一个M代表一个内核线程。</li>
+<li>P：Processor的缩写。一个P代表了M所需的上下文环境。</li>
+<li>G：Goroutine的缩写。一个G代表了对一段需要被并发执行的Go语言代码的封装。</li>
+</ul>
+<p>一个G的执行需要M和P的支持。一个M在与一个P关联之后就形成了一个有效的G运行环境（内核线程+上下文环境）。每个P都会包含一个可运行的G的队列。该队列中的G会被依次传给与本P关联的M并获得运行时机。</p>
 
       
     </div>
@@ -568,8 +575,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -675,6 +691,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程实现模型"><span class="nav-number">1.</span> <span class="nav-text">线程实现模型</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
         <div class="back-to-top">
@@ -707,7 +739,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">54.8k</span>
+    <span title="本站字数总计">54.9k</span>
   
 </div>
 
