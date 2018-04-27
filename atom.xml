@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="bighua.top/"/>
-  <updated>2018-04-26T03:50:08.436Z</updated>
+  <updated>2018-04-27T03:51:09.265Z</updated>
   <id>bighua.top/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Git使用中发生的一些莫名错误</title>
+    <link href="bighua.top/2018/04/27/Git%E4%BD%BF%E7%94%A8%E4%B8%AD%E5%8F%91%E7%94%9F%E7%9A%84%E4%B8%80%E4%BA%9B%E8%8E%AB%E5%90%8D%E9%94%99%E8%AF%AF/"/>
+    <id>bighua.top/2018/04/27/Git使用中发生的一些莫名错误/</id>
+    <published>2018-04-27T03:40:09.000Z</published>
+    <updated>2018-04-27T03:51:09.265Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="git-push报错-Tags-index-master"><a href="#git-push报错-Tags-index-master" class="headerlink" title="git push报错 Tags:[index,master]"></a>git push报错 Tags:[index,master]</h3><p>错误详情：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fatal: index file smaller than expected</span><br><span class="line">fatal: index file smaller than expected</span><br><span class="line">error: unable to resolve reference refs/remotes/origin/master: ??</span><br><span class="line">error: Cannot lock the ref &apos;refs/remotes/origin/master&apos;.</span><br></pre></td></tr></table></figure></p><p>解决方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rm .git/index</span><br><span class="line">rm .git/refs/remotes/origin/master</span><br><span class="line">git add -A</span><br><span class="line">git commit -m &quot;update&quot;</span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure></p><p>背景：<code>git add</code>和<code>git commit</code>后未及时<code>git push</code>，第二天<code>git push</code>报错。</p><p>原因：查询stackoverflow得上方解决结果，直接删除相应的报错文件，然后再重新将改变的工作提交到仓库中，最后再推倒远程仓库。可能原因猜测index文件和master文件被污染，不知具体原因。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;git-push报错-Tags-index-master&quot;&gt;&lt;a href=&quot;#git-push报错-Tags-index-master&quot; class=&quot;headerlink&quot; title=&quot;git push报错 Tags:[index,master]&quot;&gt;&lt;/a&gt;
+      
+    
+    </summary>
+    
+      <category term="shell" scheme="bighua.top/categories/shell/"/>
+    
+    
+      <category term="Git" scheme="bighua.top/tags/Git/"/>
+    
+      <category term="shell" scheme="bighua.top/tags/shell/"/>
+    
+  </entry>
   
   <entry>
     <title>Golang笔记-多线程编程</title>
