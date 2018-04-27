@@ -194,7 +194,7 @@
     <link href="bighua.top/2018/04/16/%E5%85%B3%E4%BA%8EGolang%E7%9A%84%E4%B8%80%E4%BA%9B%E8%B5%84%E6%96%99%E6%95%B4%E7%90%86/"/>
     <id>bighua.top/2018/04/16/关于Golang的一些资料整理/</id>
     <published>2018-04-16T09:29:17.000Z</published>
-    <updated>2018-04-24T03:00:09.710Z</updated>
+    <updated>2018-04-27T03:33:42.059Z</updated>
     
     <content type="html"><![CDATA[<p>大多数采集于<a href="https://github.com/justjavac/free-programming-books-zh_CN#go" target="_blank" rel="noopener">justjavac</a></p><h3 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h3><ul><li><a href="https://github.com/cocowh/books" target="_blank" rel="noopener">英文版系列书籍(go实战、web等pdf格式)</a></li><li><a href="https://github.com/Unknwon/the-way-to-go_ZH_CN/blob/master/eBook/directory.md" target="_blank" rel="noopener">《Go入门指南》(gitpage)</a></li><li><a href="https://mikespook.com/learning-go/" target="_blank" rel="noopener">《学习Go语言》中文版(pdf+git)</a></li><li><a href="https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/preface.md" target="_blank" rel="noopener">《Go Web 编程》中文版(gitpage)</a></li><li><a href="https://github.com/astaxie/go-best-practice/blob/master/ebook/zh/preface.md" target="_blank" rel="noopener">《go实战开发》(gitpage半成品)</a></li><li><a href="https://github.com/astaxie/NPWG_zh" target="_blank" rel="noopener">《Network programming with Go》中文版(gitpage)</a></li><li><a href="https://books.studygolang.com/The-Golang-Standard-Library-by-Example/" target="_blank" rel="noopener">《Go语言标准库》(git)</a></li><li><a href="https://github.com/hyper0x/go_command_tutorial" target="_blank" rel="noopener">《GO 命令教程》(gitpage)</a></li><li><a href="https://github.com/achun/Go-Blog-In-Action" target="_blank" rel="noopener">《Go语言博客实践》(gitpage)</a></li><li><a href="https://www.ctolib.com/docs-magical-go-c-web-page-download.html" target="_blank" rel="noopener">《神奇的 Go 语言》(webpage)</a><!-- * [《深入解析Go》](https://github.com/tiancaiamao/go-internals) --></li></ul><h3 id="手册"><a href="#手册" class="headerlink" title="手册"></a>手册</h3><ul><li><a href="https://studygolang.com/pkgdoc" target="_blank" rel="noopener">Golang标准库文档</a></li><li><a href="http://gorevel.cn/docs/manual/index.html" target="_blank" rel="noopener">Revel 框架手册</a></li><li><a href="https://github.com/golang-china/golangdoc.translations" target="_blank" rel="noopener">Go 官方文档翻译</a></li></ul><h3 id="视频教程"><a href="#视频教程" class="headerlink" title="视频教程"></a>视频教程</h3><ul><li><a href="https://github.com/Unknwon/go-fundamental-programming" target="_blank" rel="noopener">《Go 编程基础》</a></li></ul>]]></content>
     
@@ -210,6 +210,8 @@
     
       <category term="Golang" scheme="bighua.top/categories/Golang/"/>
     
+      <category term="资料库" scheme="bighua.top/categories/Golang/%E8%B5%84%E6%96%99%E5%BA%93/"/>
+    
     
       <category term="Golang" scheme="bighua.top/tags/Golang/"/>
     
@@ -222,7 +224,7 @@
     <link href="bighua.top/2018/04/14/%E7%A5%9D%E8%87%AA%E5%B7%B1%E7%94%9F%E6%97%A5%E5%BF%AB%E4%B9%90/"/>
     <id>bighua.top/2018/04/14/祝自己生日快乐/</id>
     <published>2018-04-14T12:17:18.000Z</published>
-    <updated>2018-04-16T12:23:00.000Z</updated>
+    <updated>2018-04-27T03:33:26.000Z</updated>
     
     <content type="html"><![CDATA[<h2 id="那些年阿"><a href="#那些年阿" class="headerlink" title="那些年阿"></a><center>那些年阿<center></center></center></h2><p> 四年就要混过去了，这是在大学过的第四个生日，回忆以前的每一年的这一天真是感慨万千！</p><h3 id="第一年，大一"><a href="#第一年，大一" class="headerlink" title="第一年，大一"></a>第一年，大一</h3><p> 大一的生活可以说是最不操心的。  </p><p> 初入大学，自己也没有目标，高三熬夜刷题养成了白天语文课睡觉的坏习惯，到了大学变本加厉。大一开始的日子，随波逐流，什么都想学，什么都想参加。面试学生会，加入吉他协会，打游戏，玩手游…没想过读研还是找工作，没想过大学该怎么走。</p><p>下学期生日，很巧的在这一个月里，班里差不多有四五名同学生日，每个人的生日都有所不同，慢慢的会发现，圈子在慢慢的形成。回想起那时，还是很幼稚青涩，脸皮薄，放不开，现在依旧如此。  </p><p>如果说上学期贪玩，下学期则是彻底的堕落。上学期有时上课还在前面认真听讲，下学期则是基本节节课睡觉。期末考试成绩烂的一塌糊涂，挂了一门主修课，替别人跑南湖，挂了体育。慢慢的开始思考自己的出路了，开始焦虑了。 </p><p>农村孩子，爸妈辛苦了这么多年，不容易，岁月催人老。  </p><p>可怜之人必有可恨之处，用在自己毫不过分。眼高手低，眼不着地。</p><h3 id="第二年，大二"><a href="#第二年，大二" class="headerlink" title="第二年，大二"></a>第二年，大二</h3><p>如过时间可以重来过的话，要学会对自己的每一句话负责。明晰自己的喜好，取自己所需，争自己想得。学会做人做事留有余地。  </p><p>这一年，班里变化很大，一个网瘾太大当兵退学了，几个挂科严重留级了。这学期开始自己也开始认真学习了，该掉了上课睡觉的毛病，因为想要读研，也因为她。   </p><p>她，感谢她的陪伴和前期的包容，对不起。 如果说恋爱是一门学问的话，我应该还在小学生级别，青涩不勇敢，使你承担了太多。在最美好的的时间里遇见不是很合适、也没有能够好好珍惜的人，如今看来，谈不上遗憾，只是一段经历了。有个疙瘩是跟班里的一个女同学因她闹僵了，唉～如今都找到工作了，祝我们都有美好的明天。  </p><p>上学期的考试成绩还不错，努力也有了收获，但是跟那些学霸级的还是没的比，期末考试那段时间也是挺纠结的。期末前和同学加入了计协web组，一个刚成立的组，感谢这个选择，大学总学了点什么。</p><p>下学期的时间基本都是在逸夫楼度过的。开始带我们的是一个很厉害的学姐，学期初她在忙着找实习，工作室还有另一个学长也在找实习，学姐找到了很好的实习，去了腾讯，然而学长学的不好，找实习都很难找。给我很大的压迫感，有种大学就要结束了，明天就要毕业了的感觉，而我大学什么都没学会，担心自己的以后。学期初的心情很是不好，上学期期末和寒假、开学丢手机、努力一学期成绩仅仅为中上、跟同学关系闹僵等等。此时将所有的情绪都放在了努力学习web开发上，不停的学习，有时为了弄好一个东西很晚才回宿舍。  </p><p>生日前不久跟一起加入工作室的同学关系也弄僵了，以前关系还可以，开学时的情绪一直持续了很久，那时也久久未平，闹僵的原因就不说了，很大原因自己小气吧。生日那天也在忙着学习，忙着配置搭建服务器，十点多舍友发消息问几点回宿舍才知道给准备了生日蛋糕，很是感动。很可惜后来跟他的关系也闹僵了。    </p><p>这一年宿舍的关系也不好，两个舍友闹僵了，大二上学期我还想着找机会聚一聚缓和以下这两位舍友的关系，可惜其中一位不愿意，很是遗憾。现在想想也无所谓了，本性都是自私自利的，性格也相差太大，不能够互相包容。</p><p>如果说大学最大的改变，就是在这学期形成的吧。不相信任何人，不相信任何事，不能够包容，自私自利。拿得起，放不下。但是也找到了自己的目标，找到了自己的方向，最大的收获，也在这年。</p><h3 id="第三年、大三"><a href="#第三年、大三" class="headerlink" title="第三年、大三"></a>第三年、大三</h3><p>业精于勤荒于嬉，行成于思毁于随。  </p><p>上学期开始就退出工作室了，对工作室产生了意见。环境太吵闹，没有学习和做技术的感觉，静不下心。开学初，和同学合作做了第二个小项目，很简单很low，九月下旬接了一个页面小项目。然后这学期比较堕落，微信公众号开发了解皮毛，前端学习也是混，没怎么精进，也没好好上课，回归了游戏的老本行。  这一学期，技术没什么长进，吃老本原地踏步。</p><p>可怜之人必有可恨之处阿，下学期开始准备春招找实习了，结果很遗憾，除了最开始的作业帮没有一个offer，然而自己开始拒了作业帮的offe想要找到更好的r。这一学期还是找不准自己的工作方向，前端弄一点，后端看一点，投的也很乱。技术上除了学了下vue，php基础巩固了以下，专业课基础知识回忆巩固了下，其他长进很少。找实习找的很焦虑，最后跟了学校实习。</p><p>这学期跟班里几个同学一期报名了学车，一边找实习一边学车，生日那天，请一起练车的同学 吃了顿饭，也算是为自己庆祝生日了。   </p><p>感谢大三暑假的勇敢，感谢新浪面试官的答疑解惑，坚持了php的路，没半路又转java，实习前接了个公众号开发的项目，跟校企合作的实习公司请假做自己的项目，事实证明是对的。</p><h3 id="第四年、大四"><a href="#第四年、大四" class="headerlink" title="第四年、大四"></a>第四年、大四</h3><p>行道水穷处，坐看云起时。</p><p>上学期主要就在准备秋招了，投了很多公司，感觉比春招找实习要难很多。基本的生活节奏就是投简历、笔试、面试，这时已经确定了自己的方向，做php。很遗憾的是好几个大公司在笔试就被刷掉了，还有些公司没注意到就已经招完了。班里的同学拿到好offer的也很少，可以说没几个，考研的在努力跑图书馆跑教室，保研的就很舒服了。十月国庆回家返校后开始怀疑自己的方向了，有放弃转java的念头，相关的岗位太少了。最后在十月底第二次跑校宣时收获了第一个较理想的offer，之前有武汉小公司的offer，看不上，没接受。之所以说较理想，是因为上市公司给的薪资高，超出自己预期很多，比肩一线互联网公司甚至超过，但是公司非互联网，技术上较BAT等互联网公司有很大差距，不知道以后发展会怎么样。或许面试真的看缘分的，还有校宣机会真的很重要，这仅仅是跑第二次校宣。感谢陪我跑校宣的同学，第一次一起去的武汉理工录取了他，第二次取得武大录取了我，如果他不去我可能也不会去了，就错失去了这个机会，祝我们都有美好的明天。  </p><p>拿到offer后就很堕落了，想做技术上的学习总是静不下心，天天睡到自然醒，吃喝玩乐。最后学期末选毕设，坑开始了，老师太认真，放假还留学校做了十天。</p><p>这学期也是大部分时间都耗在毕设上了，想去实习都没有足够的时间了，被hr挽拒。每周的生活是检查上周的任务，布置这周的任务，每天看代码，看相关的文档，翻译文档，写总结。越做越烦，毁不该没去跟同学一起去养猪公司混毕设的想法越来越明显。</p><p>前段时间正式的学习了golang的语法知识，golang的底层也是c和汇编，做的毕设正式c和汇编为主，而自己的主要是c部分，php的底层学习拓展也要用到c，希望自己能够坚持把毕设搞下去，将c语言再好好学习一遍，收获一定会很大。徐老师是个好老师，可以说是非常的尽职尽责了，毕设相关的软硬件平台，相关资料全部给我们找好了，有不懂的可以随时问他，只能说自己不争气阿，惰性十足。</p><p>这两周坚持了几天的夜跑，看来又是三天打鱼两天晒网了，明天继续跑吧。</p><p>今天的生日，又在逸夫楼看了一天的代码，唉～后天又要检查。感谢爸妈姐姐的祝福，祝福爸妈和两个姐姐身体健康、两个姐姐家庭幸福、外甥外女健康快乐成长！</p><p>23了，要毕业了，要工作了，愿能够顺利开心毕业，愿工作如意，愿所有是非烟消云散，愿我们都有美好的明天！</p>]]></content>
     
@@ -235,7 +237,7 @@
     
     </summary>
     
-      <category term="心情" scheme="bighua.top/categories/%E5%BF%83%E6%83%85/"/>
+      <category term="随笔" scheme="bighua.top/categories/%E9%9A%8F%E7%AC%94/"/>
     
     
       <category term="心情" scheme="bighua.top/tags/%E5%BF%83%E6%83%85/"/>
