@@ -94,7 +94,7 @@
 <meta property="og:description" content="Go在操作系统提供的内核线程之上搭建了一个特有两级线程模型，称为Goroutine。其代表的含义为：  不要用共享内存的方式来通信，作为替代，应该以通信作为手段来共享内存。  Go不推荐以共享内存区的方式传递数据，作为替代，优先使用Channel。被用来在多个Goroutine之间传递数据，并且会保证其过程的同步。提供了一些传统的并发访问控制方式（互斥量、条件变量等）。 线程实现模型Go语言的线程">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://git-blog.oss-cn-beijing.aliyuncs.com/gfayilundiaodu.png">
-<meta property="og:updated_time" content="2018-05-02T06:01:35.295Z">
+<meta property="og:updated_time" content="2018-05-02T06:07:54.983Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-Go并发底层">
 <meta name="twitter:description" content="Go在操作系统提供的内核线程之上搭建了一个特有两级线程模型，称为Goroutine。其代表的含义为：  不要用共享内存的方式来通信，作为替代，应该以通信作为手段来共享内存。  Go不推荐以共享内存区的方式传递数据，作为替代，优先使用Channel。被用来在多个Goroutine之间传递数据，并且会保证其过程的同步。提供了一些传统的并发访问控制方式（互斥量、条件变量等）。 线程实现模型Go语言的线程">
@@ -564,20 +564,27 @@
 <li>startm(_p_  *p, spinning bool)。唤醒或创建一个M去关联_p_并开始执行。<blockquote>
 <p>底层待完善，见《Go 并发编程实战 第二版》</p>
 </blockquote>
-<h3 id="5-系统监测任务"><a href="#5-系统监测任务" class="headerlink" title="5.系统监测任务"></a>5.系统监测任务</h3>由sysmon函数实现。监测任务主要做：  </li>
+</li>
+</ul>
+<h3 id="5-系统监测任务"><a href="#5-系统监测任务" class="headerlink" title="5.系统监测任务"></a>5.系统监测任务</h3><p>由sysmon函数实现。监测任务主要做：  </p>
+<ul>
 <li>在需要时抢夺符合条件的G和P；</li>
 <li>在需要时进行强制GC；</li>
 <li>在需要时清扫堆；</li>
 <li>在需要时打印调度器跟踪信息。<blockquote>
 <p>底层待完善，见《Go 并发编程实战 第二版》</p>
 </blockquote>
-<h3 id="6-变更P的最大数量"><a href="#6-变更P的最大数量" class="headerlink" title="6.变更P的最大数量"></a>6.变更P的最大数量</h3>P最大数量变更直接影响Go程序的并发性能。调用runtime.GOMAXPROC函数时，会先进行下面两项检查，确保变更合法和有效。  </li>
+</li>
+</ul>
+<h3 id="6-变更P的最大数量"><a href="#6-变更P的最大数量" class="headerlink" title="6.变更P的最大数量"></a>6.变更P的最大数量</h3><p>P最大数量变更直接影响Go程序的并发性能。调用runtime.GOMAXPROC函数时，会先进行下面两项检查，确保变更合法和有效。  </p>
+<ul>
 <li>若传入的参数值（新值）比运行时系统为此设定的硬性上限值（256）大，前者会被后者替代。</li>
 <li>新值不是正整数，或者与存储在运行时系统中的P最大数量值（旧值）相同，该函数或略此变更直接返回旧值。<blockquote>
 <p>底层待完善，见《Go 并发编程实战 第二版》</p>
 </blockquote>
-<h2 id="更多的细节"><a href="#更多的细节" class="headerlink" title="更多的细节"></a>更多的细节</h2><h3 id="1-g0和m0"><a href="#1-g0和m0" class="headerlink" title="1.g0和m0"></a>1.g0和m0</h3>运行时系统中的每个M都拥有一个特殊的G，称为M的g0。M的g0管辖的内存称为M的调度栈，对应于操作系统为相应线程创建的栈。M的调度栈也成为OS线程栈或系统栈（参runtime.systemstack函数）。</li>
+</li>
 </ul>
+<h2 id="更多的细节"><a href="#更多的细节" class="headerlink" title="更多的细节"></a>更多的细节</h2><h3 id="1-g0和m0"><a href="#1-g0和m0" class="headerlink" title="1.g0和m0"></a>1.g0和m0</h3><p>运行时系统中的每个M都拥有一个特殊的G，称为M的g0。M的g0管辖的内存称为M的调度栈，对应于操作系统为相应线程创建的栈。M的调度栈也成为OS线程栈或系统栈（参runtime.systemstack函数）。</p>
 <p>M的g0由Go运行时系统在初始化M时创建并分配给M的，一般用于执行调度、垃圾回收、栈管理等方面的工作。M还有一个专用于处理信号的G，称为<code>gsignal</code>。它的栈称为信号栈。系统栈和信号栈不会自动增长，但一定会有足够的空间执行代码。</p>
 <p>除g0，其他由M运行的G都可以视为用户级别G，称为用户G，g0和gsignal称为系统G。g0不会被阻塞，不包含在任何G队列或列表中。栈不会在垃圾回收中被扫描。</p>
 <p>除每个M都有属于自己的g0外，还存在一个runtime.g0。runtime.g0用于执行引导程序，运行在Go程序拥有的<code>第一个内核线程</code>中，该内核线程称为runtime.m0。runtime.m0和runtime.g0都是静态分配的，引导程序无需为它们分配内存。</p>
