@@ -3,6 +3,27 @@
   
     
     <entry>
+      <title>笑话收集</title>
+      <link href="/2018/05/03/%E7%AC%91%E8%AF%9D%E6%94%B6%E9%9B%86/"/>
+      <url>/2018/05/03/%E7%AC%91%E8%AF%9D%E6%94%B6%E9%9B%86/</url>
+      <content type="html"><![CDATA[<p>收集一些有意思的笑话。</p><h3 id="一天"><a href="#一天" class="headerlink" title="一天,"></a>一天,</h3><p>一天，了先生去划船，</p><p>孑孓孑孓孑孓孑孓孑孓孑孓…… <a href="https://www.zhihu.com/question/41822206/answer/330874304" target="_blank" rel="noopener">来源</a></p><p>### </p>]]></content>
+      
+      <categories>
+          
+          <category> 随笔 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 笑话 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>Golang笔记-channel</title>
       <link href="/2018/05/02/Golang%E7%AC%94%E8%AE%B0-channel/"/>
       <url>/2018/05/02/Golang%E7%AC%94%E8%AE%B0-channel/</url>
@@ -421,13 +442,6 @@
   
     
     <entry>
-      <title>categories</title>
-      <link href="/categories/index.html"/>
-      <url>/categories/index.html</url>
-      <content type="html"><![CDATA[]]></content>
-    </entry>
-    
-    <entry>
       <title>BUG制造师</title>
       <link href="/about/index.html"/>
       <url>/about/index.html</url>
@@ -438,6 +452,13 @@
       <title>标签</title>
       <link href="/tags/index.html"/>
       <url>/tags/index.html</url>
+      <content type="html"><![CDATA[]]></content>
+    </entry>
+    
+    <entry>
+      <title>categories</title>
+      <link href="/categories/index.html"/>
+      <url>/categories/index.html</url>
       <content type="html"><![CDATA[]]></content>
     </entry>
     

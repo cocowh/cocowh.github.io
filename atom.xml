@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="bighua.top/"/>
-  <updated>2018-05-02T12:34:27.095Z</updated>
+  <updated>2018-05-03T07:44:16.842Z</updated>
   <id>bighua.top/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>笑话收集</title>
+    <link href="bighua.top/2018/05/03/%E7%AC%91%E8%AF%9D%E6%94%B6%E9%9B%86/"/>
+    <id>bighua.top/2018/05/03/笑话收集/</id>
+    <published>2018-05-03T07:38:14.000Z</published>
+    <updated>2018-05-03T07:44:16.842Z</updated>
+    
+    <content type="html"><![CDATA[<p>收集一些有意思的笑话。</p><h3 id="一天"><a href="#一天" class="headerlink" title="一天,"></a>一天,</h3><p>一天，了先生去划船，</p><p>孑孓孑孓孑孓孑孓孑孓孑孓…… <a href="https://www.zhihu.com/question/41822206/answer/330874304" target="_blank" rel="noopener">来源</a></p><p>### </p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;收集一些有意思的笑话。&lt;/p&gt;
+&lt;h3 id=&quot;一天&quot;&gt;&lt;a href=&quot;#一天&quot; class=&quot;headerlink&quot; title=&quot;一天,&quot;&gt;&lt;/a&gt;一天,&lt;/h3&gt;&lt;p&gt;一天，了先生去划船，&lt;/p&gt;
+&lt;p&gt;孑孓孑孓孑孓孑孓孑孓孑孓…… &lt;a href=&quot;https:/
+      
+    
+    </summary>
+    
+      <category term="随笔" scheme="bighua.top/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+      <category term="笑话" scheme="bighua.top/tags/%E7%AC%91%E8%AF%9D/"/>
+    
+  </entry>
   
   <entry>
     <title>Golang笔记-channel</title>
