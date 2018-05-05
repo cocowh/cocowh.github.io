@@ -3,6 +3,35 @@
   
     
     <entry>
+      <title>Golang笔记-同步</title>
+      <link href="/2018/05/05/Golang%E7%AC%94%E8%AE%B0-%E5%90%8C%E6%AD%A5/"/>
+      <url>/2018/05/05/Golang%E7%AC%94%E8%AE%B0-%E5%90%8C%E6%AD%A5/</url>
+      <content type="html"><![CDATA[]]></content>
+      
+      <categories>
+          
+          <category> Golang </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Golang </tag>
+            
+            <tag> 同步 </tag>
+            
+            <tag> 锁 </tag>
+            
+            <tag> 原子操作 </tag>
+            
+            <tag> 条件变量 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>笑话收集</title>
       <link href="/2018/05/03/%E7%AC%91%E8%AF%9D%E6%94%B6%E9%9B%86/"/>
       <url>/2018/05/03/%E7%AC%91%E8%AF%9D%E6%94%B6%E9%9B%86/</url>
@@ -449,16 +478,16 @@
     </entry>
     
     <entry>
-      <title>标签</title>
-      <link href="/tags/index.html"/>
-      <url>/tags/index.html</url>
+      <title>categories</title>
+      <link href="/categories/index.html"/>
+      <url>/categories/index.html</url>
       <content type="html"><![CDATA[]]></content>
     </entry>
     
     <entry>
-      <title>categories</title>
-      <link href="/categories/index.html"/>
-      <url>/categories/index.html</url>
+      <title>标签</title>
+      <link href="/tags/index.html"/>
+      <url>/tags/index.html</url>
       <content type="html"><![CDATA[]]></content>
     </entry>
     

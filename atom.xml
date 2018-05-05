@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="bighua.top/"/>
-  <updated>2018-05-03T07:44:16.842Z</updated>
+  <updated>2018-05-05T10:50:59.068Z</updated>
   <id>bighua.top/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Golang笔记-同步</title>
+    <link href="bighua.top/2018/05/05/Golang%E7%AC%94%E8%AE%B0-%E5%90%8C%E6%AD%A5/"/>
+    <id>bighua.top/2018/05/05/Golang笔记-同步/</id>
+    <published>2018-05-05T10:49:17.000Z</published>
+    <updated>2018-05-05T10:50:59.068Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+      <category term="Golang" scheme="bighua.top/categories/Golang/"/>
+    
+    
+      <category term="Golang" scheme="bighua.top/tags/Golang/"/>
+    
+      <category term="同步" scheme="bighua.top/tags/%E5%90%8C%E6%AD%A5/"/>
+    
+      <category term="锁" scheme="bighua.top/tags/%E9%94%81/"/>
+    
+      <category term="原子操作" scheme="bighua.top/tags/%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C/"/>
+    
+      <category term="条件变量" scheme="bighua.top/tags/%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F/"/>
+    
+  </entry>
   
   <entry>
     <title>笑话收集</title>
