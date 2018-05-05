@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="程序测试可使用go test命令或者标准库提供的testing代码包。 功能测试测试源码文件应该与被测试源码文件处于同一代码包内。testing中的API和go test命令协同使用，testing提供自动化测试支持，自动执行目标代码包中的任何测试函数。 功能测试函数功能测试程序以函数为单位，被用于测试程序实体功能的函数的名称和签名形如:func TestXxx (t *testing.T) 常规">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-02T06:35:47.214Z">
+<meta property="og:updated_time" content="2018-05-05T10:32:38.090Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-测试">
 <meta name="twitter:description" content="程序测试可使用go test命令或者标准库提供的testing代码包。 功能测试测试源码文件应该与被测试源码文件处于同一代码包内。testing中的API和go test命令协同使用，testing提供自动化测试支持，自动执行目标代码包中的任何测试函数。 功能测试函数功能测试程序以函数为单位，被用于测试程序实体功能的函数的名称和签名形如:func TestXxx (t *testing.T) 常规">
@@ -423,7 +423,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  5,767
+                  5,763
                 </span>
               
 
@@ -517,7 +517,29 @@
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Benchmark-2   	       1	1000449919 ns/op	  12.34 MB/s</span><br><span class="line">PASS</span><br><span class="line">ok  	testing/bmt	1.047s</span><br></pre></td></tr></table></figure>
 <p><code>12.34 MB/s</code>:每秒被处理的字节的数量（MB为单位）。等于测试运行程序在执行（可能是多次）Benchmark函数的过程中每秒调用b.SetBytes方法的次数乘以传入的整数值。</p>
-<h4 id="基准测试的运行"><a href="#基准测试的运行" class="headerlink" title="基准测试的运行"></a>基准测试的运行</h4><p>go test命令运行基准测试的标记：<br>标记名称 | 标记描述<br>:-: | :-:<br><code>-bench regexp</code> | 默认情况下不会运行任何基准测试，使用该标记以执行匹配“regexp”处的正则表达式所代表的基准测试函数。若需要运行所有的基准测试函数，可以写为:<code>-bench .</code>或<code>-bench=.</code>。<br><code>-benchmem</code> | 在输出内容中包含基准测试的内存分配统计信息。<br><code>-benchtime t</code> | 间接地控制单个基准测试函数的操作次数。<code>t</code>指执行单个测试函数的累计耗时上限，默认<code>1s</code>。</p>
+<h4 id="基准测试的运行"><a href="#基准测试的运行" class="headerlink" title="基准测试的运行"></a>基准测试的运行</h4><p>go test命令运行基准测试的标记：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">标记名称</th>
+<th style="text-align:left">标记描述 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>-bench regexp</code></td>
+<td style="text-align:left">默认情况下不会运行任何基准测试，使用该标记以执行匹配“regexp”处的正则表达式所代表的基准测试函数。若需要运行所有的基准测试函数，可以写为:<code>-bench .</code>或<code>-bench=.</code>。 </td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-benchmem</code></td>
+<td style="text-align:left">在输出内容中包含基准测试的内存分配统计信息。 </td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-benchtime t</code></td>
+<td style="text-align:left">间接地控制单个基准测试函数的操作次数。<code>t</code>指执行单个测试函数的累计耗时上限，默认<code>1s</code>。</td>
+</tr>
+</tbody>
+</table>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost src]# go test -bench=Prime cnet/ctcp</span><br><span class="line">BenchmarkPrimeFuncs-2   	       1	3006791258 ns/op</span><br><span class="line">--- BENCH: BenchmarkPrimeFuncs-2</span><br><span class="line">	tcp_test.go:57: Benchmark tcp listener &amp; sender (serverAddr=127.0.0.1:8081)... [GOMAXPROCS=2, NUM_CPU=2, NUM_GOROUTINE=6]</span><br><span class="line">PASS</span><br><span class="line">ok  	cnet/ctcp	5.023s</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>结构体类型testing.B的字段N可以用于设置对基准测试函数中的某一个代码块重复执行的次数：</p>
@@ -581,7 +603,7 @@
 <h4 id="样本测试的运行"><a href="#样本测试的运行" class="headerlink" title="样本测试的运行"></a>样本测试的运行</h4><blockquote>
 <p><code>[root@localhost et]# go test -v</code></p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">=== RUN   TestOne</span><br><span class="line">--- PASS: TestOne (0.00s)</span><br><span class="line">	et_test.go:18: Hi~</span><br><span class="line">=== RUN   ExampleHello</span><br><span class="line">--- PASS: ExampleHello (0.00s)</span><br><span class="line">PASS</span><br><span class="line">ok  	testing/et	0.006s</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">=== RUN   TestOne</span><br><span class="line">--- PASS: TestOne (0.00s)</span><br><span class="line">	et_tsest.go:18: Hi~</span><br><span class="line">=== RUN   ExampleHello</span><br><span class="line">--- PASS: ExampleHello (0.00s)</span><br><span class="line">PASS</span><br><span class="line">ok  	testing/et	0.006s</span><br></pre></td></tr></table></figure>
 <p>修改<code>Output:</code>右边内容”Hello, Erlang”。</p>
 <blockquote>
 <p><code>[root@localhost et]# go test -v</code></p>
@@ -640,7 +662,25 @@
 <p><code>go tool pprof ./测试代码包.test 代码包路径/mem.out</code></p>
 </blockquote>
 <p>要获得最好的取样效果，可以将<code>-memprofilerate</code>标记的值设置为1，当有一个字节被分配，分析器就会进行一次取样。消耗比较大，可将<code>GOGC</code>设置为”off”，使垃圾回收器处于不可用状态。但会让程序运行在一个没有垃圾回收器的环境中，可用的内存只会不断的减少，没有可用的内存时程序会崩溃。</p>
-<h4 id="记录程序阻塞事件"><a href="#记录程序阻塞事件" class="headerlink" title="记录程序阻塞事件"></a>记录程序阻塞事件</h4><p>在<code>go test</code>命令添加<code>-blockprofile</code>和<code>-blockprofilerate</code>标记来达到记录线程阻塞事件。<br>标记名称 | 标记描述<br>:-: | :-<br><code>-blockprofile block.out</code> | 记录Goroutine阻塞事件，并在所有测试通过后将概要信息写到指定的文件<code>block.out</code>中。<br><code>-blockprofilerate b</code> | 用于控制记录Goroutine阻塞事件的时间间隔，单位为次，默认值为1</p>
+<h4 id="记录程序阻塞事件"><a href="#记录程序阻塞事件" class="headerlink" title="记录程序阻塞事件"></a>记录程序阻塞事件</h4><p>在<code>go test</code>命令添加<code>-blockprofile</code>和<code>-blockprofilerate</code>标记来达到记录线程阻塞事件。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">标记名称</th>
+<th style="text-align:left">标记描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>-blockprofile block.out</code></td>
+<td style="text-align:left">记录Goroutine阻塞事件，并在所有测试通过后将概要信息写到指定的文件<code>block.out</code>中。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-blockprofilerate b</code></td>
+<td style="text-align:left">用于控制记录Goroutine阻塞事件的时间间隔，单位为次，默认值为1</td>
+</tr>
+</tbody>
+</table>
 <blockquote>
 <p><code>go test -blockprofile block.out -blockprofilerate 100 代码包</code></p>
 </blockquote>
@@ -648,7 +688,38 @@
 <p><code>go tool pprof ./代码包.test 代码包路径/block.out</code></p>
 </blockquote>
 <p><code>-blockprofilerate</code>的值通过标准库代码包runtime中的API函数<code>SetBlockProfileRate</code>传递给Go运行时系统。传入参数0，意味着取消记录操作，传入参数1，每一个阻塞事件都将被记录。默认值1，可省略<code>-blockprofilerate</code>标记。</p>
-<h3 id="测试覆盖率"><a href="#测试覆盖率" class="headerlink" title="测试覆盖率"></a>测试覆盖率</h3><p>go test命令可接受的与测试覆盖率有关的标记。<br>标记名称 | 使用示例 | 说明<br>:- | :- | :-<br><code>-cover</code> | <code>-cover</code> | 启用测试覆盖率分析<br><code>-covermode</code> | <code>-covermode=set</code> | 自动添加<code>-cover</code>标记并设置不同的覆盖率统计模式。支持的模式有：set:只记录语句是否被执行过，count:记录语句被执行的次数，atomic:记录语句被执行次数并保证在并发时也能正确计数。模式不能同时使用，默认set。<br><code>-coverpkg</code> | <code>-coverpkg bufio,net</code> | 自动添加<code>-cover</code>标记并对该标记后所罗列的代码包中的程序进行测试覆盖率统计。默认情况下，测试运行程序只会被直接测试的代码包中的程序进行统计。意味着在测试中被间接使用到的其他代码包中的程序也可以被统计。代码包由导入路径指定，多个代码包之间“,”分隔。<br><code>-coverprofile</code> | <code>-coverprofile cover.out</code> | 自动添加<code>-cover</code>标记并将所有已经通过测试的覆盖率的概要写入指定文件中。</p>
+<h3 id="测试覆盖率"><a href="#测试覆盖率" class="headerlink" title="测试覆盖率"></a>测试覆盖率</h3><p>go test命令可接受的与测试覆盖率有关的标记。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">标记名称</th>
+<th style="text-align:center">使用示例</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>-cover</code></td>
+<td style="text-align:center"><code>-cover</code></td>
+<td style="text-align:left">启用测试覆盖率分析</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-covermode</code></td>
+<td style="text-align:center"><code>-covermode=set</code></td>
+<td style="text-align:left">自动添加<code>-cover</code>标记并设置不同的覆盖率统计模式。支持的模式有：set:只记录语句是否被执行过，count:记录语句被执行的次数，atomic:记录语句被执行次数并保证在并发时也能正确计数。模式不能同时使用，默认set。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-coverpkg</code></td>
+<td style="text-align:center"><code>-coverpkg bufio,net</code></td>
+<td style="text-align:left">自动添加<code>-cover</code>标记并对该标记后所罗列的代码包中的程序进行测试覆盖率统计。默认情况下，测试运行程序只会被直接测试的代码包中的程序进行统计。意味着在测试中被间接使用到的其他代码包中的程序也可以被统计。代码包由导入路径指定，多个代码包之间“,”分隔。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-coverprofile</code></td>
+<td style="text-align:center"><code>-coverprofile cover.out</code></td>
+<td style="text-align:left">自动添加<code>-cover</code>标记并将所有已经通过测试的覆盖率的概要写入指定文件中。</td>
+</tr>
+</tbody>
+</table>
 <blockquote>
 <p><code>root@localhost src]# go test -cover cnet/ctcp</code></p>
 </blockquote>
@@ -681,7 +752,43 @@
 <p><code>go tool cover -html=cover.out</code></p>
 </blockquote>
 <p><code>-html</code>标记用更加图形化的信息来反应统计情况，该命令会立即返回并且在标准输出上也不会出现任何内容，默认浏览器会被启动并显示cover工具根据概要文件生成的html格式的页面文件。被测试语句以绿色显示，未被测试的语句以红色显示，未参加测试覆盖率计算的语句以灰色表示。不同统计模式下生成的概要文件不同，对应的html文件也不同。</p>
-<p>cover工具可接受的标记。<br>标记名称 | 使用示例 | 说明<br>:- | :- | :-<br><code>-func</code> | <code>-func=cover.out</code> | 根据根要文件中的内容输出每一个被测试函数的测试覆盖率概要信息。<br><code>-html</code> | <code>-html=cover.out</code> | 把概要文件中的内容换成HTML格式的文件，并使用默认浏览器查看它。<br><code>-mode</code> | <code>-mode=count</code> | 被用于设置测试概要文件的统计模式。<br><code>-o</code> | <code>-o=cover.out</code> | 把重写后的源代码的输出到指定文件中，如果不添加此标记，那么重写后的源代码会输出到标准输出上。<br><code>-var</code> | <code>-var=GoCover</code> | 设置被添加到原先的源代码中的额外变量的名称</p>
+<p>cover工具可接受的标记。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">标记名称</th>
+<th style="text-align:center">使用示例</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>-func</code></td>
+<td style="text-align:center"><code>-func=cover.out</code></td>
+<td style="text-align:left">根据根要文件中的内容输出每一个被测试函数的测试覆盖率概要信息。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-html</code></td>
+<td style="text-align:center"><code>-html=cover.out</code></td>
+<td style="text-align:left">把概要文件中的内容换成HTML格式的文件，并使用默认浏览器查看它。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-mode</code></td>
+<td style="text-align:center"><code>-mode=count</code></td>
+<td style="text-align:left">被用于设置测试概要文件的统计模式。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-o</code></td>
+<td style="text-align:center"><code>-o=cover.out</code></td>
+<td style="text-align:left">把重写后的源代码的输出到指定文件中，如果不添加此标记，那么重写后的源代码会输出到标准输出上。</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-var</code></td>
+<td style="text-align:center"><code>-var=GoCover</code></td>
+<td style="text-align:left">设置被添加到原先的源代码中的额外变量的名称</td>
+</tr>
+</tbody>
+</table>
 <h2 id="程序文档"><a href="#程序文档" class="headerlink" title="程序文档"></a>程序文档</h2><p>使用<code>godoc</code>命令在本机启动一个可被用于查看本机所有工作区域中的所有代码包文档的web服务。</p>
 <blockquote>
 <p><code>godoc -http=:9090 -index</code></p>

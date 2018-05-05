@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="进程间的通讯常被称为IPC（Interprocess Communication）。Linux操作系统中分为基于通讯的IPC方法、基于信号的IPC方法以及基于同步的IPC方法。  基于通讯的IPC方法又分为以数据传送为手段的IPC方法和以共享内存为手段的IPC方法。    数据传送：管道（用以被传送子节流），消息队列（用以被传送结构化的消息对象）。 共享内存：共享内存区，最快的一种IPC方法。 基">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-27T09:51:17.570Z">
+<meta property="og:updated_time" content="2018-05-05T10:26:52.193Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-多进程编程理论">
 <meta name="twitter:description" content="进程间的通讯常被称为IPC（Interprocess Communication）。Linux操作系统中分为基于通讯的IPC方法、基于信号的IPC方法以及基于同步的IPC方法。  基于通讯的IPC方法又分为以数据传送为手段的IPC方法和以共享内存为手段的IPC方法。    数据传送：管道（用以被传送子节流），消息队列（用以被传送结构化的消息对象）。 共享内存：共享内存区，最快的一种IPC方法。 基">
@@ -423,7 +423,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  13,691
+                  13,661
                 </span>
               
 
@@ -592,9 +592,87 @@
 <p>信号与管道都被称为基础的IPC方法。再基于数据传递的解决方案中，要保证数据的原子性，管道不提供这种原子性保证，Go标准库中提供的API也没有附加这种保证。</p>
 <h3 id="Socket"><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h3><p>Socket，常被译为套接字，通过网络连接来使两个或更多的进程建立通讯并相互传递数据。使通讯端的位置透明化。</p>
 <h4 id="1-Socket的基本特征"><a href="#1-Socket的基本特征" class="headerlink" title="1.Socket的基本特征"></a>1.Socket的基本特征</h4><p>在Linux操作系统中存在一个名为Socket的系统调用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int socket(int domain, int type, int protocol)</span><br></pre></td></tr></table></figure></p>
-<p>接收三个参数分别代表了这个Socket的通讯域、类型和所用协议。通讯域决定了该Socket的地址格式和通讯范围。<br>通讯域 | 含义 | 地址形式 | 通讯范围<br> :- |:- |:- | :-<br> AF_INET | IPv4域 | IPv4地址（4个字节），端口号（两个字节）| 在基于IPv4协议的网络中的任意两台计算机之上的两个应用程序<br> AF_INET6 | IPv6域 | IPv6地址（16个字节），端口号（两个字节） | 在基于IPv6协议的网络中的任意两台计算机之上的两个应用程序<br> AF_UNIX | Unix域 | 路径名称 | 在同一台计算机上的两个应用程序</p>
+<p>接收三个参数分别代表了这个Socket的通讯域、类型和所用协议。通讯域决定了该Socket的地址格式和通讯范围。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">通讯域</th>
+<th style="text-align:center">含义</th>
+<th style="text-align:left">地址形式</th>
+<th style="text-align:left">通讯范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"> AF_INET</td>
+<td style="text-align:center">IPv4域</td>
+<td style="text-align:left">IPv4地址（4个字节），端口号（两个字节）</td>
+<td style="text-align:left">在基于IPv4协议的网络中的任意两台计算机之上的两个应用程序</td>
+</tr>
+<tr>
+<td style="text-align:center"> AF_INET6</td>
+<td style="text-align:center">IPv6域</td>
+<td style="text-align:left">IPv6地址（16个字节），端口号（两个字节）</td>
+<td style="text-align:left">在基于IPv6协议的网络中的任意两台计算机之上的两个应用程序</td>
+</tr>
+<tr>
+<td style="text-align:center"> AF_UNIX</td>
+<td style="text-align:center">Unix域</td>
+<td style="text-align:left">路径名称</td>
+<td style="text-align:left">在同一台计算机上的两个应用程序</td>
+</tr>
+</tbody>
+</table>
 <p><code>AF</code>是“address family”的缩写。</p>
-<p>Socket的类型有SOCK_STREAM、SOCK_DGRAM、面向更底层的SOCK_RAW、针对某个新兴数据传输技术的SOCK_SEQPACKET。<br>特性 | SOCK_DGRAM | SOCK_RAW | SOCK_SEQPACKET | SOCK_STREAM<br>:- | :- |:- | :- | :-<br>数据形式 | 数据报 | 数据报 | 字节流 | 字节流<br>数据边界 | 有 | 有 | 有 | 没有<br>逻辑边界 | 没有 | 没有 | 有 | 有<br>数据有序性 | 不能保证 | 不能保证 | 能够保证 | 能够保证<br>传输可靠性 | 不具备 | 不具备 | 具备 | 具备</p>
+<p>Socket的类型有SOCK_STREAM、SOCK_DGRAM、面向更底层的SOCK_RAW、针对某个新兴数据传输技术的SOCK_SEQPACKET。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">特性</th>
+<th style="text-align:center">SOCK_DGRAM</th>
+<th style="text-align:center">SOCK_RAW</th>
+<th style="text-align:center">SOCK_SEQPACKET</th>
+<th style="text-align:center">SOCK_STREAM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">数据形式</td>
+<td style="text-align:center">数据报</td>
+<td style="text-align:center">数据报</td>
+<td style="text-align:center">字节流</td>
+<td style="text-align:center">字节流</td>
+</tr>
+<tr>
+<td style="text-align:center">数据边界</td>
+<td style="text-align:center">有</td>
+<td style="text-align:center">有</td>
+<td style="text-align:center">有</td>
+<td style="text-align:center">没有</td>
+</tr>
+<tr>
+<td style="text-align:center">逻辑边界</td>
+<td style="text-align:center">没有</td>
+<td style="text-align:center">没有</td>
+<td style="text-align:center">有</td>
+<td style="text-align:center">有</td>
+</tr>
+<tr>
+<td style="text-align:center">数据有序性</td>
+<td style="text-align:center">不能保证</td>
+<td style="text-align:center">不能保证</td>
+<td style="text-align:center">能够保证</td>
+<td style="text-align:center">能够保证</td>
+</tr>
+<tr>
+<td style="text-align:center">传输可靠性</td>
+<td style="text-align:center">不具备</td>
+<td style="text-align:center">不具备</td>
+<td style="text-align:center">具备</td>
+<td style="text-align:center">具备</td>
+</tr>
+</tbody>
+</table>
 <blockquote>
 <p>以数据报为数据形式意味着数据接收方的Socket接口程序可以意识到数据的边界并会对他们进行切分。省去接收方的应用程序寻找数据边界和切分数据的工作量。</p>
 </blockquote>
@@ -603,7 +681,41 @@
 </blockquote>
 <p>面向有连接的Socket之间在进行数据传输之前必须要先建立逻辑连接，之后通讯双方可以互相传输数据。连接暗含双方地址，在传输数据时不必再指定目标地址。面向无链接的Socket再进行通讯时无需建立连接，传递的每一个数据包都是独立的，被直接发送到网络上，每个数据包都含有目标地址，数据流是单向的。不能用同一个面向无连接的Socket实例既发送数据又接收数据。</p>
 <p>SOCK_RAW类型的Socket提供了一个可以直接通过底层（TCP/IP协议栈中的网络互联层）传递数据。应用程序必须具有操作系统的超级用户权限才能够使用这种方式，使用成本相对较高，应用程序一般需要自己构建数据传输格式（像TCP/IP协议栈中的TCP协议的数据段格式和UDP协议的数据报格式）。应用程序极少使用这种类型的Socket。</p>
-<p>一般把0作为Socket的第三个参数值，含义是让操作系统内核根据第一个参数和第二个参数的值自行决定Socket所使用的协议。既Socket的通讯域和类型与所使用的协议之间存在对应关系。<br>决定因素 | SOCK_DGRAM | SOCK_RAW | SOCK_SEQPACKET | SOCK_STREAM<br>:- | :- | :- | :- | :-<br>AF_INET | UDP | IPv4 | SCTP | TC或SCTP<br>AF_INET6 | UDP | IPv6 | SCTP | TCP或SCTP<br>AF_UNIX | 有效 | 无效 | 有效 | 有效</p>
+<p>一般把0作为Socket的第三个参数值，含义是让操作系统内核根据第一个参数和第二个参数的值自行决定Socket所使用的协议。既Socket的通讯域和类型与所使用的协议之间存在对应关系。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">决定因素</th>
+<th style="text-align:center">SOCK_DGRAM</th>
+<th style="text-align:center">SOCK_RAW</th>
+<th style="text-align:center">SOCK_SEQPACKET</th>
+<th style="text-align:center">SOCK_STREAM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">AF_INET</td>
+<td style="text-align:center">UDP</td>
+<td style="text-align:center">IPv4</td>
+<td style="text-align:center">SCTP</td>
+<td style="text-align:center">TC或SCTP</td>
+</tr>
+<tr>
+<td style="text-align:center">AF_INET6</td>
+<td style="text-align:center">UDP</td>
+<td style="text-align:center">IPv6</td>
+<td style="text-align:center">SCTP</td>
+<td style="text-align:center">TCP或SCTP</td>
+</tr>
+<tr>
+<td style="text-align:center">AF_UNIX</td>
+<td style="text-align:center">有效</td>
+<td style="text-align:center">无效</td>
+<td style="text-align:center">有效</td>
+<td style="text-align:center">有效</td>
+</tr>
+</tbody>
+</table>
 <p><code>有效</code>表示该通讯域和类型的组合会使内核选择某个内部的Socket协议。<br><code>无效</code>表示该通讯域和类型的组合是不合法的。</p>
 <p>在没有发生任何错误的情况下，系统调用socket会返回一个int类型的值，该值是作为socket唯一标示符的文件描述符。得到该标示符后，可以调用其他系统调用来进行各种相关操作，例如绑定和监听端口、发送和接收数据以及关闭Socket实例等等。</p>
 <p>通过系统调用来操作系统提供的Socket接口，Socket接口程序与TCP/IP协议栈的实现程序一样，是Linux操作系统内核的一部分。</p>
@@ -612,7 +724,63 @@
 <blockquote>
 <p><code>func Listen(net, laddr string)(Listener, error)</code></p>
 </blockquote>
-<p>函数net.Listen被用于获取一个监听器，接收两个string类型的参数，参数一表示以何种协议在给定的地址上监听，Go中用一些字符串字面量来表示。<br>字面量 | Socket协议 | 备注<br> :- | :- | :-<br> “tcp” | TCP | 无<br> “tcp4” | TCP | 网络互联层协议仅支持IPv4<br> “tcp6” | TCP | 网络互联层协议仅支持Ipv6<br> “udp”  | UDP | 无<br> “udp4” | UDP | 网络互联层协议仅支持IPv4<br> “udp6” | UDP | 网络互联层协议仅支持IPv6<br> “unix” | 有效 | 在通讯域协议为AF_UNIX且类型为SOCK_STREAM的时候内核采用的默认协议<br> “unixgram” | 有效 | 在通讯域协议为AF_UNIX且类型为SOCK_DGRAM的时候内核采用的默认协议<br> “unixpacket”  | 有效 | 在通讯域为AF_UNIX且类型为SOCK_SEQPACKET的时候内核采用的默认协议</p>
+<p>函数net.Listen被用于获取一个监听器，接收两个string类型的参数，参数一表示以何种协议在给定的地址上监听，Go中用一些字符串字面量来表示。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">字面量</th>
+<th style="text-align:center">Socket协议</th>
+<th style="text-align:left">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"> “tcp”</td>
+<td style="text-align:center">TCP</td>
+<td style="text-align:left">无</td>
+</tr>
+<tr>
+<td style="text-align:center"> “tcp4”</td>
+<td style="text-align:center">TCP</td>
+<td style="text-align:left">网络互联层协议仅支持IPv4</td>
+</tr>
+<tr>
+<td style="text-align:center"> “tcp6”</td>
+<td style="text-align:center">TCP</td>
+<td style="text-align:left">网络互联层协议仅支持Ipv6</td>
+</tr>
+<tr>
+<td style="text-align:center"> “udp”</td>
+<td style="text-align:center">UDP</td>
+<td style="text-align:left">无</td>
+</tr>
+<tr>
+<td style="text-align:center"> “udp4”</td>
+<td style="text-align:center">UDP</td>
+<td style="text-align:left">网络互联层协议仅支持IPv4</td>
+</tr>
+<tr>
+<td style="text-align:center"> “udp6”</td>
+<td style="text-align:center">UDP</td>
+<td style="text-align:left">网络互联层协议仅支持IPv6</td>
+</tr>
+<tr>
+<td style="text-align:center"> “unix”</td>
+<td style="text-align:center">有效</td>
+<td style="text-align:left">在通讯域协议为AF_UNIX且类型为SOCK_STREAM的时候内核采用的默认协议</td>
+</tr>
+<tr>
+<td style="text-align:center"> “unixgram”</td>
+<td style="text-align:center">有效</td>
+<td style="text-align:left">在通讯域协议为AF_UNIX且类型为SOCK_DGRAM的时候内核采用的默认协议</td>
+</tr>
+<tr>
+<td style="text-align:center"> “unixpacket”</td>
+<td style="text-align:center">有效</td>
+<td style="text-align:left">在通讯域为AF_UNIX且类型为SOCK_SEQPACKET的时候内核采用的默认协议</td>
+</tr>
+</tbody>
+</table>
 <p>函数net.Listen的第一个参数的值所代表的协议必须是面向流的协议，TCP和SCTP都属于面向流的协议，TCP协议实现程序无法记录和意识到任何消息边界，无法从字节流分离出消息，SCTP协议可以做到，使得应用程序无需再在发送的字节流的中间加入额外的消息分隔符，也无需再去查找所谓的消息分隔符并据此对字节流进行切分。</p>
 <blockquote>
 <p>net.Listen函数的第一个参数的值必须是tcp、tcp4、tcp6、unix和unixpacket中的一个。代表的都是面向流的协议。tcp表示Socket所用的TCP协议会兼容基于IPv4协议的TCP协议和基于IPv6协议的TCP协议。unix和unixpacket代表两个通讯域为Unix域的内部的Socket协议，遵循它们的Socket实例即被用于在本地计算机上的不同应用程序之间的通讯。</p>

@@ -94,7 +94,7 @@
 <meta property="og:description" content="Go在操作系统提供的内核线程之上搭建了一个特有两级线程模型，称为Goroutine。其代表的含义为：  不要用共享内存的方式来通信，作为替代，应该以通信作为手段来共享内存。  Go不推荐以共享内存区的方式传递数据，作为替代，优先使用Channel。被用来在多个Goroutine之间传递数据，并且会保证其过程的同步。提供了一些传统的并发访问控制方式（互斥量、条件变量等）。 线程实现模型Go语言的线程">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://git-blog.oss-cn-beijing.aliyuncs.com/gfayilundiaodu.png">
-<meta property="og:updated_time" content="2018-05-02T06:11:45.264Z">
+<meta property="og:updated_time" content="2018-05-05T10:38:38.190Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-Go并发底层">
 <meta name="twitter:description" content="Go在操作系统提供的内核线程之上搭建了一个特有两级线程模型，称为Goroutine。其代表的含义为：  不要用共享内存的方式来通信，作为替代，应该以通信作为手段来共享内存。  Go不推荐以共享内存区的方式传递数据，作为替代，优先使用Channel。被用来在多个Goroutine之间传递数据，并且会保证其过程的同步。提供了一些传统的并发访问控制方式（互斥量、条件变量等）。 线程实现模型Go语言的线程">
@@ -425,7 +425,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  9,058
+                  9,023
                 </span>
               
 
@@ -521,10 +521,114 @@
 <p>一个G在运行的过程中，是否会等待某个事件以及会等待什么样的事件，完全由其封装的go函数决定。</p>
 <p>G在退出系统调用时，运行时系统先会尝试直接运行这个G，仅当无法直接运行的时候，才会把它转换为Grunnable状态并放入到调度器的自由G列表中。</p>
 <p>进入死亡状态（Gdead）的G可以被重新初始化并使用。相比之下，P在进入死亡状态（Pdead）之后则只能面临被销毁的结局。Gdead与Pdead状态所表达的含义完全不同。处于Gdead状态的G会被放入本地P或调度器的自由G列表，为重用提供了条件。</p>
-<h3 id="4-核心元素的容器"><a href="#4-核心元素的容器" class="headerlink" title="4.核心元素的容器"></a>4.核心元素的容器</h3><p>M，P和G的容器：<br>名称 | 源码 | 作用域 | 说明<br>:- | :- | :- | :-<br>全局P列表 | runtime.allm | 运行时系统 | 用于存放所有M的列表<br>全局P列表 | runtime.allp | 运行时系统 | 用于存放所有P的列表<br>全局G列表 | runtime.allg | 运行时系统 | 用于存放所有G的列表<br>调度器的空闲M列表 | runtime.sched.midle | 调度器 | 用于存放空闲M的列表<br>调度器的空闲P列表 | runtime.sched.pidle | 调度器 | 用于存放空闲P的列表<br>调度器的可运行G队列 | runtime.sched.runq | 调度器 | 用于存放可运行G的队列<br>调度器的自由G列表 | runtime.sched.gfree | 调度器 | 用于存放自由G的列表<br>P的可运行G队列 | runq | 本地P | 用于存放当前P中的可运行G的队列<br>P的自由G列表 | gfree | 本地P | 用于存放当前P中的自由G的列表<br>全局的3个列表存在的主要目的是为了统计运行时系统中的所有M、P或G。运行时系统创建出的任何G都会存在于全局G列表中，其于的4个与G有关的列表只会存放在当前作用域内的具有特定状态的G。调度器的可运行G队列和P的可运行G队列都拥有几乎平等的运行机会。运行时系统调度的过程中会先后对它们进行检查，并会运行第一个被发现的可运行的G。从Gsysycall状态和Ggcstop状态转出的G，会被放入调度器的可运行G队列，被运行时系统初始化的G，会被放入本地P的可运行G队列。从Gwaiting状态转出的G，除因网络I/O陷于等待的G，都会被放入到本地P的可运行G队列。调用runtime.GOMAXPROCS函数，可能会导致运行时系统清空调度器的可运行G队列。其中所有G都会被均匀地放入到全局P列表中的各个P的可运行G队列当中。在G转入Gdead状态后，先会被放入本地P的自由G列表，在运行时系统需要用自由G封装go函数时，先尝试从本地P的自由G列表中获取。调度器的自由G列表只起到一个暂存自由G的作用。</p>
+<h3 id="4-核心元素的容器"><a href="#4-核心元素的容器" class="headerlink" title="4.核心元素的容器"></a>4.核心元素的容器</h3><p>M，P和G的容器：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">源码</th>
+<th style="text-align:center">作用域</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">全局P列表</td>
+<td style="text-align:center">runtime.allm</td>
+<td style="text-align:center">运行时系统</td>
+<td style="text-align:left">用于存放所有M的列表</td>
+</tr>
+<tr>
+<td style="text-align:center">全局P列表</td>
+<td style="text-align:center">runtime.allp</td>
+<td style="text-align:center">运行时系统</td>
+<td style="text-align:left">用于存放所有P的列表</td>
+</tr>
+<tr>
+<td style="text-align:center">全局G列表</td>
+<td style="text-align:center">runtime.allg</td>
+<td style="text-align:center">运行时系统</td>
+<td style="text-align:left">用于存放所有G的列表</td>
+</tr>
+<tr>
+<td style="text-align:center">调度器的空闲M列表</td>
+<td style="text-align:center">runtime.sched.midle</td>
+<td style="text-align:center">调度器</td>
+<td style="text-align:left">用于存放空闲M的列表</td>
+</tr>
+<tr>
+<td style="text-align:center">调度器的空闲P列表</td>
+<td style="text-align:center">runtime.sched.pidle</td>
+<td style="text-align:center">调度器</td>
+<td style="text-align:left">用于存放空闲P的列表</td>
+</tr>
+<tr>
+<td style="text-align:center">调度器的可运行G队列</td>
+<td style="text-align:center">runtime.sched.runq</td>
+<td style="text-align:center">调度器</td>
+<td style="text-align:left">用于存放可运行G的队列</td>
+</tr>
+<tr>
+<td style="text-align:center">调度器的自由G列表</td>
+<td style="text-align:center">runtime.sched.gfree</td>
+<td style="text-align:center">调度器</td>
+<td style="text-align:left">用于存放自由G的列表</td>
+</tr>
+<tr>
+<td style="text-align:center">P的可运行G队列</td>
+<td style="text-align:center">runq</td>
+<td style="text-align:center">本地P</td>
+<td style="text-align:left">用于存放当前P中的可运行G的队列</td>
+</tr>
+<tr>
+<td style="text-align:center">P的自由G列表</td>
+<td style="text-align:center">gfree</td>
+<td style="text-align:center">本地P</td>
+<td style="text-align:left">用于存放当前P中的自由G的列表</td>
+</tr>
+</tbody>
+</table>
+<p>全局的3个列表存在的主要目的是为了统计运行时系统中的所有M、P或G。运行时系统创建出的任何G都会存在于全局G列表中，其于的4个与G有关的列表只会存放在当前作用域内的具有特定状态的G。调度器的可运行G队列和P的可运行G队列都拥有几乎平等的运行机会。运行时系统调度的过程中会先后对它们进行检查，并会运行第一个被发现的可运行的G。从Gsysycall状态和Ggcstop状态转出的G，会被放入调度器的可运行G队列，被运行时系统初始化的G，会被放入本地P的可运行G队列。从Gwaiting状态转出的G，除因网络I/O陷于等待的G，都会被放入到本地P的可运行G队列。调用runtime.GOMAXPROCS函数，可能会导致运行时系统清空调度器的可运行G队列。其中所有G都会被均匀地放入到全局P列表中的各个P的可运行G队列当中。在G转入Gdead状态后，先会被放入本地P的自由G列表，在运行时系统需要用自由G封装go函数时，先尝试从本地P的自由G列表中获取。调度器的自由G列表只起到一个暂存自由G的作用。</p>
 <p>与M和P相关的非全局容器被用于存放暂时不被使用的元素的实例。在运行时系统有需要时，会从中获取相应元素的实例并重新启用它。</p>
 <h2 id="调度器"><a href="#调度器" class="headerlink" title="调度器"></a>调度器</h2><p>两级线程模型中的一部分调度任务会由操作系统内核之外的程序承担，Go语言中，其运行时系统中的调度器会负责这一部分调度任务。调度的主要对象是M、P和G的实例，调度的辅助设施是各种容器。每个M（每个内核线程）在运行过程中都会按需执行一些调度任务。</p>
-<h3 id="1-基本结构"><a href="#1-基本结构" class="headerlink" title="1.基本结构"></a>1.基本结构</h3><p>调度器有它自己的数据结构，这一数据结构的主要目的是为了更加方便地管理和调度各个核心元素的实例。调度器的部分字段：<br>字段名称 | 数据类型 | 用途<br> :- | :- | :-<br> gcwaiting | uint32 | 垃圾回收任务被执行期间的辅助标记、停止计数和通知机制<br> stopwait | int32 | 垃圾回收任务被执行期间的辅助标记、停止计数和通知机制<br> stopnote | Note | 垃圾回收任务被执行期间的辅助标记、停止计数和通知机制<br> sysmonwait | unit32 | 作为系统检测任务被执行期间的停止和通知机制<br> sysmonnote | Note | 作为系统检测任务被执行期间的停止和通知机制<br>通过调度器gcwaiting的值，可知垃圾回收器是否已经开始准备或正在进行垃圾回收。stopwait字段是为了对还未被停止调度的P进行计数。当计数器为0时，说明调度工作已被完全停止，垃圾回收器会立即开始执行垃圾回收任务。stopnode字段被用来向垃圾回收器告知调度工作已经完全被停止的通知机制的重要部分。</p>
+<h3 id="1-基本结构"><a href="#1-基本结构" class="headerlink" title="1.基本结构"></a>1.基本结构</h3><p>调度器有它自己的数据结构，这一数据结构的主要目的是为了更加方便地管理和调度各个核心元素的实例。调度器的部分字段：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">字段名称</th>
+<th style="text-align:center">数据类型</th>
+<th style="text-align:left">用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"> gcwaiting</td>
+<td style="text-align:center">uint32</td>
+<td style="text-align:left">垃圾回收任务被执行期间的辅助标记、停止计数和通知机制</td>
+</tr>
+<tr>
+<td style="text-align:center"> stopwait</td>
+<td style="text-align:center">int32</td>
+<td style="text-align:left">垃圾回收任务被执行期间的辅助标记、停止计数和通知机制</td>
+</tr>
+<tr>
+<td style="text-align:center"> stopnote</td>
+<td style="text-align:center">Note</td>
+<td style="text-align:left">垃圾回收任务被执行期间的辅助标记、停止计数和通知机制</td>
+</tr>
+<tr>
+<td style="text-align:center"> sysmonwait</td>
+<td style="text-align:center">unit32</td>
+<td style="text-align:left">作为系统检测任务被执行期间的停止和通知机制</td>
+</tr>
+<tr>
+<td style="text-align:center"> sysmonnote</td>
+<td style="text-align:center">Note</td>
+<td style="text-align:left">作为系统检测任务被执行期间的停止和通知机制</td>
+</tr>
+</tbody>
+</table>
+<p>通过调度器gcwaiting的值，可知垃圾回收器是否已经开始准备或正在进行垃圾回收。stopwait字段是为了对还未被停止调度的P进行计数。当计数器为0时，说明调度工作已被完全停止，垃圾回收器会立即开始执行垃圾回收任务。stopnode字段被用来向垃圾回收器告知调度工作已经完全被停止的通知机制的重要部分。</p>
 <p>辅助协调手段存在的意义在于保证所有的P在垃圾回收期间都处于Pgcstop状态。<code>Go语言的垃圾回收器先停止一切调度工作（包括对M和P的调度），然后进行垃圾回收，最后待垃圾回收完成之后再重启调度工作。</code>即Go语言的垃圾回收任务是在“stop the world”执行垃圾回收任务）的环境下被执行的。“Stop the world”即指运行时系统要放下手头所有工作并专心(无其它并发任务）执行垃圾回收任务。</p>
 <p>垃圾回收器在准备执行垃圾回收任务的时候，先把调度器的gcwaiting字段的值设置为1，告诉调度器，它已经开始准备执行垃圾回收任务。垃圾回收器会利用stopnode字段将自身阻塞，以等待调度器完全停止调度。调度器在发现gcwaiting字段的值被置为1之后，会积极响应，并陆续停止正在进行的调度工作。待所有的调度工作均已停止（计数器的stopwait字段的值为0）之后，调度器回利用stopnode字段向垃圾回收器发送通知。垃圾回收器在收到通知后才会真正开始垃圾回收，通知机制在底层由信号灯实现。</p>
 <p>垃圾回收器进行垃圾回收的时候，被持续执行的系统检测任务也需要被暂停，sysmonwait和sysmonnode的作用就是及时地暂停和恢复监测任务的执行。sysmonwait字段表示系统监测任务是否已经被暂停的标记，sysmonnode字段则是被用来向执行系统监测任务的程序发送通知。</p>
@@ -561,29 +665,29 @@
 <li>gcstopm。为串行运行时任务的执行让路，停止当前M的执行，串行运行时任务执行完毕后会被唤醒。</li>
 <li>stoplockedm()。停止已经与某个G锁定的当前M的执行，直到因这个G变得可运行而被唤醒。</li>
 <li>startlockedm(gp * g)。唤醒与gp绑定的那个M，并让该M去执行gp。</li>
-<li>startm(_p_  *p, spinning bool)。唤醒或创建一个M去关联_p_并开始执行。<blockquote>
+<li>startm(_p_  *p, spinning bool)。唤醒或创建一个M去关联_p_并开始执行。</li>
+</ul>
+<blockquote>
 <p>底层待完善，见《Go 并发编程实战 第二版》</p>
 </blockquote>
-</li>
-</ul>
 <h3 id="5-系统监测任务"><a href="#5-系统监测任务" class="headerlink" title="5.系统监测任务"></a>5.系统监测任务</h3><p>由sysmon函数实现。监测任务主要做：  </p>
 <ul>
 <li>在需要时抢夺符合条件的G和P；</li>
 <li>在需要时进行强制GC；</li>
 <li>在需要时清扫堆；</li>
-<li>在需要时打印调度器跟踪信息。<blockquote>
+<li>在需要时打印调度器跟踪信息。</li>
+</ul>
+<blockquote>
 <p>底层待完善，见《Go 并发编程实战 第二版》</p>
 </blockquote>
-</li>
-</ul>
 <h3 id="6-变更P的最大数量"><a href="#6-变更P的最大数量" class="headerlink" title="6.变更P的最大数量"></a>6.变更P的最大数量</h3><p>P最大数量变更直接影响Go程序的并发性能。调用runtime.GOMAXPROC函数时，会先进行下面两项检查，确保变更合法和有效。  </p>
 <ul>
 <li>若传入的参数值（新值）比运行时系统为此设定的硬性上限值（256）大，前者会被后者替代。</li>
-<li>新值不是正整数，或者与存储在运行时系统中的P最大数量值（旧值）相同，该函数或略此变更直接返回旧值。<blockquote>
+<li>新值不是正整数，或者与存储在运行时系统中的P最大数量值（旧值）相同，该函数或略此变更直接返回旧值。</li>
+</ul>
+<blockquote>
 <p>底层待完善，见《Go 并发编程实战 第二版》</p>
 </blockquote>
-</li>
-</ul>
 <h2 id="更多的细节"><a href="#更多的细节" class="headerlink" title="更多的细节"></a>更多的细节</h2><h3 id="1-g0和m0"><a href="#1-g0和m0" class="headerlink" title="1.g0和m0"></a>1.g0和m0</h3><p>运行时系统中的每个M都拥有一个特殊的G，称为M的g0。M的g0管辖的内存称为M的调度栈，对应于操作系统为相应线程创建的栈。M的调度栈也成为OS线程栈或系统栈（参runtime.systemstack函数）。</p>
 <p>M的g0由Go运行时系统在初始化M时创建并分配给M的，一般用于执行调度、垃圾回收、栈管理等方面的工作。M还有一个专用于处理信号的G，称为<code>gsignal</code>。它的栈称为信号栈。系统栈和信号栈不会自动增长，但一定会有足够的空间执行代码。</p>
 <p>除g0，其他由M运行的G都可以视为用户级别G，称为用户G，g0和gsignal称为系统G。g0不会被阻塞，不包含在任何G队列或列表中。栈不会在垃圾回收中被扫描。</p>
