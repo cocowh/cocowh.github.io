@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="数据类型基本数据类型 string、bool、byte、rune、int/uint、int8/uint8、int16\uint16、int32/uint32、int64/uint64、float32、float64、 complex64、complex128     分为三类。 布尔类型&amp;gt;bool：true、false 数值类型 特殊rune  类型rune的值由rune类型字面量代表，专用">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-23T10:16:04.000Z">
+<meta property="og:updated_time" content="2018-05-06T08:47:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-基础篇(二)">
 <meta name="twitter:description" content="数据类型基本数据类型 string、bool、byte、rune、int/uint、int8/uint8、int16\uint16、int32/uint32、int64/uint64、float32、float64、 complex64、complex128     分为三类。 布尔类型&amp;gt;bool：true、false 数值类型 特殊rune  类型rune的值由rune类型字面量代表，专用">
@@ -423,7 +423,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  9,820
+                  9,823
                 </span>
               
 
@@ -615,8 +615,8 @@
 <p>当Sequence类型中由与Sortable接口类型的Sort方法的名称和签名都相同的方法时，调用seq.Sort()是调用Sequence自身的Sort方法，嵌入类型Sortable的方法Sort被隐藏了。类似装饰器模式。若名称相同签名不同，Sortable的Sort方法依然被隐藏。此时调用Sequence自身的Sort方法需要依据Sort的签名来编写调用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func (self *Sequence) Sort (quicksort bool)&#123;</span><br><span class="line">    //todo</span><br><span class="line">&#125;</span><br><span class="line">seq.Sort(true) //调用自身</span><br><span class="line">seq.Sortable.Sort() //调用嵌入类型Sortable的Sort</span><br></pre></td></tr></table></figure></p>
 <p>假设有结构体类型S和非指针类型的数据类型T，则：  </p>
 <ul>
-<li>S中包含一个嵌入类型T，S和<em>S的方法集合中都包含接收者类型为T的方法。</em>S的方法集合中还包含接收者类型为*T的方法。</li>
-<li>S中包含了一个嵌入类型<em>T，S和</em>S的方法集合中都会包含接收者类型T或*T的所有方法。</li>
+<li>S中包含一个嵌入类型T，S和*S的方法集合中都包含接收者类型为T的方法。*S的方法集合中还包含接收者类型为*T的方法。</li>
+<li>S中包含了一个嵌入类型*T，S和*S的方法集合中都会包含接收者类型T或*T的所有方法。</li>
 </ul>
 <p>对于结构体的多层嵌入：  </p>
 <ul>

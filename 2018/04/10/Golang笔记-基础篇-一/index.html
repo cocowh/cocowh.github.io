@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="初识GolangGo安装包文件夹 api文件夹：Go API检查器的辅助文件。 bin文件夹：官方提供的Go语言相关工具的可执行文件。 lib文件夹：特殊的库文件。 pkg文件夹：构架安装后，保存Go语言标准库的所有归档文件。 src文件夹：所有标准库、Go语言工具，以及相关底层（C语言实现）的源码。 test文件夹：测试Go语言自身代码的文件。安装注意事项需要将工作区目录路径添加至环境变量GOP">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-23T10:16:17.000Z">
+<meta property="og:updated_time" content="2018-05-06T08:49:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-基础篇(一)">
 <meta name="twitter:description" content="初识GolangGo安装包文件夹 api文件夹：Go API检查器的辅助文件。 bin文件夹：官方提供的Go语言相关工具的可执行文件。 lib文件夹：特殊的库文件。 pkg文件夹：构架安装后，保存Go语言标准库的所有归档文件。 src文件夹：所有标准库、Go语言工具，以及相关底层（C语言实现）的源码。 test文件夹：测试Go语言自身代码的文件。安装注意事项需要将工作区目录路径添加至环境变量GOP">
@@ -544,7 +544,7 @@
 <li>如果x是一个与某个构体类型对应的指针类型的变量，并且它的值为nil，那么针对表达式x.f的赋值和求值都会引起一个运行时的恐慌。不论f是字段还是方法。</li>
 <li>如果x是一个接口类型的变量且它的值为nil，那么针对表达式x.f的调用和求值都会引起一个运行时恐慌，前提是f是该接口类型的一个方法。</li>
 </ul>
-<p>自动解引用：如果x是一个结构体类型对应的指针类型的值，那么x.f就是表达式(<em>x).f的一个速记法，不论f代表的是一个字段还是一个方法，如果f代表了一个字段且也是一个与结构体类型对应的指针类型，那么x.f.f2就是表达式(</em>(*x.f).f2的一个速记法，不论f2是一个字段还是方法。</p>
+<p>自动解引用：如果x是一个结构体类型对应的指针类型的值，那么x.f就是表达式(*x).f的一个速记法，不论f代表的是一个字段还是一个方法，如果f代表了一个字段且也是一个与结构体类型对应的指针类型，那么x.f.f2就是表达式(*(*x.f).f2的一个速记法，不论f2是一个字段还是方法。</p>
 <h4 id="3-索引符号和索引表达式"><a href="#3-索引符号和索引表达式" class="headerlink" title="3. 索引符号和索引表达式"></a>3. 索引符号和索引表达式</h4><p>一个索引表达式有一个基本表达式和一个索引符号组成，形如a[x]，会求索引值为x的a中的那个元素的值。  </p>
 <h5 id="规则-1"><a href="#规则-1" class="headerlink" title="规则"></a>规则</h5><ul>
 <li>a不是字典类型的值，x必须是一个int类型或者无类型的证书字面量，x大于0且小于a的长度。否则引起一个与越界有关的运行时的恐慌。  </li>

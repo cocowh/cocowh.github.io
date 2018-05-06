@@ -94,7 +94,7 @@
 <meta property="og:description" content="Go在操作系统提供的内核线程之上搭建了一个特有两级线程模型，称为Goroutine。其代表的含义为：  不要用共享内存的方式来通信，作为替代，应该以通信作为手段来共享内存。  Go不推荐以共享内存区的方式传递数据，作为替代，优先使用Channel。被用来在多个Goroutine之间传递数据，并且会保证其过程的同步。提供了一些传统的并发访问控制方式（互斥量、条件变量等）。 线程实现模型Go语言的线程">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://git-blog.oss-cn-beijing.aliyuncs.com/gfayilundiaodu.png">
-<meta property="og:updated_time" content="2018-05-05T10:38:38.190Z">
+<meta property="og:updated_time" content="2018-05-06T08:54:35.397Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-Go并发底层">
 <meta name="twitter:description" content="Go在操作系统提供的内核线程之上搭建了一个特有两级线程模型，称为Goroutine。其代表的含义为：  不要用共享内存的方式来通信，作为替代，应该以通信作为手段来共享内存。  Go不推荐以共享内存区的方式传递数据，作为替代，优先使用Channel。被用来在多个Goroutine之间传递数据，并且会保证其过程的同步。提供了一些传统的并发访问控制方式（互斥量、条件变量等）。 线程实现模型Go语言的线程">
@@ -664,8 +664,8 @@
 <li>stopm()。停止当前M的执行，直到因有新的G变得可运行而被唤醒。</li>
 <li>gcstopm。为串行运行时任务的执行让路，停止当前M的执行，串行运行时任务执行完毕后会被唤醒。</li>
 <li>stoplockedm()。停止已经与某个G锁定的当前M的执行，直到因这个G变得可运行而被唤醒。</li>
-<li>startlockedm(gp * g)。唤醒与gp绑定的那个M，并让该M去执行gp。</li>
-<li>startm(_p_  *p, spinning bool)。唤醒或创建一个M去关联_p_并开始执行。</li>
+<li>startlockedm(gp *g)。唤醒与gp绑定的那个M，并让该M去执行gp。</li>
+<li>startm(_p_ *p, spinning bool)。唤醒或创建一个M去关联_p_并开始执行。</li>
 </ul>
 <blockquote>
 <p>底层待完善，见《Go 并发编程实战 第二版》</p>
