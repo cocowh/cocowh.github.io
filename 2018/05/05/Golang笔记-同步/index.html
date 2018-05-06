@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="个人博客,随笔">
+<meta name="description" content="锁互斥锁传统并发程序对共享资源进行访问控制的主要手段，由标准库代码包sync中的Mutex结构体类型表示。其有两个公开的指针方法——Lock和Unlock，前者用于锁定当前的互斥量，后者用于对当前的互斥量进行解锁。 sync.Mutex类型的零值表示未锁定的互斥量。声明：1var mutex sync.Mutex 一般在锁定互斥量后，紧接着使用defer语句保证该互斥锁的及时解锁。1234567v">
 <meta name="keywords" content="Golang,同步,锁,原子操作,条件变量">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Golang笔记-同步">
 <meta property="og:url" content="bighua.top/2018/05/05/Golang笔记-同步/index.html">
 <meta property="og:site_name" content="水木年华">
-<meta property="og:description" content="个人博客,随笔">
+<meta property="og:description" content="锁互斥锁传统并发程序对共享资源进行访问控制的主要手段，由标准库代码包sync中的Mutex结构体类型表示。其有两个公开的指针方法——Lock和Unlock，前者用于锁定当前的互斥量，后者用于对当前的互斥量进行解锁。 sync.Mutex类型的零值表示未锁定的互斥量。声明：1var mutex sync.Mutex 一般在锁定互斥量后，紧接着使用defer语句保证该互斥锁的及时解锁。1234567v">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-05T10:50:59.068Z">
+<meta property="og:updated_time" content="2018-05-06T11:04:29.646Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-同步">
-<meta name="twitter:description" content="个人博客,随笔">
+<meta name="twitter:description" content="锁互斥锁传统并发程序对共享资源进行访问控制的主要手段，由标准库代码包sync中的Mutex结构体类型表示。其有两个公开的指针方法——Lock和Unlock，前者用于锁定当前的互斥量，后者用于对当前的互斥量进行解锁。 sync.Mutex类型的零值表示未锁定的互斥量。声明：1var mutex sync.Mutex 一般在锁定互斥量后，紧接着使用defer语句保证该互斥锁的及时解锁。1234567v">
 
 
 
@@ -423,7 +423,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0
+                  1,135
                 </span>
               
 
@@ -439,7 +439,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  5
                 </span>
               
             </div>
@@ -460,7 +460,23 @@
       
 
       
-        
+        <h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><h3 id="互斥锁"><a href="#互斥锁" class="headerlink" title="互斥锁"></a>互斥锁</h3><p>传统并发程序对共享资源进行访问控制的主要手段，由标准库代码包sync中的Mutex结构体类型表示。其有两个公开的指针方法——Lock和Unlock，前者用于锁定当前的互斥量，后者用于对当前的互斥量进行解锁。</p>
+<p>sync.Mutex类型的零值表示未锁定的互斥量。声明：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var mutex sync.Mutex</span><br></pre></td></tr></table></figure></p>
+<p>一般在锁定互斥量后，紧接着使用defer语句保证该互斥锁的及时解锁。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var mutex sync.Mutex</span><br><span class="line"></span><br><span class="line">func write () &#123;</span><br><span class="line">    mutex.Lock()</span><br><span class="line">    defer mutex.Unlock()</span><br><span class="line">    //todo</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>锁定操作和解锁操作应该成对出现，锁定了一个已锁定的互斥锁，进行重复锁定操作的goroutine将被阻塞，直到该互斥锁回到解锁状态。</p>
+<p>code example:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;sync&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	var mutex sync.Mutex</span><br><span class="line">	fmt.Println(&quot;Lock the lock. (main)&quot;)</span><br><span class="line">	mutex.Lock()</span><br><span class="line">	fmt.Println(&quot;The lock is locked. (main)&quot;)</span><br><span class="line">	for i := 1; i &lt;= 3; i++ &#123;</span><br><span class="line">		go func(i int) &#123;</span><br><span class="line">			fmt.Printf(&quot;Lock the lock. (g%d)\n&quot;, i)</span><br><span class="line">			mutex.Lock()</span><br><span class="line">			fmt.Printf(&quot;The lock is locked. (g%d)\n&quot;, i)</span><br><span class="line">		&#125;(i)</span><br><span class="line">	&#125;</span><br><span class="line">	time.Sleep(time.Second)</span><br><span class="line">	fmt.Println(&quot;Unlock the lock. (main)&quot;)</span><br><span class="line">	mutex.Unlock()</span><br><span class="line">	fmt.Println(&quot;The lock is unlocked. (main)&quot;)</span><br><span class="line">	time.Sleep(time.Second)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>result:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost lock]# go run repeatedlylock.go</span><br><span class="line">Lock the lock. (main)</span><br><span class="line">The lock is locked. (main)</span><br><span class="line">Lock the lock. (g1)</span><br><span class="line">Lock the lock. (g2)</span><br><span class="line">Lock the lock. (g3)</span><br><span class="line">Unlock the lock. (main)</span><br><span class="line">The lock is unlocked. (main)</span><br><span class="line">The lock is locked. (g1)</span><br></pre></td></tr></table></figure></p>
+<p>对一个未锁定的互斥锁进行解锁操作，会引发一个运行时恐慌，Go 1.8之前可使用defer语句避免，Go 1.8开始此类恐慌变成不可恢复。</p>
+<h3 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h3><p>读写锁即针对读写操作的互斥锁，可以针对读操作和写操作进行锁定和解锁操作。读写锁控制下的多个写操作都是互斥的，并且写操作与读操作之间也是互斥的，多个读操作之间不存在互斥关系。</p>
+<p>读写锁由结构体sync.RWMutex表示，类型的零值已是可用的读写锁实例。包含两对方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">func (*RWMutex) Lock()</span><br><span class="line">func (*RWMutex) Unlock()</span><br></pre></td></tr></table></figure></p>
+<p>和<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">func (*RWMutex) RLock()</span><br><span class="line">func (*RWMutex) RUnlock()</span><br></pre></td></tr></table></figure></p>
+<p>前一对方法的名称和签名与互斥锁的两个方法完全一致，分别代表对写操作的锁定（写锁定）和解锁（写解锁）。后一对方法表示了对读操作的锁定（读锁定）和解锁（读解锁）。</p>
+<p>写解锁会试图唤醒所有因欲进行读操作而被阻塞的goroutine，读解锁只会在已无任何读锁定的情况下，试图唤醒一个因欲进行写操作而被阻塞的goroutine。<code>对一个未被写锁定的读写锁进行写解锁，或者对一个未被读锁定的读写锁进行读解锁，都会引发一个不可恢复的运行时恐慌。</code></p>
+<p>对于一个读写锁来说，施加于其上的读锁定可以有多个，只有对互斥锁进行等量的读解锁，才能够让某一个写锁定获得进行的机会，否则会使欲进行写锁定的gouroutine一直处于阻塞状态。</p>
+<p>code example：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;sync&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	var rwm sync.RWMutex</span><br><span class="line">	for i := 0; i &lt; 3; i++ &#123;</span><br><span class="line">		go func(i int) &#123;</span><br><span class="line">			fmt.Printf(&quot;Try to lock for reading... [%d]\n&quot;, i)</span><br><span class="line">			rwm.RLock()</span><br><span class="line">			fmt.Printf(&quot;Locked for reading. [%d]\n&quot;, i)</span><br><span class="line">			time.Sleep(time.Second * 2)</span><br><span class="line">			fmt.Printf(&quot;Try to unlock for reading... [%d]\n&quot;, i)</span><br><span class="line">			rwm.RUnlock()</span><br><span class="line">			fmt.Printf(&quot;Unlocked for reading. [%d]\n&quot;, i)</span><br><span class="line">		&#125;(i)</span><br><span class="line">	&#125;</span><br><span class="line">	time.Sleep(time.Millisecond * 100)</span><br><span class="line">	fmt.Println(&quot;Try to lock for writing...&quot;)</span><br><span class="line">	rwm.Lock()</span><br><span class="line">	fmt.Println(&quot;Locked for writing.&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>result：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost rlock]# go run rlock.go</span><br><span class="line">Try to lock for reading... [0]</span><br><span class="line">Try to lock for reading... [2]</span><br><span class="line">Locked for reading. [2]</span><br><span class="line">Try to lock for reading... [1]</span><br><span class="line">Locked for reading. [1]</span><br><span class="line">Locked for reading. [0]</span><br><span class="line">Try to lock for writing...</span><br><span class="line">Try to unlock for reading... [0]</span><br><span class="line">Unlocked for reading. [0]</span><br><span class="line">Try to unlock for reading... [2]</span><br><span class="line">Unlocked for reading. [2]</span><br><span class="line">Try to unlock for reading... [1]</span><br><span class="line">Unlocked for reading. [1]</span><br><span class="line">Locked for writing.</span><br></pre></td></tr></table></figure></p>
+<p>sync.RWMutex类型还拥有一个指针方法——RLocker，该方法会返回一个实现了sync.Locker接口类型的值。该接口包含两个方法：Lock和Unlock，*sync.Mutex类型和*sync.RWMutex类型都是该接口类型的实现类型。调用读写锁的RLocker方法，得到的结果值是读写锁本身，结果值的Lock方法和Unlock方法分别对应了针对读写锁的读锁定操作和读解锁操作。</p>
+<h2 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h2>
       
     </div>
     
@@ -565,8 +581,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -672,6 +697,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#锁"><span class="nav-number">1.</span> <span class="nav-text">锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#互斥锁"><span class="nav-number">1.1.</span> <span class="nav-text">互斥锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读写锁"><span class="nav-number">1.2.</span> <span class="nav-text">读写锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条件变量"><span class="nav-number">2.</span> <span class="nav-text">条件变量</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
         <div class="back-to-top">
@@ -704,7 +745,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">71.1k</span>
+    <span title="本站字数总计">72.2k</span>
   
 </div>
 
