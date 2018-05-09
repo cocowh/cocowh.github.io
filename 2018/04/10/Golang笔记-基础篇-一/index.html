@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="初识GolangGo安装包文件夹 api文件夹：Go API检查器的辅助文件。 bin文件夹：官方提供的Go语言相关工具的可执行文件。 lib文件夹：特殊的库文件。 pkg文件夹：构架安装后，保存Go语言标准库的所有归档文件。 src文件夹：所有标准库、Go语言工具，以及相关底层（C语言实现）的源码。 test文件夹：测试Go语言自身代码的文件。安装注意事项需要将工作区目录路径添加至环境变量GOP">
+<meta name="description" content="初识Golang安装步骤：    在https://golang.google.cn/dl/选择合适的版本 下载 1wget -c https://storage.googleapis.com/golang/go1.10.2.linux-amd64.tar.gz  解压 1tar -C /usr/local/ -zxvf go1.10.2.linux-amd64.tar.gz  添加系统环境变量">
 <meta name="keywords" content="Golang,笔记,基础">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Golang笔记-基础篇(一)">
 <meta property="og:url" content="bighua.top/2018/04/10/Golang笔记-基础篇-一/index.html">
 <meta property="og:site_name" content="水木年华">
-<meta property="og:description" content="初识GolangGo安装包文件夹 api文件夹：Go API检查器的辅助文件。 bin文件夹：官方提供的Go语言相关工具的可执行文件。 lib文件夹：特殊的库文件。 pkg文件夹：构架安装后，保存Go语言标准库的所有归档文件。 src文件夹：所有标准库、Go语言工具，以及相关底层（C语言实现）的源码。 test文件夹：测试Go语言自身代码的文件。安装注意事项需要将工作区目录路径添加至环境变量GOP">
+<meta property="og:description" content="初识Golang安装步骤：    在https://golang.google.cn/dl/选择合适的版本 下载 1wget -c https://storage.googleapis.com/golang/go1.10.2.linux-amd64.tar.gz  解压 1tar -C /usr/local/ -zxvf go1.10.2.linux-amd64.tar.gz  添加系统环境变量">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-06T09:11:24.000Z">
+<meta property="og:updated_time" content="2018-05-09T13:56:07.570Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-基础篇(一)">
-<meta name="twitter:description" content="初识GolangGo安装包文件夹 api文件夹：Go API检查器的辅助文件。 bin文件夹：官方提供的Go语言相关工具的可执行文件。 lib文件夹：特殊的库文件。 pkg文件夹：构架安装后，保存Go语言标准库的所有归档文件。 src文件夹：所有标准库、Go语言工具，以及相关底层（C语言实现）的源码。 test文件夹：测试Go语言自身代码的文件。安装注意事项需要将工作区目录路径添加至环境变量GOP">
+<meta name="twitter:description" content="初识Golang安装步骤：    在https://golang.google.cn/dl/选择合适的版本 下载 1wget -c https://storage.googleapis.com/golang/go1.10.2.linux-amd64.tar.gz  解压 1tar -C /usr/local/ -zxvf go1.10.2.linux-amd64.tar.gz  添加系统环境变量">
 
 
 
@@ -423,7 +423,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  4,424
+                  4,648
                 </span>
               
 
@@ -439,7 +439,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  16
+                  17
                 </span>
               
             </div>
@@ -460,15 +460,46 @@
       
 
       
-        <h2 id="初识Golang"><a href="#初识Golang" class="headerlink" title="初识Golang"></a>初识Golang</h2><h3 id="Go安装包文件夹"><a href="#Go安装包文件夹" class="headerlink" title="Go安装包文件夹"></a>Go安装包文件夹</h3><ul>
+        <h2 id="初识Golang"><a href="#初识Golang" class="headerlink" title="初识Golang"></a>初识Golang</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>步骤：  </p>
+<ul>
+<li>在<a href="https://golang.google.cn/dl/" target="_blank" rel="noopener">https://golang.google.cn/dl/</a>选择合适的版本</li>
+<li><p>下载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -c https://storage.googleapis.com/golang/go1.10.2.linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>解压</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -C /usr/local/ -zxvf go1.10.2.linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加系统环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile.d/go.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:/usr/local/go/bin</span><br><span class="line">:wq!</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使其生效</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile.d/go.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>也可直接命令行输入<code>export PATH=$PATH:/usr/local/go/bin</code>或者在bash文件中添加。</p>
+</li>
+<li><p>添加GOPATH目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/dev/go</span><br><span class="line">vim /etc/profile.d/gopath.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export GOPATH=/root/dev/go</span><br><span class="line">:wq!</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使其生效</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile.d/gopath.sh</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>一般将软件安装到usr/local中，下载的压缩包解压缩后可直接使用，将其添加置环境变量并为其设置好工作目录即可。GOPATH目录为项目所在目录，可设置多个且随意设置，下方细说。</p>
+<h3 id="Go安装包文件夹"><a href="#Go安装包文件夹" class="headerlink" title="Go安装包文件夹"></a>Go安装包文件夹</h3><ul>
 <li>api文件夹：Go API检查器的辅助文件。</li>
 <li>bin文件夹：官方提供的Go语言相关工具的可执行文件。</li>
 <li>lib文件夹：特殊的库文件。</li>
 <li>pkg文件夹：构架安装后，保存Go语言标准库的所有归档文件。</li>
 <li>src文件夹：所有标准库、Go语言工具，以及相关底层（C语言实现）的源码。</li>
-<li>test文件夹：测试Go语言自身代码的文件。<h3 id="安装注意事项"><a href="#安装注意事项" class="headerlink" title="安装注意事项"></a>安装注意事项</h3>需要将工作区目录路径添加至环境变量GOPATH中,可指定多个工作区。  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export GOPATH=$HOME/路径/工作区文件夹名:$HOME/路径/工作区文件夹名</span><br></pre></td></tr></table></figure>
-</li>
+<li>test文件夹：测试Go语言自身代码的文件。</li>
 </ul>
+<h3 id="安装注意事项"><a href="#安装注意事项" class="headerlink" title="安装注意事项"></a>安装注意事项</h3><p>需要将工作区目录路径添加至环境变量GOPATH中,可指定多个工作区。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export GOPATH=$HOME/路径/工作区文件夹名:$HOME/路径/工作区文件夹名</span><br></pre></td></tr></table></figure></p>
 <p>可使用命令行，要保证$HOME值为正确的当前用户home路径，在此踩到过坑，centos7的HOME值为root（好几次在命令行设置后过一段时间又自动变为root），最后在.bash_profile中设置了HOME值，将上方的设置语句也添加到.bash_profile中，这样能保证每次启动都会设置此值为正确值。</p>
 <p>工作区文件夹即为我们的项目编码区，多个工作区可用“:”分开在后面继续添加，命令go get会将指定项目的源码下载到第一个工作区，在其中完成构建和安装，所以一般将第一个工作区设置为用来存放第三方代码库的工作区，存放自己的项目工程的工作区从第二个起。</p>
 <h3 id="代码包"><a href="#代码包" class="headerlink" title="代码包"></a>代码包</h3><p>Go的代码包是对代码进行构建和打包的基本单元，每个源码文件都必须以包声明语句作为文件中代码的第一句，包名即源码文件所在的文件夹名。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">package 文件夹名</span><br><span class="line">import 其他包名</span><br><span class="line">import (</span><br><span class="line">    其他包名</span><br><span class="line">    其他包名    </span><br><span class="line">    ...</span><br><span class="line">)</span><br><span class="line">import (</span><br><span class="line">    别名 其他包名</span><br><span class="line">    别名 其他包名</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
@@ -803,7 +834,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#初识Golang"><span class="nav-number">1.</span> <span class="nav-text">初识Golang</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Go安装包文件夹"><span class="nav-number">1.1.</span> <span class="nav-text">Go安装包文件夹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装注意事项"><span class="nav-number">1.2.</span> <span class="nav-text">安装注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码包"><span class="nav-number">1.3.</span> <span class="nav-text">代码包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#main函数额init函数"><span class="nav-number">1.4.</span> <span class="nav-text">main函数额init函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准命令"><span class="nav-number">1.5.</span> <span class="nav-text">标准命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本词法"><span class="nav-number">2.</span> <span class="nav-text">基本词法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标识符"><span class="nav-number">2.1.</span> <span class="nav-text">标识符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#预定义标识符"><span class="nav-number">2.1.1.</span> <span class="nav-text">预定义标识符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#空标识符"><span class="nav-number">2.1.2.</span> <span class="nav-text">空标识符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关键字"><span class="nav-number">2.2.</span> <span class="nav-text">关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-程序声明-："><span class="nav-number">2.2.1.</span> <span class="nav-text">1. 程序声明 ：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-程序实体声明和定义："><span class="nav-number">2.2.2.</span> <span class="nav-text">2. 程序实体声明和定义：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-程序流程控制："><span class="nav-number">2.2.3.</span> <span class="nav-text">3. 程序流程控制：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字面量"><span class="nav-number">2.3.</span> <span class="nav-text">字面量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一类"><span class="nav-number">2.3.1.</span> <span class="nav-text">第一类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二类"><span class="nav-number">2.3.2.</span> <span class="nav-text">第二类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三类"><span class="nav-number">2.3.3.</span> <span class="nav-text">第三类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型"><span class="nav-number">2.4.</span> <span class="nav-text">类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本类型（预定义类型）："><span class="nav-number">2.4.1.</span> <span class="nav-text">基本类型（预定义类型）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复合类型"><span class="nav-number">2.4.2.</span> <span class="nav-text">复合类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态类型"><span class="nav-number">2.4.3.</span> <span class="nav-text">静态类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#潜在类型"><span class="nav-number">2.4.4.</span> <span class="nav-text">潜在类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作符"><span class="nav-number">2.5.</span> <span class="nav-text">操作符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#与C语言基本一致"><span class="nav-number">2.5.1.</span> <span class="nav-text">与C语言基本一致</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表达式"><span class="nav-number">2.6.</span> <span class="nav-text">表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-基本表达式"><span class="nav-number">2.6.1.</span> <span class="nav-text">1. 基本表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-选择符号和选择表达式"><span class="nav-number">2.6.2.</span> <span class="nav-text">2. 选择符号和选择表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#规则"><span class="nav-number">2.6.2.1.</span> <span class="nav-text">规则</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其它情况"><span class="nav-number">2.6.2.2.</span> <span class="nav-text">其它情况</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-索引符号和索引表达式"><span class="nav-number">2.6.3.</span> <span class="nav-text">3. 索引符号和索引表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#规则-1"><span class="nav-number">2.6.3.1.</span> <span class="nav-text">规则</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-切片符号和切片表达式"><span class="nav-number">2.6.4.</span> <span class="nav-text">4. 切片符号和切片表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-类型断言"><span class="nav-number">2.6.5.</span> <span class="nav-text">5. 类型断言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-可变长参数"><span class="nav-number">2.6.6.</span> <span class="nav-text">7. 可变长参数</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#初识Golang"><span class="nav-number">1.</span> <span class="nav-text">初识Golang</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go安装包文件夹"><span class="nav-number">1.2.</span> <span class="nav-text">Go安装包文件夹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装注意事项"><span class="nav-number">1.3.</span> <span class="nav-text">安装注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码包"><span class="nav-number">1.4.</span> <span class="nav-text">代码包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#main函数额init函数"><span class="nav-number">1.5.</span> <span class="nav-text">main函数额init函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准命令"><span class="nav-number">1.6.</span> <span class="nav-text">标准命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本词法"><span class="nav-number">2.</span> <span class="nav-text">基本词法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标识符"><span class="nav-number">2.1.</span> <span class="nav-text">标识符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#预定义标识符"><span class="nav-number">2.1.1.</span> <span class="nav-text">预定义标识符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#空标识符"><span class="nav-number">2.1.2.</span> <span class="nav-text">空标识符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关键字"><span class="nav-number">2.2.</span> <span class="nav-text">关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-程序声明-："><span class="nav-number">2.2.1.</span> <span class="nav-text">1. 程序声明 ：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-程序实体声明和定义："><span class="nav-number">2.2.2.</span> <span class="nav-text">2. 程序实体声明和定义：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-程序流程控制："><span class="nav-number">2.2.3.</span> <span class="nav-text">3. 程序流程控制：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字面量"><span class="nav-number">2.3.</span> <span class="nav-text">字面量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一类"><span class="nav-number">2.3.1.</span> <span class="nav-text">第一类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二类"><span class="nav-number">2.3.2.</span> <span class="nav-text">第二类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三类"><span class="nav-number">2.3.3.</span> <span class="nav-text">第三类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型"><span class="nav-number">2.4.</span> <span class="nav-text">类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本类型（预定义类型）："><span class="nav-number">2.4.1.</span> <span class="nav-text">基本类型（预定义类型）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复合类型"><span class="nav-number">2.4.2.</span> <span class="nav-text">复合类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态类型"><span class="nav-number">2.4.3.</span> <span class="nav-text">静态类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#潜在类型"><span class="nav-number">2.4.4.</span> <span class="nav-text">潜在类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作符"><span class="nav-number">2.5.</span> <span class="nav-text">操作符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#与C语言基本一致"><span class="nav-number">2.5.1.</span> <span class="nav-text">与C语言基本一致</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表达式"><span class="nav-number">2.6.</span> <span class="nav-text">表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-基本表达式"><span class="nav-number">2.6.1.</span> <span class="nav-text">1. 基本表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-选择符号和选择表达式"><span class="nav-number">2.6.2.</span> <span class="nav-text">2. 选择符号和选择表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#规则"><span class="nav-number">2.6.2.1.</span> <span class="nav-text">规则</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其它情况"><span class="nav-number">2.6.2.2.</span> <span class="nav-text">其它情况</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-索引符号和索引表达式"><span class="nav-number">2.6.3.</span> <span class="nav-text">3. 索引符号和索引表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#规则-1"><span class="nav-number">2.6.3.1.</span> <span class="nav-text">规则</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-切片符号和切片表达式"><span class="nav-number">2.6.4.</span> <span class="nav-text">4. 切片符号和切片表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-类型断言"><span class="nav-number">2.6.5.</span> <span class="nav-text">5. 类型断言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-可变长参数"><span class="nav-number">2.6.6.</span> <span class="nav-text">7. 可变长参数</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -842,7 +873,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">77.8k</span>
+    <span title="本站字数总计">78.0k</span>
   
 </div>
 
