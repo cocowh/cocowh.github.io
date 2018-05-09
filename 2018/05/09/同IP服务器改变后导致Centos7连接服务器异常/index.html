@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="背景前段时间跟着《Go并发编程实战 1&amp;amp;2》和其他相关资料学习了go，今天想试用下go的wechat框架再试下微信公众号的开发，计划把博客引入到自己的个人公众号中，方便自己回顾和学习。与是把之前的服务器重置了下，重新配置go的相关运行环境。 问题服务器用的阿里云的学生机，再过一个多月毕业就要到期了。一般可以直接使用ssh相关命令进行服务器的连接:1234567[root@localhost">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-09T08:23:52.553Z">
+<meta property="og:updated_time" content="2018-05-09T08:29:14.627Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="同IP服务器改变后导致Centos7连接服务器异常">
 <meta name="twitter:description" content="背景前段时间跟着《Go并发编程实战 1&amp;amp;2》和其他相关资料学习了go，今天想试用下go的wechat框架再试下微信公众号的开发，计划把博客引入到自己的个人公众号中，方便自己回顾和学习。与是把之前的服务器重置了下，重新配置go的相关运行环境。 问题服务器用的阿里云的学生机，再过一个多月毕业就要到期了。一般可以直接使用ssh相关命令进行服务器的连接:1234567[root@localhost">
@@ -423,7 +423,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,279
+                  1,340
                 </span>
               
 
@@ -491,6 +491,7 @@
 <p>普通用户权限下执行ssh IP将IP添加到known_hosts：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 known_hosts //若有写权限此步忽略，否则切换到root赋权后再切换到普通用户</span><br><span class="line"></span><br><span class="line">ssh root@IP</span><br><span class="line">password:</span><br></pre></td></tr></table></figure></p>
 <p>这一步主要是将IP再此添加到known_hosts中，不是为了登陆。</p>
 <p>之后再次使用Centos7自带的连接服务可正常连接。</p>
+<p>感觉Centos7这个自带的可使用各种协议连接服务器没啥用，多了一个服务器端文件的直接显示，即将服务器桌面化显示。还是ssh命令直接连接方便实用。</p>
 
       
     </div>
