@@ -3,6 +3,29 @@
   
     
     <entry>
+      <title>hexo多台电脑间迁移解决方案</title>
+      <link href="/2018/07/05/hexo%E5%A4%9A%E5%8F%B0%E7%94%B5%E8%84%91%E9%97%B4%E8%BF%81%E7%A7%BB%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"/>
+      <url>/2018/07/05/hexo%E5%A4%9A%E5%8F%B0%E7%94%B5%E8%84%91%E9%97%B4%E8%BF%81%E7%A7%BB%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
+      <content type="html"><![CDATA[<p>由于工作配发了mac，之前在自己的thinkpad上搭建的博客如何迁移到mac上，并且保持博客的完整性和统一性就成了问题。</p><p>在网上搜了一下，前人已经给出了巧妙的解决方案，通过在自己的hexo项目上开一个分支，分支中保留hexo所有重要文件，在其他电脑上直接下载此分支，然后使用npm下载所有依赖包，这样其实就可以得到自己的hexo完整项目。通过这个克隆的分支可以写博客上传到master，也可以自更新上传到分支，保证每次使用后的完整性。</p><p>具体参考的前人博客<a href="https://www.jianshu.com/p/beb8d611340a" target="_blank" rel="noopener">Hexo博客从一台电脑迁移到其他电脑</a>,介绍了总体的解决思路和步骤，具体细节要根据自己的情况而定。</p><p>具体到本博客的迁移过程：</p><ul><li><p>克隆自己的hexo项目到本地，其实主要目的是获取git配置文件，作为分支的git配置文件，若本地已有git项目，可省略此步，后面直接获取git配置文件即可。</p>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/cocowh/cocowh.github.io.git</span><br></pre></td></tr></table></figure></li><li><p>备份本地的hexo项目，删除依赖库和不必要的文件（多余的主题目录，生成的页面等等，根据自己配置决定），<code>修改主题中git的配置文件名，否则主题目录被当作单独的git项目无法被跟踪，无法上传</code>，有个风险是主题配置文件中的信息被暴露出来，如果不上传，在另一台电脑上克隆后又要重新下载配置主题文件，显得繁琐。</p>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cp -R hexo blogbackup</span><br><span class="line">cp -R cocowh.github.io/.git blogbackup/.git</span><br><span class="line">cp cocowh.github.io/.gitignore  blogbackup</span><br><span class="line">cd blogbackup</span><br><span class="line">rm -rf public node_modules //其实在.gitignore中已经包含这些文件和目录</span><br></pre></td></tr></table></figure></li><li><p>创建一个叫blogbackup的分支并push到分支。</p>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b blogbacku</span><br><span class="line">git add -A</span><br><span class="line">git commit -m &quot;备份分支&quot;</span><br><span class="line">git push --set-upstream origin blogbackup</span><br></pre></td></tr></table></figure></li><li><p>在另一台已经部署好git、node 、hexo等必须环境的电脑上克隆blogbackup分支到本地，克隆master到本地(没用hexo自带提交指令，自己编写的本地提交脚本，根据情况灵活决定)。</p>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">git clone -b blogbackup https://github.com/cocowh/cocowh.github.io.git</span><br><span class="line">cd coocwh.github.io</span><br><span class="line">npm update</span><br><span class="line">mkdir .deploy</span><br><span class="line">cd .deploy</span><br><span class="line">git clone https://github.com/cocowh/coocwh.github.io.git</span><br><span class="line">cd ../..</span><br><span class="line">hexo g</span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure></li></ul><p>到这里已经基本搞定，写博客运行脚本提交到master。再次迁移到另一台电脑上，直接提交到blogbackup分支就好，更新主题要将git文件名修改回来。</p>]]></content>
+      
+      <categories>
+          
+          <category> git </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> hexo </tag>
+            
+            <tag> git </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>天涯未远，江湖再见</title>
       <link href="/2018/06/16/%E5%A4%A9%E6%B6%AF%E6%9C%AA%E8%BF%9C%EF%BC%8C%E6%B1%9F%E6%B9%96%E5%86%8D%E8%A7%81/"/>
       <url>/2018/06/16/%E5%A4%A9%E6%B6%AF%E6%9C%AA%E8%BF%9C%EF%BC%8C%E6%B1%9F%E6%B9%96%E5%86%8D%E8%A7%81/</url>
@@ -546,13 +569,6 @@
   
     
     <entry>
-      <title>BUG制造师</title>
-      <link href="/about/index.html"/>
-      <url>/about/index.html</url>
-      <content type="html"><![CDATA[<h3 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h3><ul><li>姓名：吴桦</li><li>性别：男</li><li>出生年月：1995/02</li><li>Email： <a href="mailto:huaweiailin@foxmail.com" target="_blank" rel="noopener">huaweiailin@foxmail.com</a></li><li>博客： cocowh.github.io</li><li>GitHub： <a href="https://github.com/cocowh" target="_blank" rel="noopener">https://github.com/cocowh</a></li></ul><hr><h3 id="教育背景"><a href="#教育背景" class="headerlink" title="教育背景"></a>教育背景</h3><p>2014/09-2018/06</p><ul><li>学历：本科</li><li>学校：华中农业大学</li><li>专业：计算机科学与技术</li></ul><hr><h3 id="技术栈（菜鸟，了解程度）"><a href="#技术栈（菜鸟，了解程度）" class="headerlink" title="技术栈（菜鸟，了解程度）"></a>技术栈（菜鸟，了解程度）</h3><p>PHP+Golang+Swoole+Vue+Node</p>]]></content>
-    </entry>
-    
-    <entry>
       <title>categories</title>
       <link href="/categories/index.html"/>
       <url>/categories/index.html</url>
@@ -564,6 +580,13 @@
       <link href="/tags/index.html"/>
       <url>/tags/index.html</url>
       <content type="html"><![CDATA[]]></content>
+    </entry>
+    
+    <entry>
+      <title>BUG制造师</title>
+      <link href="/about/index.html"/>
+      <url>/about/index.html</url>
+      <content type="html"><![CDATA[<h3 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h3><ul><li>姓名：吴桦</li><li>性别：男</li><li>出生年月：1995/02</li><li>Email： <a href="mailto:huaweiailin@foxmail.com" target="_blank" rel="noopener">huaweiailin@foxmail.com</a></li><li>博客： cocowh.github.io</li><li>GitHub： <a href="https://github.com/cocowh" target="_blank" rel="noopener">https://github.com/cocowh</a></li></ul><hr><h3 id="教育背景"><a href="#教育背景" class="headerlink" title="教育背景"></a>教育背景</h3><p>2014/09-2018/06</p><ul><li>学历：本科</li><li>学校：华中农业大学</li><li>专业：计算机科学与技术</li></ul><hr><h3 id="技术栈（菜鸟，了解程度）"><a href="#技术栈（菜鸟，了解程度）" class="headerlink" title="技术栈（菜鸟，了解程度）"></a>技术栈（菜鸟，了解程度）</h3><p>PHP+Golang+Swoole+Vue+Node</p>]]></content>
     </entry>
     
   
