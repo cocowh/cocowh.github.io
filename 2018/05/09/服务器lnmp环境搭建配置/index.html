@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="搭建本博客之初的原因之一，就是在搭建lnmp和其他系列环境时遇到了很多问题，今天将服务器重置了，先配置好了go环境，在Golang笔记-基础篇(一)的初始部分进行了相关步骤的补充。下面记录下lnmp环境的搭建配置。 nginx编译安装下载可通过https://nginx.org/en/download.html选择版本，然后服务器端下载到/usr/local，此处选择最新稳定版1.14.0。1[r">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-04T17:45:25.114Z">
+<meta property="og:updated_time" content="2018-07-06T11:38:28.895Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="服务器lnmp环境搭建配置">
 <meta name="twitter:description" content="搭建本博客之初的原因之一，就是在搭建lnmp和其他系列环境时遇到了很多问题，今天将服务器重置了，先配置好了go环境，在Golang笔记-基础篇(一)的初始部分进行了相关步骤的补充。下面记录下lnmp环境的搭建配置。 nginx编译安装下载可通过https://nginx.org/en/download.html选择版本，然后服务器端下载到/usr/local，此处选择最新稳定版1.14.0。1[r">
@@ -422,7 +422,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3,421
+                  3,420
                 </span>
               
 
@@ -524,7 +524,7 @@
 <p>设置开机自启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@iZjgheeixigi44Z lib]# systemctl enable php-fpm.service</span><br><span class="line">Created symlink from /etc/systemd/system/multi-user.target.wants/php-fpm.service to /usr/lib/systemd/system/php-fpm.service.</span><br></pre></td></tr></table></figure></p>
 <p>当php-fpm启动时使用<code>systemctl start php-fpm.service</code>启动会报错，需要先<code>pa aux | grep php</code>查找对应的pid，杀死进程后再启动。</p>
 <hr>
-<h2 id="nginx配置fast-cgi并测试lnmp"><a href="#nginx配置fast-cgi并测试lnmp" class="headerlink" title="nginx配置fast-cgi并测试lnmp"></a>nginx配置fast-cgi并测试lnmp</h2><p><code>mkdir /var/www</code>新建www目录，<code>cp /usr/local/nginx/html/* /var/www</code>将nginx自带web目录内文件复制到www中，即将/var/www作为web目录。新建index.php，内容为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">//echo phpinfo();</span><br><span class="line">$servername = &quot;127.0.0.1&quot;;</span><br><span class="line">$username = &quot;huagege&quot;;</span><br><span class="line">$password = &quot;123456789&quot;;</span><br><span class="line"></span><br><span class="line">try &#123;</span><br><span class="line">    $conn = new PDO(&quot;mysql:host=$servername;dbname=huagege&quot;, $username, $password);</span><br><span class="line">    echo &quot;连接成功&quot;;</span><br><span class="line">&#125;</span><br><span class="line">catch(PDOException $e)</span><br><span class="line">&#123;</span><br><span class="line">    echo $e-&gt;getMessage();</span><br><span class="line">&#125;</span><br><span class="line">~</span><br></pre></td></tr></table></figure></p>
+<h2 id="nginx配置fast-cgi并测试lnmp"><a href="#nginx配置fast-cgi并测试lnmp" class="headerlink" title="nginx配置fast-cgi并测试lnmp"></a>nginx配置fast-cgi并测试lnmp</h2><p><code>mkdir /var/www</code>新建www目录，<code>cp /usr/local/nginx/html/* /var/www</code>将nginx自带web目录内文件复制到www中，即将/var/www作为web目录。新建index.php，内容为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">//echo phpinfo();</span><br><span class="line">$servername = &quot;127.0.0.1&quot;;</span><br><span class="line">$username = &quot;huagege&quot;;</span><br><span class="line">$password = &quot;123456789&quot;;</span><br><span class="line"></span><br><span class="line">try &#123;</span><br><span class="line">    $conn = new PDO(&quot;mysql:host=$servername;dbname=huagege&quot;, $username, $password);</span><br><span class="line">    echo &quot;连接成功&quot;;</span><br><span class="line">&#125;</span><br><span class="line">catch(PDOException $e)</span><br><span class="line">&#123;</span><br><span class="line">    echo $e-&gt;getMessage();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><code>vi /usr/local/nginx/conf/nginx.conf</code>打开配置文件将root指令一一改为”/var/www”，注意php后缀解析的设置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">    root   /var/www;</span><br><span class="line">    index  index.html index.htm;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location = /50x.html &#123;</span><br><span class="line">    root   /var/www;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location ~ \.php$ &#123;</span><br><span class="line">    root           /var/www;</span><br><span class="line">    fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">    fastcgi_index  index.php;</span><br><span class="line">    fastcgi_param  SCRIPT_FILENAME  /var/www$fastcgi_script_name;</span><br><span class="line">    include        fastcgi_params;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>尝试浏览器输入IP/index.php，显示成功连接数据库。由于之前将各项服务都加入到了开机启动，重启后再次访问仍然正常。至此，lnmp搭建完成。</p>
 
@@ -800,7 +800,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">84.7k</span>
+    <span title="本站字数总计">84.4k</span>
   
 </div>
 
