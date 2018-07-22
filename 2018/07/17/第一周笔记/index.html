@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="任务一：环境搭建详情：搭建nginx/php/mysql/redis/laravel环境。遇到的问题及收获见Mac搭建开发环境初体验。  任务二：登陆注册的基本功能详情：小作业，登录注册完成基本功能（注册用户信息格式验证，用户名唯一性，修改密码，用户资料，邮箱验证，手机号码验证，密码加密规则，session存储，cookie填写，前端保存密码，查询用户信息）。 实践中主要参考资料 Laravel">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-22T09:19:59.767Z">
+<meta property="og:updated_time" content="2018-07-22T09:54:58.359Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="第一周笔记">
 <meta name="twitter:description" content="任务一：环境搭建详情：搭建nginx/php/mysql/redis/laravel环境。遇到的问题及收获见Mac搭建开发环境初体验。  任务二：登陆注册的基本功能详情：小作业，登录注册完成基本功能（注册用户信息格式验证，用户名唯一性，修改密码，用户资料，邮箱验证，手机号码验证，密码加密规则，session存储，cookie填写，前端保存密码，查询用户信息）。 实践中主要参考资料 Laravel">
@@ -422,7 +422,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,464
+                  1,689
                 </span>
               
 
@@ -438,7 +438,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  5
+                  6
                 </span>
               
             </div>
@@ -478,7 +478,8 @@
 <li>自己编写简单验证、使用框架自带认证器认证字段。</li>
 </ol>
 <hr>
-<h3 id="收获"><a href="#收获" class="headerlink" title="收获"></a>收获</h3><h4 id="cookie和session的重新认识"><a href="#cookie和session的重新认识" class="headerlink" title="cookie和session的重新认识"></a>cookie和session的重新认识</h4><p>之前有学习过相关知识，但在使用中通常直接使用框架封装好的接口，实现业务时有些细节未做关注，例如：服务器如何识别浏览器用户标识，框架对用于标识用户凭证的相关cookie的设置等等。<br>通过阅读laravel自带的登陆源码、相关文档、数据库表字段等，总结其使用session和cookie实现的业务逻辑流程大概如下。</p>
+<h3 id="收获"><a href="#收获" class="headerlink" title="收获"></a>收获</h3><h4 id="关于重置密码的考虑"><a href="#关于重置密码的考虑" class="headerlink" title="关于重置密码的考虑"></a>关于重置密码的考虑</h4><p>之前自己也实现过这部分的功能，当时的做法是生成一个字段并存储到session中，将这个字段作为url参数发送到重置邮箱，通过这个url附带的参数和session中的参数进行比对然后设置一个临时登陆状态，跳转到重置密码页面，重置成功后销毁session字段跳转到登陆页。今天的做法类似，不过加了邮箱字段存session替换上方逻辑中的临时登陆态。<br>但框架自带的重置密码是通过字段、邮箱存数据库，之后取库进行比对操作的，个人感觉这种方式在某些场景下会增大DB的IO，但是可以记录用户的密码变更记录，需要结合具体场景进行考虑和应用。</p>
+<h4 id="cookie和session的重新认识"><a href="#cookie和session的重新认识" class="headerlink" title="cookie和session的重新认识"></a>cookie和session的重新认识</h4><p>之前有学习过相关知识，但在使用中通常直接使用框架封装好的接口，实现业务时有些细节未做关注，例如：服务器如何识别浏览器用户标识，框架对用于标识用户凭证的相关cookie的设置等等。<br>通过阅读laravel自带的登陆源码、相关文档、数据库表字段等，总结其使用session和cookie实现的业务逻辑流程大概如下。</p>
 <blockquote>
 <p>浏览器第一次发起请求，laravel接受请求后生成_token、_previous、_flash存储于session。_token用于防csrf，也会经过加密后存储于cookie中，之后用户的每一次经web路由的请求都需要带上这个凭证。_flash用于记录闪存数据，在下一次请求后失效。_previous用于记录请求的url。在cookie中还会存储一项APP_NAME_session，用于标识session_id。 存储于cookie的XSRF_TOKEN和APP_NAME_session存储时间为一天。 在登陆后会在session中加入一个用于标识登陆状态的字段，若提交的记住我字段为true，则在cookie中新增记录login_web_***，存储时间为5年，并将此字段值记录于对应用户表的remember_token字段中。<br>登陆逻辑先判断是否session中是否有记录登陆状态的标识和请求带的cookie是否有记住我表示，若都没有则跳到登陆页，有记住我则根据记住我值在数据库中查找对应的用户信息，设置session登陆字段。</p>
 </blockquote>
@@ -718,7 +719,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#任务一：环境搭建"><span class="nav-number">1.</span> <span class="nav-text">任务一：环境搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#任务二：登陆注册的基本功能"><span class="nav-number">2.</span> <span class="nav-text">任务二：登陆注册的基本功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实践中主要参考资料"><span class="nav-number">2.1.</span> <span class="nav-text">实践中主要参考资料</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#完成情况"><span class="nav-number">2.2.</span> <span class="nav-text">完成情况</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#收获"><span class="nav-number">3.</span> <span class="nav-text">收获</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#cookie和session的重新认识"><span class="nav-number">3.1.</span> <span class="nav-text">cookie和session的重新认识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于laravel框架的一点收获"><span class="nav-number">3.2.</span> <span class="nav-text">关于laravel框架的一点收获</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于php一些语法知识的收获"><span class="nav-number">3.3.</span> <span class="nav-text">关于php一些语法知识的收获</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#任务一：环境搭建"><span class="nav-number">1.</span> <span class="nav-text">任务一：环境搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#任务二：登陆注册的基本功能"><span class="nav-number">2.</span> <span class="nav-text">任务二：登陆注册的基本功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实践中主要参考资料"><span class="nav-number">2.1.</span> <span class="nav-text">实践中主要参考资料</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#完成情况"><span class="nav-number">2.2.</span> <span class="nav-text">完成情况</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#收获"><span class="nav-number">3.</span> <span class="nav-text">收获</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于重置密码的考虑"><span class="nav-number">3.1.</span> <span class="nav-text">关于重置密码的考虑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cookie和session的重新认识"><span class="nav-number">3.2.</span> <span class="nav-text">cookie和session的重新认识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于laravel框架的一点收获"><span class="nav-number">3.3.</span> <span class="nav-text">关于laravel框架的一点收获</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于php一些语法知识的收获"><span class="nav-number">3.4.</span> <span class="nav-text">关于php一些语法知识的收获</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -757,7 +758,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">85.9k</span>
+    <span title="本站字数总计">86.1k</span>
   
 </div>
 
