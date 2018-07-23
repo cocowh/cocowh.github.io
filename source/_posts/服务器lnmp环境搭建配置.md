@@ -460,8 +460,7 @@ try {
 catch(PDOException $e)
 {
     echo $e->getMessage();
-}
-~      
+}      
 ```
 `vi /usr/local/nginx/conf/nginx.conf`打开配置文件将root指令一一改为"/var/www"，注意php后缀解析的设置。
 ```code

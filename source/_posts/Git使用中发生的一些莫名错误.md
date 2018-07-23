@@ -2,7 +2,7 @@
 title: Git使用中发生的一些莫名错误
 tags: [Git,shell]
 comments: true
-categories: [shell]
+categories: [git]
 date: 2018-04-27 11:40:09
 ---
 ### git push报错 Tags:[index,master]

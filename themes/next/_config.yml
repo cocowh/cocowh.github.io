@@ -163,6 +163,9 @@ links:
   #Title: http://example.com/
   Laruence: http://www.laruence.com/
   Golang: https://studygolang.com/
+  laravel: https://laravel-china.org/docs
+  laravel笔记: https://github.com/kevinyan815/Learning_Laravel_Kernel
+
 
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.gif
