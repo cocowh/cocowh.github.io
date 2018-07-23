@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="毕业," />
+  <meta name="keywords" content="php,nginx,linux,laravel," />
 
 
 
@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="好久没有更新博客了，距离上一篇博客过去快两个月了。五月中寻毕设做的差不多了，堕落了一下，五月下旬回家陪可爱的外甥女玩了10天，六月上旬忙着写论文准备答辩，答辩后班级毕业照聚餐，然后提前回家陪家人过端午节，20号送二姐和外甥女上高铁。这篇本来打算在16号退宿走的那天记录的，想着趁年轻还想说还想写记录下。然而那天仅仅创建了文章，宿舍收拾打包东西，内心繁杂，也没太多心情想写。现在是24号凌晨4点，一直睡">
-<meta name="keywords" content="毕业">
+<meta name="description" content="任务一：nginx配置多个站点、nginx日志配置和查看，根据日志统计访问次数、响应时间参考文档 Nginx 中文官方文档   多站点配置由于使用的brew安装的nginx，配置文件目录/usr/local/etc/nginx。 方法一：新建server，由于我们在本地操作，ip都是127.0.0.1对应localhost，所以为区分站点可只修改listen、root及php脚本fastcgi_p">
+<meta name="keywords" content="php,nginx,linux,laravel">
 <meta property="og:type" content="article">
-<meta property="og:title" content="天涯未远，江湖再见">
-<meta property="og:url" content="bighua.top/2018/06/16/天涯未远，江湖再见/index.html">
+<meta property="og:title" content="第二周笔记-Day23">
+<meta property="og:url" content="bighua.top/2018/07/23/第二周笔记-Day23/index.html">
 <meta property="og:site_name" content="水木年华">
-<meta property="og:description" content="好久没有更新博客了，距离上一篇博客过去快两个月了。五月中寻毕设做的差不多了，堕落了一下，五月下旬回家陪可爱的外甥女玩了10天，六月上旬忙着写论文准备答辩，答辩后班级毕业照聚餐，然后提前回家陪家人过端午节，20号送二姐和外甥女上高铁。这篇本来打算在16号退宿走的那天记录的，想着趁年轻还想说还想写记录下。然而那天仅仅创建了文章，宿舍收拾打包东西，内心繁杂，也没太多心情想写。现在是24号凌晨4点，一直睡">
+<meta property="og:description" content="任务一：nginx配置多个站点、nginx日志配置和查看，根据日志统计访问次数、响应时间参考文档 Nginx 中文官方文档   多站点配置由于使用的brew安装的nginx，配置文件目录/usr/local/etc/nginx。 方法一：新建server，由于我们在本地操作，ip都是127.0.0.1对应localhost，所以为区分站点可只修改listen、root及php脚本fastcgi_p">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-04T17:45:25.113Z">
+<meta property="og:updated_time" content="2018-07-23T15:06:34.191Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="天涯未远，江湖再见">
-<meta name="twitter:description" content="好久没有更新博客了，距离上一篇博客过去快两个月了。五月中寻毕设做的差不多了，堕落了一下，五月下旬回家陪可爱的外甥女玩了10天，六月上旬忙着写论文准备答辩，答辩后班级毕业照聚餐，然后提前回家陪家人过端午节，20号送二姐和外甥女上高铁。这篇本来打算在16号退宿走的那天记录的，想着趁年轻还想说还想写记录下。然而那天仅仅创建了文章，宿舍收拾打包东西，内心繁杂，也没太多心情想写。现在是24号凌晨4点，一直睡">
+<meta name="twitter:title" content="第二周笔记-Day23">
+<meta name="twitter:description" content="任务一：nginx配置多个站点、nginx日志配置和查看，根据日志统计访问次数、响应时间参考文档 Nginx 中文官方文档   多站点配置由于使用的brew安装的nginx，配置文件目录/usr/local/etc/nginx。 方法一：新建server，由于我们在本地操作，ip都是127.0.0.1对应localhost，所以为区分站点可只修改listen、root及php脚本fastcgi_p">
 
 
 
@@ -126,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="bighua.top/2018/06/16/天涯未远，江湖再见/"/>
+  <link rel="canonical" href="bighua.top/2018/07/23/第二周笔记-Day23/"/>
 
 
 
 
 
-  <title>天涯未远，江湖再见 | 水木年华</title>
+  <title>第二周笔记-Day23 | 水木年华</title>
   
 
 
@@ -313,7 +313,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="bighua.top/2018/06/16/天涯未远，江湖再见/">
+    <link itemprop="mainEntityOfPage" href="bighua.top/2018/07/23/第二周笔记-Day23/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="cocowh">
@@ -330,7 +330,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">天涯未远，江湖再见</h2>
+          <h2 class="post-title" itemprop="name headline">第二周笔记-Day23</h2>
         
 
         <div class="post-meta">
@@ -342,8 +342,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-16T14:20:04+08:00">
-                2018-06-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-23T09:29:09+08:00">
+                2018-07-23
               </time>
             
 
@@ -365,8 +365,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/随笔/" itemprop="url" rel="index">
-                    <span itemprop="name">随笔</span>
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
                   </a>
                 </span>
 
@@ -383,8 +383,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/06/16/天涯未远，江湖再见/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/06/16/天涯未远，江湖再见/" itemprop="commentCount"></span>
+                <a href="/2018/07/23/第二周笔记-Day23/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/23/第二周笔记-Day23/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -392,7 +392,7 @@
 
           
           
-             <span id="/2018/06/16/天涯未远，江湖再见/" class="leancloud_visitors" data-flag-title="天涯未远，江湖再见">
+             <span id="/2018/07/23/第二周笔记-Day23/" class="leancloud_visitors" data-flag-title="第二周笔记-Day23">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -422,7 +422,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,444
+                  1,546
                 </span>
               
 
@@ -438,7 +438,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  5
+                  7
                 </span>
               
             </div>
@@ -459,17 +459,123 @@
       
 
       
-        <p>好久没有更新博客了，距离上一篇博客过去快两个月了。五月中寻毕设做的差不多了，堕落了一下，五月下旬回家陪可爱的外甥女玩了10天，六月上旬忙着写论文准备答辩，答辩后班级毕业照聚餐，然后提前回家陪家人过端午节，20号送二姐和外甥女上高铁。这篇本来打算在16号退宿走的那天记录的，想着趁年轻还想说还想写记录下。然而那天仅仅创建了文章，宿舍收拾打包东西，内心繁杂，也没太多心情想写。现在是24号凌晨4点，一直睡不着，就爬起来打开电脑，续写这篇记录。</p>
-<h3 id="世人都晓勤奋好，贪玩懒惰忘不了"><a href="#世人都晓勤奋好，贪玩懒惰忘不了" class="headerlink" title="世人都晓勤奋好，贪玩懒惰忘不了"></a>世人都晓勤奋好，贪玩懒惰忘不了</h3><p>在今年生日的时候，已经写了篇博客，大致记录了大学四年的生活。总结这四年，应了那句话：间歇性踌躇满志，持续性混吃等死。</p>
-<p>大学仿佛就是高中的一次循环。高一包夜上网玩游戏，夜晚被窝玩手机，成绩慢慢掉队。大一上课睡觉，课下浪玩游戏抄作业，大一下学期挂科。高二醒悟想考好点的大学开始慢慢认真学习，却发现掉队有些严重了，感谢学霸同桌带，成绩慢慢稳住，貌似那时候也是和一些同学有些矛盾，也可能是高三，直到现在在处理人际关系以及交往上还是不擅长。同样的也是在大二才开始意识到学习的重要性，有几个同班同学因为挂科严重被留级了，自己也开始上课认真听讲，慢慢的改上课睡觉的习惯，可是一学期的努力虽然成绩有所提高，但是跟那些学霸还是有些距离。摆在眼前的两条路：考研和工作，自己选择了后者，上学期末和同学一起加入了计协的web组，开始带我们的是一个大三的学姐，在下学期她就去腾讯实习了，受学姐的模范鼓励，以及一些情绪的影响，大二下学期一直默默的激励的自己去学习新的东西，虽然那些东西在现在看来真的是皮毛，学的太少太少了。大二这一年过的不太好，心情波动很大，和一些同学闹僵了。</p>
-<p>对我来说的大学，在大二结束时就已经结束了。后面的两年都是以工作为主要目的，没任何值的纪念的生活细节。有时候总是觉得自己是不是有些心理问题，又或者说一些不成熟、幼稚的心理和想法，而自己从没有过正面的面对去解决它，就像这样将其归结为成长。直到现在仍然是复杂的思绪，我想或许有一天我会将所有的一切都找到合理的解决范本，然后再也不会像现在这样吐槽生活、记录心情。</p>
-<p>今天是24号，到现在还没睡意，白天估计是废了，下个月2号入职，在家也呆不了几天了，总想骑车去一次老城十字街，去一次白马寺，去那些还没去过的地方，可是没有人一起的活动，显得一切都索然无味。就像大学的后两年，仅仅以找工作、不挂科以及忘记一些事情和逃避一些事情为主要内容的生活，没有任何意义，面对必须面对的所有人都保持应有的客套，还要忍受一些恶心的事情。</p>
-<h3 id="狮山有情君有意，栀花香里话别离"><a href="#狮山有情君有意，栀花香里话别离" class="headerlink" title="狮山有情君有意，栀花香里话别离"></a>狮山有情君有意，栀花香里话别离</h3><p>就像一颗由远及近的流星，从远处慢慢飞过来，越来越快，到达最近时再以最快的速度离去，慢慢的，慢慢的消失。有些比较久远的事情，还是让他变模糊的好。我不知道现在正处在哪个阶段，或许是流星飞来的阶段。时间总觉得是越来越快了，父母老了，在过个几年就要退休了，今后的时间将大部分被工作带走，或许不觉间这几年就过去了。</p>
-<p>大学这四年也是，总觉的不该这么快的，仿佛离别时都没意识到这就是离别，说是再见，或许是再也不见。离别可能也慢慢变成常态，慢慢的或许也没有现在的这些挢揉造作了。</p>
-<p>无论四年如何，都是自己的人生轨迹。对学校的抱怨也好、留恋也罢，与同学的交好也好、积怨也罢，对某老师的厌恶也好、赞美也罢，所有这一切，形成了独一无二的轨迹。这几年，没仔细想过最后应有的模样，没规划过合理的路径，走一步看一步。开始准备读研，现在走上了工作的路径。开始想学吉他，现在拿起来爬格子还是很费力。总的来说，可能是不如意的。</p>
-<p>今天是24号，昨天上午毕业典礼，下午发放毕业证和学位证，还在学校的同学，估计很多也在今天离开。天下没有不散的宴席，祝同学们前程似锦！</p>
-<h3 id="前方不需太重的行囊，和过去和解吧"><a href="#前方不需太重的行囊，和过去和解吧" class="headerlink" title="前方不需太重的行囊，和过去和解吧"></a>前方不需太重的行囊，和过去和解吧</h3><p>一段经历，已成过去。进入社会，又是一个新的旅程！</p>
-<p>忘记过去，规划以后的摸样，前方不需太重的行囊，和过去和解吧！</p>
+        <h3 id="任务一：nginx配置多个站点、nginx日志配置和查看，根据日志统计访问次数、响应时间"><a href="#任务一：nginx配置多个站点、nginx日志配置和查看，根据日志统计访问次数、响应时间" class="headerlink" title="任务一：nginx配置多个站点、nginx日志配置和查看，根据日志统计访问次数、响应时间"></a>任务一：nginx配置多个站点、nginx日志配置和查看，根据日志统计访问次数、响应时间</h3><h4 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h4><ol>
+<li><a href="https://www.kancloud.cn/wizardforcel/nginx-doc/92350" target="_blank" rel="noopener">Nginx 中文官方文档
+</a></li>
+</ol>
+<h4 id="多站点配置"><a href="#多站点配置" class="headerlink" title="多站点配置"></a>多站点配置</h4><p>由于使用的brew安装的nginx，配置文件目录<code>/usr/local/etc/nginx</code>。</p>
+<p>方法一：新建server，由于我们在本地操作，ip都是127.0.0.1对应localhost，所以为区分站点可只修改listen、root及php脚本fastcgi_param。需要指定路径下有站点目录。此时重启nginx，通过localhost:端口即可访问不同的站点。</p>
+<p>方法二：在/etc/hosts文件中新增两个域名解析到127.0.0.1，我新增的是： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 bighua.com</span><br><span class="line">127.0.0.1 bighua.cn</span><br></pre></td></tr></table></figure>
+<p>然后修改两个server的server_name、root及php脚本fastcgi_param。在指定路径下要有站点目录。此时重启nginx，通过两个域名即可正确访问两个不同的站点。</p>
+<h4 id="nginx日志配置和查看"><a href="#nginx日志配置和查看" class="headerlink" title="nginx日志配置和查看"></a>nginx日志配置和查看</h4><p>使用brew安装的nginx默认的日志文件在目录<code>/usr/local/var/log/nginx</code>下，但是根据nginx文档可以自己在每个server中单独配置访问日志。<br>在第一个server中新增：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">access_log   /Users/wuhua/Desktop/nginxlog/com.access_log;</span><br></pre></td></tr></table></figure>
+<p>在第二个server中新增：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">access_log   /Users/wuhua/Desktop/nginxlog/cn.access_log;</span><br></pre></td></tr></table></figure>
+<p>在http外或server外新增（即全局）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error_log    /Users/wuhua/Desktop/nginxlog/myerror_log;</span><br></pre></td></tr></table></figure>
+<p>errlog_log只会以第一个为准，即在两个server中定义不同的error_log只会生成第一个server中的error_log文件。<br>之后重启nginx，在桌面上的nginxlog目录下会生成三个文件分别为：com.access_log、cn.access_log、cn.error_log。访问上面配置的两个域名，将会在两个访问日志中记录访问信息，出错信息记录到myerror_log。</p>
+<h4 id="根据日志统计访问次数、响应时间"><a href="#根据日志统计访问次数、响应时间" class="headerlink" title="根据日志统计访问次数、响应时间"></a>根据日志统计访问次数、响应时间</h4><p>可以规定记录到日志中信息的格式，并为格式命名，然后在日志尾部通过命名应用格式。如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">log_format  main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;</span><br><span class="line">                   &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;</span><br><span class="line">                   &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;;</span><br><span class="line"> </span><br><span class="line">access_log   /Users/wuhua/Desktop/nginxlog/com.access_log main;</span><br></pre></td></tr></table></figure>
+<p>格式中的信息表示如下表：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">变量</th>
+<th style="text-align:left">含义</th>
+<th style="text-align:left">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">$remote_addr</td>
+<td style="text-align:left">客户端地址</td>
+<td style="text-align:left">127.0.0.1</td>
+</tr>
+<tr>
+<td style="text-align:left">$remote_user</td>
+<td style="text-align:left">客户端用户名称</td>
+<td style="text-align:left">–</td>
+</tr>
+<tr>
+<td style="text-align:left">$time_local</td>
+<td style="text-align:left">访问时间和时区</td>
+<td style="text-align:left">23/Jul/2018:17:23:15 +0800</td>
+</tr>
+<tr>
+<td style="text-align:left">$request</td>
+<td style="text-align:left">请求的url和http协议</td>
+<td style="text-align:left">GET /login HTTP/1.1</td>
+</tr>
+<tr>
+<td style="text-align:left">$status</td>
+<td style="text-align:left">HTTP请求状态</td>
+<td style="text-align:left">200</td>
+</tr>
+<tr>
+<td style="text-align:left">$upstream_status</td>
+<td style="text-align:left">upstream状态</td>
+<td style="text-align:left">200</td>
+</tr>
+<tr>
+<td style="text-align:left">$body_bytes_sent</td>
+<td style="text-align:left">发送给客户端文件内容大小</td>
+<td style="text-align:left">4618</td>
+</tr>
+<tr>
+<td style="text-align:left">$http_referer</td>
+<td style="text-align:left">url跳转来源</td>
+<td style="text-align:left"><a href="http://bighua.cn/register" target="_blank" rel="noopener">http://bighua.cn/register</a></td>
+</tr>
+<tr>
+<td style="text-align:left">$http_user_agent</td>
+<td style="text-align:left">用户终端浏览器等信息</td>
+<td style="text-align:left">Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36</td>
+</tr>
+<tr>
+<td style="text-align:left">$http_x_forwarded_for</td>
+<td style="text-align:left">客户端的真实ip</td>
+<td style="text-align:left">127.0.0.1(通常web服务器放在反向代理的后面，这样就不能获取到客户的IP地址了，通过$remote_add拿到的IP地址是反向代理服务器的iP地址。反向代理服务器在转发请求的http头信息中，可以增加 x_forwarded_for信息，用以记录原有客户端的IP地址和原来客户端请求的服务器地址.)</td>
+</tr>
+<tr>
+<td style="text-align:left">$ssl_protocol</td>
+<td style="text-align:left">SSL协议版本</td>
+<td style="text-align:left">TLSv1（https请求）</td>
+</tr>
+<tr>
+<td style="text-align:left">$ssl_cipher</td>
+<td style="text-align:left">交换数据中的算法</td>
+<td style="text-align:left">RC4-SHA(https请求)</td>
+</tr>
+<tr>
+<td style="text-align:left">$upstream_addr</td>
+<td style="text-align:left">后台upstream的地址，即真正提供服务的主机地址</td>
+<td style="text-align:left">127.0.0.1:80</td>
+</tr>
+<tr>
+<td style="text-align:left">$request_time</td>
+<td style="text-align:left">整个请求的总时间</td>
+<td style="text-align:left">0.205</td>
+</tr>
+<tr>
+<td style="text-align:left">$upstream_response_time</td>
+<td style="text-align:left">请求过程中，upstream响应时间</td>
+<td style="text-align:left">0.002</td>
+</tr>
+</tbody>
+</table>
+<p>未经设置默认eccess_log中的一条日志信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 - - [23/Jul/2018:17:23:15 +0800] &quot;GET /login HTTP/1.1&quot; 200 4618 &quot;http://bighua.cn/register&quot; &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36&quot;</span><br></pre></td></tr></table></figure>
+<p>统计访问次数和响应时间，我们根据客户端真实IP($http_x_forwarded_for)/客户端地址($remote_addr)确定用户统计次数，然后在格式中添加$upstream_response_time和$request_time记录每一次请求的服务器响应时间和整个请求的时间。</p>
+<p>设置log_format如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">log_format  myfmt   &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;</span><br><span class="line">					   &apos;$request_time $upstream_response_time &apos;</span><br><span class="line">                    &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;</span><br><span class="line">                   &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot; &apos;;</span><br></pre></td></tr></table></figure>
+<p>重启nginx再次访问页面查看最新一条日志记录如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 - - [23/Jul/2018:19:49:17 +0800] &quot;GET /login HTTP/1.1&quot; 0.045 0.045 200 4618 &quot;http://bighua.cn/register&quot; &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36&quot; &quot;-&quot;</span><br></pre></td></tr></table></figure>
+<p>第一项<code>127.0.0.1</code>为用户地址，第八项和第九项0.045为整个请求的时间和服务器响应时间，统计访问次数则是统计第一项每个地址的出现次数。</p>
+<p>配置详情：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line">user  wuhua admin;</span><br><span class="line">worker_processes  1;</span><br><span class="line">#error_log  logs/error.log;</span><br><span class="line">#error_log  logs/error.log  notice;</span><br><span class="line">#error_log  logs/error.log  info;</span><br><span class="line">error_log    /Users/wuhua/Desktop/nginxlog/myerror_log;</span><br><span class="line"></span><br><span class="line">#pid        logs/nginx.pid;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    include       mime.types;</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    #log_format  main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;</span><br><span class="line">    #                  &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;</span><br><span class="line">    #                  &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;;</span><br><span class="line">    </span><br><span class="line">    log_format  myfmt   &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;</span><br><span class="line">			&apos;$request_time $upstream_response_time &apos;</span><br><span class="line">                    	&apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;</span><br><span class="line">                   	&apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot; &apos;;</span><br><span class="line">    #access_log  logs/access.log  main;</span><br><span class="line"></span><br><span class="line">    sendfile        on;</span><br><span class="line">    #tcp_nopush     on;</span><br><span class="line"></span><br><span class="line">    #keepalive_timeout  0;</span><br><span class="line">    keepalive_timeout  65;</span><br><span class="line"></span><br><span class="line">    #gzip  on;</span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">    	listen 80;</span><br><span class="line">    	server_name bighua.com;</span><br><span class="line">   		root /Users/wuhua/Desktop/TAL-practice/login/public;</span><br><span class="line">		access_log   /Users/wuhua/Desktop/nginxlog/com.access_log myfmt;	</span><br><span class="line">	</span><br><span class="line">    	add_header X-Frame-Options &quot;SAMEORIGIN&quot;;</span><br><span class="line">    	add_header X-XSS-Protection &quot;1; mode=block&quot;;</span><br><span class="line">   		add_header X-Content-Type-Options &quot;nosniff&quot;;</span><br><span class="line"></span><br><span class="line">    	index index.html index.htm index.php;</span><br><span class="line"></span><br><span class="line">   		charset utf-8;</span><br><span class="line">   		location / &#123;</span><br><span class="line">        	try_files $uri $uri/ /index.php?$query_string;</span><br><span class="line">    	&#125;</span><br><span class="line"></span><br><span class="line">    	location = /favicon.ico &#123; access_log off; log_not_found off; &#125;</span><br><span class="line">    	location = /robots.txt  &#123; access_log off; log_not_found off; &#125;</span><br><span class="line"></span><br><span class="line">    	error_page 404 /index.php;</span><br><span class="line"></span><br><span class="line">    	location ~ \.php$ &#123;</span><br><span class="line">		fastcgi_split_path_info ^(.+\.php)(/.+)$;</span><br><span class="line">        	fastcgi_pass    127.0.0.1:9000;</span><br><span class="line">        	fastcgi_index   index.php;</span><br><span class="line">        	fastcgi_param 	SCRIPT_FILENAME /Users/wuhua/Desktop/TAL-practice/login/public$fastcgi_script_name;</span><br><span class="line">		include 	fastcgi_params;</span><br><span class="line">    	&#125;</span><br><span class="line"></span><br><span class="line">    	location ~ /\.(?!well-known).* &#123;</span><br><span class="line">        	deny all;</span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    server &#123;</span><br><span class="line">        listen 80;</span><br><span class="line">        server_name bighua.cn;</span><br><span class="line">        root /Users/wuhua/Desktop/TAL-practice/loginold/public;</span><br><span class="line">        access_log   /Users/wuhua/Desktop/nginxlog/cn.access_log myfmt;</span><br><span class="line"></span><br><span class="line">        add_header X-Frame-Options &quot;SAMEORIGIN&quot;;</span><br><span class="line">        add_header X-XSS-Protection &quot;1; mode=block&quot;;</span><br><span class="line">        add_header X-Content-Type-Options &quot;nosniff&quot;;</span><br><span class="line"></span><br><span class="line">        index index.html index.htm index.php;</span><br><span class="line"></span><br><span class="line">        charset utf-8;</span><br><span class="line">        location / &#123;</span><br><span class="line">                try_files $uri $uri/ /index.php?$query_string;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        location = /favicon.ico &#123; access_log off; log_not_found off; &#125;</span><br><span class="line">        location = /robots.txt  &#123; access_log off; log_not_found off; &#125;</span><br><span class="line"></span><br><span class="line">        error_page 404 /index.php;</span><br><span class="line"></span><br><span class="line">        location ~ \.php$ &#123;</span><br><span class="line">                fastcgi_split_path_info ^(.+\.php)(/.+)$;</span><br><span class="line">                fastcgi_pass    127.0.0.1:9000;</span><br><span class="line">                fastcgi_index   index.php;</span><br><span class="line">                fastcgi_param   SCRIPT_FILENAME /Users/wuhua/Desktop/TAL-practice/loginold/public$fastcgi_script_name;</span><br><span class="line">                include         fastcgi_params;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        location ~ /\.(?!well-known).* &#123;</span><br><span class="line">                deny all;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; </span><br><span class="line">    include servers/*;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>参考博客<a href="https://www.cnblogs.com/handongyu/p/6513185.html" target="_blank" rel="noopener">Nginx 日志分析及性能排查</a>使用awk命令对日志进行处理。</p>
+<p>另外自己的想法也可以通过php进行读文件处理，或则将awk命令处理过的日志存储数据库等等。</p>
 
       
     </div>
@@ -487,7 +593,13 @@
       
         <div class="post-tags">
           
-            <a href="/tags/毕业/" rel="tag"><i class="fa fa-tag"></i> 毕业</a>
+            <a href="/tags/php/" rel="tag"><i class="fa fa-tag"></i> php</a>
+          
+            <a href="/tags/nginx/" rel="tag"><i class="fa fa-tag"></i> nginx</a>
+          
+            <a href="/tags/linux/" rel="tag"><i class="fa fa-tag"></i> linux</a>
+          
+            <a href="/tags/laravel/" rel="tag"><i class="fa fa-tag"></i> laravel</a>
           
         </div>
       
@@ -500,8 +612,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/09/服务器lnmp环境搭建配置/" rel="next" title="服务器lnmp环境搭建配置">
-                <i class="fa fa-chevron-left"></i> 服务器lnmp环境搭建配置
+              <a href="/2018/07/17/第一周笔记/" rel="next" title="第一周笔记">
+                <i class="fa fa-chevron-left"></i> 第一周笔记
               </a>
             
           </div>
@@ -509,10 +621,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/07/05/hexo多台电脑间迁移解决方案/" rel="prev" title="hexo多台电脑间迁移解决方案">
-                hexo多台电脑间迁移解决方案 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -704,7 +812,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#世人都晓勤奋好，贪玩懒惰忘不了"><span class="nav-number">1.</span> <span class="nav-text">世人都晓勤奋好，贪玩懒惰忘不了</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#狮山有情君有意，栀花香里话别离"><span class="nav-number">2.</span> <span class="nav-text">狮山有情君有意，栀花香里话别离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前方不需太重的行囊，和过去和解吧"><span class="nav-number">3.</span> <span class="nav-text">前方不需太重的行囊，和过去和解吧</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#任务一：nginx配置多个站点、nginx日志配置和查看，根据日志统计访问次数、响应时间"><span class="nav-number">1.</span> <span class="nav-text">任务一：nginx配置多个站点、nginx日志配置和查看，根据日志统计访问次数、响应时间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#参考文档"><span class="nav-number">1.1.</span> <span class="nav-text">参考文档</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多站点配置"><span class="nav-number">1.2.</span> <span class="nav-text">多站点配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nginx日志配置和查看"><span class="nav-number">1.3.</span> <span class="nav-text">nginx日志配置和查看</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#根据日志统计访问次数、响应时间"><span class="nav-number">1.4.</span> <span class="nav-text">根据日志统计访问次数、响应时间</span></a></li></ol></li></ol></div>
             
 
           </div>
