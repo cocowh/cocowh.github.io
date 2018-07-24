@@ -3,6 +3,31 @@
   
     
     <entry>
+      <title>第二周笔记-Day24</title>
+      <link href="/2018/07/24/%E7%AC%AC%E4%BA%8C%E5%91%A8%E7%AC%94%E8%AE%B0-Day24/"/>
+      <url>/2018/07/24/%E7%AC%AC%E4%BA%8C%E5%91%A8%E7%AC%94%E8%AE%B0-Day24/</url>
+      <content type="html"><![CDATA[]]></content>
+      
+      <categories>
+          
+          <category> nginx </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> shell </tag>
+            
+            <tag> nginx </tag>
+            
+            <tag> linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>第二周笔记-Day23</title>
       <link href="/2018/07/23/%E7%AC%AC%E4%BA%8C%E5%91%A8%E7%AC%94%E8%AE%B0-Day23/"/>
       <url>/2018/07/23/%E7%AC%AC%E4%BA%8C%E5%91%A8%E7%AC%94%E8%AE%B0-Day23/</url>
@@ -10,20 +35,18 @@
       
       <categories>
           
-          <category> PHP </category>
+          <category> nginx </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> php </tag>
-            
             <tag> nginx </tag>
             
             <tag> linux </tag>
             
-            <tag> laravel </tag>
+            <tag> conf </tag>
             
         </tags>
       
@@ -37,7 +60,7 @@
       
       <categories>
           
-          <category> PHP </category>
+          <category> php </category>
           
       </categories>
       
@@ -650,17 +673,17 @@
   
     
     <entry>
-      <title>categories</title>
-      <link href="/categories/index.html"/>
-      <url>/categories/index.html</url>
-      <content type="html"><![CDATA[]]></content>
-    </entry>
-    
-    <entry>
       <title>BUG制造师</title>
       <link href="/about/index.html"/>
       <url>/about/index.html</url>
       <content type="html"><![CDATA[<h3 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h3><ul><li>姓名：吴桦</li><li>性别：男</li><li>出生年月：1995/02</li><li>Email： <a href="mailto:huaweiailin@foxmail.com" target="_blank" rel="noopener">huaweiailin@foxmail.com</a></li><li>博客： cocowh.github.io</li><li>GitHub： <a href="https://github.com/cocowh" target="_blank" rel="noopener">https://github.com/cocowh</a></li></ul><hr><h3 id="教育背景"><a href="#教育背景" class="headerlink" title="教育背景"></a>教育背景</h3><p>2014/09-2018/06</p><ul><li>学历：本科</li><li>学校：华中农业大学</li><li>专业：计算机科学与技术</li></ul><hr><h3 id="技术栈（菜鸟，了解程度）"><a href="#技术栈（菜鸟，了解程度）" class="headerlink" title="技术栈（菜鸟，了解程度）"></a>技术栈（菜鸟，了解程度）</h3><p>PHP+Golang+Swoole+Vue+Node</p>]]></content>
+    </entry>
+    
+    <entry>
+      <title>categories</title>
+      <link href="/categories/index.html"/>
+      <url>/categories/index.html</url>
+      <content type="html"><![CDATA[]]></content>
     </entry>
     
     <entry>
