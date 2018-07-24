@@ -85,7 +85,7 @@
       
       <categories>
           
-          <category> PHP </category>
+          <category> php </category>
           
       </categories>
       
@@ -172,8 +172,6 @@
             <tag> mysql </tag>
             
             <tag> linux </tag>
-            
-            <tag> conf </tag>
             
             <tag> php7 </tag>
             
