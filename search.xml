@@ -173,6 +173,8 @@
             
             <tag> linux </tag>
             
+            <tag> conf </tag>
+            
             <tag> php7 </tag>
             
         </tags>
