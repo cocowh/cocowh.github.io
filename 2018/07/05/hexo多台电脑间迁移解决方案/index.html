@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="由于工作配发了mac，之前在自己的thinkpad上搭建的博客如何迁移到mac上，并且保持博客的完整性和统一性就成了问题。 在网上搜了一下，前人已经给出了巧妙的解决方案，通过在自己的hexo项目上开一个分支，分支中保留hexo所有重要文件，在其他电脑上直接下载此分支，然后使用npm下载所有依赖包，这样其实就可以得到自己的hexo完整项目。通过这个克隆的分支可以写博客上传到master，也可以自更新">
+<meta name="description" content="由于工作配发了mac，之前在自己的thinkpad上搭建的博客如何迁移到mac上，并且保持博客的完整性和统一性就成了问题。 在网上搜了一下，前人已经给出了巧妙的解决方案，通过在自己的hexo项目上开一个分支，分支中保留hexo所有重要文件，在其他电脑上直接下载此分支，然后使用npm更新下载所有依赖包，这样其实就可以得到自己的hexo完整项目。通过这个克隆的分支可以写博客上传到master，也可以自">
 <meta name="keywords" content="hexo,git">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hexo多台电脑间迁移解决方案">
 <meta property="og:url" content="bighua.top/2018/07/05/hexo多台电脑间迁移解决方案/index.html">
 <meta property="og:site_name" content="水木年华">
-<meta property="og:description" content="由于工作配发了mac，之前在自己的thinkpad上搭建的博客如何迁移到mac上，并且保持博客的完整性和统一性就成了问题。 在网上搜了一下，前人已经给出了巧妙的解决方案，通过在自己的hexo项目上开一个分支，分支中保留hexo所有重要文件，在其他电脑上直接下载此分支，然后使用npm下载所有依赖包，这样其实就可以得到自己的hexo完整项目。通过这个克隆的分支可以写博客上传到master，也可以自更新">
+<meta property="og:description" content="由于工作配发了mac，之前在自己的thinkpad上搭建的博客如何迁移到mac上，并且保持博客的完整性和统一性就成了问题。 在网上搜了一下，前人已经给出了巧妙的解决方案，通过在自己的hexo项目上开一个分支，分支中保留hexo所有重要文件，在其他电脑上直接下载此分支，然后使用npm更新下载所有依赖包，这样其实就可以得到自己的hexo完整项目。通过这个克隆的分支可以写博客上传到master，也可以自">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-05T05:13:24.683Z">
+<meta property="og:updated_time" content="2018-07-25T16:14:04.670Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hexo多台电脑间迁移解决方案">
-<meta name="twitter:description" content="由于工作配发了mac，之前在自己的thinkpad上搭建的博客如何迁移到mac上，并且保持博客的完整性和统一性就成了问题。 在网上搜了一下，前人已经给出了巧妙的解决方案，通过在自己的hexo项目上开一个分支，分支中保留hexo所有重要文件，在其他电脑上直接下载此分支，然后使用npm下载所有依赖包，这样其实就可以得到自己的hexo完整项目。通过这个克隆的分支可以写博客上传到master，也可以自更新">
+<meta name="twitter:description" content="由于工作配发了mac，之前在自己的thinkpad上搭建的博客如何迁移到mac上，并且保持博客的完整性和统一性就成了问题。 在网上搜了一下，前人已经给出了巧妙的解决方案，通过在自己的hexo项目上开一个分支，分支中保留hexo所有重要文件，在其他电脑上直接下载此分支，然后使用npm更新下载所有依赖包，这样其实就可以得到自己的hexo完整项目。通过这个克隆的分支可以写博客上传到master，也可以自">
 
 
 
@@ -422,7 +422,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  684
+                  686
                 </span>
               
 
@@ -460,7 +460,7 @@
 
       
         <p>由于工作配发了mac，之前在自己的thinkpad上搭建的博客如何迁移到mac上，并且保持博客的完整性和统一性就成了问题。</p>
-<p>在网上搜了一下，前人已经给出了巧妙的解决方案，通过在自己的hexo项目上开一个分支，分支中保留hexo所有重要文件，在其他电脑上直接下载此分支，然后使用npm下载所有依赖包，这样其实就可以得到自己的hexo完整项目。通过这个克隆的分支可以写博客上传到master，也可以自更新上传到分支，保证每次使用后的完整性。</p>
+<p>在网上搜了一下，前人已经给出了巧妙的解决方案，通过在自己的hexo项目上开一个分支，分支中保留hexo所有重要文件，在其他电脑上直接下载此分支，然后使用npm更新下载所有依赖包，这样其实就可以得到自己的hexo完整项目。通过这个克隆的分支可以写博客上传到master，也可以自更新上传到分支，保证每次使用后的完整性。</p>
 <p>具体参考的前人博客<a href="https://www.jianshu.com/p/beb8d611340a" target="_blank" rel="noopener">Hexo博客从一台电脑迁移到其他电脑</a>,介绍了总体的解决思路和步骤，具体细节要根据自己的情况而定。</p>
 <p>具体到本博客的迁移过程：</p>
 <ul>
