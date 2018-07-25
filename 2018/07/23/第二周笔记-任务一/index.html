@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="任务：nginx配置多个站点、nginx日志配置和查看，根据日志统计访问次数、响应时间参考文档 Nginx 中文官方文档   多站点配置由于使用的brew安装的nginx，配置文件目录/usr/local/etc/nginx。 方法一：新建server，由于我们在本地操作，ip都是127.0.0.1对应localhost，所以为区分站点可只修改listen、root及php脚本fastcgi_pa">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-24T08:19:44.782Z">
+<meta property="og:updated_time" content="2018-07-25T01:27:13.383Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="第二周笔记-任务一">
 <meta name="twitter:description" content="任务：nginx配置多个站点、nginx日志配置和查看，根据日志统计访问次数、响应时间参考文档 Nginx 中文官方文档   多站点配置由于使用的brew安装的nginx，配置文件目录/usr/local/etc/nginx。 方法一：新建server，由于我们在本地操作，ip都是127.0.0.1对应localhost，所以为区分站点可只修改listen、root及php脚本fastcgi_pa">
@@ -592,7 +592,7 @@
 <p>整理成shell：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">cat $1 | awk &apos;&#123;print $1&#125;&apos; | uniq -c | awk &apos;&#123;print $1,$2&#125;&apos; &gt; $1.countip.csv</span><br></pre></td></tr></table></figure>
 <p>调用脚本，以日志为参数，保存处理结果为csv文件。</p>
-<h4 id="使用ngxtop统计实时数据"><a href="#使用ngxtop统计实时数据" class="headerlink" title="使用ngxtop统计实时数据"></a>使用ngxtop统计实时数据</h4><p>项目地址：<a href="https://github.com/lebinh/ngxtop" target="_blank" rel="noopener">ngxtop</a><br>安装：</p>
+<h5 id="使用ngxtop统计实时数据"><a href="#使用ngxtop统计实时数据" class="headerlink" title="使用ngxtop统计实时数据"></a>使用ngxtop统计实时数据</h5><p>项目地址：<a href="https://github.com/lebinh/ngxtop" target="_blank" rel="noopener">ngxtop</a><br>安装：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo easy_install pip</span><br><span class="line">sudo easy_install ngxtop</span><br></pre></td></tr></table></figure>
 <p>使用文档：<a href="https://github.com/lebinh/ngxtop#usage" target="_blank" rel="noopener">Usage</a><br>示例：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ngxtop -c PATH/nginx.conf -t 1</span><br></pre></td></tr></table></figure>
@@ -734,7 +734,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -745,7 +745,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -838,7 +838,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#任务：nginx配置多个站点、nginx日志配置和查看，根据日志统计访问次数、响应时间"><span class="nav-number">1.</span> <span class="nav-text">任务：nginx配置多个站点、nginx日志配置和查看，根据日志统计访问次数、响应时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考文档"><span class="nav-number">2.</span> <span class="nav-text">参考文档</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多站点配置"><span class="nav-number">3.</span> <span class="nav-text">多站点配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nginx日志配置和查看"><span class="nav-number">4.</span> <span class="nav-text">nginx日志配置和查看</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#根据日志统计访问次数、响应时间"><span class="nav-number">5.</span> <span class="nav-text">根据日志统计访问次数、响应时间</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用awk进行日志分析"><span class="nav-number">5.1.</span> <span class="nav-text">使用awk进行日志分析</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用ngxtop统计实时数据"><span class="nav-number">6.</span> <span class="nav-text">使用ngxtop统计实时数据</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用php进行日志分析"><span class="nav-number">6.1.</span> <span class="nav-text">使用php进行日志分析</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#业务分析感悟"><span class="nav-number">7.</span> <span class="nav-text">业务分析感悟</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#任务：nginx配置多个站点、nginx日志配置和查看，根据日志统计访问次数、响应时间"><span class="nav-number">1.</span> <span class="nav-text">任务：nginx配置多个站点、nginx日志配置和查看，根据日志统计访问次数、响应时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考文档"><span class="nav-number">2.</span> <span class="nav-text">参考文档</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多站点配置"><span class="nav-number">3.</span> <span class="nav-text">多站点配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nginx日志配置和查看"><span class="nav-number">4.</span> <span class="nav-text">nginx日志配置和查看</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#根据日志统计访问次数、响应时间"><span class="nav-number">5.</span> <span class="nav-text">根据日志统计访问次数、响应时间</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用awk进行日志分析"><span class="nav-number">5.1.</span> <span class="nav-text">使用awk进行日志分析</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用ngxtop统计实时数据"><span class="nav-number">5.2.</span> <span class="nav-text">使用ngxtop统计实时数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用php进行日志分析"><span class="nav-number">5.3.</span> <span class="nav-text">使用php进行日志分析</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#业务分析感悟"><span class="nav-number">6.</span> <span class="nav-text">业务分析感悟</span></a></li></ol></div>
             
 
           </div>
@@ -877,7 +877,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">88.6k</span>
+    <span title="本站字数总计">88.7k</span>
   
 </div>
 
