@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="任务一：环境搭建详情：搭建nginx/php/mysql/redis/laravel环境。遇到的问题及收获见Mac搭建开发环境初体验。  任务二：登陆注册的基本功能详情：小作业，登录注册完成基本功能（注册用户信息格式验证，用户名唯一性，修改密码，用户资料，邮箱验证，手机号码验证，密码加密规则，session存储，cookie填写，前端保存密码，查询用户信息）。 实践中主要参考资料 Laravel">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-24T02:05:57.637Z">
+<meta property="og:updated_time" content="2018-07-25T06:01:11.762Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="第一周笔记">
 <meta name="twitter:description" content="任务一：环境搭建详情：搭建nginx/php/mysql/redis/laravel环境。遇到的问题及收获见Mac搭建开发环境初体验。  任务二：登陆注册的基本功能详情：小作业，登录注册完成基本功能（注册用户信息格式验证，用户名唯一性，修改密码，用户资料，邮箱验证，手机号码验证，密码加密规则，session存储，cookie填写，前端保存密码，查询用户信息）。 实践中主要参考资料 Laravel">
@@ -422,7 +422,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,689
+                  1,870
                 </span>
               
 
@@ -438,7 +438,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  6
+                  7
                 </span>
               
             </div>
@@ -478,6 +478,11 @@
 <li>自己编写简单验证、使用框架自带认证器认证字段。</li>
 </ol>
 <hr>
+<h3 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h3><h4 id="163反垃圾邮件导致发送邮件失败"><a href="#163反垃圾邮件导致发送邮件失败" class="headerlink" title="163反垃圾邮件导致发送邮件失败"></a>163反垃圾邮件导致发送邮件失败</h4><p>修改邮件内容，设置邮件标题（mail属性$subject）。</p>
+<h4 id="部署到服务器上迁移数据库失败"><a href="#部署到服务器上迁移数据库失败" class="headerlink" title="部署到服务器上迁移数据库失败"></a>部署到服务器上迁移数据库失败</h4><p>详情：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[Illuminate\Database\QueryException]</span><br><span class="line">SQLSTATE[42000]: Syntax error or access violation: 1071 Specified key was too long; max key length is 767 bytes (SQL: alter table `users` add unique `users_email_unique`(`email`))</span><br><span class="line">[PDOException]</span><br><span class="line">SQLSTATE[42000]: Syntax error or access violation: 1071 Specified key was too long; max key length is 767 bytes</span><br></pre></td></tr></table></figure>
+<p>参考<a href="https://www.cnblogs.com/betx/p/6544090.html" target="_blank" rel="noopener">Laravel 5.4: 特殊字段太长报错</a>。<br>laravel5.4改变了默认的数据库字符集，使用utf8mb4，支持存储emojis。如果你运行的MySQL低于v5.7.7或MariaDB版本低于10.2.2，需要对app/Providers/AppServiceProvider.php进行修改，在其boot方法中添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Schema::defaultStringLength(&apos;191&apos;);</span><br></pre></td></tr></table></figure>
 <h3 id="收获"><a href="#收获" class="headerlink" title="收获"></a>收获</h3><h4 id="关于重置密码的考虑"><a href="#关于重置密码的考虑" class="headerlink" title="关于重置密码的考虑"></a>关于重置密码的考虑</h4><p>之前自己也实现过这部分的功能，当时的做法是生成一个字段并存储到session中，将这个字段作为url参数发送到重置邮箱，通过这个url附带的参数和session中的参数进行比对然后设置一个临时登陆状态，跳转到重置密码页面，重置成功后销毁session字段跳转到登陆页。今天的做法类似，不过加了邮箱字段存session替换上方逻辑中的临时登陆态。<br>但框架自带的重置密码是通过字段、邮箱存数据库，之后取库进行比对操作的，个人感觉这种方式在某些场景下会增大DB的IO，但是可以记录用户的密码变更记录，需要结合具体场景进行考虑和应用。</p>
 <h4 id="cookie和session的重新认识"><a href="#cookie和session的重新认识" class="headerlink" title="cookie和session的重新认识"></a>cookie和session的重新认识</h4><p>之前有学习过相关知识，但在使用中通常直接使用框架封装好的接口，实现业务时有些细节未做关注，例如：服务器如何识别浏览器用户标识，框架对用于标识用户凭证的相关cookie的设置等等。<br>通过阅读laravel自带的登陆源码、相关文档、数据库表字段等，总结其使用session和cookie实现的业务逻辑流程大概如下。</p>
 <blockquote>
@@ -723,7 +728,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#任务一：环境搭建"><span class="nav-number">1.</span> <span class="nav-text">任务一：环境搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#任务二：登陆注册的基本功能"><span class="nav-number">2.</span> <span class="nav-text">任务二：登陆注册的基本功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实践中主要参考资料"><span class="nav-number">2.1.</span> <span class="nav-text">实践中主要参考资料</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#完成情况"><span class="nav-number">2.2.</span> <span class="nav-text">完成情况</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#收获"><span class="nav-number">3.</span> <span class="nav-text">收获</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于重置密码的考虑"><span class="nav-number">3.1.</span> <span class="nav-text">关于重置密码的考虑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cookie和session的重新认识"><span class="nav-number">3.2.</span> <span class="nav-text">cookie和session的重新认识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于laravel框架的一点收获"><span class="nav-number">3.3.</span> <span class="nav-text">关于laravel框架的一点收获</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于php一些语法知识的收获"><span class="nav-number">3.4.</span> <span class="nav-text">关于php一些语法知识的收获</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#任务一：环境搭建"><span class="nav-number">1.</span> <span class="nav-text">任务一：环境搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#任务二：登陆注册的基本功能"><span class="nav-number">2.</span> <span class="nav-text">任务二：登陆注册的基本功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实践中主要参考资料"><span class="nav-number">2.1.</span> <span class="nav-text">实践中主要参考资料</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#完成情况"><span class="nav-number">2.2.</span> <span class="nav-text">完成情况</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遇到的问题"><span class="nav-number">3.</span> <span class="nav-text">遇到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#163反垃圾邮件导致发送邮件失败"><span class="nav-number">3.1.</span> <span class="nav-text">163反垃圾邮件导致发送邮件失败</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#部署到服务器上迁移数据库失败"><span class="nav-number">3.2.</span> <span class="nav-text">部署到服务器上迁移数据库失败</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#收获"><span class="nav-number">4.</span> <span class="nav-text">收获</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于重置密码的考虑"><span class="nav-number">4.1.</span> <span class="nav-text">关于重置密码的考虑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cookie和session的重新认识"><span class="nav-number">4.2.</span> <span class="nav-text">cookie和session的重新认识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于laravel框架的一点收获"><span class="nav-number">4.3.</span> <span class="nav-text">关于laravel框架的一点收获</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于php一些语法知识的收获"><span class="nav-number">4.4.</span> <span class="nav-text">关于php一些语法知识的收获</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -762,7 +767,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">88.7k</span>
+    <span title="本站字数总计">92.5k</span>
   
 </div>
 
