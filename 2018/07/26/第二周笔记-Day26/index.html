@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="mac下laravel定时任务添加Cron条目到mac（服务器）文档：crontab。 1234crontab服务的重启关闭，开启sudo /usr/sbin/cron startsudo /usr/sbin/cron restartsudo /usr/sbin/cron stop 将php artisan schedule:run 添加到crontab： 1crontab -e 添加： 1* *">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-26T11:09:23.345Z">
+<meta property="og:updated_time" content="2018-07-27T01:26:36.712Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="第二周笔记-Day26">
 <meta name="twitter:description" content="mac下laravel定时任务添加Cron条目到mac（服务器）文档：crontab。 1234crontab服务的重启关闭，开启sudo /usr/sbin/cron startsudo /usr/sbin/cron restartsudo /usr/sbin/cron stop 将php artisan schedule:run 添加到crontab： 1crontab -e 添加： 1* *">
@@ -465,7 +465,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br></pre></td></tr></table></figure>
 <p>添加：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* * * * * /usr/bin/php /Users/wuhua/Desktop/TAL-practice/login/artisan schedule:run &gt;&gt; /dev/null 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
-<p><code>* * * * *</code>分别代表每小时中第几分钟、每天中第几小时、每月中第几日、每年中第几月、每周中第几天。<code>/usr/bin/php</code>为php执行路径（cli）。<code>/Users/wuhua/Desktop/TAL-practice/login/artisan schedule:run</code>为项目artisan路径，要执行的命令。<code>&gt;&gt; /dev/null</code>表示将标准输出1重定向到/dev/null（空设备文件）中（丢弃标准输出），<code>2&gt;&amp;1</code>将错误输出和标准输出绑定在一起，使用同一个文件描述符。<br>查看设置的定时任务：</p>
+<p><code>* * * * *</code>分别代表每小时中第几分钟、每天中第几小时、每月中第几日、每年中第几月、每周中第几天。<code>/usr/bin/php</code>为php执行路径（cli）。<code>/Users/wuhua/Desktop/TAL-practice/login/artisan schedule:run</code>为项目artisan路径，要执行的命令。<code>&gt;&gt; /dev/null</code>表示将标准输出重定向到/dev/null（空设备文件）中（丢弃标准输出），<code>2&gt;&amp;1</code>将错误输出和标准输出绑定在一起，使用同一个文件描述符。<br>查看设置的定时任务：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">crontab -l</span><br><span class="line">* * * * * /usr/bin/php /Users/wuhua/Desktop/TAL-practice/login/artisan schedule:run &gt;&gt; /dev/null 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
 <h4 id="任务调度书写"><a href="#任务调度书写" class="headerlink" title="任务调度书写"></a>任务调度书写</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">protected function schedule(Schedule $schedule)</span><br><span class="line">&#123;</span><br><span class="line">	$schedule-&gt;call(function () &#123;</span><br><span class="line">            $addUserInfoIntoredis = new UserInfoController();</span><br><span class="line">           $addUserInfoIntoredis-&gt;addUsersInfo();</span><br><span class="line">        &#125;)-&gt;everyMinute();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在UserInfoController的addUsersInfo方法中取数据库今日注册新用户添加到redis中。其中的逻辑省略。</p>
@@ -538,6 +538,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/27/第二周笔记-Day27/" rel="prev" title="第二周笔记-Day27">
+                第二周笔记-Day27 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -625,7 +629,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -768,7 +772,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">93.4k</span>
+    <span title="本站字数总计">94.0k</span>
   
 </div>
 
