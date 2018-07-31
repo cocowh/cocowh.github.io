@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="mysql参考文档 ：《高性能MySql》  其他：MySQL 教程.  MySQL中的索引详讲 索引 索引是存储引擎用于快速找到记录的一种数据结构。——《高性能MySql-创建高性能的索引》   实际上，索引也是一张表，该表保存了主键与索引字段，并指向实体表的记录。  索引创建创建索引时，需要确保该索引是应用在SQL查询语句的条件(一般作为 WHERE 子句的条件)。 索引是在存储引擎层而不是服">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-31T11:55:53.907Z">
+<meta property="og:updated_time" content="2018-07-31T12:02:21.293Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="第三周笔记-Mysql">
 <meta name="twitter:description" content="mysql参考文档 ：《高性能MySql》  其他：MySQL 教程.  MySQL中的索引详讲 索引 索引是存储引擎用于快速找到记录的一种数据结构。——《高性能MySql-创建高性能的索引》   实际上，索引也是一张表，该表保存了主键与索引字段，并指向实体表的记录。  索引创建创建索引时，需要确保该索引是应用在SQL查询语句的条件(一般作为 WHERE 子句的条件)。 索引是在存储引擎层而不是服">
@@ -490,7 +490,7 @@
 *ALTER TABLE tbl_name ADD UNIQUE index_name (column_list): 这条语句创建索引的值必须是唯一的（除了NULL外，NULL可能会出现多次）。
 *ALTER TABLE tbl_name ADD INDEX index_name (column_list): 添加普通索引，索引值可出现多次。
 *ALTER TABLE tbl_name ADD FULLTEXT index_name (column_list):该语句指定了索引为 FULLTEXT ，用于全文索引。
-</code></pre><p>待阅读了解：<code>触发器</code>。</p>
+</code></pre><p>待阅读了解：<a href="https://www.cnblogs.com/yank/p/4193820.html" target="_blank" rel="noopener"><code>触发器</code></a>。</p>
 <h4 id="索引结构"><a href="#索引结构" class="headerlink" title="索引结构"></a>索引结构</h4><p>参考博文：<a href="https://www.cnblogs.com/tgycoder/p/5410057.html" target="_blank" rel="noopener">MySQL索引背后的数据结构及算法原理</a>、<a href="https://www.cnblogs.com/mysql-dba/p/6689597.html" target="_blank" rel="noopener">深入浅出分析MySQL索引设计背后的数据结构</a>]</p>
 <p>上方博文主要讲解了mysql使用b+tree作为索引结构，但innoDB和MyISAM的具体实现方式也是不同的。</p>
 <p>在mysql中还有以基于哈希表实现的哈希索引，只有Memory引擎显示支持哈希索引。</p>
