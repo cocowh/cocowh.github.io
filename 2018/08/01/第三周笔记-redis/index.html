@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="redis基本数据结构   结构类型 结构存储的值 结构的读写能力     STRING 字符串、整数或者浮点数 对整个字符串或者字符串中的一部分执行操作；整数或浮点数自增、自减操作   LIST 链表，链表上的每个节点都包含了一个字符串 链表两端推入或者弹出元素；根据便宜量对链表进行修剪；读取单个或多个元素；根据指查找或着移除元素   SET 字符串的无序收集器，被包含的每个字符串都是独一无二的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-01T09:58:24.883Z">
+<meta property="og:updated_time" content="2018-08-01T11:02:56.490Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="第三周笔记-redis">
 <meta name="twitter:description" content="redis基本数据结构   结构类型 结构存储的值 结构的读写能力     STRING 字符串、整数或者浮点数 对整个字符串或者字符串中的一部分执行操作；整数或浮点数自增、自减操作   LIST 链表，链表上的每个节点都包含了一个字符串 链表两端推入或者弹出元素；根据便宜量对链表进行修剪；读取单个或多个元素；根据指查找或着移除元素   SET 字符串的无序收集器，被包含的每个字符串都是独一无二的">
@@ -422,7 +422,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3,773
+                  3,967
                 </span>
               
 
@@ -438,7 +438,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  14
+                  15
                 </span>
               
             </div>
@@ -916,6 +916,7 @@
 <h5 id="基本的Redis事务"><a href="#基本的Redis事务" class="headerlink" title="基本的Redis事务"></a>基本的Redis事务</h5><p>让用户在不被打断的情况下对多个键执行操作：WATCH、MULTI、EXEC、UNWATCH和DISCARD。</p>
 <p>基本事务（basic transaction）使用MULTI命令和EXEC命令，让一个客户端在不被其他客户端打断的情况下执行多个命令。被MULTI命令和EXEC命令包围的所有命令会一个接一个地执行，直到所有命令都执行完毕为止。事务执行后，Redis才会处理其他客户端的命令。</p>
 <p>Redis接收到MULTI命令时，Redis会将这个客户端之后发送的所有命令都放入到一个队列里面，直到这个客户端发送EXEC命令为止，接着Redis在不被打断的情况下，一个接一个地执行存储在队列里面的命令。</p>
+<p>使用WATCH命令对键进行监视之后，直到用户执行EXEC命令的这段时间里，如果有其他客户端抢先对键进行了替换、更新或删除等操作，当用户尝试执行EXEC命令时，事务将失败并返回一个错误。UNWATCH命令可以在WATCH命令执行以后、MULTI命令执行之前对连接进行重置；DISCARD命令在MULTI命令执行之后、EXEC命令执行之前对连接进行重置。即在用户使用WATCH监视一个或多个键，接着使用MULTI开始一个新的事务，并将多个命令入队到事务队列后，仍然可以通过发送DISCARD命令来取消WATCH命令并清空所有已入队命令。</p>
 <h5 id="键的过期时间"><a href="#键的过期时间" class="headerlink" title="键的过期时间"></a>键的过期时间</h5><p>指Redis会在键的过期时间到达时自动删除该键。</p>
 <p>为键设置过期时间的命令：</p>
 <table>
@@ -1225,7 +1226,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">104.1k</span>
+    <span title="本站字数总计">104.3k</span>
   
 </div>
 
