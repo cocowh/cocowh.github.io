@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="shell,Centos,ssh登陆," />
+  <meta name="keywords" content="redis," />
 
 
 
@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="背景前段时间跟着《Go并发编程实战 1&amp;amp;2》和其他相关资料学习了go，现在着手进行相关的实践练习。与是把之前的服务器重置了下，重新配置go的相关运行环境。 问题服务器用的阿里云的学生机，再过一个多月毕业就要到期了。一般可以直接使用ssh相关命令进行服务器的连接:1234567[root@localhost]# ssh root@101.200.50.5 //亦可ssh 101.200.50">
-<meta name="keywords" content="shell,Centos,ssh登陆">
+<meta name="description" content="redis基本数据结构   结构类型 结构存储的值 结构的读写能力     STRING 字符串、整数或者浮点数 对整个字符串或者字符串中的一部分执行操作；整数或浮点数自增、自减操作   LIST 链表，链表上的每个节点都包含了一个字符串 链表两端推入或者弹出元素；根据便宜量对链表进行修剪；读取单个或多个元素；根据指查找或着移除元素   SET 字符串的无序收集器，被包含的每个字符串都是独一无二的">
+<meta name="keywords" content="redis">
 <meta property="og:type" content="article">
-<meta property="og:title" content="同IP服务器改变后导致Centos7连接服务器异常">
-<meta property="og:url" content="bighua.top/2018/05/09/同IP服务器改变后导致Centos7连接服务器异常/index.html">
+<meta property="og:title" content="第三周笔记-redis">
+<meta property="og:url" content="bighua.top/2018/08/01/第三周笔记-redis/index.html">
 <meta property="og:site_name" content="水木年华">
-<meta property="og:description" content="背景前段时间跟着《Go并发编程实战 1&amp;amp;2》和其他相关资料学习了go，现在着手进行相关的实践练习。与是把之前的服务器重置了下，重新配置go的相关运行环境。 问题服务器用的阿里云的学生机，再过一个多月毕业就要到期了。一般可以直接使用ssh相关命令进行服务器的连接:1234567[root@localhost]# ssh root@101.200.50.5 //亦可ssh 101.200.50">
+<meta property="og:description" content="redis基本数据结构   结构类型 结构存储的值 结构的读写能力     STRING 字符串、整数或者浮点数 对整个字符串或者字符串中的一部分执行操作；整数或浮点数自增、自减操作   LIST 链表，链表上的每个节点都包含了一个字符串 链表两端推入或者弹出元素；根据便宜量对链表进行修剪；读取单个或多个元素；根据指查找或着移除元素   SET 字符串的无序收集器，被包含的每个字符串都是独一无二的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-04T17:45:25.113Z">
+<meta property="og:updated_time" content="2018-08-01T09:58:24.883Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="同IP服务器改变后导致Centos7连接服务器异常">
-<meta name="twitter:description" content="背景前段时间跟着《Go并发编程实战 1&amp;amp;2》和其他相关资料学习了go，现在着手进行相关的实践练习。与是把之前的服务器重置了下，重新配置go的相关运行环境。 问题服务器用的阿里云的学生机，再过一个多月毕业就要到期了。一般可以直接使用ssh相关命令进行服务器的连接:1234567[root@localhost]# ssh root@101.200.50.5 //亦可ssh 101.200.50">
+<meta name="twitter:title" content="第三周笔记-redis">
+<meta name="twitter:description" content="redis基本数据结构   结构类型 结构存储的值 结构的读写能力     STRING 字符串、整数或者浮点数 对整个字符串或者字符串中的一部分执行操作；整数或浮点数自增、自减操作   LIST 链表，链表上的每个节点都包含了一个字符串 链表两端推入或者弹出元素；根据便宜量对链表进行修剪；读取单个或多个元素；根据指查找或着移除元素   SET 字符串的无序收集器，被包含的每个字符串都是独一无二的">
 
 
 
@@ -126,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="bighua.top/2018/05/09/同IP服务器改变后导致Centos7连接服务器异常/"/>
+  <link rel="canonical" href="bighua.top/2018/08/01/第三周笔记-redis/"/>
 
 
 
 
 
-  <title>同IP服务器改变后导致Centos7连接服务器异常 | 水木年华</title>
+  <title>第三周笔记-redis | 水木年华</title>
   
 
 
@@ -313,7 +313,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="bighua.top/2018/05/09/同IP服务器改变后导致Centos7连接服务器异常/">
+    <link itemprop="mainEntityOfPage" href="bighua.top/2018/08/01/第三周笔记-redis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="cocowh">
@@ -330,7 +330,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">同IP服务器改变后导致Centos7连接服务器异常</h2>
+          <h2 class="post-title" itemprop="name headline">第三周笔记-redis</h2>
         
 
         <div class="post-meta">
@@ -342,8 +342,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-09T13:22:18+08:00">
-                2018-05-09
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T09:40:15+08:00">
+                2018-08-01
               </time>
             
 
@@ -365,8 +365,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
                   </a>
                 </span>
 
@@ -383,8 +383,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/05/09/同IP服务器改变后导致Centos7连接服务器异常/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/05/09/同IP服务器改变后导致Centos7连接服务器异常/" itemprop="commentCount"></span>
+                <a href="/2018/08/01/第三周笔记-redis/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/01/第三周笔记-redis/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -392,7 +392,7 @@
 
           
           
-             <span id="/2018/05/09/同IP服务器改变后导致Centos7连接服务器异常/" class="leancloud_visitors" data-flag-title="同IP服务器改变后导致Centos7连接服务器异常">
+             <span id="/2018/08/01/第三周笔记-redis/" class="leancloud_visitors" data-flag-title="第三周笔记-redis">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -422,7 +422,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,371
+                  3,773
                 </span>
               
 
@@ -438,7 +438,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  6
+                  14
                 </span>
               
             </div>
@@ -459,38 +459,503 @@
       
 
       
-        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>前段时间跟着《Go并发编程实战 1&amp;2》和其他相关资料学习了go，现在着手进行相关的实践练习。与是把之前的服务器重置了下，重新配置go的相关运行环境。</p>
-<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>服务器用的阿里云的学生机，再过一个多月毕业就要到期了。一般可以直接使用ssh相关命令进行服务器的连接:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost]# ssh root@101.200.50.5 //亦可ssh 101.200.50.5(限root权限下)</span><br><span class="line">root@101.200.50.5&apos;s password: </span><br><span class="line">Last login: Wed May  9 13:59:50 2018 from 220.249.99.148</span><br><span class="line"></span><br><span class="line">Welcome to Alibaba Cloud Elastic Compute Service !</span><br><span class="line"></span><br><span class="line">[root@iZjgheeixigi44Z ~]#</span><br></pre></td></tr></table></figure></p>
-<p>此时连接登陆成功。</p>
-<p>但是看到Centos7有自带的连接服务器功能，于是在重置服务器之前直接尝试进行了连接。<br><code>其他位置</code>-<code>连接到服务器（S）</code>输入框输入：</p>
-<blockquote>
-<p><code>fstp://101.200.50.5</code></p>
-</blockquote>
-<p>可正常连接并且直接显示服务器中的文件。在显示的文件里右键选择<code>在本地终端打开(L)</code>和<code>在远程终端打开(R)</code>，直接建立终端连接。选择后者等同于上面的直接通过ssh命令建立终端连接，打开的终端为：</p>
-<blockquote>
-<p><code>[root@iZjgheeixigi44Z ~]#</code></p>
-</blockquote>
-<p>选择前者等同于通过本地的协议打开终端，非直接服务器终端，打开的终端为：</p>
-<blockquote>
-<p><code>joker@localhost sftp:host=101.200.50.5]$</code></p>
-</blockquote>
-<p>目前为止一切正常。但当我对服务器进行重置更换系统盘后再次使用centos7自带连接功能进行连接，报错提示主机连接失败。通过查询得知，<code>由于更换了服务器，使用了相同IP，导致公钥与服务器的私钥配对失败，无法登陆服务器。需要删除旧服务器(101.200.50.5)的公钥才行</code>，操作如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -f &quot;/home/joker/.ssh/known_hosts&quot; -R 101.200.50.5</span><br></pre></td></tr></table></figure></p>
-<p>此时会将原known_hosts文件（含101.200.50.5公钥）备份为known_hosts.old，删除公钥后的文件为known_hosts，文件内容私密此处不展示。</p>
-<p>再次使用Centos7自带的进行连接报错信息为：<code>无法验证101.200.50.5（101.200.50.5）的标识。这会在您首次登陆计算机时发生。...</code>。然后需要点3次才能正确连接登陆成功。</p>
-<p>此时使用普通用户权限运行<code>ssh 101.200.50.5</code>或者<code>ssh root@101.200.50.5</code>命令进行连接时报错为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[joker@localhost ~]# ssh 101.200.50.5</span><br><span class="line">The authenticity of host &apos;101.200.50.5 (101.200.50.5)&apos; can&apos;t be established.</span><br><span class="line">ECDSA key fingerprint is SHA256:3oG4dc22CqV2FOH1FS9ROi7yfi88y0nNN1JeBK8393g.</span><br><span class="line">ECDSA key fingerprint is MD5:7c:5d:cd:15:1a:d7:7c:28:55:53:2f:47:ec:1b:6e:2a.</span><br><span class="line">Are you sure you want to continue connecting (yes/no)? yes   </span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
-<p>需要3次确认才通过，相当于上方的使用Centos7自带连接的报错。通过查询得到解决办法为修改/etc/ssh/ssh_config文件（或$HOME/.ssh/config）中的配置，添加：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">StrictHostKeyChecking no</span><br></pre></td></tr></table></figure></p>
-<p>执行仍提示错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[joker@localhost ~]$ ssh 101.200.50.5</span><br><span class="line">Failed to add the host to the list of known hosts (/home/joker/.ssh/known_hosts).</span><br><span class="line">joker@101.200.50.5&apos;s password:</span><br></pre></td></tr></table></figure></p>
-<p>因对.ssh中的文件没有写权限，需要切换到root赋权：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[joker@localhost ~]$ su</span><br><span class="line">密码：</span><br><span class="line">[root@localhost joker]# chmod -R 777 .ssh</span><br></pre></td></tr></table></figure></p>
-<p>再切换到用户权限运行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[joker@localhost ~]$ ssh 101.200.50.5</span><br><span class="line">Warning: Permanently added &apos;101.200.50.5&apos; (ECDSA) to the list of known hosts.</span><br><span class="line">joker@101.200.50.5&apos;s password: </span><br><span class="line">Permission denied, please try again.</span><br><span class="line">joker@101.200.50.5&apos;s password:</span><br></pre></td></tr></table></figure></p>
-<p>提示说明已经将101.200.50.5添加到了known_hosts文件中，查看此文件可发现内容有改变。若使用普通用户权限下执行<code>ssh 101.200.50.5</code>登陆还需要其他设置，否则无法登录，但普通用户权限下执行<code>ssh root@101.200.50.5</code>可登陆。一般使用root权限进行服务器的登陆，两者都可正常登陆。</p>
-<p>然后再回到最开始报错的Centos7自带的服务器连接，此时可正常连接登录了。但是<code>在远程终端打开（R）</code>仍然相当于在普通用户权限下的<code>ssh root@101.200.50.5</code>命令，需要其他的设置，使用<code>在本地终端打开（L）</code>无影响，恢复到最开始的状态。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>针对Centos7使用自带的功能连接服务器，同IP服务器改变后导致使用此自带功能连接出现无法登陆问题。实际解决步骤：  </p>
-<p>移除known_hosts文件中的旧IP项<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -f &quot;/home/joker/.ssh/known_hosts&quot; -R IP</span><br></pre></td></tr></table></figure></p>
-<p>修改/etc/ssh/ssh_config中的配置，这一步主要是去除多次的连接询问提示，之后可改回来，添加：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">StrictHostKeyChecking no</span><br></pre></td></tr></table></figure></p>
-<p>普通用户权限下执行ssh IP将IP添加到known_hosts：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 known_hosts //若有写权限此步忽略，否则切换到root赋权后再切换到普通用户</span><br><span class="line"></span><br><span class="line">ssh root@IP</span><br><span class="line">password:</span><br></pre></td></tr></table></figure></p>
-<p>这一步主要是将IP再此添加到known_hosts中，不是为了登陆。而且普通用户权限下<code>ssh IP</code>被禁止登陆，使用<code>ssh root@IP</code>指定root用户才可以登陆，在root权限下都可正常登陆。</p>
-<p>之后再次使用Centos7自带的连接服务可正常连接。</p>
-<p>感觉Centos7这个自带的可使用各种协议连接服务器没啥用，多了一个服务器端文件的直接显示，即将服务器桌面化显示。还是ssh命令直接连接方便实用。</p>
+        <h3 id="redis基本数据结构"><a href="#redis基本数据结构" class="headerlink" title="redis基本数据结构"></a>redis基本数据结构</h3><table>
+<thead>
+<tr>
+<th style="text-align:left">结构类型</th>
+<th style="text-align:left">结构存储的值</th>
+<th style="text-align:left">结构的读写能力</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">STRING</td>
+<td style="text-align:left">字符串、整数或者浮点数</td>
+<td style="text-align:left">对整个字符串或者字符串中的一部分执行操作；整数或浮点数自增、自减操作</td>
+</tr>
+<tr>
+<td style="text-align:left">LIST</td>
+<td style="text-align:left">链表，链表上的每个节点都包含了一个字符串</td>
+<td style="text-align:left">链表两端推入或者弹出元素；根据便宜量对链表进行修剪；读取单个或多个元素；根据指查找或着移除元素</td>
+</tr>
+<tr>
+<td style="text-align:left">SET</td>
+<td style="text-align:left">字符串的无序收集器，被包含的每个字符串都是独一无二的、各不相同的</td>
+<td style="text-align:left">添加、获取、移除单个元素；检查一个元素是否存在于集合中；计算交集、并集、差集；从集合里面随机获取元素</td>
+</tr>
+<tr>
+<td style="text-align:left">HASH</td>
+<td style="text-align:left">包含键值对的无序散列表</td>
+<td style="text-align:left">添加、获取、移除单个键值对；获取所有键值对</td>
+</tr>
+<tr>
+<td style="text-align:left">ZSET（有序集合）</td>
+<td style="text-align:left">字符串成员与浮点数分值之间的有序映射，元素的排列顺序由分值的大小决定</td>
+<td style="text-align:left">添加、获取、删除单个元素；根据分值范围或者成员来获取元素</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Redis中的字符串"><a href="#Redis中的字符串" class="headerlink" title="Redis中的字符串"></a>Redis中的字符串</h4><p>与其他编程语言或者其他键值存储提供的字符串非常相似。</p>
+<h4 id="Redis中的列表"><a href="#Redis中的列表" class="headerlink" title="Redis中的列表"></a>Redis中的列表</h4><p>一个列表结构可以有序地存储多个字符串。可执行的操作与很多编程语言中的列表操作非常相似。</p>
+<h4 id="Redis中的集合"><a href="#Redis中的集合" class="headerlink" title="Redis中的集合"></a>Redis中的集合</h4><p>存储多个字符串，不同于列表，集合使用无序方式存储元素，使用散列表保证存储的每个字符串都是不同的。</p>
+<h4 id="Redis中的散列"><a href="#Redis中的散列" class="headerlink" title="Redis中的散列"></a>Redis中的散列</h4><p>存储多个键值对之间的映射，散列存储的值既可以是字符串也可以是数字值。类似文档数据库中的文档，关系数据库中的行，允许用户同时访问或者修改一个或多个域。</p>
+<h4 id="Redis中的有序集合"><a href="#Redis中的有序集合" class="headerlink" title="Redis中的有序集合"></a>Redis中的有序集合</h4><p>用于存储键值对，键被称为成员，每个成员各不相同，值被称为分值，分值必须为浮点数。唯一既可以根据成员访问元素，又可以根据分值及分值的排列顺序来访问元素的结构。</p>
+<h3 id="Redis命令"><a href="#Redis命令" class="headerlink" title="Redis命令"></a>Redis命令</h3><h4 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h4><p>Redis中的自增命令和自减命令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> LNCR</td>
+<td style="text-align:left">INCR key-name——将键存储的值加上1</td>
+</tr>
+<tr>
+<td style="text-align:left"> DECR</td>
+<td style="text-align:left">DECR key-name——将键存储的值减去1</td>
+</tr>
+<tr>
+<td style="text-align:left"> INCRBY</td>
+<td style="text-align:left">INCRBY key-name amount——将键存储的值加上amount</td>
+</tr>
+<tr>
+<td style="text-align:left"> DECRBY</td>
+<td style="text-align:left">DECRBY key-name amount——将键存储的值减去amount</td>
+</tr>
+<tr>
+<td style="text-align:left"> INCRBYFLOAT</td>
+<td style="text-align:left">INCRBYFLOAT key-name amount——将键存储的值加上浮点数amount，redis v2.6+</td>
+</tr>
+</tbody>
+</table>
+<p>存储时，若值可被解释（interpret）为十进制整数或者浮点数，则允许用户对字符串执行各种INCR*和DECR*操作。对不存在的键或者保存了空串的键执行自增或者自减操作，Redis执行操作时将键的值当作0处理。对无法解释为整数或浮点数的字符串键执行自增或自减操作，将向用户返回一个错误。</p>
+<p>处理子串和二进制位的命令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> APPEND</td>
+<td style="text-align:left">APPEND key-name value——将值value追加到给定键key-name当前存储的值的末尾</td>
+</tr>
+<tr>
+<td style="text-align:left"> GETRANGE</td>
+<td style="text-align:left">GETRANGE key-name start end——获取一个由偏移量start至偏移量end范围内所有字符组成的子串，包括start和end在内。</td>
+</tr>
+<tr>
+<td style="text-align:left"> SETRANGE</td>
+<td style="text-align:left">SETRANGE key-name offset value——将start偏移量开始的子串设置为给定值</td>
+</tr>
+<tr>
+<td style="text-align:left"> GETBIT</td>
+<td style="text-align:left">GETBIT key-name offset——将子节串看作是二进制位串，并将位串中偏移量为offset的二进制位的值设置为value</td>
+</tr>
+<tr>
+<td style="text-align:left"> BITCOUNT</td>
+<td style="text-align:left">BITCOUNT key-name [start end]——统计二进制位串里面值为1的二进制位的数量，若给定偏移量start和end，则只对偏移量指定范围内的二进制位进行统计</td>
+</tr>
+<tr>
+<td style="text-align:left"> BITOP</td>
+<td style="text-align:left">BITOP operation dest-key key-name [key-name …]——对一个或多个二进制位串执行包括并（AND）、或（OR）、异或（XOR）、非（NOT）在内的任意一种按位运算操作，并将计算结果保存在dest-key键里</td>
+</tr>
+</tbody>
+</table>
+<p> 使用STRANGE或者SETBIT命令对字符串进行写入的时候，若字符串当前的长度不能满足写入的要求，Redis会自动地使用空字节（null）将字符串扩展至所需的长度，然后才执行写入或者更新操作。使用GETRANGE读取字符串，超出字符串末尾的数据会被视为是空串，使用GETBIT读取二进制位串，超出字符串末尾的二进制位会被视为0。</p>
+<h4 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h4><p> 常用的列表命令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> RPUSH</td>
+<td style="text-align:left">RPUSH key-name value [value …]——将一个或多个值推入列表的右端</td>
+</tr>
+<tr>
+<td style="text-align:left"> LPUSH</td>
+<td style="text-align:left">LPUSH key-name value [value …]——将一个或多个值推入列表的左端</td>
+</tr>
+<tr>
+<td style="text-align:left"> RPOP</td>
+<td style="text-align:left">RPOP key-name——移除并返回列表最右端的元素</td>
+</tr>
+<tr>
+<td style="text-align:left"> LPOP</td>
+<td style="text-align:left">LPOP key-name——移除并返回列表最左端的元素</td>
+</tr>
+<tr>
+<td style="text-align:left"> LINDEX</td>
+<td style="text-align:left">LINDEX key-name offset——返回列表中偏移量为offset的元素</td>
+</tr>
+<tr>
+<td style="text-align:left"> LRANGE</td>
+<td style="text-align:left">LRANGE key-name start end——返回列表从start偏移量到end偏移量范围内的所有元素，偏移量start和end的元素也会包含在被返回的元素之内</td>
+</tr>
+<tr>
+<td style="text-align:left"> LTRIM</td>
+<td style="text-align:left">LTRIM ley-name start end——对列表进行修剪，只保留从start偏移量到end偏移量范围内的元素，偏移量start和end的元素也会保留</td>
+</tr>
+</tbody>
+</table>
+<p>阻塞式的列表弹出民命令以及在列表之间移动元素的命令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> BLPOP</td>
+<td style="text-align:left">BLPOP key-name [key-name …] timeout——从第一个非空列表中弹出位于最左端的元素，或者在timeout秒之内阻塞并等待可弹出的元素出现</td>
+</tr>
+<tr>
+<td style="text-align:left"> BRPOP</td>
+<td style="text-align:left">BRPOP key-name [key-name …] timeout——从第一个非空列表中掏出位于最右端的元素，或者在timeout秒之内阻塞并等待可弹出的元素出现</td>
+</tr>
+<tr>
+<td style="text-align:left"> RPOPLPUSH</td>
+<td style="text-align:left">RPOPLPUSH source-key dest-key——从source-key列表中弹出位于最右端的元素，然后将这个元素推入dest-key列表的最左端，并向用户返回这个元素</td>
+</tr>
+<tr>
+<td style="text-align:left"> BRPOPLPUSH</td>
+<td style="text-align:left">BRPOPLPUSH source-key dest-key timeout——从source-key列表中弹出位于最右端的元素，然后将这个元素推入dest-key列表的最左端，并向用户返回这个元素，若source-key为空，则在timeout秒之内阻塞并等待可弹出的元素出现</td>
+</tr>
+</tbody>
+</table>
+<p> 应用于消息传递、任务队列。</p>
+<h4 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h4><p>以无序的方式存储多个各不相同的元素。</p>
+<p>常用集合命令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> SADD</td>
+<td style="text-align:left">SADD key-name item [item …]——将一个或多个元素添加到集合中，并返回被添加元素当中原本并不存在于集合里面的元素数量</td>
+</tr>
+<tr>
+<td style="text-align:left"> SREM</td>
+<td style="text-align:left">SREM key-name item [item …]——从集合里面移除一个或多个元素，并返回被移除元素的数量</td>
+</tr>
+<tr>
+<td style="text-align:left"> SISMEMBER</td>
+<td style="text-align:left">SISMEMBER key-name item——检查元素item是否存在于集合key-name里</td>
+</tr>
+<tr>
+<td style="text-align:left"> SCARD</td>
+<td style="text-align:left">SCARD key-name——返回集合包含的元素的数量</td>
+</tr>
+<tr>
+<td style="text-align:left"> SMEMBERS</td>
+<td style="text-align:left">SMEMBERS key-name——返回集合包含的所有元素</td>
+</tr>
+<tr>
+<td style="text-align:left"> SRANDMEMBER</td>
+<td style="text-align:left">SRANDMEMBER key-name [count]——从集合里面随机地返回一个或多个元素。当count为正数时，命令返回的随机元素不会重复；当count为负数时，命令返回的随机元素可能会出现重复</td>
+</tr>
+<tr>
+<td style="text-align:left"> SPOP</td>
+<td style="text-align:left">SPOP key-name——随机地移除集合中的一个元素，并返回被移除的元素</td>
+</tr>
+<tr>
+<td style="text-align:left"> SMOVE</td>
+<td style="text-align:left">SMOVE source-key dest-key item——若集合source-key包含元素item，从集合source-key里面移除元素item，并将元素item添加到集合dest-key中；若item被成功移除，命令返回1，否则返回0</td>
+</tr>
+</tbody>
+</table>
+<p>组合和处理多个集合的redis命令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> SDIFF</td>
+<td style="text-align:left">SDIFF key-name [key-name …]——返回那些存在于第一个集合、但不存在于其他集合中的元素（差集运算）</td>
+</tr>
+<tr>
+<td style="text-align:left"> SDIFFSTORE</td>
+<td style="text-align:left">SDIFFSTORE dest-key key-name [key-name …]——将存在于第一个集合但并不存在于其他集合中的元素（差集运算）存储到dest-key键里面</td>
+</tr>
+<tr>
+<td style="text-align:left"> SINTER</td>
+<td style="text-align:left">SINTER key-name [key-name …]——返回那些同时存在于所有集合中的元素（交集运算）</td>
+</tr>
+<tr>
+<td style="text-align:left"> SINTERSTORE</td>
+<td style="text-align:left">SINTERSTORE dest-key key-name [key-name …]——将同时存在于所有集合中的元素（交集运算）存储到dest-key键里面</td>
+</tr>
+<tr>
+<td style="text-align:left"> SUNION</td>
+<td style="text-align:left">SUNION key-name [key-name …]——返回至少存在于一个集合中的元素（并集运算）</td>
+</tr>
+<tr>
+<td style="text-align:left"> SUNIONSTORE</td>
+<td style="text-align:left">SUNIONSTORE desk-key key-name [key-name …]——将至少存在于一个集合中的元素（并集运算）存储到dest-key键里面</td>
+</tr>
+</tbody>
+</table>
+<h4 id="散列"><a href="#散列" class="headerlink" title="散列"></a>散列</h4><p>适用于将一些相关的数据存储在一起。</p>
+<p>添加和删除键值对的散列操作：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> HMGET</td>
+<td style="text-align:left">HMGET key-name key [key …]——从散列里面获取一个或多个键的值</td>
+</tr>
+<tr>
+<td style="text-align:left"> HMSET</td>
+<td style="text-align:left">HMSET key-name key value [key value …]——为散列里面的一个或多个键设置值</td>
+</tr>
+<tr>
+<td style="text-align:left"> HDEL</td>
+<td style="text-align:left">HDEL key-name key [key …]——删除散列里面的一个或多个键值对，返回成功找到并删除的键值对的数量</td>
+</tr>
+<tr>
+<td style="text-align:left"> HLEN</td>
+<td style="text-align:left">HLEN key-name——返回散列包含的键值对的数量</td>
+</tr>
+</tbody>
+</table>
+<p>散列的批量操作命令以及和字符串操作类似的散列命令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> HEXISTS</td>
+<td style="text-align:left">HEXISTS key-name key——检查给定键是否存在于散列中</td>
+</tr>
+<tr>
+<td style="text-align:left"> HKEYS</td>
+<td style="text-align:left">HKEYS key-name——获取散列包含的所有键</td>
+</tr>
+<tr>
+<td style="text-align:left"> HVALS</td>
+<td style="text-align:left">HVALS key-name——获取散列包含的所有值</td>
+</tr>
+<tr>
+<td style="text-align:left"> HGETALL</td>
+<td style="text-align:left">HGETALL key-name——获取散列包含的所有键值对</td>
+</tr>
+<tr>
+<td style="text-align:left"> HINCRBY</td>
+<td style="text-align:left">HINCRBY key-name key increment——将键key存储的值加上整数increment</td>
+</tr>
+<tr>
+<td style="text-align:left"> HINCRBYFLOAT</td>
+<td style="text-align:left">HINCRBYFLOAT key-name key increment——将键key存储的值加上浮点数increment </td>
+</tr>
+</tbody>
+</table>
+<h4 id="有序集合"><a href="#有序集合" class="headerlink" title="有序集合"></a>有序集合</h4><p>存储着成员与分值之间的映射，提供了分值处理命令，分值在Redis中以IEEE 175双精度浮点数的格式存储。</p>
+<p>常用的有序集合命令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> ZADD</td>
+<td style="text-align:left">ZADD key-name score member [score member …]——将带有给定分值的成员添加到有序集合里面</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZREM</td>
+<td style="text-align:left">ZREM key-name member [member …]——从有序集合里面移除给定的成员，并返回被移除成员的数量</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZCARD</td>
+<td style="text-align:left">ZCARD key-name——返回有序集合包含的成员数量</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZINCRBY</td>
+<td style="text-align:left">ZINCRBY key-name increment member——将member成员的分值加上increment</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZCOUNT</td>
+<td style="text-align:left">ZCOUNT key-name min max——返回分值介于min和max之间的成员数量</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZRANK</td>
+<td style="text-align:left">ZRANK key-name member——返回成员member在有序集合中的排名</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZSCORE</td>
+<td style="text-align:left">ZSCORE key-name member——返回成员memebr的分值</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZRANGE</td>
+<td style="text-align:left">ZRANGE key-name start stop [WITHSCORES]——返回有序集合中排名介于start和stop之间的成员，若给定了可选的WITHSCORES选项，则命令会将成员的分值一并返回</td>
+</tr>
+</tbody>
+</table>
+<p>有序集合的范围型数据获取命令和范围型数据删除命令、并集命令、交集命令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> ZREVRANK</td>
+<td style="text-align:left">ZREVRANK key-name member——返回有序集合里成员member的排名，成员按照分值从大到小排列</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZREVRANGE</td>
+<td style="text-align:left">ZREVRANGE key-name start stop [WITHSCORES]——返回有序集合给定排名范围内的成员，成员按照分值从大到小排列</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZRANGEBYSCORE</td>
+<td style="text-align:left">ZRANGEBYSCORE key min max [WITHSCORES][LIMIT offset count]——返回有序集合中，分值介于min和max之间的所有成员</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZREVRANGEBYSCORE</td>
+<td style="text-align:left">ZREVRANGEBYSCORE key max min [WITHSCORES][LIMIT offset count]——获取有序集合中分值介于min和max之间的所有成员，并按照分值从大到小的顺序来返回它们</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZREMRANGEBYRANK</td>
+<td style="text-align:left">ZREMRANGEBYRANK key-name start stop——移除有序集合中排名介于start和stop之间的所有所有成员</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZREMRANGEBYSCORE</td>
+<td style="text-align:left">ZREMRANGEBYSCORE key-name min max——移除有序集合中分值介于min和max之间的所有成员</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZINTERSTORE</td>
+<td style="text-align:left">ZINTERSTORE dest-key key-count key [key …][WEIGHTS weight [weight …]][AGGREGATE SUM &#124; MIN &#124; MAX]——对给定的有序集合执行类似于集合的交集运算</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZUNIONSTORE</td>
+<td style="text-align:left">ZUNIONSTORE dest-key key-count key [key …][WEIGHTS weight [weight …]][AGGREGATE SUM &#124; MIN &#124; MAX]——对给定的有序集合执行类似于集合的并集运算</td>
+</tr>
+</tbody>
+</table>
+<h4 id="发布与订阅"><a href="#发布与订阅" class="headerlink" title="发布与订阅"></a>发布与订阅</h4><p>发布与订阅（pub/sub）是订阅者（listener）负责订阅频道（channel），发送者（publisher）负责向频道发送二进制字符串消息。当有消息被发送至给定频道时，频道的所有订阅者都会收到消息。</p>
+<p>发布与订阅命令： </p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> SUBSCRIBE</td>
+<td style="text-align:left">SUBSCRIBE channel [channel …]——订阅给定的一个或多个频道</td>
+</tr>
+<tr>
+<td style="text-align:left"> UNSUBSCRIBE</td>
+<td style="text-align:left">UNSUBSCRIBE [channel [channel …]]——退订给定的一个或多个频道，若执行时没给定频道，则退订所有频道</td>
+</tr>
+<tr>
+<td style="text-align:left"> PUBLISH</td>
+<td style="text-align:left">PUBLISH channel message——向给定频道发送消息</td>
+</tr>
+<tr>
+<td style="text-align:left"> PSUBSCRIBE</td>
+<td style="text-align:left">PSUBSCRIBE pattern [pattern …]——订阅与给定模式相匹配的所有频道</td>
+</tr>
+<tr>
+<td style="text-align:left"> PUNSUBSCRIBE</td>
+<td style="text-align:left">PUNSUBSCRIBE [pattern [pattern …]]——退订给定的模式，如果执行时没有给定任何模式，则退订所有模式</td>
+</tr>
+</tbody>
+</table>
+<h4 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h4><h5 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h5><p>同其他编程语言的排序操作，可以根据某种比较规则对一系列元素进行有序的排列。可根据字符串、列表、集合、有序集合、散列这5种键里面存储着的数据，对列表、集合以及有序集合进行排序，相当于SQL中的order by子句。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> SORT</td>
+<td style="text-align:left">SORT source-key [BY pattern][LIMIT offset count][GET pattern [GET PATTERN …]][ASC &#124; DESC][ALPHA][STORE dest-key]——根据给定的选项，对输入列表、集合或者有序集合进行排序，然后返回或者存储排序的结果</td>
+</tr>
+</tbody>
+</table>
+<p> 可实现的功能：根据降序而不是默认的升序来排序元素；将元素看作是数字来进行排序，或则将元素看作是数字来进行排序，或者将元素看作是二进制字符串来进行排序；使用被排序元素之外的其他值作为权重来进行排序，可从输入的列表、集合、有序集合以外的其他地方进行取值。</p>
+<p> 对集合进行排序返回一个列表形式的排序结果。</p>
+<h5 id="基本的Redis事务"><a href="#基本的Redis事务" class="headerlink" title="基本的Redis事务"></a>基本的Redis事务</h5><p>让用户在不被打断的情况下对多个键执行操作：WATCH、MULTI、EXEC、UNWATCH和DISCARD。</p>
+<p>基本事务（basic transaction）使用MULTI命令和EXEC命令，让一个客户端在不被其他客户端打断的情况下执行多个命令。被MULTI命令和EXEC命令包围的所有命令会一个接一个地执行，直到所有命令都执行完毕为止。事务执行后，Redis才会处理其他客户端的命令。</p>
+<p>Redis接收到MULTI命令时，Redis会将这个客户端之后发送的所有命令都放入到一个队列里面，直到这个客户端发送EXEC命令为止，接着Redis在不被打断的情况下，一个接一个地执行存储在队列里面的命令。</p>
+<h5 id="键的过期时间"><a href="#键的过期时间" class="headerlink" title="键的过期时间"></a>键的过期时间</h5><p>指Redis会在键的过期时间到达时自动删除该键。</p>
+<p>为键设置过期时间的命令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">示例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">  PERSIST</td>
+<td style="text-align:left">PERSIST key-name——移除键的过期时间</td>
+</tr>
+<tr>
+<td style="text-align:left">  TTL</td>
+<td style="text-align:left">TTL key-name——查看给定键距离过期还有多少秒</td>
+</tr>
+<tr>
+<td style="text-align:left">  EXPIRE</td>
+<td style="text-align:left">EXPIRE key-name seconds——让给定键在指定的秒数之后过期</td>
+</tr>
+<tr>
+<td style="text-align:left">  EXPIREAT</td>
+<td style="text-align:left">EXPIREAT key-name timestamp——将给定键的过期时间设置为给定的UNIX时间戳</td>
+</tr>
+<tr>
+<td style="text-align:left">  PTTL</td>
+<td style="text-align:left">PTTL key-name——查看给定键距离过期时间还有多少毫秒，Redis V2.6+</td>
+</tr>
+<tr>
+<td style="text-align:left">  PEXPIRE</td>
+<td style="text-align:left">PEXPIRE key-name milliseconds——让给定键在指定的毫秒数之后过期，Redis V2.6+</td>
+</tr>
+<tr>
+<td style="text-align:left">  PEXPIREAT</td>
+<td style="text-align:left">PEXPIREAT key-name timestamp-milliseconds——将一个毫秒级精度的UNIX时间戳设置为给定键的过期时间，Redis V2.6+ </td>
+</tr>
+</tbody>
+</table>
 
       
     </div>
@@ -508,11 +973,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/shell/" rel="tag"><i class="fa fa-tag"></i> shell</a>
-          
-            <a href="/tags/Centos/" rel="tag"><i class="fa fa-tag"></i> Centos</a>
-          
-            <a href="/tags/ssh登陆/" rel="tag"><i class="fa fa-tag"></i> ssh登陆</a>
+            <a href="/tags/redis/" rel="tag"><i class="fa fa-tag"></i> redis</a>
           
         </div>
       
@@ -525,8 +986,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/05/Golang笔记-同步/" rel="next" title="Golang笔记-同步">
-                <i class="fa fa-chevron-left"></i> Golang笔记-同步
+              <a href="/2018/07/30/第三周笔记-Mysql/" rel="next" title="第三周笔记-Mysql">
+                <i class="fa fa-chevron-left"></i> 第三周笔记-Mysql
               </a>
             
           </div>
@@ -534,10 +995,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/09/服务器lnmp环境搭建配置/" rel="prev" title="服务器lnmp环境搭建配置">
-                服务器lnmp环境搭建配置 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -729,7 +1186,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题"><span class="nav-number">2.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#redis基本数据结构"><span class="nav-number">1.</span> <span class="nav-text">redis基本数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis中的字符串"><span class="nav-number">1.1.</span> <span class="nav-text">Redis中的字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis中的列表"><span class="nav-number">1.2.</span> <span class="nav-text">Redis中的列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis中的集合"><span class="nav-number">1.3.</span> <span class="nav-text">Redis中的集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis中的散列"><span class="nav-number">1.4.</span> <span class="nav-text">Redis中的散列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis中的有序集合"><span class="nav-number">1.5.</span> <span class="nav-text">Redis中的有序集合</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis命令"><span class="nav-number">2.</span> <span class="nav-text">Redis命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串"><span class="nav-number">2.1.</span> <span class="nav-text">字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#列表"><span class="nav-number">2.2.</span> <span class="nav-text">列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集合"><span class="nav-number">2.3.</span> <span class="nav-text">集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#散列"><span class="nav-number">2.4.</span> <span class="nav-text">散列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#有序集合"><span class="nav-number">2.5.</span> <span class="nav-text">有序集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#发布与订阅"><span class="nav-number">2.6.</span> <span class="nav-text">发布与订阅</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他命令"><span class="nav-number">2.7.</span> <span class="nav-text">其他命令</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#排序"><span class="nav-number">2.7.1.</span> <span class="nav-text">排序</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#基本的Redis事务"><span class="nav-number">2.7.2.</span> <span class="nav-text">基本的Redis事务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#键的过期时间"><span class="nav-number">2.7.3.</span> <span class="nav-text">键的过期时间</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
