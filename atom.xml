@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="bighua.top/"/>
-  <updated>2018-08-04T09:44:10.840Z</updated>
+  <updated>2018-08-21T12:39:07.139Z</updated>
   <id>bighua.top/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>HTTP简记</title>
+    <link href="bighua.top/2018/08/21/HTTP%E7%AE%80%E8%AE%B0/"/>
+    <id>bighua.top/2018/08/21/HTTP简记/</id>
+    <published>2018-08-21T11:44:09.000Z</published>
+    <updated>2018-08-21T12:39:07.139Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="HTTP请求"><a href="#HTTP请求" class="headerlink" title="HTTP请求"></a>HTTP请求</h3><p>由一系列文本行组成，有顺序地进行排列：  </p><ul><li>请求行（request-line）；</li><li>零个或任意多个请求首部（header）；</li><li>一个空行；</li><li>可选的报文主体（body）。</li></ul><h4 id="请求方法"><a href="#请求方法" class="headerlink" title="请求方法"></a>请求方法</h4><p>HTTP 1.1要求必须实现的只有GET方法和HEAD方法，其他方法（包括POST）方法是可选的。</p><ul><li>GET——命令服务器返回指定的资源。</li><li>HEAD——类似GET，不同于此方法不要求服务器返回报文的主体。用于在不获取报文主体的情况下取得相应的首部。</li><li>POST——命令服务器将报文主体中的数据传递给URI指定的资源。</li><li>PUT——命令服务器将报文主体中的数据设置为URI指定的资源，若URI指定的位置上已有数据存在，则使用报文主体中的数据去代替已有的数据，若资源未存在，则在URI指定的位置上新创建一个资源。</li><li>DELETE——命令服务器删除URI指定的资源。</li><li>TRACE——命令服务器返回请求本身，了解介于客户端和服务器之间的其他服务器是如何处理请求的。</li><li>OPTIONS——命令服务器返回它支持的HTTP方法列表。</li><li>CONNECT——命令服务器与客户端建立一个网络连接，用于设置SSL隧道以开启HTTPS功能。</li><li>PATCH——命令服务器使用报文主体中的数据对URI指定的资源进行修改。</li></ul><h4 id="常见的请求首部"><a href="#常见的请求首部" class="headerlink" title="常见的请求首部"></a>常见的请求首部</h4><table><thead><tr><th style="text-align:left">首部字段</th><th style="text-align:left">作用描述</th></tr></thead><tbody><tr><td style="text-align:left"> Accept</td><td style="text-align:left">客户端在HTTP相应中能够接收的内容类型。如Accept: text/html</td></tr><tr><td style="text-align:left"> Accept-Charset</td><td style="text-align:left">客户端要求服务器使用的字符集编码。如Accept-Charset: utf-8。</td></tr><tr><td style="text-align:left"> Authorization</td><td style="text-align:left">用于向服务器发送基本的身份验证证书</td></tr><tr><td style="text-align:left"> Cookie</td><td style="text-align:left">客户端在此首部中把服务器之前设置的所有cookie回传给服务器。如Cookie: my-first_cookie=hello; my_second_cookie=world</td></tr><tr><td style="text-align:left"> Content-Length</td><td style="text-align:left">请求主体的字节长度</td></tr><tr><td style="text-align:left"> Content-Type</td><td style="text-align:left">请求包含主体的时候用于记录主体内容的类型。发送POST或GET请求时默认为x-www-form-urlen-coded，上传文件时应设置为multipart/form-data。</td></tr><tr><td style="text-align:left"> Host</td><td style="text-align:left">服务器的名字及端口号。无端口号表示使用80端口</td></tr><tr><td style="text-align:left"> Referrer</td><td style="text-align:left">发起请求的页面所在的地址</td></tr><tr><td style="text-align:left"> User-Agent</td><td style="text-align:left">对发起请求的客户端进行描述</td></tr></tbody></table><h3 id="HTTP响应"><a href="#HTTP响应" class="headerlink" title="HTTP响应"></a>HTTP响应</h3><p>由一系列文本行组成，有顺序地进行排列：  </p><ul><li>状态行；</li><li>零个或任意多个响应首部；</li><li>一个空行；</li><li>可选的报文主体。</li></ul><h4 id="5种类型的响应状态码"><a href="#5种类型的响应状态码" class="headerlink" title="5种类型的响应状态码"></a>5种类型的响应状态码</h4><table><thead><tr><th style="text-align:left">状态码类型</th><th style="text-align:left">作用描述</th></tr></thead><tbody><tr><td style="text-align:left"> 1XX</td><td style="text-align:left">情报状态码。告知客户端已接收客户端发送的请求，并且已经对请求进行了处理</td></tr><tr><td style="text-align:left"> 2XX</td><td style="text-align:left">成功状态码。告知客户端已接收客户端发送的请求，并且已经成功地对请求进行了处理。标准响应为‘200 OK’</td></tr><tr><td style="text-align:left"> 3XX</td><td style="text-align:left">重定向状态码。告知客户端已接收客户端发送的请求，并且已经成功处理了请求，但为了完成请求指定的动作，客户端还需要再做一些其他的工作，大多用于实现URL重定向</td></tr><tr><td style="text-align:left"> 4XX</td><td style="text-align:left">客户端错误状态码。告知客户端发送的请求出现了某些问题。常见‘404 Not Found’表示服务器无法从请求指定的URL中找到客户端想要的资源</td></tr><tr><td style="text-align:left"> 5XX</td><td style="text-align:left">服务器错误状态码。当服务器因某些原因而无法正确地处理请求时，使用此类状态码告知客户端。</td></tr></tbody></table><h4 id="常见的响应首部"><a href="#常见的响应首部" class="headerlink" title="常见的响应首部"></a>常见的响应首部</h4><table><thead><tr><th style="text-align:left">首部字段</th><th style="text-align:left">作用描述</th></tr></thead><tbody><tr><td style="text-align:left">  Allow</td><td style="text-align:left">告知客户端，服务器支持哪些请求方法</td></tr><tr><td style="text-align:left">  Content-Length</td><td style="text-align:left">响应主体的字节长度</td></tr><tr><td style="text-align:left">  Content-Type</td><td style="text-align:left">若响应包含主体则为主体内容的类型</td></tr><tr><td style="text-align:left">  Date</td><td style="text-align:left">以格林尼治标准时间（GMT）格式记录的当前时间</td></tr><tr><td style="text-align:left">  Location</td><td style="text-align:left">仅在重定向时使用，告知客户端截下来应该向哪个URL发送请求。</td></tr><tr><td style="text-align:left">  Server</td><td style="text-align:left">返回响应的服务器的域名</td></tr><tr><td style="text-align:left">  Set-Cookie</td><td style="text-align:left">在客户端里面设置一个Cookie，一个响应里面可以包含多个Set-Cookie首部</td></tr><tr><td style="text-align:left">  WWW-Authenticate</td><td style="text-align:left">告知客户端在Authorization请求首部中应该提供哪种类型的身份验证信息。服务器常把此首部与“401 Unauthorized”状态行一同发送。此外还会向服务器许可的认证授权模式（schema）提供验证信息（challenge information）</td></tr></tbody></table>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;HTTP请求&quot;&gt;&lt;a href=&quot;#HTTP请求&quot; class=&quot;headerlink&quot; title=&quot;HTTP请求&quot;&gt;&lt;/a&gt;HTTP请求&lt;/h3&gt;&lt;p&gt;由一系列文本行组成，有顺序地进行排列：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;请求行（request-line）；&lt;
+      
+    
+    </summary>
+    
+      <category term="web杂记" scheme="bighua.top/categories/web%E6%9D%82%E8%AE%B0/"/>
+    
+    
+      <category term="golang" scheme="bighua.top/tags/golang/"/>
+    
+      <category term="web" scheme="bighua.top/tags/web/"/>
+    
+      <category term="php" scheme="bighua.top/tags/php/"/>
+    
+  </entry>
   
   <entry>
     <title>测试工具-siege</title>
@@ -563,36 +594,6 @@
       <category term="chan" scheme="bighua.top/tags/chan/"/>
     
       <category term="通道" scheme="bighua.top/tags/%E9%80%9A%E9%81%93/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Golang笔记-goroutine</title>
-    <link href="bighua.top/2018/05/02/Golang%E7%AC%94%E8%AE%B0-goroutine/"/>
-    <id>bighua.top/2018/05/02/Golang笔记-goroutine/</id>
-    <published>2018-05-02T06:35:11.000Z</published>
-    <updated>2018-07-04T17:45:25.108Z</updated>
-    
-    <content type="html"><![CDATA[<p>go语句是启用goroutine的唯一途径。</p><h2 id="go语句与Goroutine"><a href="#go语句与Goroutine" class="headerlink" title="go语句与Goroutine"></a>go语句与Goroutine</h2><p>一条go语句意味着一个函数或方法的并发执行，由go关键字和表达式组成。针对如下函数的调用表达式不能称为表达式语句：append、cap、complex、imag、len、make、new、real、unsafe.Alignof、unsafe.Offsetof和unsafe.Sizeof。前8个函数是Go语言的内建函数，后3个函数是标准库代码包unsafe中的函数。</p><blockquote><p>code example:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">go println(&quot;Go! Goroutine!&quot;)</span><br><span class="line">---</span><br><span class="line">go func()&#123;</span><br><span class="line">    println(&quot;Go! Goroutine!&quot;)</span><br><span class="line">&#125;()</span><br></pre></td></tr></table></figure></p></blockquote><p>Go语言的运行时系统对go语句中的函数或方法（go函数）的执行是并发的，当go语言被执行的时候，其中的go函数会被单独地放入到一个goroutine中，该go函数的执行会独立于当前goroutine的运行。go函数并发执行，但执行的先后顺序不确定。</p><p>当go函数被执行完毕的时候，相应的goroutine会进入到死亡状态（Ghead）。标志着该goroutine的一次运行的完成。作为go函数的函数或方法可以有结果声明，但是返回的结果值会在它们被执行完成时被丢弃。需要用channel将go函数的结果传递给其他程序。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">func main()&#123;</span><br><span class="line">    go println(&quot;Go!Goroutine!&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>由于执行的先后顺序不确定，go语句后无其他语句，main函数所在的G可能先于go函数所在的G执行结束，意味着可能go函数所在的G未来得及执行。</p><p>使用time包中的Sleep函数干预多个G的执行顺序。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import (</span><br><span class="line">    &quot;time&quot;</span><br><span class="line">)</span><br><span class="line">func main()&#123;</span><br><span class="line">    go println(&quot;Go!Goroutine!&quot;)</span><br><span class="line">    time.Sleep(time.Millisecond)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>time.Sleep函数让调用它的goroutine暂停（进入Gwaiting状态）一段时间。此种情况最好的方法时调用runtime.Gosched()函数，暂停当前的G，让其他的G有运行的机会。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">    &quot;runtime&quot;</span><br><span class="line">)</span><br><span class="line">func main()&#123;</span><br><span class="line">    names := []string&#123;&quot;Eric&quot;, &quot;Harry&quot;, &quot;Robert&quot;, &quot;Jim&quot;, &quot;Mark&quot;&#125;</span><br><span class="line">    for _, name := range names &#123;</span><br><span class="line">        go func (who string) &#123;</span><br><span class="line">            fmt.Printf(&quot;Hello, %s!\n &quot;, who)</span><br><span class="line">        &#125;(name) </span><br><span class="line">    &#125;</span><br><span class="line">    runtime.Gosched()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><h2 id="主goroutine的运作"><a href="#主goroutine的运作" class="headerlink" title="主goroutine的运作"></a>主goroutine的运作</h2><p>封装main函数的goroutine是Go语言运行时系统创建的第一个goroutine(主goroutine)，主Goroutine在runtime.m0上被运行。runtime.m0在运行完runtime.g0中的引导程序之后，会接着运行主goroutine。</p><p>主goroutine不仅执行main函数。它首先：设定每一个goroutine所能申请的栈空间的最大尺寸。在32位的计算机系统中此最大尺寸为250MB，在64位的计算机系统中此尺寸为1GB。若有某个goroutine的栈空间尺寸大于这个限制，运行时系统就会发出一个栈溢出（stack overflow）的运行时恐慌。随即，Go程序的运行也会被终止。</p><p>设定好goroutine的最大栈尺寸后，主goroutine会在当前M的g0上执行系统监测任务。系统监测任务的作用是调度器查缺补漏。</p><p>此后，主goroutine会进行一系列的初始化工作，涉及的工作内容大致有。  </p><ul><li>检查当前M是否为runtime.m0。若不是，说明之前的程序出现了某种问题，主goroutine会立即抛出异常，意味着Go程序的启动失败。</li><li>创建一个特殊的defer语句，用于在主goroutine退出时做必要的善后处理。因为主goroutine可能非正常的结束。</li><li>启用专用于在后台清扫内存垃圾的goroutine，并设置GC可用的标识。</li><li>执行main包中的init函数。</li></ul><p>在上述初始化工作完成之后，主goroutine就会去执行main函数。在执行main函数之后，会检查主goroutine是否引发了运行时恐慌，并进行必要的处理。最后，主goroutine会结束自己以及当前进程的运行。</p><p>main函数执行期间，运行时系统会根据Go程序中的go语句，复用或新建goroutine来封装go函数。这些goroutine都会放入相应P的可运行G队列中，然后等待调度器的调度。</p><h2 id="runtime包与goroutine"><a href="#runtime包与goroutine" class="headerlink" title="runtime包与goroutine"></a>runtime包与goroutine</h2><p>Go的标准库代码包runtime中的程序实体，提供了各种可以使用户程序与Go运行时系统交互的功能。</p><h3 id="1-runtime-GOMAXPROCS函数"><a href="#1-runtime-GOMAXPROCS函数" class="headerlink" title="1.runtime.GOMAXPROCS函数"></a>1.runtime.GOMAXPROCS函数</h3><p>用户程序在运行期间，设置常规运行时系统中的P的最大数量。调用会引起“Stop the world”，应在应用程序尽量早的调用，更好的方式是设置环境变量GOMAXPROCS。P的最大数量范围在1～256。</p><h3 id="2-runtime-Goexit函数"><a href="#2-runtime-Goexit函数" class="headerlink" title="2.runtime.Goexit函数"></a>2.runtime.Goexit函数</h3><p>立即使当前goroutine的运行终止，而其他goroutine并不会受此影响。runtime.Goexit函数在终止当前goroutine之前，会先执行该goroutine中所有还未执行的defer语句。</p><p>该函数将被终止的goroutine置于Gdead状态，并将其放入本地P的自由G列表，然后触发调度器的一轮调度流程。</p><blockquote><p>不应在主goroutine中调用此函数，否则引发运行时恐慌。</p></blockquote><h3 id="3-runtime-Gosched函数"><a href="#3-runtime-Gosched函数" class="headerlink" title="3.runtime.Gosched函数"></a>3.runtime.Gosched函数</h3><p>该函数暂停当前goroutine的运行，并将其置为Grunnable状态，放入调度器的可运行G队列。经过调度器的调度，该goroutine马上会再次运行。</p><h3 id="4-runtime-RunGoroutine函数"><a href="#4-runtime-RunGoroutine函数" class="headerlink" title="4.runtime.RunGoroutine函数"></a>4.runtime.RunGoroutine函数</h3><p>返回当前运行时系统中处于非Gdead状态的用户G的数量。这些goroutine被视为“活跃的”或者“可调度的”。返回值总会大于一（废话）。</p><h3 id="5-runtime-LockOSThread函数和runtime-UnLockOSThread函数"><a href="#5-runtime-LockOSThread函数和runtime-UnLockOSThread函数" class="headerlink" title="5.runtime.LockOSThread函数和runtime.UnLockOSThread函数"></a>5.runtime.LockOSThread函数和runtime.UnLockOSThread函数</h3><p>前者的调用使当前goroutine与当前M锁定在一起，后者的调用则会解除这样的锁定。多次调用前者不会造成问题但只有最后一次生效。没有调用前者时调用后者也不会产生任何副作用。</p><h3 id="6-runtime-debug-SetMaxStack函数"><a href="#6-runtime-debug-SetMaxStack函数" class="headerlink" title="6.runtime/debug.SetMaxStack函数"></a>6.runtime/debug.SetMaxStack函数</h3><p>约束单个goroutine所能申请栈空间的最大尺寸。主goroutine会对此值进行默认设置。</p><p>函数接收一个int类型的参数，参数为欲设定的栈空间的最大字节数。执行完毕后会把之前的设定值作为结果返回。</p><p>若运行时系统在为某个goroutine增加栈空间的时候，若其实际尺寸超过设定值，就会发起一个运行时恐慌并终止程序的运行。</p><p>此函数不会像runtime.GOMAXPROCS函数对传入的参数值进行检查和纠正。</p><h3 id="7-runtime-debug-SetMaxThreads函数"><a href="#7-runtime-debug-SetMaxThreads函数" class="headerlink" title="7.runtime/debug.SetMaxThreads函数"></a>7.runtime/debug.SetMaxThreads函数</h3><p>对Go运行时系统所时用的内核线程的数量（也为M的数量，其与内核线程一一对应）进行设置。引导程序中，该数量被设置为10000。</p><p>接收一个int类型的值，返回一个int类型的值。前者代表欲设定的新值，后者代表之前的旧值。若设定的数量小与当前正在使用的M的数量，则会引发一个运行时恐慌。函数调用后，新建M会检查当前所持M的数量，若大于M的数量的设定，运行时系统引发一个运行时恐慌。</p><h3 id="8-与垃圾回收有关的一些函数"><a href="#8-与垃圾回收有关的一些函数" class="headerlink" title="8.与垃圾回收有关的一些函数"></a>8.与垃圾回收有关的一些函数</h3><p>runtime/debug.SetGCPercent、runtime.GC和runtime/debug.FreeOSMemory。前者用于设定触发GC的条件，后两者用于手动触发GC。在后两个函数的执行期间，调度是停止的（阻塞）。runtime/debug.FreeOSMemory函数比runtime.GC多做一件事，在GC之后清扫一次堆内存。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;go语句是启用goroutine的唯一途径。&lt;/p&gt;
-&lt;h2 id=&quot;go语句与Goroutine&quot;&gt;&lt;a href=&quot;#go语句与Goroutine&quot; class=&quot;headerlink&quot; title=&quot;go语句与Goroutine&quot;&gt;&lt;/a&gt;go语句与Goroutine
-      
-    
-    </summary>
-    
-      <category term="Golang" scheme="bighua.top/categories/Golang/"/>
-    
-    
-      <category term="Golang" scheme="bighua.top/tags/Golang/"/>
-    
-      <category term="go语句" scheme="bighua.top/tags/go%E8%AF%AD%E5%8F%A5/"/>
-    
-      <category term="goroutine" scheme="bighua.top/tags/goroutine/"/>
     
   </entry>
   
