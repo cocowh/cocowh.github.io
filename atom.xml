@@ -39,11 +39,11 @@
       <category term="web杂记" scheme="bighua.top/categories/web%E6%9D%82%E8%AE%B0/"/>
     
     
+      <category term="php" scheme="bighua.top/tags/php/"/>
+    
       <category term="golang" scheme="bighua.top/tags/golang/"/>
     
       <category term="web" scheme="bighua.top/tags/web/"/>
-    
-      <category term="php" scheme="bighua.top/tags/php/"/>
     
   </entry>
   
@@ -323,9 +323,9 @@
       <category term="nginx" scheme="bighua.top/categories/nginx/"/>
     
     
-      <category term="nginx" scheme="bighua.top/tags/nginx/"/>
-    
       <category term="linux" scheme="bighua.top/tags/linux/"/>
+    
+      <category term="nginx" scheme="bighua.top/tags/nginx/"/>
     
       <category term="conf" scheme="bighua.top/tags/conf/"/>
     
@@ -470,11 +470,11 @@
     
       <category term="shell" scheme="bighua.top/tags/shell/"/>
     
+      <category term="linux" scheme="bighua.top/tags/linux/"/>
+    
       <category term="nginx" scheme="bighua.top/tags/nginx/"/>
     
       <category term="mysql" scheme="bighua.top/tags/mysql/"/>
-    
-      <category term="linux" scheme="bighua.top/tags/linux/"/>
     
       <category term="php7" scheme="bighua.top/tags/php7/"/>
     

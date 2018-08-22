@@ -17,11 +17,11 @@
       
         <tags>
             
+            <tag> php </tag>
+            
             <tag> golang </tag>
             
             <tag> web </tag>
-            
-            <tag> php </tag>
             
         </tags>
       
@@ -253,9 +253,9 @@
       
         <tags>
             
-            <tag> nginx </tag>
-            
             <tag> linux </tag>
+            
+            <tag> nginx </tag>
             
             <tag> conf </tag>
             
@@ -378,11 +378,11 @@
             
             <tag> shell </tag>
             
+            <tag> linux </tag>
+            
             <tag> nginx </tag>
             
             <tag> mysql </tag>
-            
-            <tag> linux </tag>
             
             <tag> php7 </tag>
             
@@ -891,16 +891,16 @@
     </entry>
     
     <entry>
-      <title>categories</title>
-      <link href="/categories/index.html"/>
-      <url>/categories/index.html</url>
+      <title>标签</title>
+      <link href="/tags/index.html"/>
+      <url>/tags/index.html</url>
       <content type="html"><![CDATA[]]></content>
     </entry>
     
     <entry>
-      <title>标签</title>
-      <link href="/tags/index.html"/>
-      <url>/tags/index.html</url>
+      <title>categories</title>
+      <link href="/categories/index.html"/>
+      <url>/categories/index.html</url>
       <content type="html"><![CDATA[]]></content>
     </entry>
     
