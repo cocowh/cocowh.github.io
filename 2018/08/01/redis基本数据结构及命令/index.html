@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="redis," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="水木年华" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="redis基本数据结构   结构类型 结构存储的值 结构的读写能力     STRING 字符串、整数或者浮点数 对整个字符串或者字符串中的一部分执行操作；整数或浮点数自增、自减操作   LIST 链表，链表上的每个节点都包含了一个字符串 链表两端推入或者弹出元素；根据便宜量对链表进行修剪；读取单个或多个元素；根据指查找或着移除元素   SET 字符串的无序收集器，被包含的每个字符串都是独一无二的">
+<meta name="keywords" content="redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis基本数据结构及命令">
+<meta property="og:url" content="bighua.top/2018/08/01/redis基本数据结构及命令/index.html">
+<meta property="og:site_name" content="水木年华">
+<meta property="og:description" content="redis基本数据结构   结构类型 结构存储的值 结构的读写能力     STRING 字符串、整数或者浮点数 对整个字符串或者字符串中的一部分执行操作；整数或浮点数自增、自减操作   LIST 链表，链表上的每个节点都包含了一个字符串 链表两端推入或者弹出元素；根据便宜量对链表进行修剪；读取单个或多个元素；根据指查找或着移除元素   SET 字符串的无序收集器，被包含的每个字符串都是独一无二的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-22T02:37:03.674Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="redis基本数据结构及命令">
+<meta name="twitter:description" content="redis基本数据结构   结构类型 结构存储的值 结构的读写能力     STRING 字符串、整数或者浮点数 对整个字符串或者字符串中的一部分执行操作；整数或浮点数自增、自减操作   LIST 链表，链表上的每个节点都包含了一个字符串 链表两端推入或者弹出元素；根据便宜量对链表进行修剪；读取单个或多个元素；根据指查找或着移除元素   SET 字符串的无序收集器，被包含的每个字符串都是独一无二的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Joker'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"未找到搜索结果: ${query}","hits_stats":"${hits} 个结果耗费 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="bighua.top/2018/08/01/redis基本数据结构及命令/"/>
+
+
+
+
+
+  <title>redis基本数据结构及命令 | 水木年华</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b41033bc63e8a2c3b4619b16fd4dddc7";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">水木年华</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">行到水穷处,坐看云起时</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="bighua.top/2018/08/01/redis基本数据结构及命令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cocowh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="水木年华">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">redis基本数据结构及命令</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-01T09:40:15+08:00">
+                2018-08-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/01/redis基本数据结构及命令/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/01/redis基本数据结构及命令/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/08/01/redis基本数据结构及命令/" class="leancloud_visitors" data-flag-title="redis基本数据结构及命令">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>被翻阅
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,967
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  15
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="redis基本数据结构"><a href="#redis基本数据结构" class="headerlink" title="redis基本数据结构"></a>redis基本数据结构</h3><table>
+<thead>
+<tr>
+<th style="text-align:left">结构类型</th>
+<th style="text-align:left">结构存储的值</th>
+<th style="text-align:left">结构的读写能力</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">STRING</td>
+<td style="text-align:left">字符串、整数或者浮点数</td>
+<td style="text-align:left">对整个字符串或者字符串中的一部分执行操作；整数或浮点数自增、自减操作</td>
+</tr>
+<tr>
+<td style="text-align:left">LIST</td>
+<td style="text-align:left">链表，链表上的每个节点都包含了一个字符串</td>
+<td style="text-align:left">链表两端推入或者弹出元素；根据便宜量对链表进行修剪；读取单个或多个元素；根据指查找或着移除元素</td>
+</tr>
+<tr>
+<td style="text-align:left">SET</td>
+<td style="text-align:left">字符串的无序收集器，被包含的每个字符串都是独一无二的、各不相同的</td>
+<td style="text-align:left">添加、获取、移除单个元素；检查一个元素是否存在于集合中；计算交集、并集、差集；从集合里面随机获取元素</td>
+</tr>
+<tr>
+<td style="text-align:left">HASH</td>
+<td style="text-align:left">包含键值对的无序散列表</td>
+<td style="text-align:left">添加、获取、移除单个键值对；获取所有键值对</td>
+</tr>
+<tr>
+<td style="text-align:left">ZSET（有序集合）</td>
+<td style="text-align:left">字符串成员与浮点数分值之间的有序映射，元素的排列顺序由分值的大小决定</td>
+<td style="text-align:left">添加、获取、删除单个元素；根据分值范围或者成员来获取元素</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Redis中的字符串"><a href="#Redis中的字符串" class="headerlink" title="Redis中的字符串"></a>Redis中的字符串</h4><p>与其他编程语言或者其他键值存储提供的字符串非常相似。</p>
+<h4 id="Redis中的列表"><a href="#Redis中的列表" class="headerlink" title="Redis中的列表"></a>Redis中的列表</h4><p>一个列表结构可以有序地存储多个字符串。可执行的操作与很多编程语言中的列表操作非常相似。</p>
+<h4 id="Redis中的集合"><a href="#Redis中的集合" class="headerlink" title="Redis中的集合"></a>Redis中的集合</h4><p>存储多个字符串，不同于列表，集合使用无序方式存储元素，使用散列表保证存储的每个字符串都是不同的。</p>
+<h4 id="Redis中的散列"><a href="#Redis中的散列" class="headerlink" title="Redis中的散列"></a>Redis中的散列</h4><p>存储多个键值对之间的映射，散列存储的值既可以是字符串也可以是数字值。类似文档数据库中的文档，关系数据库中的行，允许用户同时访问或者修改一个或多个域。</p>
+<h4 id="Redis中的有序集合"><a href="#Redis中的有序集合" class="headerlink" title="Redis中的有序集合"></a>Redis中的有序集合</h4><p>用于存储键值对，键被称为成员，每个成员各不相同，值被称为分值，分值必须为浮点数。唯一既可以根据成员访问元素，又可以根据分值及分值的排列顺序来访问元素的结构。</p>
+<h3 id="Redis命令"><a href="#Redis命令" class="headerlink" title="Redis命令"></a>Redis命令</h3><h4 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h4><p>Redis中的自增命令和自减命令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> LNCR</td>
+<td style="text-align:left">INCR key-name——将键存储的值加上1</td>
+</tr>
+<tr>
+<td style="text-align:left"> DECR</td>
+<td style="text-align:left">DECR key-name——将键存储的值减去1</td>
+</tr>
+<tr>
+<td style="text-align:left"> INCRBY</td>
+<td style="text-align:left">INCRBY key-name amount——将键存储的值加上amount</td>
+</tr>
+<tr>
+<td style="text-align:left"> DECRBY</td>
+<td style="text-align:left">DECRBY key-name amount——将键存储的值减去amount</td>
+</tr>
+<tr>
+<td style="text-align:left"> INCRBYFLOAT</td>
+<td style="text-align:left">INCRBYFLOAT key-name amount——将键存储的值加上浮点数amount，redis v2.6+</td>
+</tr>
+</tbody>
+</table>
+<p>存储时，若值可被解释（interpret）为十进制整数或者浮点数，则允许用户对字符串执行各种INCR*和DECR*操作。对不存在的键或者保存了空串的键执行自增或者自减操作，Redis执行操作时将键的值当作0处理。对无法解释为整数或浮点数的字符串键执行自增或自减操作，将向用户返回一个错误。</p>
+<p>处理子串和二进制位的命令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> APPEND</td>
+<td style="text-align:left">APPEND key-name value——将值value追加到给定键key-name当前存储的值的末尾</td>
+</tr>
+<tr>
+<td style="text-align:left"> GETRANGE</td>
+<td style="text-align:left">GETRANGE key-name start end——获取一个由偏移量start至偏移量end范围内所有字符组成的子串，包括start和end在内。</td>
+</tr>
+<tr>
+<td style="text-align:left"> SETRANGE</td>
+<td style="text-align:left">SETRANGE key-name offset value——将start偏移量开始的子串设置为给定值</td>
+</tr>
+<tr>
+<td style="text-align:left"> GETBIT</td>
+<td style="text-align:left">GETBIT key-name offset——将子节串看作是二进制位串，并将位串中偏移量为offset的二进制位的值设置为value</td>
+</tr>
+<tr>
+<td style="text-align:left"> BITCOUNT</td>
+<td style="text-align:left">BITCOUNT key-name [start end]——统计二进制位串里面值为1的二进制位的数量，若给定偏移量start和end，则只对偏移量指定范围内的二进制位进行统计</td>
+</tr>
+<tr>
+<td style="text-align:left"> BITOP</td>
+<td style="text-align:left">BITOP operation dest-key key-name [key-name …]——对一个或多个二进制位串执行包括并（AND）、或（OR）、异或（XOR）、非（NOT）在内的任意一种按位运算操作，并将计算结果保存在dest-key键里</td>
+</tr>
+</tbody>
+</table>
+<p> 使用STRANGE或者SETBIT命令对字符串进行写入的时候，若字符串当前的长度不能满足写入的要求，Redis会自动地使用空字节（null）将字符串扩展至所需的长度，然后才执行写入或者更新操作。使用GETRANGE读取字符串，超出字符串末尾的数据会被视为是空串，使用GETBIT读取二进制位串，超出字符串末尾的二进制位会被视为0。</p>
+<h4 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h4><p> 常用的列表命令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> RPUSH</td>
+<td style="text-align:left">RPUSH key-name value [value …]——将一个或多个值推入列表的右端</td>
+</tr>
+<tr>
+<td style="text-align:left"> LPUSH</td>
+<td style="text-align:left">LPUSH key-name value [value …]——将一个或多个值推入列表的左端</td>
+</tr>
+<tr>
+<td style="text-align:left"> RPOP</td>
+<td style="text-align:left">RPOP key-name——移除并返回列表最右端的元素</td>
+</tr>
+<tr>
+<td style="text-align:left"> LPOP</td>
+<td style="text-align:left">LPOP key-name——移除并返回列表最左端的元素</td>
+</tr>
+<tr>
+<td style="text-align:left"> LINDEX</td>
+<td style="text-align:left">LINDEX key-name offset——返回列表中偏移量为offset的元素</td>
+</tr>
+<tr>
+<td style="text-align:left"> LRANGE</td>
+<td style="text-align:left">LRANGE key-name start end——返回列表从start偏移量到end偏移量范围内的所有元素，偏移量start和end的元素也会包含在被返回的元素之内</td>
+</tr>
+<tr>
+<td style="text-align:left"> LTRIM</td>
+<td style="text-align:left">LTRIM ley-name start end——对列表进行修剪，只保留从start偏移量到end偏移量范围内的元素，偏移量start和end的元素也会保留</td>
+</tr>
+</tbody>
+</table>
+<p>阻塞式的列表弹出民命令以及在列表之间移动元素的命令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> BLPOP</td>
+<td style="text-align:left">BLPOP key-name [key-name …] timeout——从第一个非空列表中弹出位于最左端的元素，或者在timeout秒之内阻塞并等待可弹出的元素出现</td>
+</tr>
+<tr>
+<td style="text-align:left"> BRPOP</td>
+<td style="text-align:left">BRPOP key-name [key-name …] timeout——从第一个非空列表中掏出位于最右端的元素，或者在timeout秒之内阻塞并等待可弹出的元素出现</td>
+</tr>
+<tr>
+<td style="text-align:left"> RPOPLPUSH</td>
+<td style="text-align:left">RPOPLPUSH source-key dest-key——从source-key列表中弹出位于最右端的元素，然后将这个元素推入dest-key列表的最左端，并向用户返回这个元素</td>
+</tr>
+<tr>
+<td style="text-align:left"> BRPOPLPUSH</td>
+<td style="text-align:left">BRPOPLPUSH source-key dest-key timeout——从source-key列表中弹出位于最右端的元素，然后将这个元素推入dest-key列表的最左端，并向用户返回这个元素，若source-key为空，则在timeout秒之内阻塞并等待可弹出的元素出现</td>
+</tr>
+</tbody>
+</table>
+<p> 应用于消息传递、任务队列。</p>
+<h4 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h4><p>以无序的方式存储多个各不相同的元素。</p>
+<p>常用集合命令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> SADD</td>
+<td style="text-align:left">SADD key-name item [item …]——将一个或多个元素添加到集合中，并返回被添加元素当中原本并不存在于集合里面的元素数量</td>
+</tr>
+<tr>
+<td style="text-align:left"> SREM</td>
+<td style="text-align:left">SREM key-name item [item …]——从集合里面移除一个或多个元素，并返回被移除元素的数量</td>
+</tr>
+<tr>
+<td style="text-align:left"> SISMEMBER</td>
+<td style="text-align:left">SISMEMBER key-name item——检查元素item是否存在于集合key-name里</td>
+</tr>
+<tr>
+<td style="text-align:left"> SCARD</td>
+<td style="text-align:left">SCARD key-name——返回集合包含的元素的数量</td>
+</tr>
+<tr>
+<td style="text-align:left"> SMEMBERS</td>
+<td style="text-align:left">SMEMBERS key-name——返回集合包含的所有元素</td>
+</tr>
+<tr>
+<td style="text-align:left"> SRANDMEMBER</td>
+<td style="text-align:left">SRANDMEMBER key-name [count]——从集合里面随机地返回一个或多个元素。当count为正数时，命令返回的随机元素不会重复；当count为负数时，命令返回的随机元素可能会出现重复</td>
+</tr>
+<tr>
+<td style="text-align:left"> SPOP</td>
+<td style="text-align:left">SPOP key-name——随机地移除集合中的一个元素，并返回被移除的元素</td>
+</tr>
+<tr>
+<td style="text-align:left"> SMOVE</td>
+<td style="text-align:left">SMOVE source-key dest-key item——若集合source-key包含元素item，从集合source-key里面移除元素item，并将元素item添加到集合dest-key中；若item被成功移除，命令返回1，否则返回0</td>
+</tr>
+</tbody>
+</table>
+<p>组合和处理多个集合的redis命令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> SDIFF</td>
+<td style="text-align:left">SDIFF key-name [key-name …]——返回那些存在于第一个集合、但不存在于其他集合中的元素（差集运算）</td>
+</tr>
+<tr>
+<td style="text-align:left"> SDIFFSTORE</td>
+<td style="text-align:left">SDIFFSTORE dest-key key-name [key-name …]——将存在于第一个集合但并不存在于其他集合中的元素（差集运算）存储到dest-key键里面</td>
+</tr>
+<tr>
+<td style="text-align:left"> SINTER</td>
+<td style="text-align:left">SINTER key-name [key-name …]——返回那些同时存在于所有集合中的元素（交集运算）</td>
+</tr>
+<tr>
+<td style="text-align:left"> SINTERSTORE</td>
+<td style="text-align:left">SINTERSTORE dest-key key-name [key-name …]——将同时存在于所有集合中的元素（交集运算）存储到dest-key键里面</td>
+</tr>
+<tr>
+<td style="text-align:left"> SUNION</td>
+<td style="text-align:left">SUNION key-name [key-name …]——返回至少存在于一个集合中的元素（并集运算）</td>
+</tr>
+<tr>
+<td style="text-align:left"> SUNIONSTORE</td>
+<td style="text-align:left">SUNIONSTORE desk-key key-name [key-name …]——将至少存在于一个集合中的元素（并集运算）存储到dest-key键里面</td>
+</tr>
+</tbody>
+</table>
+<h4 id="散列"><a href="#散列" class="headerlink" title="散列"></a>散列</h4><p>适用于将一些相关的数据存储在一起。</p>
+<p>添加和删除键值对的散列操作：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> HMGET</td>
+<td style="text-align:left">HMGET key-name key [key …]——从散列里面获取一个或多个键的值</td>
+</tr>
+<tr>
+<td style="text-align:left"> HMSET</td>
+<td style="text-align:left">HMSET key-name key value [key value …]——为散列里面的一个或多个键设置值</td>
+</tr>
+<tr>
+<td style="text-align:left"> HDEL</td>
+<td style="text-align:left">HDEL key-name key [key …]——删除散列里面的一个或多个键值对，返回成功找到并删除的键值对的数量</td>
+</tr>
+<tr>
+<td style="text-align:left"> HLEN</td>
+<td style="text-align:left">HLEN key-name——返回散列包含的键值对的数量</td>
+</tr>
+</tbody>
+</table>
+<p>散列的批量操作命令以及和字符串操作类似的散列命令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> HEXISTS</td>
+<td style="text-align:left">HEXISTS key-name key——检查给定键是否存在于散列中</td>
+</tr>
+<tr>
+<td style="text-align:left"> HKEYS</td>
+<td style="text-align:left">HKEYS key-name——获取散列包含的所有键</td>
+</tr>
+<tr>
+<td style="text-align:left"> HVALS</td>
+<td style="text-align:left">HVALS key-name——获取散列包含的所有值</td>
+</tr>
+<tr>
+<td style="text-align:left"> HGETALL</td>
+<td style="text-align:left">HGETALL key-name——获取散列包含的所有键值对</td>
+</tr>
+<tr>
+<td style="text-align:left"> HINCRBY</td>
+<td style="text-align:left">HINCRBY key-name key increment——将键key存储的值加上整数increment</td>
+</tr>
+<tr>
+<td style="text-align:left"> HINCRBYFLOAT</td>
+<td style="text-align:left">HINCRBYFLOAT key-name key increment——将键key存储的值加上浮点数increment </td>
+</tr>
+</tbody>
+</table>
+<h4 id="有序集合"><a href="#有序集合" class="headerlink" title="有序集合"></a>有序集合</h4><p>存储着成员与分值之间的映射，提供了分值处理命令，分值在Redis中以IEEE 175双精度浮点数的格式存储。</p>
+<p>常用的有序集合命令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> ZADD</td>
+<td style="text-align:left">ZADD key-name score member [score member …]——将带有给定分值的成员添加到有序集合里面</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZREM</td>
+<td style="text-align:left">ZREM key-name member [member …]——从有序集合里面移除给定的成员，并返回被移除成员的数量</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZCARD</td>
+<td style="text-align:left">ZCARD key-name——返回有序集合包含的成员数量</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZINCRBY</td>
+<td style="text-align:left">ZINCRBY key-name increment member——将member成员的分值加上increment</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZCOUNT</td>
+<td style="text-align:left">ZCOUNT key-name min max——返回分值介于min和max之间的成员数量</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZRANK</td>
+<td style="text-align:left">ZRANK key-name member——返回成员member在有序集合中的排名</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZSCORE</td>
+<td style="text-align:left">ZSCORE key-name member——返回成员memebr的分值</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZRANGE</td>
+<td style="text-align:left">ZRANGE key-name start stop [WITHSCORES]——返回有序集合中排名介于start和stop之间的成员，若给定了可选的WITHSCORES选项，则命令会将成员的分值一并返回</td>
+</tr>
+</tbody>
+</table>
+<p>有序集合的范围型数据获取命令和范围型数据删除命令、并集命令、交集命令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> ZREVRANK</td>
+<td style="text-align:left">ZREVRANK key-name member——返回有序集合里成员member的排名，成员按照分值从大到小排列</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZREVRANGE</td>
+<td style="text-align:left">ZREVRANGE key-name start stop [WITHSCORES]——返回有序集合给定排名范围内的成员，成员按照分值从大到小排列</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZRANGEBYSCORE</td>
+<td style="text-align:left">ZRANGEBYSCORE key min max [WITHSCORES][LIMIT offset count]——返回有序集合中，分值介于min和max之间的所有成员</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZREVRANGEBYSCORE</td>
+<td style="text-align:left">ZREVRANGEBYSCORE key max min [WITHSCORES][LIMIT offset count]——获取有序集合中分值介于min和max之间的所有成员，并按照分值从大到小的顺序来返回它们</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZREMRANGEBYRANK</td>
+<td style="text-align:left">ZREMRANGEBYRANK key-name start stop——移除有序集合中排名介于start和stop之间的所有所有成员</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZREMRANGEBYSCORE</td>
+<td style="text-align:left">ZREMRANGEBYSCORE key-name min max——移除有序集合中分值介于min和max之间的所有成员</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZINTERSTORE</td>
+<td style="text-align:left">ZINTERSTORE dest-key key-count key [key …][WEIGHTS weight [weight …]][AGGREGATE SUM &#124; MIN &#124; MAX]——对给定的有序集合执行类似于集合的交集运算</td>
+</tr>
+<tr>
+<td style="text-align:left"> ZUNIONSTORE</td>
+<td style="text-align:left">ZUNIONSTORE dest-key key-count key [key …][WEIGHTS weight [weight …]][AGGREGATE SUM &#124; MIN &#124; MAX]——对给定的有序集合执行类似于集合的并集运算</td>
+</tr>
+</tbody>
+</table>
+<h4 id="发布与订阅"><a href="#发布与订阅" class="headerlink" title="发布与订阅"></a>发布与订阅</h4><p>发布与订阅（pub/sub）是订阅者（listener）负责订阅频道（channel），发送者（publisher）负责向频道发送二进制字符串消息。当有消息被发送至给定频道时，频道的所有订阅者都会收到消息。</p>
+<p>发布与订阅命令： </p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> SUBSCRIBE</td>
+<td style="text-align:left">SUBSCRIBE channel [channel …]——订阅给定的一个或多个频道</td>
+</tr>
+<tr>
+<td style="text-align:left"> UNSUBSCRIBE</td>
+<td style="text-align:left">UNSUBSCRIBE [channel [channel …]]——退订给定的一个或多个频道，若执行时没给定频道，则退订所有频道</td>
+</tr>
+<tr>
+<td style="text-align:left"> PUBLISH</td>
+<td style="text-align:left">PUBLISH channel message——向给定频道发送消息</td>
+</tr>
+<tr>
+<td style="text-align:left"> PSUBSCRIBE</td>
+<td style="text-align:left">PSUBSCRIBE pattern [pattern …]——订阅与给定模式相匹配的所有频道</td>
+</tr>
+<tr>
+<td style="text-align:left"> PUNSUBSCRIBE</td>
+<td style="text-align:left">PUNSUBSCRIBE [pattern [pattern …]]——退订给定的模式，如果执行时没有给定任何模式，则退订所有模式</td>
+</tr>
+</tbody>
+</table>
+<h4 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h4><h5 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h5><p>同其他编程语言的排序操作，可以根据某种比较规则对一系列元素进行有序的排列。可根据字符串、列表、集合、有序集合、散列这5种键里面存储着的数据，对列表、集合以及有序集合进行排序，相当于SQL中的order by子句。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">用例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"> SORT</td>
+<td style="text-align:left">SORT source-key [BY pattern][LIMIT offset count][GET pattern [GET PATTERN …]][ASC &#124; DESC][ALPHA][STORE dest-key]——根据给定的选项，对输入列表、集合或者有序集合进行排序，然后返回或者存储排序的结果</td>
+</tr>
+</tbody>
+</table>
+<p> 可实现的功能：根据降序而不是默认的升序来排序元素；将元素看作是数字来进行排序，或则将元素看作是数字来进行排序，或者将元素看作是二进制字符串来进行排序；使用被排序元素之外的其他值作为权重来进行排序，可从输入的列表、集合、有序集合以外的其他地方进行取值。</p>
+<p> 对集合进行排序返回一个列表形式的排序结果。</p>
+<h5 id="基本的Redis事务"><a href="#基本的Redis事务" class="headerlink" title="基本的Redis事务"></a>基本的Redis事务</h5><p>让用户在不被打断的情况下对多个键执行操作：WATCH、MULTI、EXEC、UNWATCH和DISCARD。</p>
+<p>基本事务（basic transaction）使用MULTI命令和EXEC命令，让一个客户端在不被其他客户端打断的情况下执行多个命令。被MULTI命令和EXEC命令包围的所有命令会一个接一个地执行，直到所有命令都执行完毕为止。事务执行后，Redis才会处理其他客户端的命令。</p>
+<p>Redis接收到MULTI命令时，Redis会将这个客户端之后发送的所有命令都放入到一个队列里面，直到这个客户端发送EXEC命令为止，接着Redis在不被打断的情况下，一个接一个地执行存储在队列里面的命令。</p>
+<p>使用WATCH命令对键进行监视之后，直到用户执行EXEC命令的这段时间里，如果有其他客户端抢先对键进行了替换、更新或删除等操作，当用户尝试执行EXEC命令时，事务将失败并返回一个错误。UNWATCH命令可以在WATCH命令执行以后、MULTI命令执行之前对连接进行重置；DISCARD命令在MULTI命令执行之后、EXEC命令执行之前对连接进行重置。即在用户使用WATCH监视一个或多个键，接着使用MULTI开始一个新的事务，并将多个命令入队到事务队列后，仍然可以通过发送DISCARD命令来取消WATCH命令并清空所有已入队命令。</p>
+<h5 id="键的过期时间"><a href="#键的过期时间" class="headerlink" title="键的过期时间"></a>键的过期时间</h5><p>指Redis会在键的过期时间到达时自动删除该键。</p>
+<p>为键设置过期时间的命令：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">示例和描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">  PERSIST</td>
+<td style="text-align:left">PERSIST key-name——移除键的过期时间</td>
+</tr>
+<tr>
+<td style="text-align:left">  TTL</td>
+<td style="text-align:left">TTL key-name——查看给定键距离过期还有多少秒</td>
+</tr>
+<tr>
+<td style="text-align:left">  EXPIRE</td>
+<td style="text-align:left">EXPIRE key-name seconds——让给定键在指定的秒数之后过期</td>
+</tr>
+<tr>
+<td style="text-align:left">  EXPIREAT</td>
+<td style="text-align:left">EXPIREAT key-name timestamp——将给定键的过期时间设置为给定的UNIX时间戳</td>
+</tr>
+<tr>
+<td style="text-align:left">  PTTL</td>
+<td style="text-align:left">PTTL key-name——查看给定键距离过期时间还有多少毫秒，Redis V2.6+</td>
+</tr>
+<tr>
+<td style="text-align:left">  PEXPIRE</td>
+<td style="text-align:left">PEXPIRE key-name milliseconds——让给定键在指定的毫秒数之后过期，Redis V2.6+</td>
+</tr>
+<tr>
+<td style="text-align:left">  PEXPIREAT</td>
+<td style="text-align:left">PEXPIREAT key-name timestamp-milliseconds——将一个毫秒级精度的UNIX时间戳设置为给定键的过期时间，Redis V2.6+ </td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/redis/" rel="tag"><i class="fa fa-tag"></i> redis</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/30/Mysql索引及优化/" rel="next" title="Mysql索引及优化">
+                <i class="fa fa-chevron-left"></i> Mysql索引及优化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/01/git命令/" rel="prev" title="git命令">
+                git命令 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="cocowh" />
+            
+              <p class="site-author-name" itemprop="name">cocowh</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/cocowh" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="huaweiailin@foxmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.laruence.com/" title="Laruence" target="_blank">Laruence</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://studygolang.com/" title="Golang" target="_blank">Golang</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://laravel-china.org/docs" title="laravel" target="_blank">laravel</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://github.com/kevinyan815/Learning_Laravel_Kernel" title="laravel笔记" target="_blank">laravel笔记</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#redis基本数据结构"><span class="nav-number">1.</span> <span class="nav-text">redis基本数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis中的字符串"><span class="nav-number">1.1.</span> <span class="nav-text">Redis中的字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis中的列表"><span class="nav-number">1.2.</span> <span class="nav-text">Redis中的列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis中的集合"><span class="nav-number">1.3.</span> <span class="nav-text">Redis中的集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis中的散列"><span class="nav-number">1.4.</span> <span class="nav-text">Redis中的散列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis中的有序集合"><span class="nav-number">1.5.</span> <span class="nav-text">Redis中的有序集合</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis命令"><span class="nav-number">2.</span> <span class="nav-text">Redis命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串"><span class="nav-number">2.1.</span> <span class="nav-text">字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#列表"><span class="nav-number">2.2.</span> <span class="nav-text">列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集合"><span class="nav-number">2.3.</span> <span class="nav-text">集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#散列"><span class="nav-number">2.4.</span> <span class="nav-text">散列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#有序集合"><span class="nav-number">2.5.</span> <span class="nav-text">有序集合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#发布与订阅"><span class="nav-number">2.6.</span> <span class="nav-text">发布与订阅</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他命令"><span class="nav-number">2.7.</span> <span class="nav-text">其他命令</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#排序"><span class="nav-number">2.7.1.</span> <span class="nav-text">排序</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#基本的Redis事务"><span class="nav-number">2.7.2.</span> <span class="nav-text">基本的Redis事务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#键的过期时间"><span class="nav-number">2.7.3.</span> <span class="nav-text">键的过期时间</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-pencil"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cocowh</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">本站字数总计&#58;</span>
+    
+    <span title="本站字数总计">113.0k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人观访
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次浏览
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '3mCBqGqA9pFYid0ahEXEfuyS-gzGzoHsz',
+        appKey: 'T9xYtLXoQcs9U2rSoBd82V9u',
+        placeholder: 'ヾﾉ≧∀≦)o来啊，快活啊!',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("3mCBqGqA9pFYid0ahEXEfuyS-gzGzoHsz", "T9xYtLXoQcs9U2rSoBd82V9u");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
