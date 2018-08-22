@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="linux基础命令tail/cat/top/mkdir/vi/chmod等linux命令使用的详细参数可以通过man command进行查询，一般比较容易忘记命令的具体作用，下面仅对这些命令的具体功能及作用进行记录，并给出相应的命令使用。 参考Linux 命令大全。 tail命令作用：查看文件的尾部内容，不带参数则默认显示后十条。 查看正在改变的nginx日志： 1tail -f  com.acc">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-22T02:23:43.611Z">
+<meta property="og:updated_time" content="2018-08-22T03:36:58.348Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux常用命令">
 <meta name="twitter:description" content="linux基础命令tail/cat/top/mkdir/vi/chmod等linux命令使用的详细参数可以通过man command进行查询，一般比较容易忘记命令的具体作用，下面仅对这些命令的具体功能及作用进行记录，并给出相应的命令使用。 参考Linux 命令大全。 tail命令作用：查看文件的尾部内容，不带参数则默认显示后十条。 查看正在改变的nginx日志： 1tail -f  com.acc">
@@ -422,7 +422,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  412
+                  482
                 </span>
               
 
@@ -489,6 +489,12 @@
 <h4 id="chmod"><a href="#chmod" class="headerlink" title="chmod"></a>chmod</h4><p>作用：修改文件权限。</p>
 <p><a href="https://www.cnblogs.com/123-/p/4189072.html" target="_blank" rel="noopener">linux文件的权限表示</a>。</p>
 <p><a href="http://www.runoob.com/linux/linux-comm-chmod.html" target="_blank" rel="noopener">实例</a>。</p>
+<h4 id="ssh及scp"><a href="#ssh及scp" class="headerlink" title="ssh及scp"></a>ssh及scp</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -p 22 root@ip</span><br></pre></td></tr></table></figure>
+<p>mac上传文件/目录到服务器：<br>上传目录到服务器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -r dir root@ip:/root/</span><br></pre></td></tr></table></figure>
+<p>上传文件到服务器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -r file.txt root@ip:/root/</span><br></pre></td></tr></table></figure>
+<p>拷贝服务器文件到本地则调换后两个参数顺序。</p>
 
       
     </div>
@@ -725,7 +731,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#linux基础命令tail-cat-top-mkdir-vi-chmod等"><span class="nav-number">1.</span> <span class="nav-text">linux基础命令tail/cat/top/mkdir/vi/chmod等</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tail命令"><span class="nav-number">2.</span> <span class="nav-text">tail命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cat命令"><span class="nav-number">3.</span> <span class="nav-text">cat命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#top命令"><span class="nav-number">4.</span> <span class="nav-text">top命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mkdir命令"><span class="nav-number">5.</span> <span class="nav-text">mkdir命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vi命令"><span class="nav-number">6.</span> <span class="nav-text">vi命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#chmod"><span class="nav-number">7.</span> <span class="nav-text">chmod</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#linux基础命令tail-cat-top-mkdir-vi-chmod等"><span class="nav-number">1.</span> <span class="nav-text">linux基础命令tail/cat/top/mkdir/vi/chmod等</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tail命令"><span class="nav-number">2.</span> <span class="nav-text">tail命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cat命令"><span class="nav-number">3.</span> <span class="nav-text">cat命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#top命令"><span class="nav-number">4.</span> <span class="nav-text">top命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mkdir命令"><span class="nav-number">5.</span> <span class="nav-text">mkdir命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#vi命令"><span class="nav-number">6.</span> <span class="nav-text">vi命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#chmod"><span class="nav-number">7.</span> <span class="nav-text">chmod</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ssh及scp"><span class="nav-number">8.</span> <span class="nav-text">ssh及scp</span></a></li></ol></div>
             
 
           </div>

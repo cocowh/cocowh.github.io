@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="周一入职，已经是第4天了，这两天在配置开发环境上走了不少坑，记录下来以备后续查阅。 公司配的mac周二下午才到，全新的13.3寸256/8G的MacBookPro，希望自己的技术能力能配得上使用的工具。周一leader让在自带的电脑上配置nginx+mysql+redis+php开发环境，由于之前已经配置过很多次，所以主要是查看配置的合理性以及安装redis及相应的php拓展。redis在其官网上">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-25T04:25:07.763Z">
+<meta property="og:updated_time" content="2018-08-22T03:35:53.530Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mac搭建开发环境初体验">
 <meta name="twitter:description" content="周一入职，已经是第4天了，这两天在配置开发环境上走了不少坑，记录下来以备后续查阅。 公司配的mac周二下午才到，全新的13.3寸256/8G的MacBookPro，希望自己的技术能力能配得上使用的工具。周一leader让在自带的电脑上配置nginx+mysql+redis+php开发环境，由于之前已经配置过很多次，所以主要是查看配置的合理性以及安装redis及相应的php拓展。redis在其官网上">
@@ -422,7 +422,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  866
+                  812
                 </span>
               
 
@@ -438,7 +438,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  4
+                  3
                 </span>
               
             </div>
@@ -473,12 +473,6 @@
 <p>周三晚上终于把环境搞定了，然后配置git配置node把此博客进行了迁移。书到用时方恨少，今天开始，好好学习好好工作！</p>
 <p>在<a href="https://laravel-china.org/docs/laravel/5.6/deployment/1357#nginx" target="_blank" rel="noopener">Laravel 的部署</a>，附份nginx配置文件以备后续参考。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name localhost;</span><br><span class="line">    root /Users/wuhua/Desktop/TAL-practice/login/public;</span><br><span class="line"></span><br><span class="line">    add_header X-Frame-Options &quot;SAMEORIGIN&quot;;</span><br><span class="line">    add_header X-XSS-Protection &quot;1; mode=block&quot;;</span><br><span class="line">    add_header X-Content-Type-Options &quot;nosniff&quot;;</span><br><span class="line"></span><br><span class="line">    index index.html index.htm index.php;</span><br><span class="line"></span><br><span class="line">    charset utf-8;</span><br><span class="line">    location / &#123;</span><br><span class="line">        try_files $uri $uri/ /index.php?$query_string;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location = /favicon.ico &#123; access_log off; log_not_found off; &#125;</span><br><span class="line">    location = /robots.txt  &#123; access_log off; log_not_found off; &#125;</span><br><span class="line"></span><br><span class="line">    error_page 404 /index.php;</span><br><span class="line"></span><br><span class="line">    location ~ \.php$ &#123;</span><br><span class="line">        fastcgi_split_path_info ^(.+\.php)(/.+)$;</span><br><span class="line">        fastcgi_pass    127.0.0.1:9000;</span><br><span class="line">        fastcgi_index   index.php;</span><br><span class="line">        fastcgi_param   SCRIPT_FILENAME /Users/wuhua/Desktop/TAL-practice/login/public$fastcgi_script_name;</span><br><span class="line">        include         fastcgi_params;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~ /\.(?!well-known).* &#123;</span><br><span class="line">        deny all;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>mac连接linux服务器：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -p 22 root@ip</span><br></pre></td></tr></table></figure>
-<p>mac上传文件/目录到服务器：<br>上传目录到服务器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -r dir root@ip:/root/</span><br></pre></td></tr></table></figure>
-<p>上传文件到服务器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -r file.txt root@ip:/root/</span><br></pre></td></tr></table></figure>
       
     </div>
     
