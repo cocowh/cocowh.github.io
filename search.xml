@@ -3,6 +3,29 @@
   
     
     <entry>
+      <title>Go与Cookie</title>
+      <link href="/2018/08/23/Go%E4%B8%8ECookie/"/>
+      <url>/2018/08/23/Go%E4%B8%8ECookie/</url>
+      <content type="html"><![CDATA[<p>大多数cookie都可以被划分为会话cookie和持久cookie两种类型。</p><h3 id="Go与cookie"><a href="#Go与cookie" class="headerlink" title="Go与cookie"></a>Go与cookie</h3><p>cookie在Go语言中用Cookie结构表示。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">type Cookie struct &#123;</span><br><span class="line">Namestring</span><br><span class="line">Valuestring</span><br><span class="line">Pathstring</span><br><span class="line">Domainstring</span><br><span class="line">Expirestime.Time</span><br><span class="line">RawExpiresstring</span><br><span class="line">MaxAgeint</span><br><span class="line">Securebool</span><br><span class="line">HttpOnlybool</span><br><span class="line">Rawstring</span><br><span class="line">Unparsed[]string</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>没有设置Expires字段的cookie通常称为会话cookie或者临时cookie，这种cookie在浏览器关闭的时候就会自动被移除。设置了Expires字段的cookie通常称为持久cookie，这种cookie会一直存在，直到指定的过期时间来临或者被手动删除为止。</p><p>Expires字段和MaxAge字段都可以设置cookie的过期时间，Expires字段用于明确地指定cookie应该在什么时候过期，MaxAge字段指明cookie在被浏览器创建出来之后能够存活多少秒。</p><p>为使cookie在所有浏览器上都能够正常运行，只使用Expires，或者同时使用Expires和MaxAge。</p><h3 id="将cookie发送至浏览器"><a href="#将cookie发送至浏览器" class="headerlink" title="将cookie发送至浏览器"></a>将cookie发送至浏览器</h3><p>Cookie结构的String方法可以返回一个经过序列化处理的cookie，其中Set-Cookie响应首部的值即为这些序列化之后的cookie组成。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">···</span><br><span class="line">func setCookie(w http.ReponseWriter, r *http.Request) &#123;</span><br><span class="line">c1 := http.Cookie&#123;</span><br><span class="line">Name:&quot;first_cookie&quot;,</span><br><span class="line">Value:&quot;Wuhua&quot;,</span><br><span class="line">HttpOnly:true,</span><br><span class="line">&#125;</span><br><span class="line">c2 := &#123;</span><br><span class="line">Name: &quot;second_cookie&quot;,</span><br><span class="line">Value:&quot;Love or hate&quot;,</span><br><span class="line">HttpOnly: true,</span><br><span class="line">&#125;</span><br><span class="line">w.Header().Set(&quot;Set-Cookie&quot;, c1.String())</span><br><span class="line">w.Header().Add(&quot;Set-Cookie&quot;, c2.String())</span><br><span class="line">&#125;</span><br><span class="line">···</span><br></pre></td></tr></table></figure><p>除Set方法和Add方法外，还可使用net/http库中的SetCookie方法。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">···</span><br><span class="line">func setCookie(w http.ReponseWriter, r *http.Request) &#123;</span><br><span class="line">c1 := http.Cookie&#123;</span><br><span class="line">Name:&quot;first_cookie&quot;,</span><br><span class="line">Value:&quot;Wuhua&quot;,</span><br><span class="line">HttpOnly:true,</span><br><span class="line">&#125;</span><br><span class="line">c2 := &#123;</span><br><span class="line">Name: &quot;second_cookie&quot;,</span><br><span class="line">Value:&quot;Love or hate&quot;,</span><br><span class="line">HttpOnly: true,</span><br><span class="line">&#125;</span><br><span class="line">http.SetCookie(w, &amp;c1)</span><br><span class="line">http.SetCookie(w, &amp;c2)</span><br><span class="line">&#125;</span><br><span class="line">···</span><br></pre></td></tr></table></figure><p>使用SetCookie方法设置cookie，传递给方法的是指向Cookie的指针而不是Cookie结构本身。</p><h3 id="从浏览器获取cookie"><a href="#从浏览器获取cookie" class="headerlink" title="从浏览器获取cookie"></a>从浏览器获取cookie</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">···</span><br><span class="line">func getCookie(w http.ReponseWriter, r *http.Request) &#123;</span><br><span class="line">h := r.Header[&apos;Cookie&apos;]</span><br><span class="line">fmt.Fprintln(w, h)</span><br><span class="line">&#125;</span><br><span class="line">···</span><br></pre></td></tr></table></figure><p>语句<code>r.Header[&quot;Cookie&quot;]</code>返回一个切片，切片包含一个字符串，字符串包含了客户端发送的任意多个cookie。取得单独的键值对格式的cookie，需要对r.Header[“Cookie”]返回的字符串进行语法分析。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">···</span><br><span class="line">func getCookie(w http.ReponseWriter, r *http.Request) &#123;</span><br><span class="line">c1, err := r.Cookie(&quot;first_cookie&quot;);</span><br><span class="line">if err != nil &#123;</span><br><span class="line">fmt.Fprintln(w, &quot;Cannot get the first cookie&quot;)</span><br><span class="line">&#125;</span><br><span class="line">cs := r.Cookies()</span><br><span class="line">fmt.Fprintln(w, c1)</span><br><span class="line">fmt.Fprintln(w, cs)</span><br><span class="line">&#125;</span><br><span class="line">···</span><br></pre></td></tr></table></figure><p>使用Request结构的Cookie方法获取指定名字的cookie，若指定的cookie不存在，则方法返回一个错误。使用Cookies方法获取多个cookie，返回一个包含了所有cookie的切片。</p><p>上方未设置cookie的过期时间，为会话cookie，完全退出浏览器并重启这些cookie会消失。</p><h3 id="使用cookie实现闪现消息"><a href="#使用cookie实现闪现消息" class="headerlink" title="使用cookie实现闪现消息"></a>使用cookie实现闪现消息</h3><p>实现闪现消息的常用方法是将这些消息存储在页面刷新时就会被移除的会话cookie里面。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">···</span><br><span class="line">func setMessage(w http.ResponseWriter, r *http.Request) &#123;</span><br><span class="line">msg := []byte(&quot;Hello World!)</span><br><span class="line">c := http.Cookie&#123;</span><br><span class="line">Name:&quot;flash&quot;,</span><br><span class="line">Value:base64.URLEncoding.EncodeToString(msg),</span><br><span class="line">&#125;</span><br><span class="line">http.SetCookie(w, &amp;c)</span><br><span class="line">&#125;</span><br><span class="line">···</span><br></pre></td></tr></table></figure><p>设置cookie时，如果cookie的值没有包含诸如空格或者百分号这样的特设字符，可不对它进行编码；由于消息本身通常包含此类字符，需要使用Base64URL编码，以此来满足响应首部对cookie值的URL编码要求。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">···</span><br><span class="line">func showMessage(w http.ReponseWriter, r *http.Request) &#123;</span><br><span class="line">c, err := r.Cookie(&quot;flash&quot;)</span><br><span class="line">if err != nil &#123;</span><br><span class="line">if err == http.ErrNoCookie &#123;</span><br><span class="line">fmt.Fprintln(w, &quot;No message found)</span><br><span class="line">&#125;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">rc := http.Cookie&#123;</span><br><span class="line">Name: &quot;flash&quot;,</span><br><span class="line">MaxAge:-1,</span><br><span class="line">Expires:time.Unix(1, 0),</span><br><span class="line">&#125;</span><br><span class="line">http.SetCookie(w, &amp;rc)</span><br><span class="line">val, _ := base64.URLEncoding.DecodeString(c.Value)</span><br><span class="line">fmt.Fprintln(w, string(val))</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">···</span><br></pre></td></tr></table></figure><p>获取flash消息cookie，创建同名cookie并设置MacAge值为负数、Expires值为已经过去的时间，将同名cookie发送至客户端，相当于命令浏览器删除这个cookie。将flash消息解码，通过响应返回这条消息。</p>]]></content>
+      
+      <categories>
+          
+          <category> Golang </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> golang </tag>
+            
+            <tag> cookie </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>HTTP简记</title>
       <link href="/2018/08/21/HTTP%E7%AE%80%E8%AE%B0/"/>
       <url>/2018/08/21/HTTP%E7%AE%80%E8%AE%B0/</url>
@@ -303,6 +326,8 @@
       
         <tags>
             
+            <tag> mysql </tag>
+            
             <tag> php </tag>
             
             <tag> redis </tag>
@@ -310,8 +335,6 @@
             <tag> nginx </tag>
             
             <tag> phpredis </tag>
-            
-            <tag> mysql </tag>
             
         </tags>
       
@@ -378,9 +401,9 @@
             
             <tag> shell </tag>
             
-            <tag> nginx </tag>
-            
             <tag> mysql </tag>
+            
+            <tag> nginx </tag>
             
             <tag> linux </tag>
             
@@ -884,16 +907,16 @@
   
     
     <entry>
-      <title>categories</title>
-      <link href="/categories/index.html"/>
-      <url>/categories/index.html</url>
+      <title>标签</title>
+      <link href="/tags/index.html"/>
+      <url>/tags/index.html</url>
       <content type="html"><![CDATA[]]></content>
     </entry>
     
     <entry>
-      <title>标签</title>
-      <link href="/tags/index.html"/>
-      <url>/tags/index.html</url>
+      <title>categories</title>
+      <link href="/categories/index.html"/>
+      <url>/categories/index.html</url>
       <content type="html"><![CDATA[]]></content>
     </entry>
     
