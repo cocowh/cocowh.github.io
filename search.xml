@@ -3,6 +3,38 @@
   
     
     <entry>
+      <title>redis-链表</title>
+      <link href="/2018/09/12/redis-%E9%93%BE%E8%A1%A8-1/"/>
+      <url>/2018/09/12/redis-%E9%93%BE%E8%A1%A8-1/</url>
+      <content type="html"><![CDATA[]]></content>
+      
+      
+    </entry>
+    
+    <entry>
+      <title>redis-链表</title>
+      <link href="/2018/09/12/redis-%E9%93%BE%E8%A1%A8/"/>
+      <url>/2018/09/12/redis-%E9%93%BE%E8%A1%A8/</url>
+      <content type="html"><![CDATA[<p>redis构建了自己的链表实现。</p><p>列表键的底层实现之一就是链表，当一个列表键包含了数量比较多的元素，又或者列表中包含的元素都是比较长的字符串时，redis就会使用链表作为列表键的底层实现。</p><p>除链表键之外，发布与订阅、慢查询、监视器等功能也用到了链表，redis服务器本身还使用链表来保存多个客户端的状态信息，使用链表来构建客户端输出缓冲区。</p><h3 id="链表和链表节点的实现"><a href="#链表和链表节点的实现" class="headerlink" title="链表和链表节点的实现"></a>链表和链表节点的实现</h3><p>链表节点由adlist.h/listNode结构来表示：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">typedef struct listNode &#123;</span><br><span class="line">struct listNode *prev;//前置节点</span><br><span class="line">struct listNode *next;//后置节点</span><br><span class="line">void *value;//节点的值</span><br><span class="line">&#125; listNode;</span><br></pre></td></tr></table></figure><p>使用多个listNode结构可组成链表，使用adlist.h/list来持有链表，操作起来更方便：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">typedef struct list &#123;</span><br><span class="line">listNode *head;//表头节点</span><br><span class="line">listNode *tail;//表尾节点</span><br><span class="line">unsigned long len;//链表所包含的节点的数量</span><br><span class="line">void *(*dup)(void *ptr);//节点值复制函数</span><br><span class="line">void *(*free)(void *ptr);//节点值释放函数</span><br><span class="line">int (*match)(void *ptr, void *key);//节点值对比函数</span><br><span class="line">&#125; list;</span><br></pre></td></tr></table></figure><p>提供了表头指针head，表尾指针tail，链表长度计数器len，dup、free和match用于实现多态链表所需的类型特定函。</p><p>redis链表实现的特性：</p><ul><li>双端。</li><li>无环。</li><li>带表头指针和表尾指针。</li><li>带链表长度计数器。</li><li>多态：链表节点使用void*指针来保存节点值，可以通过list结构的dup、free、match三个属性为节点值设置类型特定函数，链表可用于保存各种不同类型的值。</li></ul><h3 id="链表和链表节点的API"><a href="#链表和链表节点的API" class="headerlink" title="链表和链表节点的API"></a>链表和链表节点的API</h3><p>链表和链表节点的API：</p><table><thead><tr><th style="text-align:left">函数</th><th style="text-align:left">作用</th><th style="text-align:left">时间复杂度</th></tr></thead><tbody><tr><td style="text-align:left">listSetDupMethod</td><td style="text-align:left">将给定的函数设置为链表的节点值复制函数</td><td style="text-align:left">O(1)，可通过链表的dup属性直接获得</td></tr><tr><td style="text-align:left">listGetDupMethod</td><td style="text-align:left">返回链表当前正在使用的节点值复制函数</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">listSetFreeMethod</td><td style="text-align:left">将给定的函数设置为链表的节点值释放函数</td><td style="text-align:left">O(1)，可通过链表的free属性直接获得</td></tr><tr><td style="text-align:left">listGetFree</td><td style="text-align:left">返回链表当前正在使用的节点值释放函数</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">listSetMatchMethod</td><td style="text-align:left">将给定的函数设置为链表的节点值对比函数</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">listGetMatchMethod</td><td style="text-align:left">返回链表当前正在使用的节点值对比函数</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">listLength</td><td style="text-align:left">返回链表的长度（包含了多少个节点）</td><td style="text-align:left">O(1)，链表的len属性</td></tr><tr><td style="text-align:left">listFirst</td><td style="text-align:left">返回链表的表头节点</td><td style="text-align:left">O(1)，链表的head属性</td></tr><tr><td style="text-align:left">listLast</td><td style="text-align:left">返回链表的表为节点</td><td style="text-align:left">O(1)，链表的tail属性</td></tr><tr><td style="text-align:left">listPrevNode</td><td style="text-align:left">返回给定节点的前置节点</td><td style="text-align:left">O(1)，节点的prev属性</td></tr><tr><td style="text-align:left">listNextNode</td><td style="text-align:left">返回给定节点的后置节点</td><td style="text-align:left">O(1)，节点的next属性</td></tr><tr><td style="text-align:left">listNodeValue</td><td style="text-align:left">返回给定节点目前正在保存的值</td><td style="text-align:left">O(1)，节点的value属性</td></tr><tr><td style="text-align:left">listCreate</td><td style="text-align:left">创建一个不包含任何节点的新链表</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">listAddNodeHead</td><td style="text-align:left">将一个包含给定值的新节点添加到给定链表的表头</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">listAddNodeTail</td><td style="text-align:left">将一个包含给定值的新节点添加到给定链表的表尾</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">listInsertNode</td><td style="text-align:left">将一个包含给定值的新节点添加到给定节点的之前或者之后</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">listSearchKey</td><td style="text-align:left">查找并返回链表中包含给定值的节点</td><td style="text-align:left">O(N)，N为链表长度</td></tr><tr><td style="text-align:left">listIndex</td><td style="text-align:left">返回链表在给定索引上的节点</td><td style="text-align:left">O(N)，N为链表长度</td></tr><tr><td style="text-align:left">listDelNode</td><td style="text-align:left">从链表中删除给定节点</td><td style="text-align:left">O(N)，N为链表长度</td></tr><tr><td style="text-align:left">listRotate</td><td style="text-align:left">将链表的表尾节点弹出，然后将被弹出的节点插入到链表的表头，成为新的表头节点</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">listDup</td><td style="text-align:left">复制一个给定链表的副本</td><td style="text-align:left">O(N)，N为链表长度</td></tr><tr><td style="text-align:left">listRelease</td><td style="text-align:left">释放给定链表，以及链表中的所有节点</td><td style="text-align:left">O(N)，N为链表长度</td></tr></tbody></table>]]></content>
+      
+      <categories>
+          
+          <category> redis </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> redis </tag>
+            
+            <tag> 链表 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>redis-简单动态字符串</title>
       <link href="/2018/09/12/redis-%E7%AE%80%E5%8D%95%E5%8A%A8%E6%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
       <url>/2018/09/12/redis-%E7%AE%80%E5%8D%95%E5%8A%A8%E6%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
@@ -976,17 +1008,17 @@
   
     
     <entry>
-      <title>categories</title>
-      <link href="/categories/index.html"/>
-      <url>/categories/index.html</url>
-      <content type="html"><![CDATA[]]></content>
-    </entry>
-    
-    <entry>
       <title>BUG制造师</title>
       <link href="/about/index.html"/>
       <url>/about/index.html</url>
       <content type="html"><![CDATA[<h3 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h3><ul><li>姓名：吴桦</li><li>性别：男</li><li>出生年月：1995/02</li><li>Email： <a href="mailto:huaweiailin@foxmail.com" target="_blank" rel="noopener">huaweiailin@foxmail.com</a></li><li>博客： <a href="http://bighua.top/">http://bighua.top/</a></li><li>GitHub： <a href="https://github.com/cocowh" target="_blank" rel="noopener">https://github.com/cocowh</a></li></ul><hr><h3 id="教育背景"><a href="#教育背景" class="headerlink" title="教育背景"></a>教育背景</h3><p>2014/09 —— 2018/06</p><ul><li>学历：本科</li><li>学校：华中农业大学</li><li>专业：计算机科学与技术</li></ul><hr><h3 id="工作经历"><a href="#工作经历" class="headerlink" title="工作经历"></a>工作经历</h3><h4 id="好未来"><a href="#好未来" class="headerlink" title="好未来"></a>好未来</h4><ul><li>2018/07/02 —— 至今</li><li>培优在线 —— 后台研发工程师</li></ul><hr><h3 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h3><p>PHP+Golang+Swoole+Vue+Node</p>]]></content>
+    </entry>
+    
+    <entry>
+      <title>categories</title>
+      <link href="/categories/index.html"/>
+      <url>/categories/index.html</url>
+      <content type="html"><![CDATA[]]></content>
     </entry>
     
     <entry>
