@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="bighua.top/"/>
-  <updated>2018-09-12T08:01:36.115Z</updated>
+  <updated>2018-09-12T12:44:24.367Z</updated>
   <id>bighua.top/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>redis-字典</title>
+    <link href="bighua.top/2018/09/12/redis-%E5%AD%97%E5%85%B8/"/>
+    <id>bighua.top/2018/09/12/redis-字典/</id>
+    <published>2018-09-12T08:04:30.000Z</published>
+    <updated>2018-09-12T12:44:24.367Z</updated>
+    
+    <content type="html"><![CDATA[<p>又称符号表、关联数组或映射，一种用于保存键值对的抽象数据结构。</p><p>一个键可以和一个值进行关联，字典中的每个键都是独一无二的，通过键查找与之关联的值、更新值或删除整个键值对。</p><p>redis构建了自己的字典实现，redis数据库使用字典作为底层实现，对数据库的增、删、改、查操作也是构建在对字典的操作之上。字典还是哈希键的底层实现之一，当一个哈希键包含的键值对比较多，又或者键值对中的元素都是比较长的字符串时，redis就会使用字典作为哈希键的底层实现。</p><h3 id="字典的实现"><a href="#字典的实现" class="headerlink" title="字典的实现"></a>字典的实现</h3><p>redis字典使用哈希表作为底层实现，一个哈希表里面可以有多个哈希表节点，而每个哈希表节点就保存了字典中的一个键值对。</p><h4 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h4><p>由dict.h/dictht结构定义：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">typedef struct dictht &#123;</span><br><span class="line">dictEntry **table;//哈希表数组</span><br><span class="line">unsigned long size;//哈希表大小</span><br><span class="line">unsigned long sizemask;//哈希表大小掩码，用于计算索引值，等于size-1</span><br><span class="line">unsigned long used;//该哈希表已有节点的数量</span><br><span class="line">&#125; dictht;</span><br></pre></td></tr></table></figure><p>table属性是一个数组，数组中的每个元素都是一个指向dict.h/dictEntry结构的指针，每个dictEntry结构都保存着一个键值对。</p><h4 id="哈希表节点"><a href="#哈希表节点" class="headerlink" title="哈希表节点"></a>哈希表节点</h4><p>哈希表节点使用dictEntry结构表示，每个dictEntry结构都保存着一个键值对:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">typedef struct dictEntry &#123;</span><br><span class="line">void *key;//键</span><br><span class="line">union &#123;</span><br><span class="line">void *val;</span><br><span class="line">uint64_tu64;</span><br><span class="line">int64_ts64;</span><br><span class="line">&#125; v; //值</span><br><span class="line">struct dictEntry *next;//指向下个哈希表节点，形成链表</span><br><span class="line">&#125; dictEntry;</span><br></pre></td></tr></table></figure><p>next属性是一个指向哈希表节点的指针，可以将多个哈希表值相同的键值对链接在一起，以此来解决键冲突的问题。</p><h4 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h4><p>由dict.h/dict结构表示：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">typedef struct dict &#123;</span><br><span class="line">dictType *type;//类型特定函数</span><br><span class="line">void *privdata;//私有数据</span><br><span class="line">dictht ht[2];//哈希表</span><br><span class="line">int rehashidx;//rehash索引，当rehash不再进行时，值为-1  </span><br><span class="line"></span><br><span class="line">&#125; dict;</span><br></pre></td></tr></table></figure><p>type属性和privdata属性是针对不同类型的键值对，为创建多态字典而设置：</p><ul><li>type属性是一个指向dictType结构的指针，每个dictType结构保存了一簇用于操作特定类型键值对的函数，redis会为用途不同的字典设置不同的类型特定函数。</li><li>privdata属性保存了需要传给那些类型特定函数的可选参数。</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">typedef struct dictType &#123;</span><br><span class="line">unsigned int (*hashFunction)(const void *key);//计算哈希值的函数</span><br><span class="line">void *(*keyDup)(void *privdata, const void *key);//复制键的函数</span><br><span class="line">void *(*valDup)(void *privdata, const void *key);//复制值的函数</span><br><span class="line">int (*keyCompare)(void *privdata, const void *key1, const void *key2);对比键的函数</span><br><span class="line">void (*keyDestructor)(void *privdata, void *key);//销毁键的函数</span><br><span class="line">void (*valDestructor)(void *privdata, void *obj);//销毁值的函数</span><br><span class="line">&#125; dictType;</span><br></pre></td></tr></table></figure><p>ht属性是一个包含两个项的数组，数组中的每个项都是一个dictht哈希表，一般情况下，字典只使用ht[0]哈希表，ht[1]哈希表只会在对ht[0]哈希表进行rehash时使用。</p><p>rehashidx属性记录rehash目前的进度，若没有在进行rehash，则值为-1。</p><h3 id="哈希算法"><a href="#哈希算法" class="headerlink" title="哈希算法"></a>哈希算法</h3><p>将一个新的键值对添加到字典里面时，程序需要先根据键值对的键计算出哈希值和索引值，然后再根据索引值，将包含新键值对的哈希表节点放到哈希表数组的指定索引上面。</p><p>redis计算哈希值和索引值：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//使用字典设置的哈希函数，计算键key的哈希值</span><br><span class="line">hash = dict-&gt;type-&gt;hashFunction(key);</span><br><span class="line">//使用哈希表的sizemask属性和哈希值，计算出索引值</span><br><span class="line">//ht[x]根据情况选择ht[0]和ht[1]</span><br><span class="line">index = hash &amp; dict-&gt;ht[x].sizemask;</span><br></pre></td></tr></table></figure><p>当字典被用作数据库的底层实现，或者哈希键的底层实现时，redis使用MurmurHash2算法来计算哈希值。</p><h3 id="解决键冲突"><a href="#解决键冲突" class="headerlink" title="解决键冲突"></a>解决键冲突</h3><p>当有两个或以上数量键被分配到了哈希数组的同一个索引上面时，称这些键发生了冲突。</p><p>redis的哈希表使用链表链地址法来解决键冲突，每个哈希表节点都有一个next指针，多个哈希表节点可以使用next指针构成一个单向链表，被分配到同一个索引上的多个节点可以用这个单项链表连接起来，解决键冲突问题。速度考虑，程序总是将新节点添加到链表的表头位置，排在其他已有节点的前面。</p><h3 id="rehash"><a href="#rehash" class="headerlink" title="rehash"></a>rehash</h3><p>为让哈希表的负载因子维持在一个合理的范围之内，哈希表保存的键值对数量太多或者太少时，程序需要对哈希表的大小进行相应的拓展或者收缩，通过执行rehash（重新散列）操作来完成。步骤如下：</p><ol><li>为字典的ht[1]哈希表分配空间，哈希表的空间的大小取决于要执行的操作，以及ht[0]当前包含的键值对数量。<ul><li>若执行的是扩展操作，则ht[1]的大小为第一个大于等于ht[0].used*2的2^n;</li><li>若执行的是收缩操作，那么ht[1]的大小为第一个大于等于ht[0].used的2^n。</li></ul></li><li>将保存在ht[0]中的所有键值对rehash到ht[1]上面：rehash重新计算键的哈希值和索引，然后将键值对放置到ht[1]哈希表的指定位置上。</li><li>当ht[0]包含的所有键值对都迁移到了ht[1]之后（ht[0]表变为空表），释放ht[0]，将ht[1]设置为ht[0]，并在ht[1]新创建一个空白哈希表，为下一次rehash作准备。</li></ol><p><code>哈希表的拓展和收缩</code>：</p><blockquote><ul><li>服务器目前没有执行BGSAVE命令或者BGREWRITEAOF命令，并且哈希表的负载因子大于等于1。  </li><li>服务器目前正在执行BGSAVE命令或者BGREWRITEAOF命令，并且哈希表的负载因子大于等于5。<br> 哈希表的负载因子计算公式：<br>  # 负载因子 = 哈希表已保存节点数量 / ht[0].size<br>  load_factor = ht[0].used / ht[0].size </li></ul></blockquote><p>根据BGSAVE命令和BGREWRITEAOF命令是否正在执行，服务器执行拓展操作所需的负载因子并不相同。在执行BGSAVE命令或者BGREWRITEAOF命令的过程中，redis需要创建当前服务器进程的子进程，大多数操作系统都采用写时复制（copy-on-write）技术来优化子进程的使用效率，在子进程存在期间，服务器会提高执行拓展操作所需的负载因子，尽可能地避免在子进程存在期间进行哈希表拓展操作，避免不必要的内存写入操作，节约内存。</p><p>当哈希表的负载因子小于0.1时，程序自动开始对哈希表执行收缩操作。</p><h3 id="渐进式rehash"><a href="#渐进式rehash" class="headerlink" title="渐进式rehash"></a>渐进式rehash</h3><p>扩展或收缩哈希表需要将ht[0]里面的所有键值对rehash到ht[1]里面，为避免数据量过大rehash对服务器性能造成影响，rehash动作是分多次、渐进式地完成的，当数据量过大时将rehash键值对所需的计算工作均摊到对字典的每个添加、删除、查找和更新操作上，避免了集中式rehash而带来的庞大计算量。</p><p>哈希表渐进式rehash的步骤：  </p><ul><li>为ht[1]分配空间，让字典同时持有ht[0]和ht[1]两个哈希表。</li><li>在字典中维持一个索引计数器变量rehashidx，并将它的值设置为0，表示rehash工作正式开始。</li><li>在rehash进行期间，每次对字典执行添加、删除、查找或者更新操作时，程序除了执行指定的操作之外，还会顺带将ht[0]哈希表在rehashidx索引上的所有键值对rehash到ht[1]，当rehash工作完成之后，程序将rehashidx属性的值增一。</li><li>随着字典操作的不断执行，最终在某个时间点上，ht[0]的所有键值对都会被rehash至ht[1]，这时程序将rehashidx属性的值设为-1，表示rehash操作已经完成。</li></ul><p>在渐进式rehash执行期间，字典的删除、查找、更新等操作会在两个哈希表上进行，新添加到字典的键值对一律会被保存到ht[1]里面，而ht[0]则不再进行任何操作。</p><h3 id="字典API"><a href="#字典API" class="headerlink" title="字典API"></a>字典API</h3><p>字典的主要操作API</p><table><thead><tr><th style="text-align:left">函数</th><th style="text-align:left">作用</th><th style="text-align:left">时间复杂度</th></tr></thead><tbody><tr><td style="text-align:left">dictCreate</td><td style="text-align:left">创建一个新的字典</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">dictAdd</td><td style="text-align:left">将给定的键值对添加到字典里面</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">dictReplace</td><td style="text-align:left">将给定的键值对添加到字典里面，如果键已经存在于字典，用新值取代原有的值</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">dictFetchValue</td><td style="text-align:left">返回给定键的值</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">dictGetRandomKey</td><td style="text-align:left">从字典中随机返回一个键值对</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">dictDelete</td><td style="text-align:left">从字典中删除给定键所对应键值对</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">dictRelease</td><td style="text-align:left">释放给定字典，以及字典中包含的所有键值对</td><td style="text-align:left">O(N)，N为字典包含的键值对数量</td></tr></tbody></table>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;又称符号表、关联数组或映射，一种用于保存键值对的抽象数据结构。&lt;/p&gt;
+&lt;p&gt;一个键可以和一个值进行关联，字典中的每个键都是独一无二的，通过键查找与之关联的值、更新值或删除整个键值对。&lt;/p&gt;
+&lt;p&gt;redis构建了自己的字典实现，redis数据库使用字典作为底层实现，对数
+      
+    
+    </summary>
+    
+      <category term="redis" scheme="bighua.top/categories/redis/"/>
+    
+    
+      <category term="redis" scheme="bighua.top/tags/redis/"/>
+    
+      <category term="字典" scheme="bighua.top/tags/%E5%AD%97%E5%85%B8/"/>
+    
+      <category term="dict" scheme="bighua.top/tags/dict/"/>
+    
+  </entry>
   
   <entry>
     <title>redis-链表</title>
@@ -561,31 +592,6 @@
       <category term="hexo" scheme="bighua.top/tags/hexo/"/>
     
       <category term="git" scheme="bighua.top/tags/git/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>天涯未远，江湖再见</title>
-    <link href="bighua.top/2018/06/16/%E5%A4%A9%E6%B6%AF%E6%9C%AA%E8%BF%9C%EF%BC%8C%E6%B1%9F%E6%B9%96%E5%86%8D%E8%A7%81/"/>
-    <id>bighua.top/2018/06/16/天涯未远，江湖再见/</id>
-    <published>2018-06-16T06:20:04.000Z</published>
-    <updated>2018-07-04T17:45:25.113Z</updated>
-    
-    <content type="html"><![CDATA[<p>好久没有更新博客了，距离上一篇博客过去快两个月了。五月中寻毕设做的差不多了，堕落了一下，五月下旬回家陪可爱的外甥女玩了10天，六月上旬忙着写论文准备答辩，答辩后班级毕业照聚餐，然后提前回家陪家人过端午节，20号送二姐和外甥女上高铁。这篇本来打算在16号退宿走的那天记录的，想着趁年轻还想说还想写记录下。然而那天仅仅创建了文章，宿舍收拾打包东西，内心繁杂，也没太多心情想写。现在是24号凌晨4点，一直睡不着，就爬起来打开电脑，续写这篇记录。</p><h3 id="世人都晓勤奋好，贪玩懒惰忘不了"><a href="#世人都晓勤奋好，贪玩懒惰忘不了" class="headerlink" title="世人都晓勤奋好，贪玩懒惰忘不了"></a>世人都晓勤奋好，贪玩懒惰忘不了</h3><p>在今年生日的时候，已经写了篇博客，大致记录了大学四年的生活。总结这四年，应了那句话：间歇性踌躇满志，持续性混吃等死。</p><p>大学仿佛就是高中的一次循环。高一包夜上网玩游戏，夜晚被窝玩手机，成绩慢慢掉队。大一上课睡觉，课下浪玩游戏抄作业，大一下学期挂科。高二醒悟想考好点的大学开始慢慢认真学习，却发现掉队有些严重了，感谢学霸同桌带，成绩慢慢稳住，貌似那时候也是和一些同学有些矛盾，也可能是高三，直到现在在处理人际关系以及交往上还是不擅长。同样的也是在大二才开始意识到学习的重要性，有几个同班同学因为挂科严重被留级了，自己也开始上课认真听讲，慢慢的改上课睡觉的习惯，可是一学期的努力虽然成绩有所提高，但是跟那些学霸还是有些距离。摆在眼前的两条路：考研和工作，自己选择了后者，上学期末和同学一起加入了计协的web组，开始带我们的是一个大三的学姐，在下学期她就去腾讯实习了，受学姐的模范鼓励，以及一些情绪的影响，大二下学期一直默默的激励的自己去学习新的东西，虽然那些东西在现在看来真的是皮毛，学的太少太少了。大二这一年过的不太好，心情波动很大，和一些同学闹僵了。</p><p>对我来说的大学，在大二结束时就已经结束了。后面的两年都是以工作为主要目的，没任何值的纪念的生活细节。有时候总是觉得自己是不是有些心理问题，又或者说一些不成熟、幼稚的心理和想法，而自己从没有过正面的面对去解决它，就像这样将其归结为成长。直到现在仍然是复杂的思绪，我想或许有一天我会将所有的一切都找到合理的解决范本，然后再也不会像现在这样吐槽生活、记录心情。</p><p>今天是24号，到现在还没睡意，白天估计是废了，下个月2号入职，在家也呆不了几天了，总想骑车去一次老城十字街，去一次白马寺，去那些还没去过的地方，可是没有人一起的活动，显得一切都索然无味。就像大学的后两年，仅仅以找工作、不挂科以及忘记一些事情和逃避一些事情为主要内容的生活，没有任何意义，面对必须面对的所有人都保持应有的客套，还要忍受一些恶心的事情。</p><h3 id="狮山有情君有意，栀花香里话别离"><a href="#狮山有情君有意，栀花香里话别离" class="headerlink" title="狮山有情君有意，栀花香里话别离"></a>狮山有情君有意，栀花香里话别离</h3><p>就像一颗由远及近的流星，从远处慢慢飞过来，越来越快，到达最近时再以最快的速度离去，慢慢的，慢慢的消失。有些比较久远的事情，还是让他变模糊的好。我不知道现在正处在哪个阶段，或许是流星飞来的阶段。时间总觉得是越来越快了，父母老了，在过个几年就要退休了，今后的时间将大部分被工作带走，或许不觉间这几年就过去了。</p><p>大学这四年也是，总觉的不该这么快的，仿佛离别时都没意识到这就是离别，说是再见，或许是再也不见。离别可能也慢慢变成常态，慢慢的或许也没有现在的这些挢揉造作了。</p><p>无论四年如何，都是自己的人生轨迹。对学校的抱怨也好、留恋也罢，与同学的交好也好、积怨也罢，对某老师的厌恶也好、赞美也罢，所有这一切，形成了独一无二的轨迹。这几年，没仔细想过最后应有的模样，没规划过合理的路径，走一步看一步。开始准备读研，现在走上了工作的路径。开始想学吉他，现在拿起来爬格子还是很费力。总的来说，可能是不如意的。</p><p>今天是24号，昨天上午毕业典礼，下午发放毕业证和学位证，还在学校的同学，估计很多也在今天离开。天下没有不散的宴席，祝同学们前程似锦！</p><h3 id="前方不需太重的行囊，和过去和解吧"><a href="#前方不需太重的行囊，和过去和解吧" class="headerlink" title="前方不需太重的行囊，和过去和解吧"></a>前方不需太重的行囊，和过去和解吧</h3><p>一段经历，已成过去。进入社会，又是一个新的旅程！</p><p>忘记过去，规划以后的摸样，前方不需太重的行囊，和过去和解吧！</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;好久没有更新博客了，距离上一篇博客过去快两个月了。五月中寻毕设做的差不多了，堕落了一下，五月下旬回家陪可爱的外甥女玩了10天，六月上旬忙着写论文准备答辩，答辩后班级毕业照聚餐，然后提前回家陪家人过端午节，20号送二姐和外甥女上高铁。这篇本来打算在16号退宿走的那天记录的，想
-      
-    
-    </summary>
-    
-      <category term="随笔" scheme="bighua.top/categories/%E9%9A%8F%E7%AC%94/"/>
-    
-    
-      <category term="毕业" scheme="bighua.top/tags/%E6%AF%95%E4%B8%9A/"/>
     
   </entry>
   
