@@ -3,6 +3,29 @@
   
     
     <entry>
+      <title>redis-跳跃表</title>
+      <link href="/2018/09/12/redis-%E8%B7%B3%E8%B7%83%E8%A1%A8/"/>
+      <url>/2018/09/12/redis-%E8%B7%B3%E8%B7%83%E8%A1%A8/</url>
+      <content type="html"><![CDATA[<p>跳跃表是一种有序的数据结构，通过在每个节点中维持多个指向其他节点的指针，达到快速访问节点的目的。支持平均O(logN)，最坏O(N)复杂度的节点查找。可以通过顺序性操作来批量处理节点。</p><p>redis使用跳跃表作为有序集合键的底层实现之一，若有序集合包含的元素数量比较多，或者有序集合中元素的成员是比较长的字符串时，redis就会使用跳跃表来作为有序集合键的底层实现。</p><p>redis只在实现有序集合键和在集群节点用作内部数据结构用到跳跃表。</p><h3 id="跳跃表的实现"><a href="#跳跃表的实现" class="headerlink" title="跳跃表的实现"></a>跳跃表的实现</h3><p>由redis.h/zskiplistNode和redis.h/zskiplist两个结构定义，前者用于表示跳跃表节点，后者用于保存跳跃表节点的相关信息，例如节点的数量、指向表头节点和表尾节点的指针等。</p><h4 id="跳跃表节点"><a href="#跳跃表节点" class="headerlink" title="跳跃表节点"></a>跳跃表节点</h4><p>由redis.h/zskiplistNode结构定义：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">typedef struct zskiplistNode &#123;</span><br><span class="line">struct zskiplistLevel &#123;</span><br><span class="line">struct zskiplistNode *forward;//前进指针</span><br><span class="line">unsigned int span;//跨度</span><br><span class="line">&#125; level[];//层</span><br><span class="line">struct zskiplistNode *backward;//后退指针</span><br><span class="line">double score;//分值</span><br><span class="line">robj *obj;//成员对象</span><br><span class="line">&#125; zskiplistNode;</span><br></pre></td></tr></table></figure><ul><li>level数组可以包含多个元素，每个元素包含一个指向其他节点的指针，可通过这些层加快访问其他节点的速度，一般层数量越多访问其他节点的速度越快。每创建一个新跳跃表节点的时候，程序根据幂次定律随机生成一个介于1和32之间的值作为level数组的大小，即层的高度。</li><li>每个层都有一个指向表尾方向的前进指针，用于从表头向表尾方向访问节点。</li><li>跨度用于记录两个节点之间的距离，跨度越大，节点间距离越远，指向NULL的所有前进指针的跨度都为0。实际上用来计算排位（rank），在查找某个节点的过程中，将沿途访问过的所有层的跨度累计，得到的结果就是目标节点在跳跃表中的排位。</li><li>后退指针用于从表尾向表头方向访问节点，每个节点中有一个后退节点，每次只能后退至前一个节点。</li><li>分值是一个double类型的浮点数，跳跃表中的所有节点都按分值从小到大来排序，成员对象是一个指针，指向一个字符串对象，字符串对象则保存着一个SDS值。同一跳跃表中，各个节点保存的成员对象必须是唯一的，多个节点保存的分值可以相同：分值相同的节点按照成员对象在字典序中的大小进行排序，成员对象较小的节点排在前面。</li></ul><h4 id="跳跃表"><a href="#跳跃表" class="headerlink" title="跳跃表"></a>跳跃表</h4><p>由redis.h/zskiplist结构定义：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">typedef struct zskiplist &#123;</span><br><span class="line">struct zskiplistNode *header, *tail;//表头节点和表尾节点</span><br><span class="line">unsigned long length;//表中节点的数量</span><br><span class="line">int level;//表中层数最大节点的层数</span><br><span class="line">&#125; zskiplist;</span><br></pre></td></tr></table></figure><h3 id="跳跃表API"><a href="#跳跃表API" class="headerlink" title="跳跃表API"></a>跳跃表API</h3><p>跳跃表的所有操作API:</p><table><thead><tr><th style="text-align:left">函数</th><th style="text-align:left">作用</th><th style="text-align:left">时间复杂度</th></tr></thead><tbody><tr><td style="text-align:left">zslCreate</td><td style="text-align:left">创建一个新的跳跃表</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">zslFree</td><td style="text-align:left">释放给定跳跃表以及表中包含的所有节点</td><td style="text-align:left">O(N)，N为跳跃表的长度</td></tr><tr><td style="text-align:left">zslInsert</td><td style="text-align:left">将包含给定成员和分值的新节点添加到跳跃表中</td><td style="text-align:left">平均O(logN)，最坏O(N)，N为跳跃表长度</td></tr><tr><td style="text-align:left">zslDelete</td><td style="text-align:left">删除跳跃表中包含给定成员和分值的节点</td><td style="text-align:left">平均O(logN)，最坏O(N)，N为跳跃表长度</td></tr><tr><td style="text-align:left">zslGetRank</td><td style="text-align:left">返回包含给定成员和分值的节点在跳跃表中的排位</td><td style="text-align:left">平均O(logN)，最坏O(N)，N为跳跃表长度</td></tr><tr><td style="text-align:left">zslGetElementByRank</td><td style="text-align:left">返回跳跃表在给定排位上的节点</td><td style="text-align:left">平均O(logN)，最坏O(N)，N为跳跃表长度</td></tr><tr><td style="text-align:left">zslIsInRange</td><td style="text-align:left">判断跳跃表中是否有节点的分值在给定分值范围内</td><td style="text-align:left">O(1）</td></tr><tr><td style="text-align:left">zslFirstInrange</td><td style="text-align:left">返回跳跃表中第一个分值在给定分值范围内的节点</td><td style="text-align:left">平均O(logN)，最坏O(N)，N为跳跃表长度</td></tr><tr><td style="text-align:left">zslLastInrange</td><td style="text-align:left">返回跳跃表中最后一个分值在给定分值范围内的节点</td><td style="text-align:left">平均O(logN)，最坏O(N)，N为跳跃表长度</td></tr><tr><td style="text-align:left">zslDeleteRangeByScore</td><td style="text-align:left">删除跳跃表中所有在给定分值范围内的节点</td><td style="text-align:left">O(N)，N为被删除节点的数量</td></tr><tr><td style="text-align:left">zslDeleteRangeByRank</td><td style="text-align:left">删除跳跃表中所有在给定排位范围内的节点</td><td style="text-align:left">O(N)，N为被删除节点的数量</td></tr></tbody></table>]]></content>
+      
+      <categories>
+          
+          <category> redis </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> reids </tag>
+            
+            <tag> skiplist </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>redis-字典</title>
       <link href="/2018/09/12/redis-%E5%AD%97%E5%85%B8/"/>
       <url>/2018/09/12/redis-%E5%AD%97%E5%85%B8/</url>
