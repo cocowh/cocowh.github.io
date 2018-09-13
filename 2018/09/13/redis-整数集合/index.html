@@ -72,12 +72,10 @@
 
 
 
-  <meta name="keywords" content="技术博客,笔记,随笔 " />
+  <meta name="keywords" content="redis,intset," />
 
 
 
-
-  
 
 
   <link rel="alternate" href="/atom.xml" title="水木年华" type="application/atom+xml" />
@@ -87,18 +85,18 @@
 
 
 
-<meta name="description" content="基本信息 姓名：吴桦 性别：男 出生年月：1995/02 Email： huaweiailin@foxmail.com 博客： http://bighua.top/ GitHub： https://github.com/cocowh   教育背景2014/09 —— 2018/06  学历：本科 学校：华中农业大学 专业：计算机科学与技术   工作经历好未来 2018/07/02 —— 至今 培优">
-<meta name="keywords" content="PHP,GO,技术,随笔">
-<meta property="og:type" content="website">
-<meta property="og:title" content="BUG制造师">
-<meta property="og:url" content="bighua.top/about/index.html">
+<meta name="description" content="是集合键的底层实现之一，当一个集合只包含整数值元素，并且集合的元素数量不多时，redis使用整数集合作为集合键的底层实现。 整数集合的实现是redis用于保存整数值的集合抽象数据结构，可以保存类型为int16_t、int32_t或者int64_t的整数值，并且保证集合中不会出现重复元素。 由intset.h/intset结构表示: 12345typedef struct intset &amp;#123;">
+<meta name="keywords" content="redis,intset">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis-整数集合">
+<meta property="og:url" content="bighua.top/2018/09/13/redis-整数集合/index.html">
 <meta property="og:site_name" content="水木年华">
-<meta property="og:description" content="基本信息 姓名：吴桦 性别：男 出生年月：1995/02 Email： huaweiailin@foxmail.com 博客： http://bighua.top/ GitHub： https://github.com/cocowh   教育背景2014/09 —— 2018/06  学历：本科 学校：华中农业大学 专业：计算机科学与技术   工作经历好未来 2018/07/02 —— 至今 培优">
+<meta property="og:description" content="是集合键的底层实现之一，当一个集合只包含整数值元素，并且集合的元素数量不多时，redis使用整数集合作为集合键的底层实现。 整数集合的实现是redis用于保存整数值的集合抽象数据结构，可以保存类型为int16_t、int32_t或者int64_t的整数值，并且保证集合中不会出现重复元素。 由intset.h/intset结构表示: 12345typedef struct intset &amp;#123;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-27T03:28:19.310Z">
+<meta property="og:updated_time" content="2018-09-13T04:16:08.821Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="BUG制造师">
-<meta name="twitter:description" content="基本信息 姓名：吴桦 性别：男 出生年月：1995/02 Email： huaweiailin@foxmail.com 博客： http://bighua.top/ GitHub： https://github.com/cocowh   教育背景2014/09 —— 2018/06  学历：本科 学校：华中农业大学 专业：计算机科学与技术   工作经历好未来 2018/07/02 —— 至今 培优">
+<meta name="twitter:title" content="redis-整数集合">
+<meta name="twitter:description" content="是集合键的底层实现之一，当一个集合只包含整数值元素，并且集合的元素数量不多时，redis使用整数集合作为集合键的底层实现。 整数集合的实现是redis用于保存整数值的集合抽象数据结构，可以保存类型为int16_t、int32_t或者int64_t的整数值，并且保证集合中不会出现重复元素。 由intset.h/intset结构表示: 12345typedef struct intset &amp;#123;">
 
 
 
@@ -128,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="bighua.top/about/"/>
+  <link rel="canonical" href="bighua.top/2018/09/13/redis-整数集合/"/>
 
 
 
 
 
-  <title>BUG制造师 | 水木年华</title>
+  <title>redis-整数集合 | 水木年华</title>
   
 
 
@@ -303,55 +301,296 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="bighua.top/2018/09/13/redis-整数集合/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cocowh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="水木年华">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h2 class="post-title" itemprop="name headline">BUG制造师</h2>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body han-init-context">
         
         
-          <h3 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h3><ul>
-<li>姓名：吴桦</li>
-<li>性别：男</li>
-<li>出生年月：1995/02</li>
-<li>Email： <a href="mailto:huaweiailin@foxmail.com" target="_blank" rel="noopener">huaweiailin@foxmail.com</a></li>
-<li>博客： <a href="http://bighua.top/">http://bighua.top/</a></li>
-<li>GitHub： <a href="https://github.com/cocowh" target="_blank" rel="noopener">https://github.com/cocowh</a></li>
-</ul>
-<hr>
-<h3 id="教育背景"><a href="#教育背景" class="headerlink" title="教育背景"></a>教育背景</h3><p>2014/09 —— 2018/06</p>
+          <h2 class="post-title" itemprop="name headline">redis-整数集合</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-13T11:01:09+08:00">
+                2018-09-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/13/redis-整数集合/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/09/13/redis-整数集合/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/09/13/redis-整数集合/" class="leancloud_visitors" data-flag-title="redis-整数集合">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>被翻阅
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  782
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>是集合键的底层实现之一，当一个集合只包含整数值元素，并且集合的元素数量不多时，redis使用整数集合作为集合键的底层实现。</p>
+<h3 id="整数集合的实现"><a href="#整数集合的实现" class="headerlink" title="整数集合的实现"></a>整数集合的实现</h3><p>是redis用于保存整数值的集合抽象数据结构，可以保存类型为int16_t、int32_t或者int64_t的整数值，并且保证集合中不会出现重复元素。</p>
+<p>由intset.h/intset结构表示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">typedef struct intset &#123;</span><br><span class="line">	unint32_t encoding;//编码方式</span><br><span class="line">	unint32_t length;//集合包含的元素数量</span><br><span class="line">	int8_t contents[];//保存元素的数组</span><br><span class="line">&#125; intset;</span><br></pre></td></tr></table></figure>
+<p>contents数组是整数集合的底层实现：整数集合的每个元素都是contents数组的一个数组项，数组中各项按值从小到大排列，且数组中不包含重复项。</p>
+<p>length属性记录整数集合包含的元素数量，即contents数组的长度。</p>
+<p>contents数组的真正类型取决于encoding属性的值。</p>
+<p>根据整数集合的升级规则，当向一个底层为int16_t数组的整数集合添加一个int64_t类型的整数值时，整数集合已有的所有元素都会被转换成int64_t类型。</p>
+<h3 id="升级"><a href="#升级" class="headerlink" title="升级"></a>升级</h3><p>将新元素添加到整数集合里面且新元素的类型比整数集合现有所有元素的类型都要长时，整数集合需要先进行升级，然后将新元素添加到整数集合里面。</p>
+<p>升级过程：</p>
 <ul>
-<li>学历：本科</li>
-<li>学校：华中农业大学</li>
-<li>专业：计算机科学与技术</li>
+<li>根据新元素的类型，拓展整数集合底层数组的空间大小，并未新元素分配空间。</li>
+<li>将底层数组现有的所有元素都转换成与新元素相同的类型，并将转换后的元素放置到正确的位置上，在放置的过程中维持底层数组的有序性质不变。</li>
+<li>将新元素添加到底层数组中。</li>
 </ul>
-<hr>
-<h3 id="工作经历"><a href="#工作经历" class="headerlink" title="工作经历"></a>工作经历</h3><h4 id="好未来"><a href="#好未来" class="headerlink" title="好未来"></a>好未来</h4><ul>
-<li>2018/07/02 —— 至今</li>
-<li>培优在线 —— 后台研发工程师</li>
-</ul>
-<hr>
-<h3 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h3><p>PHP+Golang+Swoole+Vue+Node</p>
+<p>引发升级的新元素的长度总是比整数集合现在所有元素的长度都大，所以新元素的值要么大于所有现有元素，要么就小于所有现有元素。前者将新元素放置在底层数组的最开头（索引0），后者将新元素放置在底层数组的最末尾（索引length-1）。</p>
+<blockquote>
+<p>升级策略能提升整数集合的灵活性，尽可能地节约内存。</p>
+</blockquote>
+<h3 id="降级"><a href="#降级" class="headerlink" title="降级"></a>降级</h3><p>整数集合不支持降级操作，一旦对数组进行了升级，编码就会一直保持升级后的状态。</p>
+<h3 id="整数集合API"><a href="#整数集合API" class="headerlink" title="整数集合API"></a>整数集合API</h3><p>整数集合操作API：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">函数</th>
+<th style="text-align:left">作用</th>
+<th style="text-align:left">时间复杂度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">intsetNew</td>
+<td style="text-align:left">创建一个新的压缩列表</td>
+<td style="text-align:left">O(1)</td>
+</tr>
+<tr>
+<td style="text-align:left">intsetAdd</td>
+<td style="text-align:left">将给定元素添加到整数集合里</td>
+<td style="text-align:left">O(N)</td>
+</tr>
+<tr>
+<td style="text-align:left">intsetRemove</td>
+<td style="text-align:left">从整数集合中移除给定元素</td>
+<td style="text-align:left">O(N)</td>
+</tr>
+<tr>
+<td style="text-align:left">intsetFind</td>
+<td style="text-align:left">检查给定值是否存在于集合</td>
+<td style="text-align:left">O(logN)，二分查找法 </td>
+</tr>
+<tr>
+<td style="text-align:left">intsetRandom</td>
+<td style="text-align:left">从整数集合中随机返回一个元素</td>
+<td style="text-align:left">O(1)</td>
+</tr>
+<tr>
+<td style="text-align:left">intsetGet</td>
+<td style="text-align:left">取出底层数组在给定索引上的元素</td>
+<td style="text-align:left">O(1)</td>
+</tr>
+<tr>
+<td style="text-align:left">intsetLen</td>
+<td style="text-align:left">返回整数集合包含的元素的个数</td>
+<td style="text-align:left">O(1)</td>
+</tr>
+<tr>
+<td style="text-align:left">intsetBlobLen</td>
+<td style="text-align:left">返回整数集合占用的内存字节数</td>
+<td style="text-align:left">O(1)</td>
+</tr>
+</tbody>
+</table>
 
-        
-      </div>
-      
-      
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/redis/" rel="tag"><i class="fa fa-tag"></i> redis</a>
+          
+            <a href="/tags/intset/" rel="tag"><i class="fa fa-tag"></i> intset</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/12/redis-跳跃表/" rel="next" title="redis-跳跃表">
+                <i class="fa fa-chevron-left"></i> redis-跳跃表
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -524,7 +763,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本信息"><span class="nav-number">1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#教育背景"><span class="nav-number">2.</span> <span class="nav-text">教育背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工作经历"><span class="nav-number">3.</span> <span class="nav-text">工作经历</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#好未来"><span class="nav-number">3.1.</span> <span class="nav-text">好未来</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#技术栈"><span class="nav-number">4.</span> <span class="nav-text">技术栈</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#整数集合的实现"><span class="nav-number">1.</span> <span class="nav-text">整数集合的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#升级"><span class="nav-number">2.</span> <span class="nav-text">升级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#降级"><span class="nav-number">3.</span> <span class="nav-text">降级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#整数集合API"><span class="nav-number">4.</span> <span class="nav-text">整数集合API</span></a></li></ol></div>
             
 
           </div>
