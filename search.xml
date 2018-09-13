@@ -3,6 +3,38 @@
   
     
     <entry>
+      <title>redis-压缩列表</title>
+      <link href="/2018/09/13/redis-%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8/"/>
+      <url>/2018/09/13/redis-%E5%8E%8B%E7%BC%A9%E5%88%97%E8%A1%A8/</url>
+      <content type="html"><![CDATA[<p>压缩列表（ziplist）是列表键和哈希键的底层实现之一。当列表键只包含少量列表项，且每个列表项要么就是小整数值，要么就是长度比较短的字符串，redis就会使用压缩列表来做列表键的底层实现。当哈希键只包含少量的键值对且每个键值对的键和值要么就是小整数值，要么就是长度比较短的字符串，redis就会使用压缩列表来做哈希键的底层实现。</p><h3 id="压缩列表的构成"><a href="#压缩列表的构成" class="headerlink" title="压缩列表的构成"></a>压缩列表的构成</h3><p>为节约内存而开发，由一系列特殊编码的连续内存块组成的顺序型数据结构，一个压缩列表可以包含任意多个节点（entry），每个节点可以保存一个字节数组或者一个整数值。<br>压缩列表的各个组成部分：</p><table><thead><tr><th style="text-align:left">属性</th><th style="text-align:left">类型</th><th style="text-align:left">长度</th><th style="text-align:left">用途</th></tr></thead><tbody><tr><td style="text-align:left">zlbytes</td><td style="text-align:left">uint32_t</td><td style="text-align:left">4字节</td><td style="text-align:left">记录整个压缩列表占用的内存字节数：对压缩列表进行内存重分配、或者计算zlend的位置时使用</td></tr><tr><td style="text-align:left">zltail</td><td style="text-align:left">uint32_t</td><td style="text-align:left">4字节</td><td style="text-align:left">记录压缩列表表尾节点距离压缩列表的起始地址有多少字节：通过此偏移量程序无需遍历整个压缩列表就可以确定表尾节点的地址</td></tr><tr><td style="text-align:left">zllen</td><td style="text-align:left">uint16_t</td><td style="text-align:left">2字节</td><td style="text-align:left">记录压缩列表包含的节点数量：小于UINT16_MAX(65535)时，属性值为压缩列表包含节点的数量；等于UINT16_MAX时，节点的数量需要遍历整个压缩列表计算得出。</td></tr><tr><td style="text-align:left">entryX</td><td style="text-align:left">列表节点</td><td style="text-align:left">不定</td><td style="text-align:left">压缩列表包含的各个节点，节点长度由节点保存的内容决定</td></tr><tr><td style="text-align:left">zlend</td><td style="text-align:left">uint8_t</td><td style="text-align:left">1字节</td><td style="text-align:left">特殊值0xFF（255），标记压缩列表的末端。</td></tr></tbody></table><h3 id="压缩列表节点的构成"><a href="#压缩列表节点的构成" class="headerlink" title="压缩列表节点的构成"></a>压缩列表节点的构成</h3><p>每个压缩列表节点可以保存一个字节数组或者一个整数值，字节数组可以为：</p><ul><li>长度小于等于63（2^6-1）字节的字节数组；</li><li>长度小于等于16383（2^14-1）字节的字节数组；</li><li>长度小于等于4294967295（2^32-1）字节的字节数组。</li></ul><p>整数值可以为：</p><ul><li>4位长，介于0-12之间的无符号整数；</li><li>1字节长的有符号整数；</li><li>3字节长的有符号整数；</li><li>int16_t类型整数；</li><li>int32_t类型整数;</li><li>int64_t类型整数。</li></ul><p>每个压缩列表节点由previous_entry_length、encoding、content三个部分组成。</p><h4 id="previous-entry-length"><a href="#previous-entry-length" class="headerlink" title="previous_entry_length"></a>previous_entry_length</h4><p>以字节为单位，记录了压缩列表中前一个字节点的长度。可以是1字节或5字节：</p><ul><li>前一字节长度小于254字节，为1个字节，保存前一字节的长度。</li><li>前一字节的长度大于等于254字节，为5字节，第一字节设置为OxFE，后4字节保存前一字节的长度。</li></ul><p>可使用此属性通过指针运算从表尾向表头遍历。</p><h4 id="ecoding"><a href="#ecoding" class="headerlink" title="ecoding"></a>ecoding</h4><p>记录节点的content属性所保存数据的类型以及长度:</p><ul><li>一字节、两字节或者五字节长，值得最高位为00、01或者10是字节数组编码：表示节点的content属性保存着字节数组，数组的长度由编码除去最高两位之后的其他位记录；</li><li>一字节长，值的最高位以11开头的是整数编码：表示节点的content属性保存着整数值，整数值的类型和长度由编码除去最高两位之后的其他位记录。</li></ul><p>字节数组编码：</p><table><thead><tr><th style="text-align:left">编码</th><th style="text-align:left">编码长度</th><th style="text-align:left">content属性保存的值</th></tr></thead><tbody><tr><td style="text-align:left">00bbbbbb</td><td style="text-align:left">1字节</td><td style="text-align:left">长度小于等于63字节的字节数组</td></tr><tr><td style="text-align:left">01bbbbbb xxxxxxxx</td><td style="text-align:left">2字节</td><td style="text-align:left">长度小于等于16383字节的字节数组</td></tr><tr><td style="text-align:left">10______ aaaaaaaa bbbbbbbb cccccccc dddddddd</td><td style="text-align:left">5字节</td><td style="text-align:left">长度小于等于4294967295的字节数组</td></tr></tbody></table><p>整数编码：</p><table><thead><tr><th style="text-align:left">编码</th><th style="text-align:left">编码长度</th><th style="text-align:left">content属性保存的值</th></tr></thead><tbody><tr><td style="text-align:left">11000000</td><td style="text-align:left">1字节</td><td style="text-align:left">int16_t类型的整数</td></tr><tr><td style="text-align:left">11010000</td><td style="text-align:left">1字节</td><td style="text-align:left">int32_t类型的整数</td></tr><tr><td style="text-align:left">11100000</td><td style="text-align:left">1字节</td><td style="text-align:left">int64_t类型的整数</td></tr><tr><td style="text-align:left">11110000</td><td style="text-align:left">1字节</td><td style="text-align:left">24位有符号整数</td></tr><tr><td style="text-align:left">11111110</td><td style="text-align:left">1字节</td><td style="text-align:left">8位有符号整数</td></tr><tr><td style="text-align:left">1111xxxx</td><td style="text-align:left">1字节</td><td style="text-align:left">该节点没有相应的content属性，编码本身xxxx四个位保存了一个介于0和12之间的值，无须content属性</td></tr></tbody></table><h4 id="content"><a href="#content" class="headerlink" title="content"></a>content</h4><p>负责保存节点的值，节点的值是一个字节数组或者整数，类型和长度由encoding属性决定。</p><h4 id="连锁更新"><a href="#连锁更新" class="headerlink" title="连锁更新"></a>连锁更新</h4><p>添加新节点或删除节点导致后一个节点的previous_entry_length属性长度发生变化，最终导致后一个字节的长度发生变化，可能会引起再后一个节点的previous_entry_length属性的长度发生变化，最终可能传递下去一直影响到最后一个节点，从而导致连锁更新。</p><p>连锁更新最坏情况下需要对压缩列表执行N次空间重分配操作，每次空间重分配的最坏复杂度位O(N)，连锁更新的最坏复杂度位O(N^2)。</p><p>连锁更新的复杂度较高，真正造成性能问题的几率很低。</p><h3 id="压缩列表API"><a href="#压缩列表API" class="headerlink" title="压缩列表API"></a>压缩列表API</h3><table><thead><tr><th style="text-align:left">函数</th><th style="text-align:left">作用</th><th style="text-align:left">算法复杂度</th></tr></thead><tbody><tr><td style="text-align:left">ziplistNew</td><td style="text-align:left">创建一个新的压缩列表</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">ziplistPush</td><td style="text-align:left">创建一个包含给定值的新节点，并将这个新节点添加到压缩列表的表头或者表尾</td><td style="text-align:left">平均O(N)，最坏O(N^2)(连锁更新)</td></tr><tr><td style="text-align:left">ziplistInsert</td><td style="text-align:left">将包含给定值的新节点插入到给定节点之后</td><td style="text-align:left">平均O(N)，最坏O(N^2)(连锁更新)</td></tr><tr><td style="text-align:left">ziplistIndex</td><td style="text-align:left">返回压缩列表给定索引上的节点</td><td style="text-align:left">O(N)</td></tr><tr><td style="text-align:left">ziplistFind</td><td style="text-align:left">在压缩列表中查找并返回包含了给定值的节点</td><td style="text-align:left">字节数组时检查是否相同O(N)，查找整个列表的复杂度O(N^2)</td></tr><tr><td style="text-align:left">ziplistNext</td><td style="text-align:left">返回给定节点的下一个节点</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">ziplistPrev</td><td style="text-align:left">返回给定节点的前一个节点</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">ziplistGet</td><td style="text-align:left">获取给定节点所保存的值</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">ziplistDelete</td><td style="text-align:left">从压缩列表中删除给定节点</td><td style="text-align:left">平均O(N)，最坏O(N^2)(连锁更新)</td></tr><tr><td style="text-align:left">ziplistDeleteRange</td><td style="text-align:left">删除压缩列表在给定索引上的连续多个节点</td><td style="text-align:left">平均O(N)，最坏O(N^2)(连锁更新)</td></tr><tr><td style="text-align:left">ziplistBlobLen</td><td style="text-align:left">返回压缩列表目前占用的内存字节数</td><td style="text-align:left">O(1)</td></tr><tr><td style="text-align:left">ziplistLen</td><td style="text-align:left">返回压缩列表目前包含的节点数量</td><td style="text-align:left">节点数量小于65535时O(1)，大于时O(N)</td></tr></tbody></table>]]></content>
+      
+      <categories>
+          
+          <category> redis </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ziplist </tag>
+            
+            <tag> redis </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>redis-对象</title>
+      <link href="/2018/09/13/redis-%E5%AF%B9%E8%B1%A1/"/>
+      <url>/2018/09/13/redis-%E5%AF%B9%E8%B1%A1/</url>
+      <content type="html"><![CDATA[]]></content>
+      
+      
+    </entry>
+    
+    <entry>
       <title>redis-整数集合</title>
       <link href="/2018/09/13/redis-%E6%95%B4%E6%95%B0%E9%9B%86%E5%90%88/"/>
       <url>/2018/09/13/redis-%E6%95%B4%E6%95%B0%E9%9B%86%E5%90%88/</url>
@@ -439,9 +471,9 @@
       
         <tags>
             
-            <tag> nginx </tag>
-            
             <tag> linux </tag>
+            
+            <tag> nginx </tag>
             
             <tag> conf </tag>
             
@@ -564,11 +596,11 @@
             
             <tag> shell </tag>
             
+            <tag> linux </tag>
+            
             <tag> nginx </tag>
             
             <tag> mysql </tag>
-            
-            <tag> linux </tag>
             
             <tag> php7 </tag>
             
