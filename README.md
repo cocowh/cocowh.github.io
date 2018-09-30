@@ -2,13 +2,13 @@
 
 ---
 
-## 博客备份、方便换机
+ 博客备份、方便换机
 
 ---
 
 ### 目录结构
 
-├── README.md  
+>├── README.md  
 ├── \_config.yml  
 ├── db.json  
 ├── deploy.sh  
@@ -44,7 +44,10 @@
   └── next 
   
   
+  
+  
 ### command
+换机安装
 
 ```
 git clone -b blogbackup https://github.com/cocowh/cocowh.github.io.git blog
