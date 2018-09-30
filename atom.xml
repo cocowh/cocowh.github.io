@@ -530,11 +530,11 @@
     
       <category term="php" scheme="bighua.top/tags/php/"/>
     
+      <category term="nginx" scheme="bighua.top/tags/nginx/"/>
+    
       <category term="laravel" scheme="bighua.top/tags/laravel/"/>
     
       <category term="linux" scheme="bighua.top/tags/linux/"/>
-    
-      <category term="nginx" scheme="bighua.top/tags/nginx/"/>
     
   </entry>
   
@@ -589,8 +589,6 @@
       <category term="php" scheme="bighua.top/categories/php/"/>
     
     
-      <category term="mysql" scheme="bighua.top/tags/mysql/"/>
-    
       <category term="php" scheme="bighua.top/tags/php/"/>
     
       <category term="redis" scheme="bighua.top/tags/redis/"/>
@@ -598,6 +596,8 @@
       <category term="nginx" scheme="bighua.top/tags/nginx/"/>
     
       <category term="phpredis" scheme="bighua.top/tags/phpredis/"/>
+    
+      <category term="mysql" scheme="bighua.top/tags/mysql/"/>
     
   </entry>
   
