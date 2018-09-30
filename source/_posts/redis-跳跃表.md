@@ -2,7 +2,7 @@
 title: redis-跳跃表
 tags: [redis,skiplist]
 comments: true
-categories: [reids]
+categories: [redis]
 date: 2018-09-12 21:37:34
 ---
 跳跃表是一种有序的数据结构，通过在每个节点中维持多个指向其他节点的指针，达到快速访问节点的目的。支持平均O(logN)，最坏O(N)复杂度的节点查找。可以通过顺序性操作来批量处理节点。
