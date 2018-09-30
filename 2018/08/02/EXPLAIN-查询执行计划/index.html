@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="mysql,explain," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="水木年华" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="EXPLAIN通过EXPLAIN命令获取关于查询执行计划的信息，是查看查询优化器如何决定执行查询的主要方法。 调用EXPLAIN在查询中的SELECT关键字之前增加EXPLAIN，MySQL会在查询上设置一个标记，执行查询时，标记会使其返回关于在执行计划中每一步的信息，而不是执行它。返回一行或多行信息，显示出执行计划中的每一部分和执行的顺序。 1234567891011121314explain">
+<meta name="keywords" content="mysql,explain">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EXPLAIN[查询执行计划]">
+<meta property="og:url" content="bighua.top/2018/08/02/EXPLAIN-查询执行计划/index.html">
+<meta property="og:site_name" content="水木年华">
+<meta property="og:description" content="EXPLAIN通过EXPLAIN命令获取关于查询执行计划的信息，是查看查询优化器如何决定执行查询的主要方法。 调用EXPLAIN在查询中的SELECT关键字之前增加EXPLAIN，MySQL会在查询上设置一个标记，执行查询时，标记会使其返回关于在执行计划中每一步的信息，而不是执行它。返回一行或多行信息，显示出执行计划中的每一部分和执行的顺序。 1234567891011121314explain">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-30T02:44:08.988Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="EXPLAIN[查询执行计划]">
+<meta name="twitter:description" content="EXPLAIN通过EXPLAIN命令获取关于查询执行计划的信息，是查看查询优化器如何决定执行查询的主要方法。 调用EXPLAIN在查询中的SELECT关键字之前增加EXPLAIN，MySQL会在查询上设置一个标记，执行查询时，标记会使其返回关于在执行计划中每一步的信息，而不是执行它。返回一行或多行信息，显示出执行计划中的每一部分和执行的顺序。 1234567891011121314explain">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Joker'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"未找到搜索结果: ${query}","hits_stats":"${hits} 个结果耗费 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="bighua.top/2018/08/02/EXPLAIN-查询执行计划/"/>
+
+
+
+
+
+  <title>EXPLAIN[查询执行计划] | 水木年华</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b41033bc63e8a2c3b4619b16fd4dddc7";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">水木年华</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">行到水穷处,坐看云起时</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="bighua.top/2018/08/02/EXPLAIN-查询执行计划/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cocowh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="水木年华">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">EXPLAIN[查询执行计划]</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T20:33:32+08:00">
+                2018-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/02/EXPLAIN-查询执行计划/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/02/EXPLAIN-查询执行计划/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/08/02/EXPLAIN-查询执行计划/" class="leancloud_visitors" data-flag-title="EXPLAIN[查询执行计划]">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>被翻阅
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,744
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  10
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="EXPLAIN"><a href="#EXPLAIN" class="headerlink" title="EXPLAIN"></a>EXPLAIN</h3><p>通过EXPLAIN命令获取关于查询执行计划的信息，是查看查询优化器如何决定执行查询的主要方法。</p>
+<h3 id="调用EXPLAIN"><a href="#调用EXPLAIN" class="headerlink" title="调用EXPLAIN"></a>调用EXPLAIN</h3><p>在查询中的SELECT关键字之前增加EXPLAIN，MySQL会在查询上设置一个标记，执行查询时，标记会使其返回关于在执行计划中每一步的信息，而不是执行它。返回一行或多行信息，显示出执行计划中的每一部分和执行的顺序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">explain select * from `users` where `remember_token` = &apos;y$ihqfHMTKSbq671vFbQ0/nePPH8dAYolKmuXzTcW7nF1BmoNcqjI0S&apos; \G;</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: users</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: ref</span><br><span class="line">possible_keys: remember_token</span><br><span class="line">          key: remember_token</span><br><span class="line">      key_len: 403</span><br><span class="line">          ref: const</span><br><span class="line">         rows: 1</span><br><span class="line">     filtered: 100.00</span><br><span class="line">        Extra: NULL</span><br></pre></td></tr></table></figure>
+<p>查询中每个表在输出中只有一行，若查询为两个表的联接，输出则有两行，别名表单算为一个表，因此把一个表与自己联接，输出也有两行。表：一个子查询，一个UNION结果等等。</p>
+<p>EXPLAIN的两个主要变种：</p>
+<ul>
+<li>EXPLAIN EXTENED：使服务器“逆向编译”执行计划为一个SELECT语句。通过继续运行SHOW WARNINGS查看生成的语句。语句直接来自执行计划，不是原SQL语句，此时为一个数据结构。大部分场景下与原语句不同。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">[mysql&gt; explain extended select * from `users` where `remember_token` = &apos;y$ihqfHMTKSbq671vFbQ0/nePPH8dAYolKmuXzTcW7nF1BmoNcqjI0S&apos; \G;</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: users</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: ref</span><br><span class="line">possible_keys: remember_token</span><br><span class="line">          key: remember_token</span><br><span class="line">      key_len: 403</span><br><span class="line">          ref: const</span><br><span class="line">         rows: 1</span><br><span class="line">     filtered: 100.00</span><br><span class="line">        Extra: NULL</span><br><span class="line">1 row in set, 2 warnings (0.00 sec)</span><br><span class="line"></span><br><span class="line">ERROR: </span><br><span class="line">No query specified</span><br><span class="line"></span><br><span class="line">mysql&gt; show warnings;                                                                                                      +---------+------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">| Level   | Code | Message                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |</span><br><span class="line">+---------+------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">| Warning | 1681 | &apos;EXTENDED&apos; is deprecated and will be removed in a future release.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |</span><br><span class="line">| Note    | 1003 | /* select#1 */ select `login`.`users`.`id` AS `id`,`login`.`users`.`name` AS `name`,`login`.`users`.`email` AS `email`,`login`.`users`.`password` AS `password`,`login`.`users`.`profile_status` AS `profile_status`,`login`.`users`.`remember_token` AS `remember_token`,`login`.`users`.`last_login_ip` AS `last_login_ip`,`login`.`users`.`created_at` AS `created_at`,`login`.`users`.`updated_at` AS `updated_at` from `login`.`users` where (`login`.`users`.`remember_token` = &apos;y$ihqfHMTKSbq671vFbQ0/nePPH8dAYolKmuXzTcW7nF1BmoNcqjI0S&apos;) |</span><br><span class="line">+---------+------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>EXPLAIN PARTITIONS：若查询基于分区表，显示查询将访问的分区</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[mysql&gt; explain partitions select * from `users` where `remember_token` = &apos;y$ihqfHMTKSbq671vFbQ0/nePPH8dAYolKmuXzTcW7nF1BmoNcqjI0S&apos; \G;</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">           id: 1</span><br><span class="line">  select_type: SIMPLE</span><br><span class="line">        table: users</span><br><span class="line">   partitions: NULL</span><br><span class="line">         type: ref</span><br><span class="line">possible_keys: remember_token</span><br><span class="line">          key: remember_token</span><br><span class="line">      key_len: 403</span><br><span class="line">          ref: const</span><br><span class="line">         rows: 1</span><br><span class="line">     filtered: 100.00</span><br><span class="line">        Extra: NULL</span><br><span class="line">1 row in set, 2 warnings (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>若查询的from子句中包括子查询，则mysql会执行子查询并将其结果放在一个临时表中，然后完成外层查询优化。必须在可以完成外层查询优化之前处理所有类似的子查询（V5.6中被取消），意味着若语句包含开销较大的子查询或使用临时表，实际会给服务器带来大量工作。</p>
+<p>限制：</p>
+<ul>
+<li>不会显示触发器、存储过程或UDF会如何影响查询。</li>
+<li>不支持存储过程、尽管可以可以手动抽取查询并单独地对其进行EXPLAIN操作。</li>
+<li>不会显示MySQL在查询执行中所做的特定优化。</li>
+<li>不会显示关于查询的执行计划的所有信息。</li>
+<li>不区分具有相同名字的事务。</li>
+<li>可能会误导。</li>
+</ul>
+<h3 id="重写非SELECT查询"><a href="#重写非SELECT查询" class="headerlink" title="重写非SELECT查询"></a>重写非SELECT查询</h3><p>EXPLAIN只能解释SELECT查询，不会对存储程序调用和INSERT、UPDATE、DELETE或其他语句做解释。通过将非SELECT语句转化为一个等价的访问所有相同列的SELECT，重写这些语句以利用EXPLAIN。</p>
+<p>显示计划时，对于写查询没有“等价”的读查询。一个SELECT查询只需要找到数据的一份副本并返回，任何修改数据的查询必须在所有索引上查找并修改其所有副本，比等价的SELECT查询的消耗要高的多。</p>
+<h3 id="EXPLAIN中的列"><a href="#EXPLAIN中的列" class="headerlink" title="EXPLAIN中的列"></a>EXPLAIN中的列</h3><h4 id="id列"><a href="#id列" class="headerlink" title="id列"></a>id列</h4><p>包含一个编号，标识SELECT所属的行。若语句中没有子查询或联合，只会有唯一的SELECT，显示1。否则，内层的SELECT语句一般会顺序编号，对应于其在原始语句中的位置。</p>
+<p>MySQL将SELECT查询分为简单和复杂类型，复杂类型分为三大类：简单子查询、所谓的派生表（在FROM子句中的子查询）、以及UNION查询。</p>
+<h4 id="select-type列"><a href="#select-type列" class="headerlink" title="select_type列"></a>select_type列</h4><p>显示对应行是简单还是复杂SELECT，SIMPLE意味着查询不包括子查询和UNION，若有复杂子部分，则最外层标记为PRIMARY，其他部分标记如下。</p>
+<ul>
+<li><p>SUBQUERY<br>在SELECT列表中的子查询中的SELECT（不再FROM子句中）</p>
+</li>
+<li><p>DERIVED<br>表示包含在FROM子句的子查询中的SELECT，MySQL会递归执行并将结果放到一个临时表中</p>
+</li>
+<li><p>UNION<br>在UNION中的第二个和随后的SELECT被标记为UNION，若UNION被FROM子句中的子查询包含，第一个SELECT会被标记为DERIVED</p>
+</li>
+<li><p>UNION RESULT<br>UNION的匿名临时表检索结果的SELECT被标记为UNION RESULT</p>
+</li>
+</ul>
+<p>SUBQUERY和UNION还可以被标记为DEPENDENT和UNCACHEABLE。DEPENDENT意味着SELECT依赖于外层查询中发现的数据；UNCACHEABLE意味着SELECT中的某些特性阻止结果被缓存于一个Item_cache中。（Item_cache未被文档记载；不是查询缓存，可被一些相同的构件否定，例如RAND()函数。）</p>
+<h4 id="table列"><a href="#table列" class="headerlink" title="table列"></a>table列</h4><p>显示对应行正在访问哪个表，为表或表的别名（若SQL中定义）。</p>
+<p>用于观察MySQL的关联优化器为查询选择的关联顺序。</p>
+<blockquote>
+<p>MySQL的查询执行计划总是左侧深度优先树。</p>
+</blockquote>
+<p>当FROM子句中有UNION时，table列会变得复杂。在FROM子句中有子查询时，table列是形式，N是子查询的id，指向EXPLAIN输出中的后面的一行。有UNION时，UNION RESULT的table列包含一个参入UNION的id列表。</p>
+<h4 id="type列"><a href="#type列" class="headerlink" title="type列"></a>type列</h4><p>显示访问类型——MySQL决定如何查找表中的行。</p>
+<p>访问方法，从最差到最优：</p>
+<ul>
+<li>ALL<br>全表扫描，扫描整张表去找需要的行。（若查询中使用了LIMIT或者Extra列中显示“Using distinct/not exists”则不是）</li>
+<li>index<br>与全表扫描一样，区别于MySQL扫描表时按索引次序进行而不是行。避免了排序，但是需要承担按索引次序读取整个表的开销。意味着若按随机次序访问，开销会很大。若Extra列为“Using index”表示MySQL使用覆盖索引，只扫描索引的数据，不按索引次序的每一行，比按索引次序全表扫描的开销小很多。</li>
+<li>range<br>范围扫描实际上是有限制的索引扫描，开始于索引里的某一点，返回匹配这个域的行，开销跟索引类型相当。是带有BETWEEN或在WHERE子句里带有&gt;的查询。<br>当MySQL使用索引去查找一系列值时，如In()和OR列表，也会显示为范围扫描。两者其实为不同的访问类型，性能上有重要的差异。</li>
+<li>ref<br>索引访问（索引查找），返回所有匹配某个单个值的行。查找和扫描的混合体。只有当使用非唯一性索引或者唯一性索引的非唯一性前缀时才会发生。索引要跟某个参考值相比较，参考值或者是一个常数、或者是来自多表查询前一个表里的结果值。ref_or_null是ref之上的一个变体，意味着MySQL必须在初次查找的结果里进行第二次查找以找出NULL条目。</li>
+<li>eq_ref<br>索引查找，MySQL最多只返回一条符合条件的记录。在MySQL使用主键或者唯一性索引查找时出现，将它们与某个参考值做比较。</li>
+<li>const，system<br>MySQL对查询的某部分进行优化并将其转换成一个常量时出现。</li>
+<li>NULL<br>意味着MySQL能在优化阶段分解查询语句，在执行阶段用不着再访问表或者索引。</li>
+</ul>
+<h4 id="possible-keys列"><a href="#possible-keys列" class="headerlink" title="possible_keys列"></a>possible_keys列</h4><p>显示查询可以使用哪些索引，基于查询访问的列和使用的比较操作符来判断。</p>
+<h4 id="key列"><a href="#key列" class="headerlink" title="key列"></a>key列</h4><p>显示MySQL决定采用哪个索引来优化对该表的访问。若该索引未出现在possible_keys列中，则MySQL选用它是出于另外的原因——如即使没有where子句却选择覆盖索引。</p>
+<p>possible_keys显示哪一个索引能有助于高效地进行查找，key显示优化采用哪一个索引可以最小化查询成本。</p>
+<h4 id="key-len列"><a href="#key-len列" class="headerlink" title="key_len列"></a>key_len列</h4><p>显示MySQL在索引里使用的字节数。通过查找表的定义而被计算出，而不是表中的数据。</p>
+<h4 id="ref列"><a href="#ref列" class="headerlink" title="ref列"></a>ref列</h4><p>显示之前的表在key列记录的索引中查找值所用的列或常量。</p>
+<h4 id="rows列"><a href="#rows列" class="headerlink" title="rows列"></a>rows列</h4><p>MySQL估计为了找到所需的行而要读取的行数。内嵌循环关联计划里的循环数目，不是MySQL认为它最终要从表里读取出来的行数，而是MySQL为了找到符合查询的每一点上标准的那些行而必须读取的行的平均数。是MySQL认为它要检查的行数，而不是结果集合里的行数。</p>
+<h4 id="filtered列"><a href="#filtered列" class="headerlink" title="filtered列"></a>filtered列</h4><p>使用EXPLAIN EXTENDED时出现，显示针对表里符合某个条件（WHERE子句或联接条件）的记录数的百分比所做的一个悲观估算。将rows列乘此值，为MySQL估算它将和查询计划里前一个表关联的行数。</p>
+<h4 id="Extra列"><a href="#Extra列" class="headerlink" title="Extra列"></a>Extra列</h4><p>包含不适合在其他列显示的额外信息。</p>
+<p>常见的最重要的值有；</p>
+<ul>
+<li>“Using index”<br>表示MySQL将使用覆盖索引，以避免访问表。</li>
+<li>“Using where”<br>意味着MySQL服务器将在存储引擎检索行后再进行过滤。有时代表着查询可受益于不同的索引。</li>
+<li>“Using temporary”<br>意味着MySQL在对查询结果排序时会使用一个临时表。</li>
+<li>“Using filesort”<br>意味着MySQL会对结果使用一个外部索引排序，而不是按索引次序从表里读取行。有两种文件排序算法，两种方式都可在内存或磁盘上完成，不会显示将会使用哪一种文件排序，也不会显示是在内存里还是磁盘上完成。</li>
+<li>“Range checked for each record（index map：N）”<br>意味着没有好用的索引，新的索引将在联接的每一行上重新估算。N是显示在possible_key列中索引的位图，并且是冗余的。</li>
+</ul>
+<h3 id="MySQL-5-6中的改进"><a href="#MySQL-5-6中的改进" class="headerlink" title="MySQL 5.6中的改进"></a>MySQL 5.6中的改进</h3><p>能对类似UPDATE、INSERT等查询进行解释。</p>
+<p>对查询优化和执行引擎的改进，允许临时表尽可能晚地被具体化，而不总是在优化和执行使用到此临时表的部分查询时创建并填充它们。允许MySQL可以直接解释带子查询的查询语句，而不需要先实际地执行子查询。</p>
+<p>通过在服务器中增加优化跟踪功能的方式改进优化器的相关部分。允许用户查看优化器做出选择，以及输入和抉择的原因。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"><i class="fa fa-tag"></i> mysql</a>
+          
+            <a href="/tags/explain/" rel="tag"><i class="fa fa-tag"></i> explain</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/01/git命令/" rel="next" title="git命令">
+                <i class="fa fa-chevron-left"></i> git命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/03/测试工具-siege/" rel="prev" title="测试工具-siege">
+                测试工具-siege <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="cocowh" />
+            
+              <p class="site-author-name" itemprop="name">cocowh</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/cocowh" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="huaweiailin@foxmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.laruence.com/" title="Laruence" target="_blank">Laruence</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://studygolang.com/" title="Golang" target="_blank">Golang</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://laravel-china.org/docs" title="laravel" target="_blank">laravel</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://github.com/kevinyan815/Learning_Laravel_Kernel" title="laravel笔记" target="_blank">laravel笔记</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#EXPLAIN"><span class="nav-number">1.</span> <span class="nav-text">EXPLAIN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调用EXPLAIN"><span class="nav-number">2.</span> <span class="nav-text">调用EXPLAIN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重写非SELECT查询"><span class="nav-number">3.</span> <span class="nav-text">重写非SELECT查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EXPLAIN中的列"><span class="nav-number">4.</span> <span class="nav-text">EXPLAIN中的列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#id列"><span class="nav-number">4.1.</span> <span class="nav-text">id列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#select-type列"><span class="nav-number">4.2.</span> <span class="nav-text">select_type列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#table列"><span class="nav-number">4.3.</span> <span class="nav-text">table列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#type列"><span class="nav-number">4.4.</span> <span class="nav-text">type列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#possible-keys列"><span class="nav-number">4.5.</span> <span class="nav-text">possible_keys列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#key列"><span class="nav-number">4.6.</span> <span class="nav-text">key列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#key-len列"><span class="nav-number">4.7.</span> <span class="nav-text">key_len列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ref列"><span class="nav-number">4.8.</span> <span class="nav-text">ref列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rows列"><span class="nav-number">4.9.</span> <span class="nav-text">rows列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#filtered列"><span class="nav-number">4.10.</span> <span class="nav-text">filtered列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Extra列"><span class="nav-number">4.11.</span> <span class="nav-text">Extra列</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-5-6中的改进"><span class="nav-number">5.</span> <span class="nav-text">MySQL 5.6中的改进</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-pencil"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cocowh</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">本站字数总计&#58;</span>
+    
+    <span title="本站字数总计">124.0k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人观访
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次浏览
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '3mCBqGqA9pFYid0ahEXEfuyS-gzGzoHsz',
+        appKey: 'T9xYtLXoQcs9U2rSoBd82V9u',
+        placeholder: 'ヾﾉ≧∀≦)o来啊，快活啊!',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("3mCBqGqA9pFYid0ahEXEfuyS-gzGzoHsz", "T9xYtLXoQcs9U2rSoBd82V9u");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
