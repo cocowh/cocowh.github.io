@@ -1,7 +1,8 @@
 #!/bin/bash
 echo '--------hexo generating------'
-
+echo ' '
 hexo generate
+echo '--------generate end---------'
 cp -R public/* .deploy/cocowh.github.io
 cd .deploy/cocowh.github.io
 echo ' '
