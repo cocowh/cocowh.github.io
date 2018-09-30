@@ -454,11 +454,11 @@
             
             <tag> php </tag>
             
-            <tag> nginx </tag>
-            
             <tag> laravel </tag>
             
             <tag> linux </tag>
+            
+            <tag> nginx </tag>
             
         </tags>
       
@@ -508,6 +508,8 @@
       
         <tags>
             
+            <tag> mysql </tag>
+            
             <tag> php </tag>
             
             <tag> redis </tag>
@@ -515,8 +517,6 @@
             <tag> nginx </tag>
             
             <tag> phpredis </tag>
-            
-            <tag> mysql </tag>
             
         </tags>
       
@@ -589,11 +589,11 @@
             
             <tag> shell </tag>
             
-            <tag> nginx </tag>
-            
             <tag> mysql </tag>
             
             <tag> linux </tag>
+            
+            <tag> nginx </tag>
             
             <tag> php7 </tag>
             
