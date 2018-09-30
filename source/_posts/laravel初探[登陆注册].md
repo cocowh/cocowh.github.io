@@ -2,7 +2,7 @@
 title: laravel初探[登陆注册]
 tags: [php,laravel,学习]
 comments: true
-categories: [PHP]
+categories: [php]
 date: 2018-07-17 17:40:15
 ---
 ### 环境搭建
