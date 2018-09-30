@@ -2,7 +2,7 @@
 title: 服务器lnmp环境搭建配置
 tags: [linux,nginx,mysql,php7,shell]
 comments: true
-categories: [PHP]
+categories: [php]
 date: 2018-05-09 23:26:50
 ---
 搭建本博客之初的原因之一，就是在搭建lnmp和其他系列环境时遇到了很多问题，今天将服务器重置了，先配置好了go环境，在{% post_link Golang笔记-基础篇-一 %}的初始部分进行了相关步骤的补充。下面记录下lnmp环境的搭建配置。

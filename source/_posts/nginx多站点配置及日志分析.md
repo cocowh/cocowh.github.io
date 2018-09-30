@@ -2,7 +2,7 @@
 title: nginx多站点配置及日志分析
 tags: [php,nginx,linux,laravel]
 comments: true
-categories: [PHP]
+categories: [php]
 date: 2018-07-23 09:29:09
 
 ---

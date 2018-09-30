@@ -2,7 +2,7 @@
 title: Mac搭建开发环境初体验
 tags: [php,redis,nginx,phpredis,mysql]
 comments: true
-categories: [PHP]
+categories: [php]
 date: 2018-07-05 13:27:55
 ---
 周一入职，已经是第4天了，这两天在配置开发环境上走了不少坑，记录下来以备后续查阅。
