@@ -1,17 +1,17 @@
 ---
-title: 第一周笔记
+title: laravel初探[登陆注册]
 tags: [php,laravel,学习]
 comments: true
 categories: [PHP]
 date: 2018-07-17 17:40:15
 ---
-### 任务一：环境搭建
+### 环境搭建
 详情：搭建nginx/php/mysql/redis/laravel环境。  
 遇到的问题及收获见{% post_link Mac搭建开发环境初体验 %}。
 
 ---
 
-### 任务二：登陆注册的基本功能
+### 登陆注册的基本功能
 详情：小作业，登录注册完成基本功能（注册用户信息格式验证，用户名唯一性，修改密码，用户资料，邮箱验证，手机号码验证，密码加密规则，session存储，cookie填写，前端保存密码，查询用户信息）。
 #### 实践中主要参考资料
 1. [Laravel 5.6 中文文档](https://laravel-china.org/docs/laravel/5.6)。

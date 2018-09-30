@@ -1,12 +1,14 @@
 ---
-title: 第二周笔记-Day23
+title: nginx多站点配置及日志分析
 tags: [php,nginx,linux,laravel]
 comments: true
 categories: [PHP]
 date: 2018-07-23 09:29:09
 
 ---
-### 任务一：nginx配置多个站点、nginx日志配置和查看，根据日志统计访问次数、响应时间
+nginx配置多个站点、nginx日志配置和查看，根据日志统计访问次数、响应时间
+
+---
 
 #### 参考文档
  1. [Nginx 中文官方文档
@@ -212,7 +214,72 @@ http {
 
 另外自己的想法也可以通过php进行读文件处理，或则将awk命令处理过的日志存储数据库等等。
 
- 
+##### 使用awk进行日志分析
+根据日志格式：
 
+```
+log_format  myfmt   '$remote_addr - $remote_user [$time_local] "$request" '
+					   '$request_time $upstream_response_time '
+                    '$status $body_bytes_sent "$http_referer" '
+                   '"$http_user_agent" "$http_x_forwarded_for" ';
+```
+第一次处理需要提取的信息有第一项、第五项、第六项，但是不加分隔符awk默认使用‘ ’空隔作为分隔符，按上方格式获取的一条日志记录如下。
 
+```
+127.0.0.1 - - [23/Jul/2018:19:49:17 +0800] "GET /login HTTP/1.1" 0.045 0.045 200 4618 "http://bighua.cn/register" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36" "-"
+```
+使用awk对应提取第一列、第九列、第十列。
 
+提取数据command：
+
+```
+cat **._access_log | awk '{print $1,$9,$10}'
+```
+因为有两个日志文件，命令也比较长，整理成shell：
+
+```
+#!/bin/bash
+cat $1 | awk '{print( $1,$9,$10)}' > $1.data.csv
+```
+
+调用脚本，以日志为参数，保存结果为csv文件。
+
+统计访问次数则根据访问ip使用uniq进行处理，command：
+
+```
+cat **._access_log | awk '{print $1}' | uniq -c
+```
+根据参考博客可以导出为csv文件，command：
+
+```
+cat **.access_log | awk '{print $1}' | uniq -c | awk '{print $1,$2}' > **.countip.csv
+```
+整理成shell：
+
+```
+#!/bin/bash
+cat $1 | awk '{print $1}' | uniq -c | awk '{print $1,$2}' > $1.countip.csv
+```
+调用脚本，以日志为参数，保存处理结果为csv文件。
+
+##### 使用ngxtop统计实时数据
+项目地址：[nginxtop](https://github.com/lebinh/ngxtop)
+
+安装：
+
+```
+sudo easy_install pip
+sudo easy_install ngxtop
+```
+使用文档：[Usage](https://github.com/lebinh/ngxtop#usage)   
+示例：
+
+```
+ngxtop -c PATH/nginx.conf -t 1
+```
+
+##### 使用php进行日志分析
+这里就不在详叙了，想法就是读取文件，按行读取，按空格分割，从分隔结果的数据中取需要的数据。
+
+#### 业务分析感悟
+>通常我们根据日期为每天访问建立日志，同时对日志的分析，可以通过crontab设置定时任务，每天进行自动分析，可以考虑将分析结果存储到数据库等，便与查看。
