@@ -26,7 +26,6 @@
 ### shell
 
 #### new.sh
-新建博客
 
 ```
 #!/bin/bash
