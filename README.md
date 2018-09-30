@@ -25,6 +25,20 @@
 
 ### shell
 
+#### new.sh
+新建博客
+
+```
+#!/bin/bash
+hexo new $1
+chmod -R 777 source
+```
+新建博客：
+
+```
+./new.sh postName
+```
+
 #### deploy.sh
 编译提交到博客仓库
 
@@ -33,7 +47,9 @@
 ```
 #!/bin/bash
 echo '--------hexo generating------'
+echo ' '
 hexo generate
+echo '--------generate end---------'
 cp -R public/* .deploy/cocowh.github.io
 cd .deploy/cocowh.github.io
 echo ' '
@@ -51,11 +67,8 @@ git push
 echo '--------backup   end---------'
 ```
 
-#### new.sh
-新建博客
+更新博客：
 
 ```
-#!/bin/bash
-hexo new $1
-chmod -R 777 source
+./deploy.sh
 ```
