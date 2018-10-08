@@ -7,34 +7,122 @@ date: 2018-05-09 23:26:50
 ---
 搭建本博客之初的原因之一，就是在搭建lnmp和其他系列环境时遇到了很多问题，今天将服务器重置了，先配置好了go环境，在{% post_link Golang笔记-基础篇-一 %}的初始部分进行了相关步骤的补充。下面记录下lnmp环境的搭建配置。
 
+## 服务器用户设置
+全新的腾讯云服务器，CentOS 7.5。
+
+### ssh登陆
+
+```
+wuhua:~ wuhua$ ssh -p 22 root@188.131.143.137
+root@188.131.143.137's password: 
+Last login: Sun Sep 30 11:27:15 2018 from 119.29.96.147
+```
+### 新建用户
+
+```
+[root@VM_0_10_centos ~]# adduser wuhua
+[root@VM_0_10_centos ~]# passwd wuhua
+更改用户 wuhua 的密码 。
+新的 密码：
+无效的密码： 密码未通过字典检查 - 它基于字典单词
+重新输入新的 密码：
+passwd：所有的身份验证令牌已经成功更新。
+```
+### 授权
+创建的用户只有其home下的完整权限，若不需要超级权限此步骤可取消。
+
+
+修改sudoers权限为可读可写
+```
+[root@VM_0_10_centos ~]# whereis sudoers
+sudoers: /etc/sudoers /etc/sudoers.d /usr/share/man/man5/sudoers.5.gz
+[root@VM_0_10_centos ~]# ls -l /etc/sudoers
+-r--r----- 1 root root 3938 6月  27 02:07 /etc/sudoers
+[root@VM_0_10_centos ~]# chmod -v u+w /etc/sudoers
+mode of "/etc/sudoers" changed from 0440 (r--r-----) to 0640 (rw-r-----)
+[root@VM_0_10_centos ~]# vim /etc/sudoers
+```
+添加
+
+```
+## Allow root to run any commands anywhere 
+root    ALL=(ALL)       ALL
+wuhua   ALL=(ALL)       ALL
+```
+取消sudoers可写权限
+
+```
+[root@VM_0_10_centos ~]# chmod -v u-w /etc/sudoers
+mode of "/etc/sudoers" changed from 0640 (rw-r-----) to 0440 (r--r-----)
+```
+### 新用户登陆
+若无上一步，无法以root权限操作，无法使用sudo。
+
+```
+[root@VM_0_10_centos ~]# exit
+登出
+Connection to 188.131.143.137 closed.
+wuhua:~ wuhua$ ssh -p 22 wuhua@188.131.143.137
+wuhua@188.131.143.137's password: 
+[wuhua@VM_0_10_centos ~]$ pwd
+/home/wuhua
+[wuhua@VM_0_10_centos ~]$ sudo su
+
+我们信任您已经从系统管理员那里了解了日常注意事项。
+总结起来无外乎这三点：
+
+    #1) 尊重别人的隐私。
+    #2) 输入前要先考虑(后果和风险)。
+    #3) 权力越大，责任越大。
+
+[sudo] wuhua 的密码：
+[root@VM_0_10_centos wuhua]# 
+```
+
 ## nginx编译安装
 ### 下载
 可通过[https://nginx.org/en/download.html](https://nginx.org/en/download.html)选择版本，然后服务器端下载到/usr/local，此处选择最新稳定版1.14.0。
-```code
-[root@iZjgheeixigi44Z local]# wget -c https://nginx.org/download/nginx-1.14.0.tar.gz
+
+```
+[wuhua@VM_0_10_centos ~]$ wget -c https://nginx.org/download/nginx-1.14.0.tar.gz
 ```
 解压缩
+
 ```code
-[root@iZjgheeixigi44Z local]# tar -zxvf nginx-1.14.0.tar.gz
+[wuhua@VM_0_10_centos local]$ tar -zxvf nginx-1.14.0.tar.gz
 ```
 ### 配置
+全新服务器无编译器
+
+运行:
+
+```
+[wuhua@VM_0_10_centos nginx-1.14.0]$ sudo yum -y install gcc gcc-c++ autoconf automake make
+```
+
+#### 可能出现的问题
+
+缺少pcre库，安装库`pcre-devel`:
+
+```code
+[wuhua@VM_0_10_centos nginx-1.14.0]$ sudo yum -y install pcre-devel
+```
+
+缺少zlib库，安装库：
+
+```
+[wuhua@VM_0_10_centos nginx-1.14.0]$ sudo yum install -y zlib-devel
+```
+
 #### 使用默认配置
+
 ```code
-[root@iZjgheeixigi44Z nginx-1.14.0]# ./configure --prefix=/usr/local/nginx --conf-path=/usr/local/nginx/nginx.conf
+[wuhua@VM_0_10_centos nginx-1.14.0]$ ./configure --prefix=/usr/local/nginx --conf-path=/usr/local/nginx/nginx.conf
 ```
-但是报错
-```code
-./configure: error: the HTTP rewrite module requires the PCRE library.
-You can either disable the module by using --without-http_rewrite_module
-option, or install the PCRE library into the system, or build the PCRE library
-statically from the source with nginx by using --with-pcre=<path> option.
-```
-提示缺少pcre库，给出了解决办法忽略此项或者安装缺少的pcre库，经过搜索得知库为`pcre-devel`而不是`pcre`。安装库
-```code
-[root@iZjgheeixigi44Z nginx-1.14.0]# yum -y install pcre-devel
-```
-再次运行`./configure`正确。
-#### 自定义配置（不推荐）
+
+#### 自定义配置
+可选项：
+
 ```code
 ./configure \
 --user=nginx \
@@ -54,24 +142,37 @@ statically from the source with nginx by using --with-pcre=<path> option.
 --http-uwsgi-temp-path=/var/temp/nginx/uwsgi \
 --http-scgi-temp-path=/var/temp/nginx/scgi
 ```
+
+自定义，安装到用户目录local文件夹nginx下：
+
+```
+[wuhua@VM_0_10_centos nginx-1.14.0]$ ./configure --user=wuhua --group=wuhua --prefix=/home/wuhua/local/nginx --conf-path=/home/wuhua/local/nginx/conf/nginx.conf --pid-path=/home/wuhua/local/nginx/conf/nginx.pid --lock-path=/home/wuhua/local/nginx/nginx.lock --error-log-path=/home/wuhua/local/nginx/logs/error.log --http-log-path=/home/wuhua/local/nginx/logs/access.log --http-client-body-temp-path=/home/wuhua/local/nginx/client --http-proxy-temp-path=/home/wuhua/local/nginx/proxy --http-fastcgi-temp-path=/home/wuhua/local/nginx/fastcgi --http-uwsgi-temp-path=/home/wuhua/local/nginx/uwsgi --http-scgi-temp-path=/home/wuhua/local/nginx/scgi
+```
+
 将临时文件目录指定为/var/temp/nginx，需要在/var下创建temp及nginx目录，另外前两两项需要先创建好用户和用户组。
 ### 编译安装
-```code
-make & make install
+
+```
+[wuhua@VM_0_10_centos nginx-1.14.0]$ make & make install
 ```
 可使用`whereis nginx`查看安装的路径。
 ### 为nginx的启动、重启、重载配置添加脚本
 #### 直接启动方法
-```code
-/usr/local/nginx/sbin/nginx
+
+```
+[wuhua@VM_0_10_centos sbin]$ pwd
+/home/wuhua/local/nginx/sbin
+[wuhua@VM_0_10_centos sbin]$ sudo ./nginx
 ```
 #### 添加脚本控制
 >新建文件
+
 ```code
-vim /usr/lib/systemd/system/nginx.service
+[wuhua@VM_0_10_centos sbin]$ sudo vim /usr/lib/systemd/system/nginx.service
 ```
 
 >添加内容
+
 ```code
 [Unit]
 Description=nginx - high performance web server
@@ -80,9 +181,9 @@ After=network.target remote-fs.target nss-lookup.target
 
 [Service]
 Type=forking
-PIDFile=/usr/local/nginx/logs/nginx.pid
-ExecStartPre=/usr/local/nginx/sbin/nginx -t -c /usr/local/nginx/conf/nginx.conf
-ExecStart=/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+PIDFile=/home/wuhua/local/nginx/conf/nginx.pid
+ExecStartPre=/home/wuhua/local/nginx/sbin/nginx -t -c /home/wuhua/local/nginx/conf/nginx.conf
+ExecStart=/home/wuhua/local/nginx/sbin/nginx -c /home/wuhua/local/nginx/conf/nginx.conf
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s QUIT $MAINPID
 PrivateTmp=true
