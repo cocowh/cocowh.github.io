@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="bighua.top/"/>
-  <updated>2018-09-29T13:46:42.890Z</updated>
+  <updated>2018-10-08T12:05:28.601Z</updated>
   <id>bighua.top/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>jenkins初探</title>
+    <link href="bighua.top/2018/10/08/jenkins%E5%88%9D%E6%8E%A2/"/>
+    <id>bighua.top/2018/10/08/jenkins初探/</id>
+    <published>2018-10-08T11:33:45.000Z</published>
+    <updated>2018-10-08T12:05:28.601Z</updated>
+    
+    <content type="html"><![CDATA[<p>参考文档<a href="https://www.kancloud.cn/louis1986/jenkins/481896" target="_blank" rel="noopener">Jenkins学习文档</a>，<a href="https://blog.csdn.net/sms15732621690/article/details/71336224" target="_blank" rel="noopener">CentOS7Jenkins安装</a></p><h3 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[wuhua@VM_0_10_centos local]$ sudo wget http://soft.51yuki.cn/jdk-8u131-linux-x64.rpm</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[wuhua@VM_0_10_centos local]$ sudo rpm -ivh jdk-8u131-linux-x64.rpm</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[wuhua@VM_0_10_centos local]$ sudo vim /etc/profile.d/jdk.sh</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#set java environment</span><br><span class="line">JAVA_HOME=/usr/java/jdk1.8.0_131/</span><br><span class="line">CLASSPATH=.:$&#123;JAVA_HOME&#125;/lib.tools.jar</span><br><span class="line">PATH=$PATH:$&#123;JAVA_HOME&#125;/bin</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[wuhua@VM_0_10_centos local]$  sudo sh /etc/profile.d/jdk.sh</span><br><span class="line">[wuhua@VM_0_10_centos local]$ java -version</span><br><span class="line">java version &quot;1.8.0_131&quot;</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_131-b11)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)</span><br></pre></td></tr></table></figure><h3 id="安装jenkins"><a href="#安装jenkins" class="headerlink" title="安装jenkins"></a>安装jenkins</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[wuhua@VM_0_10_centos src]$ sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[wuhua@VM_0_10_centos src]$ sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install jenkins</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service jenkins start</span><br></pre></td></tr></table></figure><h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><p>浏览器中输入<code>ip:8080</code></p><p>获取登录密码：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[wuhua@VM_0_10_centos src]$ sudo cat /var/lib/jenkins/secrets/initialAdminPassword</span><br></pre></td></tr></table></figure><h3 id="重置密码"><a href="#重置密码" class="headerlink" title="重置密码"></a>重置密码</h3><p>参考<a href="https://blog.csdn.net/jlminghui/article/details/54952148" target="_blank" rel="noopener">忘记Jenkins管理员密码的解决办法</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;参考文档&lt;a href=&quot;https://www.kancloud.cn/louis1986/jenkins/481896&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Jenkins学习文档&lt;/a&gt;，&lt;a href=&quot;https://blog.csdn.
+      
+    
+    </summary>
+    
+      <category term="web杂记" scheme="bighua.top/categories/web%E6%9D%82%E8%AE%B0/"/>
+    
+    
+      <category term="持续集成" scheme="bighua.top/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/"/>
+    
+      <category term="jenkins" scheme="bighua.top/tags/jenkins/"/>
+    
+  </entry>
   
   <entry>
     <title>redis-整数集合</title>
@@ -564,40 +591,6 @@
       <category term="laravel" scheme="bighua.top/tags/laravel/"/>
     
       <category term="学习" scheme="bighua.top/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Mac搭建开发环境初体验</title>
-    <link href="bighua.top/2018/07/05/Mac%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%88%9D%E4%BD%93%E9%AA%8C/"/>
-    <id>bighua.top/2018/07/05/Mac搭建开发环境初体验/</id>
-    <published>2018-07-05T05:27:55.000Z</published>
-    <updated>2018-09-30T07:42:51.802Z</updated>
-    
-    <content type="html"><![CDATA[<p>周一入职，已经是第4天了，这两天在配置开发环境上走了不少坑，记录下来以备后续查阅。</p><p>公司配的mac周二下午才到，全新的13.3寸256/8G的MacBookPro，希望自己的技术能力能配得上使用的工具。周一leader让在自带的电脑上配置nginx+mysql+redis+php开发环境，由于之前已经配置过很多次，所以主要是查看配置的合理性以及安装redis及相应的php拓展。redis在其官网上有相应的安装教程，phpredis找包然后下载解压缩，使用phpize生成configure文件，make &amp; make install，在php.ini中添加拓展。在检查lnmp的过程中，发现nginx是用的默认包管理工具安装的，想将这些都安装在一个地方便与使用和管理，于是卸载之自己编译安装，安装过程根据自己之前记录的一篇博客来的。最后在配置nginx时，又遇到了权限问题，昨天在Mac上搭建时也遇到了这个问题，解决办法简洁点就是将user设置为当前用户组用户，将指定的web目录从根文件开始赋予能够访问的权限。</p><p>初次使用Mac，这几天的环境搭建过程中踩坑收获如下：</p><ul><li>安装brew,mac下的包管理工具，感觉比centos的yum/rpm更好使，比自己动手编译安装的缺点是经常需要通过brew info得知安装软件的配置文件和执行文件位置，不便于管理。</li><li>自带php7.1.16，以php-fpm模式运行需要自己配置相关文件，在/etc目录下。   </li><li>在/etc/paths.d中以文件的方式添加环境变量更加方便管理，source后在另开的终端中才会生效。</li><li>编译安装nginx和使用brew安装nginx，配置web目录遇到的权限问题同上方式解决。</li><li>有mac下的mysql安装包，直接下载点点点，别忘了记下弹出的初始密码，也可使用brew安装。</li><li>使用brew安装redis，下载编译phpredis，phpize、./configure、make这三步没有问题，make install遇到<code>Operation not permitted</code>报错，查询得知Mac下的SIP机制导致的，需要在重启Mac过程中按<code>command</code>+<code>R</code>过程进入恢复模式，打开终端输入<code>csrutil disable</code>关闭SIP，再次重启电脑执行make install成功，在php.ini中添加拓展。</li></ul><p>周三晚上终于把环境搞定了，然后配置git配置node把此博客进行了迁移。书到用时方恨少，今天开始，好好学习好好工作！</p><p>在<a href="https://laravel-china.org/docs/laravel/5.6/deployment/1357#nginx" target="_blank" rel="noopener">Laravel 的部署</a>，附份nginx配置文件以备后续参考。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name localhost;</span><br><span class="line">    root /Users/wuhua/Desktop/TAL-practice/login/public;</span><br><span class="line"></span><br><span class="line">    add_header X-Frame-Options &quot;SAMEORIGIN&quot;;</span><br><span class="line">    add_header X-XSS-Protection &quot;1; mode=block&quot;;</span><br><span class="line">    add_header X-Content-Type-Options &quot;nosniff&quot;;</span><br><span class="line"></span><br><span class="line">    index index.html index.htm index.php;</span><br><span class="line"></span><br><span class="line">    charset utf-8;</span><br><span class="line">    location / &#123;</span><br><span class="line">        try_files $uri $uri/ /index.php?$query_string;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location = /favicon.ico &#123; access_log off; log_not_found off; &#125;</span><br><span class="line">    location = /robots.txt  &#123; access_log off; log_not_found off; &#125;</span><br><span class="line"></span><br><span class="line">    error_page 404 /index.php;</span><br><span class="line"></span><br><span class="line">    location ~ \.php$ &#123;</span><br><span class="line">        fastcgi_split_path_info ^(.+\.php)(/.+)$;</span><br><span class="line">        fastcgi_pass    127.0.0.1:9000;</span><br><span class="line">        fastcgi_index   index.php;</span><br><span class="line">        fastcgi_param   SCRIPT_FILENAME /Users/wuhua/Desktop/TAL-practice/login/public$fastcgi_script_name;</span><br><span class="line">        include         fastcgi_params;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~ /\.(?!well-known).* &#123;</span><br><span class="line">        deny all;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;周一入职，已经是第4天了，这两天在配置开发环境上走了不少坑，记录下来以备后续查阅。&lt;/p&gt;
-&lt;p&gt;公司配的mac周二下午才到，全新的13.3寸256/8G的MacBookPro，希望自己的技术能力能配得上使用的工具。周一leader让在自带的电脑上配置nginx+mysql
-      
-    
-    </summary>
-    
-      <category term="php" scheme="bighua.top/categories/php/"/>
-    
-    
-      <category term="php" scheme="bighua.top/tags/php/"/>
-    
-      <category term="redis" scheme="bighua.top/tags/redis/"/>
-    
-      <category term="nginx" scheme="bighua.top/tags/nginx/"/>
-    
-      <category term="phpredis" scheme="bighua.top/tags/phpredis/"/>
-    
-      <category term="mysql" scheme="bighua.top/tags/mysql/"/>
     
   </entry>
   
