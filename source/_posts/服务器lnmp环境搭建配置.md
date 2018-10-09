@@ -33,6 +33,7 @@ passwd：所有的身份验证令牌已经成功更新。
 
 
 修改sudoers权限为可读可写
+
 ```
 [root@VM_0_10_centos ~]# whereis sudoers
 sudoers: /etc/sudoers /etc/sudoers.d /usr/share/man/man5/sudoers.5.gz
@@ -114,12 +115,6 @@ wuhua@188.131.143.137's password:
 [wuhua@VM_0_10_centos nginx-1.14.0]$ sudo yum install -y zlib-devel
 ```
 
-#### 使用默认配置
-
-```code
-[wuhua@VM_0_10_centos nginx-1.14.0]$ ./configure --prefix=/usr/local/nginx --conf-path=/usr/local/nginx/nginx.conf
-```
-
 #### 自定义配置
 可选项：
 
@@ -155,7 +150,35 @@ wuhua@188.131.143.137's password:
 ```
 [wuhua@VM_0_10_centos nginx-1.14.0]$ make & make install
 ```
-可使用`whereis nginx`查看安装的路径。
+若使用yum命令直接安装可使用`whereis nginx`查看安装的路径。
+
+### 配置
+主要修改`user`,`pid`,`error_log`:
+
+```
+[wuhua@VM_0_10_centos conf]$ pwd
+/home/wuhua/local/nginx/conf
+[wuhua@VM_0_10_centos conf]$ cat nginx.conf
+
+user  wuhua;
+worker_processes  1;
+
+error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+#pid        logs/nginx.pid;
+pid	   conf/nginx.pid;
+
+events {
+    worker_connections  1024;
+}
+```
+
+`worker_processes`根据文档提示一般设置为CPU核心数，或者`auto`启动时自动根据核心数设置worker进程数，nginx作为http服务器`worker_connenctions`\*`worker_processes`/2 <= max_client，nginx作为反向代理服务器`worker_connenctions`\*`worker_processes`/4 <= max_client。
+
+参考[Nginx 中文官方文档](https://www.kancloud.cn/wizardforcel/nginx-doc/92360),[nginx 并发数问题思考](http://blog.51cto.com/liuqunying/1420556)
+
 ### 为nginx的启动、重启、重载配置添加脚本
 #### 直接启动方法
 
@@ -163,6 +186,30 @@ wuhua@188.131.143.137's password:
 [wuhua@VM_0_10_centos sbin]$ pwd
 /home/wuhua/local/nginx/sbin
 [wuhua@VM_0_10_centos sbin]$ sudo ./nginx
+```
+
+初次启动后可以查看conf目录下是否新增nginx.pid文件，里面保存有nginx的主进程号：
+
+```
+[wuhua@VM_0_10_centos ~]$ pwd
+/home/wuhua
+[wuhua@VM_0_10_centos ~]$ ps aux | grep nginx
+wuhua    15922  0.0  0.0 112720   984 pts/0    R+   15:32   0:00 grep --color=auto nginx
+[wuhua@VM_0_10_centos ~]$ ls local/nginx/conf/
+fastcgi.conf          fastcgi_params.default  mime.types          nginx.conf.default   uwsgi_params
+fastcgi.conf.default  koi-utf                 mime.types.default  scgi_params          uwsgi_params.default
+fastcgi_params        koi-win                 nginx.conf          scgi_params.default  win-utf
+[wuhua@VM_0_10_centos ~]$ sudo local/nginx/sbin/nginx 
+[wuhua@VM_0_10_centos ~]$ ps aux | grep nginx
+root     15934  0.0  0.0  20548   608 ?        Ss   15:32   0:00 nginx: master process local/nginx/sbin/nginx
+wuhua    15935  0.0  0.0  23076  1380 ?        S    15:32   0:00 nginx: worker process
+wuhua    15938  0.0  0.0 112720   984 pts/0    R+   15:32   0:00 grep --color=auto nginx
+[wuhua@VM_0_10_centos ~]$ ls local/nginx/conf/
+fastcgi.conf          fastcgi_params.default  mime.types          nginx.conf.default  scgi_params.default   win-utf
+fastcgi.conf.default  koi-utf                 mime.types.default  nginx.pid           uwsgi_params
+fastcgi_params        koi-win                 nginx.conf          scgi_params         uwsgi_params.default
+[wuhua@VM_0_10_centos ~]$ cat local/nginx/conf/nginx.pid 
+15934
 ```
 #### 添加脚本控制
 >新建文件
@@ -173,7 +220,7 @@ wuhua@188.131.143.137's password:
 
 >添加内容
 
-```code
+```
 [Unit]
 Description=nginx - high performance web server
 Documentation=http://nginx.org/en/docs/
@@ -184,8 +231,9 @@ Type=forking
 PIDFile=/home/wuhua/local/nginx/conf/nginx.pid
 ExecStartPre=/home/wuhua/local/nginx/sbin/nginx -t -c /home/wuhua/local/nginx/conf/nginx.conf
 ExecStart=/home/wuhua/local/nginx/sbin/nginx -c /home/wuhua/local/nginx/conf/nginx.conf
-ExecReload=/bin/kill -s HUP $MAINPID
-ExecStop=/bin/kill -s QUIT $MAINPID
+ExecReload=/home/wuhua/local/nginx/sbin/nginx -s reload 
+ExecStop=/home/wuhua/local/nginx/sbin/nginx -s stop
+ExecQuit=/home/wuhua/local/nginx/sbin/nginx -s quit
 PrivateTmp=true
 
 [Install]
@@ -193,6 +241,7 @@ WantedBy=multi-user.target
 ```
 
 >systemctl的一些使用方法
+
 ```code
 systemctl is-enabled servicename.service #查询服务是否开机启动
 systemctl enable xxx.service #开机运行服务
@@ -205,7 +254,32 @@ systemctl status xxx.service #查询服务运行状态
 systemctl --failed #显示启动失败的服务
 ```
 
+在使用前先刷新配置：
+
+```
+[wuhua@VM_0_10_centos ~]$ sudo systemctl daemon-reload
+```
+关闭直接使用sbin/nginx打开的进程：
+
+```
+[wuhua@VM_0_10_centos ~]$ ps aux | grep nginx
+root     15934  0.0  0.0  20548   608 ?        Ss   15:32   0:00 nginx: master process local/nginx/sbin/nginx
+wuhua    15935  0.0  0.0  23076  1380 ?        S    15:32   0:00 nginx: worker process
+wuhua    16307  0.0  0.0 112720   984 pts/0    R+   15:38   0:00 grep --color=auto nginx
+[wuhua@VM_0_10_centos ~]$ sudo kill 15934
+[sudo] wuhua 的密码：
+[wuhua@VM_0_10_centos ~]$ ps aux | grep nginx
+wuhua    16317  0.0  0.0 112720   984 pts/0    R+   15:38   0:00 grep --color=auto nginx
+[wuhua@VM_0_10_centos ~]$ 
+```
+
+疑惑：
+>此次配置过程中若未提前杀死使用nginx/sbin/nginx启动的nginx主进程，使用systemctl stop或者reload等操作无效。待探究。
+
+
+
 >添加脚本后centos7 中操作nginx的方法有
+
 ```code
 systemctl is-enabled nginx.service #查询nginx是否开机启动
 systemctl enable nginx.service #开机运行nginx
@@ -218,26 +292,32 @@ systemctl status nginx.service #查询nginx运行状态
 systemctl --failed #显示启动失败的服务
 ```
 >添加到开机自动启动
-```code
-[root@izjgheeixigi44z ~]# systemctl enable nginx.service
+
+```
+[wuhua@VM_0_10_centos ~]$ sudo systemctl enable nginx.service
 Created symlink from /etc/systemd/system/multi-user.target.wants/nginx.service to /usr/lib/systemd/system/nginx.service.
 ```
 至此以安装成功，通过IP可访问显示nginx页面。
 
 ---
-## mysql安装（centos7默认mariadb）
-### 安装
-```code
-[root@iZjgheeixigi44Z /]# yum -y install mariadb mariadb-server
+
+## mysql安装
+### 安装（centos7默认mariadb）
+单机不考虑分离，直接安装（作本地开发快速安装）,一般有单独的数据库服务器。
+
+```
+[wuhua@VM_0_10_centos multi-user.target.wants]$ yum -y install mariadb mariadb-server
 ```
 ### 启动MariaDB并加入开机启动
-```code
-[root@iZjgheeixigi44Z /]# systemctl start mariadb
-[root@iZjgheeixigi44Z /]# systemctl enable mariadb
+
+```
+[wuhua@VM_0_10_centos multi-user.target.wants]$ sudo systemctl start mariadb
+[wuhua@VM_0_10_centos multi-user.target.wants]$ sudo systemctl enable mariadb
 Created symlink from /etc/systemd/system/multi-user.target.wants/mariadb.service to /usr/lib/systemd/system/mariadb.service.
 ```
 其他命令
-```code
+
+```
 systemctl start mariadb #启动服务
 systemctl enable mariadb #设置开机启动
 systemctl restart mariadb #重新启动
@@ -245,12 +325,25 @@ systemctl stop mariadb.service #停止MariaDB
 ```
 ### 初次登陆设置密码等
 登陆到数据库，初次登陆密码为空
-```code
-[root@iZjgheeixigi44Z /]# mysql -uroot
+
 ```
+[wuhua@VM_0_10_centos multi-user.target.wants]$ mysql -uroot
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 2
+Server version: 5.5.60-MariaDB MariaDB Server
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> 
+```
+
 配置root密码，第一步密码为空，初次设置
-```code
-[root@iZjgheeixigi44Z /]# mysql_secure_installation
+
+```
+[wuhua@VM_0_10_centos multi-user.target.wants]$ sudo mysql_secure_installation
+[sudo] wuhua 的密码：
 
 NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB
       SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!
@@ -313,15 +406,15 @@ installation should now be secure.
 Thanks for using MariaDB!
 ```
 ### 创建用户及设置权限
-有些指令忘记了，要常用呀。
-```code
-[root@iZjgheeixigi44Z /]# mysql -uroot -p
+
+```
+[wuhua@VM_0_10_centos multi-user.target.wants]$ mysql -uroot -p
 Enter password: 
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
-Your MariaDB connection id is 3
-Server version: 5.5.56-MariaDB MariaDB Server
+Your MariaDB connection id is 13
+Server version: 5.5.60-MariaDB MariaDB Server
 
-Copyright (c) 2000, 2017, Oracle, MariaDB Corporation Ab and others.
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
@@ -342,13 +435,13 @@ Query OK, 0 rows affected (0.00 sec)
 
 MariaDB [(none)]> exit
 Bye
-[root@iZjgheeixigi44Z /]# mysql -uhuagege -p 
+[wuhua@VM_0_10_centos multi-user.target.wants]$ mysql -uhuagege -p
 Enter password: 
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
-Your MariaDB connection id is 4
-Server version: 5.5.56-MariaDB MariaDB Server
+Your MariaDB connection id is 14
+Server version: 5.5.60-MariaDB MariaDB Server
 
-Copyright (c) 2000, 2017, Oracle, MariaDB Corporation Ab and others.
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
@@ -365,7 +458,7 @@ MariaDB [(none)]> show databases
 
 MariaDB [(none)]> exit
 Bye
-[root@iZjgheeixigi44Z /]# 
+[wuhua@VM_0_10_centos multi-user.target.wants]$ 
 ```
 ### 配置Mariadb数据库字符
 ```code
@@ -383,39 +476,43 @@ default-character-set=utf8
 >`show variables like "%character%";show variables like "%collation%";`
 
 ---
+
 ## PHP编译安装
 ### 下载
-可以通过[http://php.net/downloads.php](http://php.net/downloads.php)查看现有的版本，然后直接在服务器端下载源码包，此处选择最新版7.2.5，此源下载很慢，建议选择其他源。
+可以通过[http://php.net/downloads.php](http://php.net/downloads.php)查看现有的版本，然后直接在服务器端下载源码包，此处选择最新版7.2.10，此源下载很慢，建议选择其他源。
 ```code
-[root@iZjgheeixigi44Z local]# wget -c http://cn2.php.net/distributions/php-7.2.5.tar.gz
+[wuhua@VM_0_10_centos local]$ wget -c http://cn2.php.net/distributions/php-7.2.10.tar.gz
 ```
 解压缩
 ```code
-tar -xvzf php-7.2.5.tar.gz
-cd php-7.2.5
+[wuhua@VM_0_10_centos local]$ tar -xvzf php-7.2.10.tar.gz
+[wuhua@VM_0_10_centos local]$ cd php-7.2.10
 ```
+
 ### 编译配置
 #### 安装依赖库
 根据之前的编译安装，centos7缺少的libmcrypt、mhash、mcrypt这三个库需要添加源才能下载到（源忘记了），使用的阿里云虚拟机可以直接下载安装。后续编译过程中根据所缺再增加。
 ```code
-[root@iZjgheeixigi44Z local]# yum -y install libmcrypt mhash mcrypt
+[wuhua@VM_0_10_centos local]$ yum -y install libmcrypt mhash mcrypt
 ```
 也可先运行直接全部安装所需库
 ```code
-[root@iZjgheeixigi44Z local]# yum -y install wget vim pcre pcre-devel openssl openssl-devel libicu-devel gcc gcc-c++ autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel ncurses ncurses-devel curl curl-devel krb5-devel libidn libidn-devel openldap openldap-devel nss_ldap jemalloc-devel cmake boost-devel bison automake libevent libevent-devel gd gd-devel libtool* libmcrypt libmcrypt-devel mcrypt mhash libxslt libxslt-devel readline readline-devel gmp gmp-devel libcurl libcurl-devel openjpeg-devel
+[wuhua@VM_0_10_centos local]$ yum -y install wget vim pcre pcre-devel openssl openssl-devel libicu-devel gcc gcc-c++ autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel ncurses ncurses-devel curl curl-devel krb5-devel libidn libidn-devel openldap openldap-devel nss_ldap jemalloc-devel cmake boost-devel bison automake libevent libevent-devel gd gd-devel libtool* libmcrypt libmcrypt-devel mcrypt mhash libxslt libxslt-devel readline readline-devel gmp gmp-devel libcurl libcurl-devel openjpeg-devel bzip2-devel
 ```
 有些没有的话可以尝试更新源
 ```code
-yum install epel-release
-yum update
+[wuhua@VM_0_10_centos local]$ sudo yum install epel-release
+[wuhua@VM_0_10_centos local]$ sudo yum update
 ```
 若源找不到对应库，也可直接将yum源更换为阿里云源
 ```yum
-mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
-wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
-yum makecache
+[wuhua@VM_0_10_centos local]$ sudo mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+[wuhua@VM_0_10_centos local]$ sudo wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+[wuhua@VM_0_10_centos local]$ sudo yum makecache
 ```
+
 #### 编译配置
+
 可用`./configure --help`查看配置项和说明，可查阅官网[http://php.net/manual/zh/install.php](http://php.net/manual/zh/install.php)和[http://php.net/manual/zh/configure.about.php](http://php.net/manual/zh/configure.about.php)以及源码包中的INSTALL文档。参考配置：
 ```code
 ./configure --prefix=/usr/local/php7 \
@@ -464,84 +561,122 @@ yum makecache
 --with-ldap=shared \
 --without-gdbm
 ```
-一般将nginx、php-fpm及网站根目录运行在nobody，不选择相应配置项默认即为nobody。创建用户用户组(自己用的默认nobody)：
-```code
-groupadd www
-useradd -g www www
-```
+将nginx、php-fpm运行在正在登录的wuhua用户，不选择相应配置项默认即为nobody。
+
 最终配置为：
 ```code
-./configure -prefix=/usr/local/php7 -with-config-file-path=/usr/local/php7/etc -with-config-file-scan-dir=/usr/local/php7/etc/conf.d -enable-fpm -enable-soap -with-openssl -with-openssl-dir -with-pcre-regex -with-zlib -with-iconv -with-bz2 -enable-calendar -with-curl -with-cdb -enable-dom -enable-exif -with-pcre-dir -enable-ftp -with-gd -with-jpeg-dir -with-png-dir -with-freetype-dir -with-gettext -with-gmp -with-mhash -enable-mbstring -with-libmbfl -with-onig -enable-pdo -with-pdo-mysql -with-zlib-dir -with-readline -enable-session -enable-shmop -enable-simplexml -enable-sockets -enable-sysvmsg -enable-sysvsem -enable-sysvshm -enable-wddx -with-libxml-dir -with-xsl -enable-zip -enable-mysqlnd -with-mysqli -enable-embedded-mysqli -enable-bcmath -enable-inline-optimization -enable-mbregex -enable-pcntl  -with-xmlrpc -enable-opcache
+[wuhua@VM_0_10_centos php-7.2.10]$  ./configure -prefix=/home/wuhua/local/php7 -with-config-file-path=/home/wuhua/local/php7/etc -with-config-file-scan-dir=/home/wuhua/local/php7/etc/conf.d -enable-fpm -enable-soap -with-openssl -with-openssl-dir -with-pcre-regex -with-zlib -with-iconv -with-bz2 -enable-calendar -with-curl -with-cdb -enable-dom -enable-exif -with-pcre-dir -enable-ftp -with-gd -with-jpeg-dir -with-png-dir -with-freetype-dir -with-gettext -with-gmp -with-mhash -enable-mbstring -with-libmbfl -with-onig -enable-pdo -with-pdo-mysql -with-zlib-dir -with-readline -enable-session -enable-shmop -enable-simplexml -enable-sockets -enable-sysvmsg -enable-sysvsem -enable-sysvshm -enable-wddx -with-libxml-dir -with-xsl -enable-zip -enable-mysqlnd -with-mysqli -enable-embedded-mysqli -enable-bcmath -enable-inline-optimization -enable-mbregex -enable-pcntl  -with-xmlrpc -enable-opcache
 ```
 注意：php7.2版本不支持–with-mcrypt, –enable-gd-native-ttf。在phh7.1时，官方就开始建议用openssl_\*系列函数代替mcrypt_\*系列的函数。7.2版本加上这两项配置无法通过的。
+
 ### 编译安装
-```code
-make && make install
-make test
 ```
+[wuhua@VM_0_10_centos php-7.2.10]$ make
+[wuhua@VM_0_10_centos php-7.2.10]$ make install
+[wuhua@VM_0_10_centos php-7.2.10]$ make test
+```
+在阿里云低配服务器中编译安装报错：
+
+```
+virtual memory exhausted: 无法分配内存	
+make: *** [ext/fileinfo/libmagic/apprentice.lo] 错误 1
+```
+参考[阿里云 virtual memory exhausted: 无法分配内存](https://www.cnblogs.com/kccdzz/p/8005944.html)
+
+```
+[wuhua@iZ2zeam0ijtd4z6q0e4y8eZ php-7.2.10]$  free -m
+              total        used        free      shared  buff/cache   available
+Mem:            992         147         726           0         118         710
+Swap:             0           0           0
+[wuhua@iZ2zeam0ijtd4z6q0e4y8eZ php-7.2.10]$ sudo  dd if=/dev/zero of=/swap bs=1024 count=1M 
+[sudo] wuhua 的密码：
+记录了1048576+0 的读入
+记录了1048576+0 的写出
+1073741824字节(1.1 GB)已复制，8.44555 秒，127 MB/秒
+[wuhua@iZ2zeam0ijtd4z6q0e4y8eZ php-7.2.10]$ sudo  mkswap /swap
+正在设置交换空间版本 1，大小 = 1048572 KiB
+无标签，UUID=2c71ba39-626b-4a40-92e0-531f102125fb
+[wuhua@iZ2zeam0ijtd4z6q0e4y8eZ php-7.2.10]$ sudo su
+[root@iZ2zeam0ijtd4z6q0e4y8eZ php-7.2.10]# swapon /swap 
+swapon: /swap：不安全的权限 0644，建议使用 0600。
+swapon: /swap：swapon 失败: 设备或资源忙
+[root@iZ2zeam0ijtd4z6q0e4y8eZ php-7.2.10]#  echo "/swap swap swap sw 0 0" >> /etc/fstab
+[root@iZ2zeam0ijtd4z6q0e4y8eZ php-7.2.10]# free -m
+              total        used        free      shared  buff/cache   available
+Mem:            992         150          69           0         772         686
+Swap:          1023           0        1023
+```
+
 ### 安装后配置
 安装完成后直接运行`/usr/local/php7/sbin/php-fpm`会报错缺少配置的，需要进行相关的文件配置。
-可以用编译后的配置文件复制到PHP7的配置目录（/usr/local/php7/etc/），推荐使用 github中的配置。
+可以用编译后的配置文件复制到PHP7的配置目录（/usr/local/php7/etc/）。
 #### 方法一：直接使用编译后未经优化处理的配置
-```code
-[root@iZjgheeixigi44Z php-7.2.5]# cp php.ini-production /usr/local/php7/etc/php.ini
-[root@iZjgheeixigi44Z php-7.2.5]# cp /usr/local/php-7.2.5/sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
-[root@iZjgheeixigi44Z php-7.2.5]# cp /usr/local/php7/etc/php-fpm.conf.default /usr/local/php7/etc/php-fpm.conf
-[root@iZjgheeixigi44Z php-7.2.5]# cp /usr/local/php7/etc/php-fpm.d/www.conf.default /usr/local/php7/etc/php-fpm.d/www.conf
+```
+[wuhua@VM_0_10_centos local]$  cp php-7.2.10/php.ini-production php7/etc/php.ini
+[wuhua@VM_0_10_centos local]$ sudo cp php-7.2.10/sapi/fpm/init.d.php-fpm /etc/php-fpm
+[wuhua@VM_0_10_centos etc]$ cp php-fpm.conf.default php-fpm.conf
+[wuhua@VM_0_10_centos php-fpm.d]$  cp www.conf.default www.conf
 ```
 #### 方法二：使用https://github.com/lizer2014/mylnmp/tree/master/PHP文中的配置
 参考博客[PHP7中php.ini、php-fpm和www.conf的配置](https://typecodes.com/web/php7configure.html)
 #### 修改php.ini参数
-```code
-[root@iZjgheeixigi44Z extensions]# vi /usr/local/php7/etc/php.ini
+```
+[wuhua@VM_0_10_centos etc]$ vi php.ini
 ```
 extension_dir改为自己的，设置时区，开启OPcache
-```code
+```
 /extension_dir  //vi查找extension_dir配置
-extension_dir = "/usr/local/php7/lib/php/extensions/no-debug-non-zts-20170718/"
+extension_dir = "/home/wuhua/local/php7/lib/php/extensions/no-debug-non-zts-20170718/"
 /timezone       //vi查找timezone配置
 date.timezone =  PRC
 
-zend_extension=opcache.so;
+opcache.enable=1;
 ```
 #### 添加php的环境变量
 创建php.sh添加内容
-```code
-export PATH=$PATH:/usr/local/php7/bin/:/usr/local/php7/sbin/
+
 ```
-```code
-[root@iZjgheeixigi44Z etc]# vim /etc/profile.d/php.sh
-[root@iZjgheeixigi44Z etc]# source /etc/profile.d/php.sh
-[root@iZjgheeixigi44Z etc]# php -v
-PHP 7.2.5 (cli) (built: May 10 2018 14:03:12) ( NTS )
+export PATH=$PATH:/home/wuhua/local/php7/bin/:/home/wuhua/local/php7/sbin/
+```
+
+```
+[wuhua@VM_0_10_centos profile.d]$ sudo vim /etc/profile.d/php.sh
+[wuhua@VM_0_10_centos profile.d]$ source /etc/profile.d/php.sh
+[wuhua@VM_0_10_centos profile.d]$ php -v
+PHP 7.2.10 (cli) (built: Oct  8 2018 17:39:07) ( NTS )
 Copyright (c) 1997-2018 The PHP Group
 Zend Engine v3.2.0, Copyright (c) 1998-2018 Zend Technologies
-    with Zend OPcache v7.2.5, Copyright (c) 1999-2018, by Zend Technologies
-[root@iZjgheeixigi44Z etc]# 
 ```
-此时已经启动php-fpm，可正常运行。
+
 ### 添加到centos7开机自动启动
 在系统服务目录里创建php-fpm.service文件
-```code
-vi /lib/systemd/system/php-fpm.service
-```
+
 添加内容
-```code
+
+```
+[wuhua@VM_0_10_centos profile.d]$ sudo vi /lib/systemd/system/php-fpm.service
+[sudo] wuhua 的密码：
+[wuhua@VM_0_10_centos profile.d]$ cat  /lib/systemd/system/php-fpm.service
 [Unit]
 Description=php-fpm
 After=network.target
 [Service]
 Type=forking
-ExecStart=/usr/local/php7/sbin/php-fpm
+ExecStart=/home/wuhua/local/php7/sbin/php-fpm
 PrivateTmp=true
 [Install]
 WantedBy=multi-user.target
+[wuhua@VM_0_10_centos profile.d]$ 
 ```
+
 设置开机自启动
-```code
-[root@iZjgheeixigi44Z lib]# systemctl enable php-fpm.service
-Created symlink from /etc/systemd/system/multi-user.target.wants/php-fpm.service to /usr/lib/systemd/system/php-fpm.service.
+
 ```
+[wuhua@VM_0_10_centos profile.d]$ sudo systemctl enable php-fpm.service
+Created symlink from /etc/systemd/system/multi-user.target.wants/php-fpm.service to /usr/lib/systemd/system/php-fpm.service.
+[wuhua@VM_0_10_centos profile.d]$ 
+```
+
 当php-fpm启动时使用`systemctl start php-fpm.service`启动会报错，需要先`pa aux | grep php`查找对应的pid，杀死进程后再启动。
 
 ---
