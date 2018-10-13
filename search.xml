@@ -3,6 +3,33 @@
   
     
     <entry>
+      <title>web服务</title>
+      <link href="/2018/10/12/web%E6%9C%8D%E5%8A%A1/"/>
+      <url>/2018/10/12/web%E6%9C%8D%E5%8A%A1/</url>
+      
+        <content type="html"><![CDATA[<h3 id="web服务"><a href="#web服务" class="headerlink" title="web服务"></a>web服务</h3><blockquote><p>一种与其他软件进行交互的软件程序，通过HTTP进行通信。是一个软件系统，为网络上进行的可互操作机器间交互提供支持。每个web服务都拥有一套自己的接口，由一种名为Web服务描述语言的机器可处理格式描述。其他系统需要根据Web服务的描述，适用SOAP消息与Web服务交互。SOAP消息常被序列化为XML并通过HTTP传输。</p></blockquote><p>存在着多种不同类型的Web服务，其中包括基于SOAP的、基于REST的以及基于XML-RPC的，基于REST的和基于SOAP的Web服务最为流行。企业级系统大多数都是基于SOAP的Web服务实现，公开可访问的Web服务更青睐基于REST的Web服务。</p><p>基于SOAP的Web服务由功能驱动，基于REST的Web服务由数据驱动。基于SOAP的Web服务往往是RPC风格；基于REST的Web服务关注的是资源，HTTP方法是对这些资源执行操作的动词。</p><h3 id="基于SOAP的Web服务"><a href="#基于SOAP的Web服务" class="headerlink" title="基于SOAP的Web服务"></a>基于SOAP的Web服务</h3><p>SOAP（Simple Object Access Protocol：简单对象访问协议）是一种协议，用于交换定义在XML里面的结构化数据。能够跨越不同的网络协议并在不同的编程模式中使用，其处理的并不是对象，已经不再代表Simple Object Access Protocol。</p><p>SOAP高度结构化，需要严格地进行定义，用于传输数据的XML可能会变的非常复杂。WSDL是客户端与服务器之间的契约，定义了服务提供的功能以及提供这些功能的方式，服务的每个操作以及输入/输出都需要由WSDL明确地定义。</p><p>SOAP将报文内容放入到信封里面，信封相当于一个运输容器，并且它还能够独立于实际的数据传输方式存在。</p><p>经过简化的SOAP请求报文示例：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">POST /GetComment HTTP/1.1</span><br><span class="line">Host: www.chitchatcom</span><br><span class="line">Content-Type: application/soap+xml; charset=utf-8</span><br><span class="line"></span><br><span class="line">&lt;?xml version=&quot;1.0&quot;?&gt;</span><br><span class="line">&lt;soap:Envelope</span><br><span class="line">xmlns:soap=&quot;http://www.w3.org/2001/12/soap-envelope&quot;</span><br><span class="line">soap:encodingStyle=&quot;http://www.w3.org/2001/12/soap-encoding&quot;&gt;</span><br><span class="line">&lt;soap:Body xmlns:m=&quot;http://www.chitchat.com/forum&quot;&gt;</span><br><span class="line">&lt;m:GetCommentRequest&gt;</span><br><span class="line">&lt;m:CommentId&gt;123&lt;/m:CommentID&gt;</span><br><span class="line">&lt;/m:GetCommentRequest&gt;</span><br><span class="line">&lt;/soap:Body&gt;</span><br><span class="line">&lt;/soap:Envelope&gt;</span><br></pre></td></tr></table></figure><p>简化后的SOAP响应报文示例：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Content-Type: application/soap+xml; charset=utf-8</span><br><span class="line"></span><br><span class="line">&lt;?xml version=&quot;1.0&quot;?&gt;</span><br><span class="line">&lt;soap:Envelope</span><br><span class="line">xmlns:soap=&quot;http://www.w3/org/2001/12/soap-envelope&quot;</span><br><span class="line">soap:encodingStyle=&quot;http://www.w3.org/2001/12/soap-encoding&quot;&gt;</span><br><span class="line">&lt;soap:Body xmlns:m=&quot;http://www.example.org/stock&quot;&gt;</span><br><span class="line">&lt;m:GetCommentResponse&gt;</span><br><span class="line">&lt;m:Text&gt;Hello World!&lt;/m:Text&gt;</span><br><span class="line">&lt;/m:GetCommentResponse&gt;</span><br><span class="line">&lt;/soap:Body&gt;</span><br><span class="line">&lt;/soap:envelope&gt;</span><br></pre></td></tr></table></figure><p>SOAP 1.2允许通过HTTP的Get方法发送SOAP报文，但大多数基于SOAP的Web服务都是通过HTTP的POST方法发送SOAP报文的。</p><p>一个基于SOAP的Web服务越复杂，对应的WSDL报文就越冗长。实际中SOAP请求报文通常会由WSDL生成的SOAP客户端负责生成，SOAP响应报文通常也是由WSDL生成的SOAP服务器负责生成。</p><h3 id="基于REST的Web服务"><a href="#基于REST的Web服务" class="headerlink" title="基于REST的Web服务"></a>基于REST的Web服务</h3><p>REST（Representational State transfer，具象状态传输）是一种设计理念，用于设计通过标准的几个动作来操纵资源，并以此来进行互相交流的程序（将操纵资源的动作称为“动词”，即verb）。</p><p>REST并不把函数暴露为可调用的服务，而是以资源（resource）的名义把模型暴露出来，允许通过少数几个称为动词的动作来操纵这些资源。</p><p>使用HTTP协议实现REST服务，URL将用于表示资源，HTTP方法则会用作操纵资源的动词。如表所示：</p><table><thead><tr><th style="text-align:left">HTTP方法</th><th style="text-align:left">作用</th><th style="text-align:left">使用实例</th></tr></thead><tbody><tr><td style="text-align:left">POST</td><td style="text-align:left">在一项资源尚未存在的情况下创建该资源</td><td style="text-align:left">POST /users</td></tr><tr><td style="text-align:left">GET</td><td style="text-align:left">获取一项资源</td><td style="text-align:left">GET /users/1</td></tr><tr><td style="text-align:left">PUT</td><td style="text-align:left">重新给定URL上的资源</td><td style="text-align:left">PUT /users/1</td></tr><tr><td style="text-align:left">DELETE</td><td style="text-align:left">删除一项资源</td><td style="text-align:left">DELETE /users/1</td></tr></tbody></table><p>POST和PUT的区别在于，PUT需要准确地知道哪一项资源将会被替换，使用POST只会创建出一项新资源以及一个新的URL。POST用于创建一项全新的资源，PUT用于替换一项已经存在的资源。</p><p>REST不经只能通过这几个HTTP方法实现，如可以使用PATCH方法对一项资源进行部分更新。使用REST API的时候通常都是返回JSON，或者返回一些比SOAP报文要简单得多的XML，很少返回SOAP报文。</p><p>基于REST的Web服务也拥有相应的WADL（Web Applicaton Description Language，Web应用描述语言），可以对基于REST的Web服务进行描述，能够生成访问这些服务的客户端。</p><p>REST设计理念适用于只执行简单的CURD操作的应用，适用于更为复杂的服务可以通过如下两个方法对过程或者动作进行建模。</p><h4 id="将动作转化为资源"><a href="#将动作转化为资源" class="headerlink" title="将动作转化为资源"></a>将动作转化为资源</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">POST /user/123/activation HTTP/1.1</span><br><span class="line"></span><br><span class="line">&#123; &quot;data&quot;:&quot;2018-10-13T17:12:12Z&quot; &#125;</span><br></pre></td></tr></table></figure><p>将创建一个被激活的资源（activation resource），表示用户的激活状态，可以为激活的资源添加额外的属性。</p><h4 id="将动作转换为资源的属性"><a href="#将动作转换为资源的属性" class="headerlink" title="将动作转换为资源的属性"></a>将动作转换为资源的属性</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PATCH /user/123 HTTP/1.1</span><br><span class="line"></span><br><span class="line">&#123; &quot;active&quot;: &quot;true&quot;&#125;</span><br></pre></td></tr></table></figure><p>把用户的active属性设置为true</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> web杂记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> web服务 </tag>
+            
+            <tag> SOAP </tag>
+            
+            <tag> REST </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>jenkins初探</title>
       <link href="/2018/10/08/jenkins%E5%88%9D%E6%8E%A2/"/>
       <url>/2018/10/08/jenkins%E5%88%9D%E6%8E%A2/</url>
@@ -1169,18 +1196,18 @@
     </entry>
     
     <entry>
-      <title>categories</title>
-      <link href="/categories/index.html"/>
-      <url>/categories/index.html</url>
+      <title>标签</title>
+      <link href="/tags/index.html"/>
+      <url>/tags/index.html</url>
       
         <content type="html"><![CDATA[]]></content>
       
     </entry>
     
     <entry>
-      <title>标签</title>
-      <link href="/tags/index.html"/>
-      <url>/tags/index.html</url>
+      <title>categories</title>
+      <link href="/categories/index.html"/>
+      <url>/categories/index.html</url>
       
         <content type="html"><![CDATA[]]></content>
       
