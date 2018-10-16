@@ -162,7 +162,8 @@ links_layout: inline
 links:
   #Title: http://example.com/
   Laruence: http://www.laruence.com/
-  Golang: https://studygolang.com/
+  Go中文社区: https://gocn.vip/
+  Go中文网: https://studygolang.com/
   laravel: https://laravel-china.org/docs
   laravel笔记: https://github.com/kevinyan815/Learning_Laravel_Kernel
 
