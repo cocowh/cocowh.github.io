@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="数据的使用赋值语句若值x可以被赋给类型为T的变量，则：  值x的类型是T。 值x的类型是V，V和T具有相同的潜在类型，V和T至少有一个是未命名的类型。 类型T是一个接口类型，值x的类型实现了T。 值x是一个双向通道类型的值，T是一个通道类型。 值x是预定义标识符nil，可赋给切片、字典、函数、接口、指针、通道等类型的变量。 值x是一个由某个数据类型的值代表的无类型的常量，可以被赋给该数据类型的变量">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-28T02:08:57.090Z">
+<meta property="og:updated_time" content="2018-10-18T08:25:08.470Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-基础篇(三)">
 <meta name="twitter:description" content="数据的使用赋值语句若值x可以被赋给类型为T的变量，则：  值x的类型是T。 值x的类型是V，V和T具有相同的潜在类型，V和T至少有一个是未命名的类型。 类型T是一个接口类型，值x的类型实现了T。 值x是一个双向通道类型的值，T是一个通道类型。 值x是预定义标识符nil，可赋给切片、字典、函数、接口、指针、通道等类型的变量。 值x是一个由某个数据类型的值代表的无类型的常量，可以被赋给该数据类型的变量">
@@ -538,9 +538,9 @@
 <h4 id="delete函数"><a href="#delete函数" class="headerlink" title="delete函数"></a>delete函数</h4><p>专用于删除一个字典类型之中的某个键值对。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete(m, k)//m为字典类型值，k为要删除键值对的键</span><br></pre></td></tr></table></figure></p>
 <ul>
 <li>参数k与m的键之间必须满足赋值规则。</li>
-<li>m是nil或者k所代表的键值对不存在与m中时，delete(m, k)不会做任何操作，删除操作被忽略，这种删除失败不会被反馈。<h4 id="complex函数、real函数和imag函数"><a href="#complex函数、real函数和imag函数" class="headerlink" title="complex函数、real函数和imag函数"></a>complex函数、real函数和imag函数</h4>专用于操作复数类型值。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var cplx128 complex128 = complex(2,-2) //根据浮点数类型的实部和虚部来构造复数类型值</span><br><span class="line"></span><br><span class="line">var im64 = imag(cplx128) //从浮点数类型值中抽取浮点数的虚部部分</span><br><span class="line">var r64 = imag(cplx128)  //从 浮点数类型值中抽取浮点数的实部部分</span><br></pre></td></tr></table></figure>
-</li>
+<li>m是nil或者k所代表的键值对不存在与m中时，delete(m, k)不会做任何操作，删除操作被忽略，这种删除失败不会被反馈。</li>
 </ul>
+<h4 id="complex函数、real函数和imag函数"><a href="#complex函数、real函数和imag函数" class="headerlink" title="complex函数、real函数和imag函数"></a>complex函数、real函数和imag函数</h4><p>专用于操作复数类型值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var cplx128 complex128 = complex(2,-2) //根据浮点数类型的实部和虚部来构造复数类型值</span><br><span class="line"></span><br><span class="line">var im64 = imag(cplx128) //从浮点数类型值中抽取浮点数的虚部部分</span><br><span class="line">var r64 = imag(cplx128)  //从 浮点数类型值中抽取浮点数的实部部分</span><br></pre></td></tr></table></figure></p>
 <h4 id="panic函数和recover函数"><a href="#panic函数和recover函数" class="headerlink" title="panic函数和recover函数"></a>panic函数和recover函数</h4><p>分别用于报告和处理运行时恐慌。  </p>
 <blockquote>
 <p>panic只接受一个参数，参数可以是任意类型的值。要生成和报告一个运行时的恐慌可以直接调用此函数并传递给他一个用以描述恐慌细节的值。参数的类型常常是接口类型error的某个实现类型。        </p>
