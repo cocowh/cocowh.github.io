@@ -11,6 +11,7 @@ mac下使用brew直接安装
 ```
 brew install siege
 ```
+
 `siege -C`查看相关的配置参数，可以自行修改，比如是否显示log，超时时间。
 
 ```
@@ -55,11 +56,12 @@ no-follow:
  - pagead2.googlesyndication.com
  - ads.pubsqrd.com
  - ib.adnxs.com
-``` 
+```
 
 项目：[siege](https://github.com/JoeDog/siege)
 
 参考：[siege压力测试工具安装和介绍](https://blog.csdn.net/shangmingtao/article/details/73850292#1siege%E4%BB%8B%E7%BB%8D)，[如何使用siege测试服务器性能](https://www.cnblogs.com/lawlietfans/p/6873306.html)
+
 
 ### 输入参数
 可在命令行中输入siege –help获取。
@@ -108,12 +110,14 @@ Shortest transaction | 最短响应时间
 
 ### 使用
 示例：
-
-* 请求登陆接口：http://bighua.com/login
-* 请求类型：POST
-* 请求参数 : {"_token":"qeXesWXLPl6BnNhPWvc44NeaCyY75ahpqA42ErT5","email":"228944883@qq.com","password":"hualin123","remember":"on"}
-* 请求次数 :10次
-* 请求并发数量 : 150
+  
+ 类别 | 数据
+ :- | :- 
+ 请求登陆接口 | http://bighua.com/login
+ 请求类型 | POST
+ 请求参数 | {"_token": "qeXesWXLPl6BnNhPWvc44NeaCyY75ahpqA42ErT5","email": "228944883 @qq.com","password": "hualin123","remember": "on"}
+ 请求次数 | 10次
+ 请求并发数量 | 150
 
 请求：
 
