@@ -142,7 +142,7 @@ Shortest transaction:	        0.00
 ```
 
 ### 后记
-isege默认的线程数为255，与apache的默认值相对应，nginx的默认最大连接数为1024。不修改isege配置文件的话，-c的最大值只能为255。 只能测试并发量在255以下。
+siege默认的线程数为255，与apache的默认值相对应，nginx的默认最大连接数为1024。不修改isege配置文件的话，-c的最大值只能为255。 只能测试并发量在255以下。
 
 另外操作系统对打开文件的多少有限制，即限制socket打开的数量。可通过ulimit命令进行修改。参看博客：[Mac打开文件最大数限制修改](https://blog.csdn.net/z1134145881/article/details/52573441/)、[mac中修改系统限制量–ulimit和sysctl](https://blog.csdn.net/whereismatrix/article/details/50582919)。
 
