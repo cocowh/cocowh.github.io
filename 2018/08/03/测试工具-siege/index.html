@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="安装mac下使用brew直接安装 1brew install siege siege -C查看相关的配置参数，可以自行修改，比如是否显示log，超时时间。 1234567891011121314151617181920212223242526272829303132333435363738394041localhost:~ wuhua$ siege -CCURRENT  SIEGE  CONFIG">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-25T13:16:34.471Z">
+<meta property="og:updated_time" content="2018-10-26T02:43:15.271Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="测试工具-siege">
 <meta name="twitter:description" content="安装mac下使用brew直接安装 1brew install siege siege -C查看相关的配置参数，可以自行修改，比如是否显示log，超时时间。 1234567891011121314151617181920212223242526272829303132333435363738394041localhost:~ wuhua$ siege -CCURRENT  SIEGE  CONFIG">
@@ -647,7 +647,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">siege &quot;http://bighua.com/login POST &#123;&quot;_token&quot;:&quot;qeXesWXLPl6BnNhPWvc44NeaCyY75ahpqA42ErT5&quot;,&quot;email&quot;:&quot;228944883@qq.com&quot;,&quot;password&quot;:&quot;hualin123&quot;,&quot;remember&quot;:&quot;on&quot;&#125;&quot; -r 10 -c 150</span><br></pre></td></tr></table></figure>
 <p>测试结果：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Transactions:		        1490 hits</span><br><span class="line">Availability:		       99.33 %</span><br><span class="line">Elapsed time:		       41.63 secs</span><br><span class="line">Data transferred:	        2.16 MB</span><br><span class="line">Response time:		        3.04 secs</span><br><span class="line">Transaction rate:	       35.79 trans/sec</span><br><span class="line">Throughput:		        0.05 MB/sec</span><br><span class="line">Concurrency:		      108.82</span><br><span class="line">Successful transactions:           0</span><br><span class="line">Failed transactions:	          10</span><br><span class="line">Longest transaction:	       35.63</span><br><span class="line">Shortest transaction:	        0.00</span><br></pre></td></tr></table></figure>
-<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>isege默认的线程数为255，与apache的默认值相对应，nginx的默认最大连接数为1024。不修改isege配置文件的话，-c的最大值只能为255。 只能测试并发量在255以下。</p>
+<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>siege默认的线程数为255，与apache的默认值相对应，nginx的默认最大连接数为1024。不修改isege配置文件的话，-c的最大值只能为255。 只能测试并发量在255以下。</p>
 <p>另外操作系统对打开文件的多少有限制，即限制socket打开的数量。可通过ulimit命令进行修改。参看博客：<a href="https://blog.csdn.net/z1134145881/article/details/52573441/" target="_blank" rel="noopener">Mac打开文件最大数限制修改</a>、<a href="https://blog.csdn.net/whereismatrix/article/details/50582919" target="_blank" rel="noopener">mac中修改系统限制量–ulimit和sysctl</a>。</p>
 <p>对nginx设置参考<a href="https://blog.csdn.net/hjh15827475896/article/details/53442800" target="_blank" rel="noopener">单机 nginx 应对高并发处理</a>。</p>
 
