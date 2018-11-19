@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="阅读《netty实战》，初识netty的一些笔记。 异步、事件驱动。 核心组件 Channel 回调 Future 事件和ChannelHandler  ChannelJava NIO的一个基本构造。  代表一个到实体（如一个硬件设备、一个文件、一个网络套接字或者一个能够执行一个或者多个不同的I/O操作的程序组件）的开放连接，如读操作和写操作。  可以把Channel看作是传入（入站）或者传出（出">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-02T09:43:08.592Z">
+<meta property="og:updated_time" content="2018-11-19T02:18:02.218Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Netty的核心组件">
 <meta name="twitter:description" content="阅读《netty实战》，初识netty的一些笔记。 异步、事件驱动。 核心组件 Channel 回调 Future 事件和ChannelHandler  ChannelJava NIO的一个基本构造。  代表一个到实体（如一个硬件设备、一个文件、一个网络套接字或者一个能够执行一个或者多个不同的I/O操作的程序组件）的开放连接，如读操作和写操作。  可以把Channel看作是传入（入站）或者传出（出">
@@ -461,7 +461,7 @@
 <blockquote>
 <p>代表一个到实体（如一个硬件设备、一个文件、一个网络套接字或者一个能够执行一个或者多个不同的I/O操作的程序组件）的开放连接，如读操作和写操作。</p>
 </blockquote>
-<p>可以把Channel看作是传入（入站）或者传出（出站）数据的载体。可以被打开或者被关闭，链接或者断开连接。</p>
+<p>可以把Channel看作是传入（入站）或者传出（出站）数据的载体。可以被打开或者被关闭，连接或者断开连接。</p>
 <h4 id="回调"><a href="#回调" class="headerlink" title="回调"></a>回调</h4><p>一个指向已经被提供给另一个方法的方法的引用。使得后者可以调用前者。</p>
 <p>Netty在内部使用回调来处理事件，当一个回调被触发时，相关的事件可以被一个interface ChannelHandler的实现处理。</p>
 <p>当一个新的连接已经被建立，ChannelHandler的channelActive()回调方法将会被调用。</p>
@@ -479,23 +479,22 @@
 <li>记录日志；</li>
 <li>数据流转换；</li>
 <li>流控制；</li>
-<li><p>应用程序逻辑。</p>
+<li>应用程序逻辑。</li>
+</ul>
 <p>Netty的事件是按照它们与入站或者出站数据流的相关性进行分类的。可能由入站数据或者相关的状态更改而触发的事件包括：</p>
-</li>
-<li><p>连接已被激活或者连接失活；</p>
-</li>
+<ul>
+<li>连接已被激活或者连接失活；</li>
 <li>数据读取；</li>
 <li>用户事件；</li>
-<li><p>错误事件。</p>
-<p>出站事件是未来将会触发的某个动作的操作结果，这些动作包括：</p>
-</li>
-<li><p>打开或者关闭到远程节点的连接；</p>
-</li>
-<li><p>将数据写到或者冲刷到套接字。</p>
-<p>每个事件都可以被分发给ChannelHandler类中的某个用户实现的方法（将事件驱动范式直接转换为应用程序构件块）。</p>
-<p>Netty的ChannelHandler为处理器提供了基本的抽象。每个ChannelHandler的实例都类似于一种为了响应特定事件而被执行的回调。</p>
-</li>
+<li>错误事件。</li>
 </ul>
+<p>出站事件是未来将会触发的某个动作的操作结果，这些动作包括：</p>
+<ul>
+<li>打开或者关闭到远程节点的连接；</li>
+<li>将数据写到或者冲刷到套接字。</li>
+</ul>
+<p>每个事件都可以被分发给ChannelHandler类中的某个用户实现的方法（将事件驱动范式直接转换为应用程序构件块）。</p>
+<p> Netty的ChannelHandler为处理器提供了基本的抽象。每个ChannelHandler的实例都类似于一种为了响应特定事件而被执行的回调。</p>
 <h3 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h3><h4 id="Future、回调和ChannelHandler"><a href="#Future、回调和ChannelHandler" class="headerlink" title="Future、回调和ChannelHandler"></a>Future、回调和ChannelHandler</h4><p>Netty异步编程模型建立在Future和回调之上，将事件派发到ChannelHandler的方法发生在更深的层次上。</p>
 <p>拦截操作以及高速地转换入站数据和出站数据，需要提供回调或者利用操作所返回的Future。</p>
 <h4 id="选择器、事件和EventLoop"><a href="#选择器、事件和EventLoop" class="headerlink" title="选择器、事件和EventLoop"></a>选择器、事件和EventLoop</h4><p>Netty通过触发事件将Selector从应用程序中抽象出来，消除了本来将需要手动编写的派发代码。在内部，会为每个Channel分配一个EventLoop，用以处理所有事件，包括：</p>
