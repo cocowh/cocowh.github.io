@@ -3,6 +3,58 @@
   
     
     <entry>
+      <title>MySQL体系结构和存储引擎</title>
+      <link href="/2019/01/10/MySQL%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%92%8C%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/"/>
+      <url>/2019/01/10/MySQL%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%92%8C%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/</url>
+      
+        <content type="html"><![CDATA[<h3 id="定义数据库和实例"><a href="#定义数据库和实例" class="headerlink" title="定义数据库和实例"></a>定义数据库和实例</h3><ul><li>数据库：物理操作系统文件或其他形式文件类型的集合。</li><li>实例：MySQL数据库由后台线程以及一个共享内存区组成。</li></ul><p>MySQL设计为单进程多线程架构，数据库实例在系统上表现为一个进程。</p><p>启动实例时，MySQL数据库会去读取配置文件，根据配置文件的参数来启动数据库实例，没有配置文件时，按照编译时的默认参数设置启动实例。使用<code>mysql --help | grep my.cnf</code>查看启动时从哪些位置查找配置文件。当几个配置文件都有同一个参数，MySQL数据库以读取到的最后一个配置文件中的参数为准。</p><p>配置文件参数<code>datadir</code>指定了数据库所在的路径。linux操作系统下默认为<code>/usr/local/mysql/data</code>，该路径只是一个链接，指向<code>/opt/mysql_data</code>目录，必须保证该目录的用户和权限使mysql用户和组可以访问。</p><h3 id="MySQL体系结构"><a href="#MySQL体系结构" class="headerlink" title="MySQL体系结构"></a>MySQL体系结构</h3><p>MySQL组成部分：  </p><ul><li>连接池组件</li><li>管理服务和工具组件</li><li>SQL接口组件</li><li>查询分析器组件</li><li>优化器组件</li><li>缓冲（cache）组件</li><li>插件式存储引擎</li><li><p>物理文件</p><p>区别于其他数据库的重要特点是插件式的表存储引擎。MySQL插件式存储引擎架构提供一系列标准的管理和服务支持，这些标准与存储引擎本身无关，存储引擎是底层物理结构的实现。存储引擎是基于表的，而不是数据库。</p></li></ul><h3 id="MySQL存储引擎"><a href="#MySQL存储引擎" class="headerlink" title="MySQL存储引擎"></a>MySQL存储引擎</h3><p>每个存储引擎都有各自的特点，能够根据具体的应用建立不同存储引擎表。用户可以根据MySQL预定义的存储引擎接口编写自己的存储引擎。</p><p>通过<code>SHOW ENGINES</code>语句或者通过查找<code>information_schema</code>架构下的ENGINES表，查看当前使用的MySQL数据库所支持的存储引擎。</p><h4 id="InnoDB存储引擎"><a href="#InnoDB存储引擎" class="headerlink" title="InnoDB存储引擎"></a>InnoDB存储引擎</h4><p>InnoDB存储引擎支持事务，设计目标面向在线事务处理的应用。行锁设计、支持外键，支持类似Oracle的非锁定读，即默认读取操作不会产生锁。</p><p>InnoDB存储引擎将数据放在一个逻辑的表空间中，表空间由InnoDB存储引擎自身进行管理。每个InnoDB存储引擎的表单独存放到一个ibd文件中。InnoDB存储引擎支持用裸设备（row disk）来建立其表空间。</p><p>InnoDB通过使用多版本并发控制（MVCC）来获得高并发，实现了SQL标准的4种隔离级别，默认为REPEATABLE级别。使用被称为next-key locking策略避免幻读现象的产生。还提供了插入缓存（insert buffer）、二次写（double write）、自适应哈希索引（adaptive hash index）、预读（read ahead）等高性能和高可用的功能。</p><p>InnoDB存储引擎采用聚集（clustered）的方式存储表中的数据，每张表的存储都是按主键的顺序进行存放。当没有显示的指定主键，InnoDB存储引擎会为每一行生成一个6字节的ROWID，并以此作为主键。</p><h4 id="MyISAM存储引擎"><a href="#MyISAM存储引擎" class="headerlink" title="MyISAM存储引擎"></a>MyISAM存储引擎</h4><p>MyISAM存储引擎不支持事务，支持全文索引，表锁设计，主要面向一些OLAP数据库应用。MyISAM存储引擎的缓冲池只缓存索引文件，而不缓存数据文件。</p><p>MyISAM存储引擎表由MYD和MYI组成，MYD用来存放数据文件，MYI用来存放索引文件。可以通过使用<code>myisampack</code>工具进一步压缩数据文件，因myisampack工具使用哈夫曼编码静态算法来压缩数据，所以压缩后的表是只读的，也可以使用myisampack工具解压数据文件。</p><p>V5.0前MyISAM默认支持的表大小为4GB，制定MAX_ROWS和AVG_ROW_LENGTH属性拓展为大于4GB的表。V5.0及以后，默认支持256TB的表单数据。</p><h3 id="连接MySQL"><a href="#连接MySQL" class="headerlink" title="连接MySQL"></a>连接MySQL</h3><p>连接MySQL操作是一个连接进程和MySQL数据库实例进行通信。</p><h4 id="TCP-IP"><a href="#TCP-IP" class="headerlink" title="TCP/IP"></a>TCP/IP</h4><p>TCP/IP套接字方式是MySQL数据库在任何平台下都提供的连接方式。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">wuhua:~ wuhua$ mysql -h 127.0.0.1 -u root -p</span><br><span class="line">Enter password: </span><br><span class="line">Welcome to the MySQL monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 2</span><br><span class="line">Server version: 5.7.22 MySQL Community Server (GPL)</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle is a registered trademark of Oracle Corporation and/or its</span><br><span class="line">affiliates. Other names may be trademarks of their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type &apos;help;&apos; or &apos;\h&apos; for help. Type &apos;\c&apos; to clear the current input statement.</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure><p>通过TCP/IP连接到MySQL实例时，MySQL会先检查一张权限视图，判断发起请求的客户端IP是否允许连接到MySQL实例。视图在mysql结构下，表名为<code>user</code>。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use mysql</span><br><span class="line">Database changed</span><br><span class="line">mysql&gt; show columns from user;</span><br><span class="line">+------------------------+-----------------------------------+------+-----+-----------------------+-------+</span><br><span class="line">| Field                  | Type                              | Null | Key | Default               | Extra |</span><br><span class="line">+------------------------+-----------------------------------+------+-----+-----------------------+-------+</span><br><span class="line">| Host                   | char(60)                          | NO   | PRI |                       |       |</span><br><span class="line">| User                   | char(32)                          | NO   | PRI |                       |       |</span><br><span class="line">| Select_priv            | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Insert_priv            | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Update_priv            | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Delete_priv            | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Create_priv            | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Drop_priv              | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Reload_priv            | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Shutdown_priv          | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Process_priv           | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| File_priv              | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Grant_priv             | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| References_priv        | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Index_priv             | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Alter_priv             | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Show_db_priv           | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Super_priv             | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Create_tmp_table_priv  | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Lock_tables_priv       | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Execute_priv           | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Repl_slave_priv        | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Repl_client_priv       | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Create_view_priv       | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Show_view_priv         | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Create_routine_priv    | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Alter_routine_priv     | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Create_user_priv       | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Event_priv             | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Trigger_priv           | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Create_tablespace_priv | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| ssl_type               | enum(&apos;&apos;,&apos;ANY&apos;,&apos;X509&apos;,&apos;SPECIFIED&apos;) | NO   |     |                       |       |</span><br><span class="line">| ssl_cipher             | blob                              | NO   |     | NULL                  |       |</span><br><span class="line">| x509_issuer            | blob                              | NO   |     | NULL                  |       |</span><br><span class="line">| x509_subject           | blob                              | NO   |     | NULL                  |       |</span><br><span class="line">| max_questions          | int(11) unsigned                  | NO   |     | 0                     |       |</span><br><span class="line">| max_updates            | int(11) unsigned                  | NO   |     | 0                     |       |</span><br><span class="line">| max_connections        | int(11) unsigned                  | NO   |     | 0                     |       |</span><br><span class="line">| max_user_connections   | int(11) unsigned                  | NO   |     | 0                     |       |</span><br><span class="line">| plugin                 | char(64)                          | NO   |     | mysql_native_password |       |</span><br><span class="line">| authentication_string  | text                              | YES  |     | NULL                  |       |</span><br><span class="line">| password_expired       | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| password_last_changed  | timestamp                         | YES  |     | NULL                  |       |</span><br><span class="line">| password_lifetime      | smallint(5) unsigned              | YES  |     | NULL                  |       |</span><br><span class="line">| account_locked         | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">+------------------------+-----------------------------------+------+-----+-----------------------+-------+</span><br><span class="line">45 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; SELECT host,user,password_expired FROM user;</span><br><span class="line">+-----------+---------------+------------------+</span><br><span class="line">| host      | user          | password_expired |</span><br><span class="line">+-----------+---------------+------------------+</span><br><span class="line">| localhost | root          | N                |</span><br><span class="line">| localhost | mysql.session | N                |</span><br><span class="line">| localhost | mysql.sys     | N                |</span><br><span class="line">+-----------+---------------+------------------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure><h4 id="命名管道和共享内存"><a href="#命名管道和共享内存" class="headerlink" title="命名管道和共享内存"></a>命名管道和共享内存</h4><p>Win 2000、Win XP、Win 2003和Win Vista以及在此之上的平台，若两个需要进程通信的进程在同一台服务器上，可以使用命名管道。MySQL数据库须在配置文件中启用–enable-named-pipe。V4.1后提供共享内存的连接方式，须在配置文件中添加–shared-memory，在连接时客户端还必须使用–protocol=memory选项。</p><h4 id="UNIX套接字"><a href="#UNIX套接字" class="headerlink" title="UNIX套接字"></a>UNIX套接字</h4><p>Linux和UNIX环境下，可以使用UNIX域套接字，因其非网络协议，只能在MySQL客户端和数据库实例在一台服务器上的情况下使用。用户可以在配置文件中指定套接字文件的路径<code>--socket=/tmp/mysql.sock</code>。</p><p>查询UNIX域套接字文件：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show variables like &apos;socket&apos;;</span><br><span class="line">+---------------+-----------------+</span><br><span class="line">| Variable_name | Value           |</span><br><span class="line">+---------------+-----------------+</span><br><span class="line">| socket        | /tmp/mysql.sock |</span><br><span class="line">+---------------+-----------------+</span><br><span class="line">1 row in set (0.03 sec)</span><br></pre></td></tr></table></figure><p>使用UNIX域套接字方式进行连接：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">wuhua:~ wuhua$ mysql -uroot -S /tmp/mysql.sock -p</span><br><span class="line">Enter password: </span><br><span class="line">Welcome to the MySQL monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 4</span><br><span class="line">Server version: 5.7.22 MySQL Community Server (GPL)</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle is a registered trademark of Oracle Corporation and/or its</span><br><span class="line">affiliates. Other names may be trademarks of their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type &apos;help;&apos; or &apos;\h&apos; for help. Type &apos;\c&apos; to clear the current input statement.</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL技术内幕-InnoDB存储引擎 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> mysql </tag>
+            
+            <tag> note </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>Netty实战笔记</title>
+      <link href="/2018/11/19/Netty%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0/"/>
+      <url>/2018/11/19/Netty%E5%AE%9E%E6%88%98%E7%AC%94%E8%AE%B0/</url>
+      
+        <content type="html"><![CDATA[<h2 id="编写Echo服务器"><a href="#编写Echo服务器" class="headerlink" title="编写Echo服务器"></a>编写Echo服务器</h2><h3 id="ChannelHandler和业务逻辑"><a href="#ChannelHandler和业务逻辑" class="headerlink" title="ChannelHandler和业务逻辑"></a>ChannelHandler和业务逻辑</h3><p>响应传入的消息，需要实现ChannelInboundHandler接口，用来定义响应入站时间</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> netty </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 笔记 </tag>
+            
+            <tag> java </tag>
+            
+            <tag> netty </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>世事无常</title>
       <link href="/2018/11/04/%E4%B8%96%E4%BA%8B%E6%97%A0%E5%B8%B8/"/>
       <url>/2018/11/04/%E4%B8%96%E4%BA%8B%E6%97%A0%E5%B8%B8/</url>
@@ -41,6 +93,10 @@
       
       
         <tags>
+            
+            <tag> 笔记 </tag>
+            
+            <tag> java </tag>
             
             <tag> netty </tag>
             
@@ -523,9 +579,9 @@
             
             <tag> php </tag>
             
-            <tag> laravel </tag>
-            
             <tag> linux </tag>
+            
+            <tag> laravel </tag>
             
         </tags>
       
@@ -602,9 +658,9 @@
             
             <tag> nginx </tag>
             
-            <tag> laravel </tag>
-            
             <tag> linux </tag>
+            
+            <tag> laravel </tag>
             
         </tags>
       
@@ -1281,15 +1337,6 @@
   
     
     <entry>
-      <title>标签</title>
-      <link href="/tags/index.html"/>
-      <url>/tags/index.html</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-    </entry>
-    
-    <entry>
       <title>categories</title>
       <link href="/categories/index.html"/>
       <url>/categories/index.html</url>
@@ -1304,6 +1351,15 @@
       <url>/about/index.html</url>
       
         <content type="html"><![CDATA[<h3 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h3><ul><li>姓名：吴桦</li><li>性别：男</li><li>出生年月：1995/02</li><li>Email： <a href="mailto:huaweiailin@foxmail.com" target="_blank" rel="noopener">huaweiailin@foxmail.com</a></li><li>博客： cocowh.github.io</li><li>GitHub： <a href="https://github.com/cocowh" target="_blank" rel="noopener">https://github.com/cocowh</a></li></ul><hr><h3 id="教育背景"><a href="#教育背景" class="headerlink" title="教育背景"></a>教育背景</h3><p>2014/09-2018/06</p><ul><li>学历：本科</li><li>学校：华中农业大学</li><li>专业：计算机科学与技术</li></ul><hr><h3 id="技术栈（菜鸟，了解程度）"><a href="#技术栈（菜鸟，了解程度）" class="headerlink" title="技术栈（菜鸟，了解程度）"></a>技术栈（菜鸟，了解程度）</h3><p>PHP+Golang+Swoole+Vue+Node</p>]]></content>
+      
+    </entry>
+    
+    <entry>
+      <title>标签</title>
+      <link href="/tags/index.html"/>
+      <url>/tags/index.html</url>
+      
+        <content type="html"><![CDATA[]]></content>
       
     </entry>
     
