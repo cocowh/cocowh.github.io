@@ -1,6 +1,6 @@
 ---
 title: Netty的核心组件
-tags: [netty]
+tags: [netty,java,笔记]
 comments: true
 categories: [netty]
 date: 2018-11-02 14:42:46
