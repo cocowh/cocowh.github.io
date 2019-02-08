@@ -8,16 +8,21 @@ comments: true
 * 姓名：吴桦
 * 性别：男
 * 出生年月：1995/02
-* Email： huaweiailin@foxmail.com
+* Email： cocowh@qq.com
 * 博客： cocowh.github.io
 * GitHub： https://github.com/cocowh
 
 ---
+
 ### 教育背景
 2014/09-2018/06
 * 学历：本科
 * 学校：华中农业大学
 * 专业：计算机科学与技术
+
 ---
-### 技术栈（菜鸟，了解程度）
-PHP+Golang+Swoole+Vue+Node
+
+### 工作经历
+2018/07-至今
+* 公司：好未来
+* 职位：后台研发
