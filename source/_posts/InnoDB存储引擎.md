@@ -822,3 +822,52 @@ IBUF\_REC\_OFFSET\_COUNT保存两个字节的整数，用来排序每个记录�
 IBUF\_BITMAP\_FREE | 2 | 表示该辅助索引页中的可用空间数量，可取值0，1，2，3。0表示无可用剩余空间；1表示剩余空间大于1/32页（512字节）
 IBUF\_BITMAP\_BUFFERED | 1 | 1表示该辅助索引页有记录被缓存在Insert Buffer B+树中
 IBUF\_BITMAP\_IBUF | 1 | 1表示该页为Insert Buffer B+树的索引页
+
+##### Merge Insert Buffer
+
+Merge Insert Buffer的操作发生在：
+
+* 辅助索引页被读取到缓冲池时，例如执行正常的SELECT查询操作，这时需要检查Insert Buffer Bitmap页，然后确认该辅助索引页是否有记录存放于Insert Buffer B+树中，若有则将Insert Buffer B+树中该页的记录插入到该辅助索引页中；
+* Insert Buffer Bitmap页追踪到该辅助索引页已无可用空间时，若插入辅助索引记录时检测到插入记录后可用空间会小于1/32页，则强制进行一个合并操作（强制读取辅助索引页），将Insert Buffer B+树中该页的记录及待插入的记录插入到辅助索引页中；
+* Master Thread，每秒和每10秒进行一次的Merger Insert Buffer操作。
+
+Mater Thread根据`srv_innodb_io_capactity`的百分比来决定真正要合并多少个辅助索引页。
+
+Insert Buffer B+ Tree中，辅助索引页根据（space，offset）都已排序好，根据（space，offset）的排序顺序进行页的选择。
+
+
+#### 两次写
+
+doublewrite保障InnoDB存储引擎数据页的可靠性。
+
+若发生写失效，可以通过重做日志进行恢复，但重做日志记录的是对页的物理操作，若页本身已损坏，则再对其重做是无意义的。在应用重做日志之前，需要一个页的副本，当写失效发生时，先通过页的副本还原页，在进行重做，即doublewrite。
+
+doublewrite由两部分组成：内存中的doublewrite buffer，大小为2MB；物理磁盘上共享表空间中连续的128个页，即两个区（extent），大小为2MB。
+
+在对缓冲池的脏页进行刷行时，并不直接写磁盘，会先通过memcpy函数将脏页先复制到内存中的doublewrite buffer，之后通过doublewrite buffer再分两次，每次1MB顺序地写入共享表空间的物理磁盘上，然后马上调用fsync函数，同步磁盘，避免缓冲写带来的问题。因为doublewrite页连续，过程是顺序写的，开销不大。完成doublewrite页的写入后，再将doublewrite buufer中的页写入各个表空间文件中，此时写入则是离散的，
+
+通过`SHOW GLOBAL STATUS LIKE 'innodb_dblwr%'`观察doublewrite的运行情况：
+
+```
+mysql> show global status like 'innodb_dblwr%'\G
+*************************** 1. row ***************************
+Variable_name: Innodb_dblwr_pages_written
+        Value: 269936
+*************************** 2. row ***************************
+Variable_name: Innodb_dblwr_writes
+        Value: 26401
+2 rows in set (0.00 sec)
+```
+表示一共写了269936个页，实际写入次数26401，`Innodb_dblwr_pages_written:Innodb_dblwr_writes`比例10:1。若系统高峰时远小于64:1，说明系统写入压力不是很高。
+
+
+若操作系统在写入磁盘过程发生崩溃，在恢复时InnoDB先从共享表空间中的doublewrite中找到该页的一个副本，将其复制到表空间文件，再应用重做日志。
+
+通过命令`SHOW BLOBAL STATUS like 'Innodb_buffer_pool_pages_flushed'`查看当前从缓冲池中刷新到磁盘页的数量。该变量和`Innodb_dblwr_pages_written`一致。MySQL 5.5.24版本之前，`Innodb_buffer_pool_pages_flushed`总是`Innodb_dblwr_pages_written`的2倍，之后才被修复，统计数据库在生产环境中写入的量，最安全的方法是根据`Innodb_dblwr_pages_written`来进行统计。
+
+参数`skip_innnodb_doublewrite`可以禁用doublewrite功能，可能发生写失效问题，若有多个从服务器（slave server），需要提供较快的性能（在slave server上做RAID0），启用该参数是一个办法。对于需要提供数据高可用性的主服务器（master server），任何时候都应确保开启doublewrite功能。
+
+有些文件系统本身就提供了部分写失效的防范机制，如ZFS文件系统，可不用开启doublewrite。
+
+#### 自适应哈希索引
+
