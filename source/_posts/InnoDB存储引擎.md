@@ -870,4 +870,40 @@ Variable_name: Innodb_dblwr_writes
 有些文件系统本身就提供了部分写失效的防范机制，如ZFS文件系统，可不用开启doublewrite。
 
 #### 自适应哈希索引
+哈希一般查找的时间复杂度为O(1)，B+ Tree的查找次数取决于B+ tree的高度，一般为3～4层。
+
+InnoDB会监控对表上各索引页的查询，若观察到建立哈希索引可以带来速度提升，则建立哈希索引，称之为自适应哈希索引（Adaptive Hash Index，AHI）。AHI通过缓冲池的B+ tree构建而来，建立的速度很快，不需要对整张表构建哈希索引。InnoDB会自动根据访问的频率和模式来自动地为某些热点页建立哈希索引。
+
+AHI要求这个页的连续访问模式必须是一样的。如对（a，b）这样的联合索引页，访问模式可以是：
+
+* WHERE a=xxx
+* WHERE a=xxx and b=xxx
+
+访问模式指查询条件一样，若交替上述两种查询，则不会对该页构造AHI。AHI还要求：
+
+* 以该模式访问了100次
+* 页通过该模式访问了N次，其中N=页中记录*1/16
+
+启用AHI后，读取和写入速度可以提高2倍，辅助索引的连接操作性能可以提高5倍。其为数据库自由化，可通过命令`SHOW ENGINE INNODB STATUS`查看当前AHI的使用状况：
+
+```
+mysql> show engine innodb status\G
+...
+-------------------------------------
+INSERT BUFFER AND ADAPTIVE HASH INDEX
+-------------------------------------
+Ibuf: size 1, free list len 12, seg size 14, 347 merges
+merged operations:
+ insert 1702, delete mark 3, delete 0
+discarded operations:
+ insert 0, delete mark 0, delete 0
+1.04 hash searches/s, 4.33 non-hash searches/s
+...
+```
+
+哈希索引只能用来搜索等值的查询，如SELECT \* FROM table WHERE index_col='xxx'。其他如范围查找不能使用哈希索引。通过hash searches:non-hash searches可以了解使用哈希索引后的效率。
+
+可通过`SHOW ENGINE INNODB STATUS`的结果及参数`innodb_adaptive_hash_index`来考虑是禁用或启动，默认AHI开启。
+
+#### 异步IO
 
