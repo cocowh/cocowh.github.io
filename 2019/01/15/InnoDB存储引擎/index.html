@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="InnoDB是事务安全的MySQL存储引擎，设计上采用了类似于Oracle数据库的架构。 InnoDB体系架构InnoDB存储引擎有多个内存块，这些内存块组成了一个大的内存池，负责工作：  维护所有进程/线程需要访问的多个内部数据结构。 缓存磁盘上的数据，方便快速地读取，同时在对磁盘文件的数据修改之前在这里缓存。 重做日志（redo log）缓冲。   后台线程的主要作用是负责刷新内存池中的数据，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-15T12:42:33.385Z">
+<meta property="og:updated_time" content="2019-08-16T05:35:40.162Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="InnoDB存储引擎">
 <meta name="twitter:description" content="InnoDB是事务安全的MySQL存储引擎，设计上采用了类似于Oracle数据库的架构。 InnoDB体系架构InnoDB存储引擎有多个内存块，这些内存块组成了一个大的内存池，负责工作：  维护所有进程/线程需要访问的多个内部数据结构。 缓存磁盘上的数据，方便快速地读取，同时在对磁盘文件的数据修改之前在这里缓存。 重做日志（redo log）缓冲。   后台线程的主要作用是负责刷新内存池中的数据，">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  9,999
+                  11,170
                 </span>
               
 
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  43
+                  48
                 </span>
               
             </div>
@@ -751,7 +751,43 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show engine innodb status\G</span><br><span class="line">...</span><br><span class="line">-------------------------------------</span><br><span class="line">INSERT BUFFER AND ADAPTIVE HASH INDEX</span><br><span class="line">-------------------------------------</span><br><span class="line">Ibuf: size 1, free list len 12, seg size 14, 347 merges</span><br><span class="line">merged operations:</span><br><span class="line"> insert 1702, delete mark 3, delete 0</span><br><span class="line">discarded operations:</span><br><span class="line"> insert 0, delete mark 0, delete 0</span><br><span class="line">1.04 hash searches/s, 4.33 non-hash searches/s</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>哈希索引只能用来搜索等值的查询，如SELECT * FROM table WHERE index_col=’xxx’。其他如范围查找不能使用哈希索引。通过hash searches:non-hash searches可以了解使用哈希索引后的效率。</p>
 <p>可通过<code>SHOW ENGINE INNODB STATUS</code>的结果及参数<code>innodb_adaptive_hash_index</code>来考虑是禁用或启动，默认AHI开启。</p>
-<h4 id="异步IO"><a href="#异步IO" class="headerlink" title="异步IO"></a>异步IO</h4>
+<h4 id="异步IO"><a href="#异步IO" class="headerlink" title="异步IO"></a>异步IO</h4><p>用户发出一个IO请求后立即再发出另一个IO请求，当全部IO请求发送完毕后，等待所有IO操作的完成，AIO。AIO可以进行IO Merge操作。</p>
+<p>Linux通过<code>iostat</code>动态监视系统的磁盘操作活动。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[work~]$ iostat -x</span><br><span class="line">Linux 2.6.32-754.9.1.el6.x86_64 	08/16/2019 	_x86_64_	(8 CPU)</span><br><span class="line"></span><br><span class="line">avg-cpu:  %user   %nice %system %iowait  %steal   %idle</span><br><span class="line">          18.99    0.00   16.12    1.36    0.00   63.53</span><br><span class="line"></span><br><span class="line">Device:         rrqm/s   wrqm/s     r/s     w/s   rsec/s   wsec/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util</span><br><span class="line">vda               0.08     7.78    0.29    4.19    16.15    93.35    24.46     0.01    2.39    4.96    2.22   0.94   0.42</span><br><span class="line">vdb               4.07   405.85   10.49    7.69  2980.62  3309.01   345.87     0.72   39.40   26.06   57.61   2.08   3.78</span><br><span class="line">dm-0              0.00     0.00    0.00    0.00     0.00     0.00     8.00     0.00    0.00    0.00    0.00   0.00   0.00</span><br></pre></td></tr></table></figure>
+<p>InnoDB v1.1.x前，AIO通过InnoDB存储引擎中的代码来模拟实现，v1.1.x开始提供了内核级别AIO的支持，Native AIO，依赖libaio库。Native AIO需要操作系统提供支持，Win OS和Linux OS都提供Native AIO支持，Mac OSX未提供，只能使用原模拟的方式。</p>
+<p>参数<code>innodb_use_native_aio</code>用来控制是否启用Native AIO，Linux OS下默认为ON：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show variables like &apos;innodb_use_native_aio&apos;\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">Variable_name: innodb_use_native_aio</span><br><span class="line">        Value: ON</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p>Mac OS:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show variables like &apos;innodb_use_native_aio&apos;\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">Variable_name: innodb_use_native_aio</span><br><span class="line">        Value: OFF</span><br><span class="line">1 row in set (0.03 sec)</span><br></pre></td></tr></table></figure>
+<p>InnoDB中read ahead方式的读取都是AIO完成，脏页的刷新也是通过AIO完成。</p>
+<h4 id="刷新邻接页"><a href="#刷新邻接页" class="headerlink" title="刷新邻接页"></a>刷新邻接页</h4><p>当刷新一个脏页时，InnoDB存储引擎会检测该页所在区的所有页，若是脏页，则一起进行刷新。通过将多个IO写入操作合并为一个IO操作，在传统机械磁盘下有着显著优势。</p>
+<p>需要考虑：</p>
+<ul>
+<li>将不怎么脏的页进行了写入，该页之后又会很快变成脏页；</li>
+<li>固态硬盘有着较高的IOPS，是否需要该特性。</li>
+</ul>
+<p>所以从v 1.2.x版本开始提供了参数<code>innodb_flush_neighbors</code>，用来控制是否启用该特性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show variables like &apos;innodb_flush_neighbors&apos;\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">Variable_name: innodb_flush_neighbors</span><br><span class="line">        Value: 1</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<h3 id="启动、关闭与恢复"><a href="#启动、关闭与恢复" class="headerlink" title="启动、关闭与恢复"></a>启动、关闭与恢复</h3><p>MySQL实例在启动过程中对InnoDB存储引擎的处理过程。</p>
+<p>关闭时，参数<code>innodb_fast_shutdown</code>影响着表的存储引擎为InnoDB的行为。该参数可取0，1，2。默认1。</p>
+<ul>
+<li>0：在MySQL数据库关闭时，InnoDB需要完成所有的full purge和merge insert buffer，并且将所有的脏页刷新回磁盘。需要一些时间，在进行InnoDB升级时，必须将此参数设置为0，然后关闭数据库。</li>
+<li>1:表示不需要完成full purge和merge insert buffer操作，但是缓冲池中的一些数据脏页还是会刷新回磁盘。</li>
+<li>2:表示不完成full purge和merge insert buffer操作，也不将缓冲池中的数据脏页写回磁盘，而是将日志写入日志文件。不会有事务的丢失，在下次MySQL数据库启动时，会进行恢复操作。</li>
+</ul>
+<p>若没有正常的关闭数据库，例如使用kill命令关闭数据库、MySQL运行中重启服务器，或者关闭数据库时将参数<code>innodb_fast_shutdown</code>设为2，下次MySQL数据库启动时都会对InnoDB存储引擎的表进行恢复操作。</p>
+<p>参数<code>innodb_force_recovery</code>影响整个InnoDB存储引擎恢复的状况，默认为0，代表当发生需要恢复时，进行所有的恢复操作，当不能进行有效恢复时，如数据页发生了corruption，MySQL数据库可能发生宕机，并把错误写入错误日志。还可以设置6个非零值，大的数字表示包含了前面所有小数字表示的影响：</p>
+<ul>
+<li>1（SRV_FORCE_IGNORE_CORRUPT）：忽略检查到的corrupt页。</li>
+<li>2（SRV_FORCE_NO_BACKGROUND）：阻止Master Thread线程的运行，如Master Thread线程需要进行full merge操作，会导致crash。</li>
+<li>3（SRV_FORCE_NO_TRX_UNDO）：不进行事务的回滚操作。</li>
+<li>4（SRV_FORCE_NO_IBUF_MERGE）：不进行插入缓冲的合并操作。</li>
+<li>5（SRV_FORCE_NO_UNDO_LOG_SCAN）：不查看撤销日志（Undo Log），将未提交的事务视为已提交。</li>
+<li>6（SRV_FORCE_NO_LOG_SCAN）：不进行前滚的操作。</li>
+</ul>
+<p>在设置了<code>innodb_force_recovery</code>大于0后，可进行select、create和drop操作，但insert、update和delete操作是不允许的。（修改表涉及到脏页的刷新、undo log等）</p>
+<p>START TRANSACTION语句开启了事务，防止了自动提交的发生，UPDATE操作会产生大量的UNDO日志。人为通过kill命令杀掉MySQL数据库，下次MySQL数据库启动会对之前的UPDATE事务进行回滚操作，这些信息会记录在错误日志文件中。</p>
+
       
     </div>
     
@@ -993,7 +1029,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB体系架构"><span class="nav-number">1.</span> <span class="nav-text">InnoDB体系架构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#后台线程"><span class="nav-number">1.1.</span> <span class="nav-text">后台线程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Master-Thread"><span class="nav-number">1.1.1.</span> <span class="nav-text">Master Thread</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#IO-Thread"><span class="nav-number">1.1.2.</span> <span class="nav-text">IO Thread</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Purge-Thread"><span class="nav-number">1.1.3.</span> <span class="nav-text">Purge Thread</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Page-Cleaner-Thread"><span class="nav-number">1.1.4.</span> <span class="nav-text">Page Cleaner Thread</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存"><span class="nav-number">1.2.</span> <span class="nav-text">内存</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#缓冲池"><span class="nav-number">1.2.1.</span> <span class="nav-text">缓冲池</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#LRU-List、Free-List和Flush-List"><span class="nav-number">1.2.2.</span> <span class="nav-text">LRU List、Free List和Flush List</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#重做日志缓冲"><span class="nav-number">1.2.3.</span> <span class="nav-text">重做日志缓冲</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#额外的内存池"><span class="nav-number">1.2.4.</span> <span class="nav-text">额外的内存池</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Checkpoint技术"><span class="nav-number">2.</span> <span class="nav-text">Checkpoint技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Master-Thread工作方式"><span class="nav-number">3.</span> <span class="nav-text">Master Thread工作方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#InnoDB-1-0-x之前的Master-Thread"><span class="nav-number">3.1.</span> <span class="nav-text">InnoDB 1.0.x之前的Master Thread</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#InnoDB-1-2-x版本之前的Master-Thread"><span class="nav-number">3.2.</span> <span class="nav-text">InnoDB 1.2.x版本之前的Master Thread</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#InnoDB-1-2-x版本的Master-Thread"><span class="nav-number">3.3.</span> <span class="nav-text">InnoDB 1.2.x版本的Master Thread</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB关键特性"><span class="nav-number">4.</span> <span class="nav-text">InnoDB关键特性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#插入缓冲"><span class="nav-number">4.1.</span> <span class="nav-text">插入缓冲</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Insert-Buffer"><span class="nav-number">4.1.1.</span> <span class="nav-text">Insert Buffer</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Change-Buffer"><span class="nav-number">4.1.2.</span> <span class="nav-text">Change Buffer</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Insert-Buffer的内部实现"><span class="nav-number">4.1.3.</span> <span class="nav-text">Insert Buffer的内部实现</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Merge-Insert-Buffer"><span class="nav-number">4.1.4.</span> <span class="nav-text">Merge Insert Buffer</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#两次写"><span class="nav-number">4.2.</span> <span class="nav-text">两次写</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自适应哈希索引"><span class="nav-number">4.3.</span> <span class="nav-text">自适应哈希索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异步IO"><span class="nav-number">4.4.</span> <span class="nav-text">异步IO</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB体系架构"><span class="nav-number">1.</span> <span class="nav-text">InnoDB体系架构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#后台线程"><span class="nav-number">1.1.</span> <span class="nav-text">后台线程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Master-Thread"><span class="nav-number">1.1.1.</span> <span class="nav-text">Master Thread</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#IO-Thread"><span class="nav-number">1.1.2.</span> <span class="nav-text">IO Thread</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Purge-Thread"><span class="nav-number">1.1.3.</span> <span class="nav-text">Purge Thread</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Page-Cleaner-Thread"><span class="nav-number">1.1.4.</span> <span class="nav-text">Page Cleaner Thread</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存"><span class="nav-number">1.2.</span> <span class="nav-text">内存</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#缓冲池"><span class="nav-number">1.2.1.</span> <span class="nav-text">缓冲池</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#LRU-List、Free-List和Flush-List"><span class="nav-number">1.2.2.</span> <span class="nav-text">LRU List、Free List和Flush List</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#重做日志缓冲"><span class="nav-number">1.2.3.</span> <span class="nav-text">重做日志缓冲</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#额外的内存池"><span class="nav-number">1.2.4.</span> <span class="nav-text">额外的内存池</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Checkpoint技术"><span class="nav-number">2.</span> <span class="nav-text">Checkpoint技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Master-Thread工作方式"><span class="nav-number">3.</span> <span class="nav-text">Master Thread工作方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#InnoDB-1-0-x之前的Master-Thread"><span class="nav-number">3.1.</span> <span class="nav-text">InnoDB 1.0.x之前的Master Thread</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#InnoDB-1-2-x版本之前的Master-Thread"><span class="nav-number">3.2.</span> <span class="nav-text">InnoDB 1.2.x版本之前的Master Thread</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#InnoDB-1-2-x版本的Master-Thread"><span class="nav-number">3.3.</span> <span class="nav-text">InnoDB 1.2.x版本的Master Thread</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB关键特性"><span class="nav-number">4.</span> <span class="nav-text">InnoDB关键特性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#插入缓冲"><span class="nav-number">4.1.</span> <span class="nav-text">插入缓冲</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Insert-Buffer"><span class="nav-number">4.1.1.</span> <span class="nav-text">Insert Buffer</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Change-Buffer"><span class="nav-number">4.1.2.</span> <span class="nav-text">Change Buffer</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Insert-Buffer的内部实现"><span class="nav-number">4.1.3.</span> <span class="nav-text">Insert Buffer的内部实现</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Merge-Insert-Buffer"><span class="nav-number">4.1.4.</span> <span class="nav-text">Merge Insert Buffer</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#两次写"><span class="nav-number">4.2.</span> <span class="nav-text">两次写</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自适应哈希索引"><span class="nav-number">4.3.</span> <span class="nav-text">自适应哈希索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异步IO"><span class="nav-number">4.4.</span> <span class="nav-text">异步IO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#刷新邻接页"><span class="nav-number">4.5.</span> <span class="nav-text">刷新邻接页</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动、关闭与恢复"><span class="nav-number">5.</span> <span class="nav-text">启动、关闭与恢复</span></a></li></ol></div>
             
 
           </div>
@@ -1032,7 +1068,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">148.4k</span>
+    <span title="本站字数总计">149.6k</span>
   
 </div>
 
