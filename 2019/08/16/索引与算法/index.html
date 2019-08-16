@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="个人博客,随笔">
+<meta name="description" content="InnoDB存储引擎索引概述InnoDB支持的索引：  B+ tree索引 全文索引 哈希索引  InnoDB存储引擎支持的哈希索引是自适应的（见自适应哈希索引）。 B+ tree索引的构造类似于二叉树，根据键值（Key Value）快速找到数据。  B+ tree的B代表着平衡（balance），而非二叉（binary）。B+ tree从最早的平衡二叉树演变而来，但是不是一个二叉树。  B+ t">
 <meta name="keywords" content="mysql,note,innodb,index,alg">
 <meta property="og:type" content="article">
 <meta property="og:title" content="索引与算法">
 <meta property="og:url" content="bighua.top/2019/08/16/索引与算法/index.html">
 <meta property="og:site_name" content="水木年华">
-<meta property="og:description" content="个人博客,随笔">
+<meta property="og:description" content="InnoDB存储引擎索引概述InnoDB支持的索引：  B+ tree索引 全文索引 哈希索引  InnoDB存储引擎支持的哈希索引是自适应的（见自适应哈希索引）。 B+ tree索引的构造类似于二叉树，根据键值（Key Value）快速找到数据。  B+ tree的B代表着平衡（balance），而非二叉（binary）。B+ tree从最早的平衡二叉树演变而来，但是不是一个二叉树。  B+ t">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-16T06:38:42.428Z">
+<meta property="og:updated_time" content="2019-08-16T06:54:16.410Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="索引与算法">
-<meta name="twitter:description" content="个人博客,随笔">
+<meta name="twitter:description" content="InnoDB存储引擎索引概述InnoDB支持的索引：  B+ tree索引 全文索引 哈希索引  InnoDB存储引擎支持的哈希索引是自适应的（见自适应哈希索引）。 B+ tree索引的构造类似于二叉树，根据键值（Key Value）快速找到数据。  B+ tree的B代表着平衡（balance），而非二叉（binary）。B+ tree从最早的平衡二叉树演变而来，但是不是一个二叉树。  B+ t">
 
 
 
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0
+                  248
                 </span>
               
 
@@ -449,7 +449,20 @@
       
 
       
-        
+        <h3 id="InnoDB存储引擎索引概述"><a href="#InnoDB存储引擎索引概述" class="headerlink" title="InnoDB存储引擎索引概述"></a>InnoDB存储引擎索引概述</h3><p>InnoDB支持的索引：</p>
+<ul>
+<li>B+ tree索引</li>
+<li>全文索引</li>
+<li>哈希索引</li>
+</ul>
+<p>InnoDB存储引擎支持的哈希索引是自适应的（见<a href="http://bighua.top/2019/01/15/InnoDB%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/">自适应哈希索引</a>）。</p>
+<p>B+ tree索引的构造类似于二叉树，根据键值（Key Value）快速找到数据。</p>
+<blockquote>
+<p>B+ tree的B代表着平衡（balance），而非二叉（binary）。B+ tree从最早的平衡二叉树演变而来，但是不是一个二叉树。</p>
+</blockquote>
+<p>B+ tree index并不能找到一个给定键值的具体行，能找到的只是被查找数据行所在的页。然后数据库通过把页读入到内存，再在内存中进行查到，最后得到要查找的数据。</p>
+<h3 id="数据结构与算法"><a href="#数据结构与算法" class="headerlink" title="数据结构与算法"></a>数据结构与算法</h3><h4 id="二分查找法"><a href="#二分查找法" class="headerlink" title="二分查找法"></a>二分查找法</h4><p>每页Page Directory中的槽是按照主键的顺序存放的，对于某一条具体记录的查询是通过对Page Directory进行二分查找得到。</p>
+<h4 id="二分查找和平衡二叉树"><a href="#二分查找和平衡二叉树" class="headerlink" title="二分查找和平衡二叉树"></a>二分查找和平衡二叉树</h4>
       
     </div>
     
@@ -558,8 +571,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -677,6 +699,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB存储引擎索引概述"><span class="nav-number">1.</span> <span class="nav-text">InnoDB存储引擎索引概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据结构与算法"><span class="nav-number">2.</span> <span class="nav-text">数据结构与算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#二分查找法"><span class="nav-number">2.1.</span> <span class="nav-text">二分查找法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二分查找和平衡二叉树"><span class="nav-number">2.2.</span> <span class="nav-text">二分查找和平衡二叉树</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
         <div class="back-to-top">
@@ -709,7 +747,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">149.6k</span>
+    <span title="本站字数总计">152.6k</span>
   
 </div>
 
