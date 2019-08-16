@@ -907,3 +907,89 @@ discarded operations:
 
 #### 异步IO
 
+用户发出一个IO请求后立即再发出另一个IO请求，当全部IO请求发送完毕后，等待所有IO操作的完成，AIO。AIO可以进行IO Merge操作。
+
+Linux通过`iostat`动态监视系统的磁盘操作活动。
+
+```
+[work~]$ iostat -x
+Linux 2.6.32-754.9.1.el6.x86_64 	08/16/2019 	_x86_64_	(8 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+          18.99    0.00   16.12    1.36    0.00   63.53
+
+Device:         rrqm/s   wrqm/s     r/s     w/s   rsec/s   wsec/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util
+vda               0.08     7.78    0.29    4.19    16.15    93.35    24.46     0.01    2.39    4.96    2.22   0.94   0.42
+vdb               4.07   405.85   10.49    7.69  2980.62  3309.01   345.87     0.72   39.40   26.06   57.61   2.08   3.78
+dm-0              0.00     0.00    0.00    0.00     0.00     0.00     8.00     0.00    0.00    0.00    0.00   0.00   0.00
+```
+
+InnoDB v1.1.x前，AIO通过InnoDB存储引擎中的代码来模拟实现，v1.1.x开始提供了内核级别AIO的支持，Native AIO，依赖libaio库。Native AIO需要操作系统提供支持，Win OS和Linux OS都提供Native AIO支持，Mac OSX未提供，只能使用原模拟的方式。
+
+参数`innodb_use_native_aio`用来控制是否启用Native AIO，Linux OS下默认为ON：
+
+```
+mysql> show variables like 'innodb_use_native_aio'\G
+*************************** 1. row ***************************
+Variable_name: innodb_use_native_aio
+        Value: ON
+1 row in set (0.00 sec)
+```
+
+Mac OS:
+
+```
+mysql> show variables like 'innodb_use_native_aio'\G
+*************************** 1. row ***************************
+Variable_name: innodb_use_native_aio
+        Value: OFF
+1 row in set (0.03 sec)
+```
+
+InnoDB中read ahead方式的读取都是AIO完成，脏页的刷新也是通过AIO完成。
+
+#### 刷新邻接页
+
+当刷新一个脏页时，InnoDB存储引擎会检测该页所在区的所有页，若是脏页，则一起进行刷新。通过将多个IO写入操作合并为一个IO操作，在传统机械磁盘下有着显著优势。
+
+需要考虑：
+
+* 将不怎么脏的页进行了写入，该页之后又会很快变成脏页；
+* 固态硬盘有着较高的IOPS，是否需要该特性。
+
+所以从v 1.2.x版本开始提供了参数`innodb_flush_neighbors`，用来控制是否启用该特性。
+
+
+```
+mysql> show variables like 'innodb_flush_neighbors'\G
+*************************** 1. row ***************************
+Variable_name: innodb_flush_neighbors
+        Value: 1
+1 row in set (0.00 sec)
+```
+
+### 启动、关闭与恢复
+
+MySQL实例在启动过程中对InnoDB存储引擎的处理过程。
+
+关闭时，参数`innodb_fast_shutdown`影响着表的存储引擎为InnoDB的行为。该参数可取0，1，2。默认1。
+
+* 0：在MySQL数据库关闭时，InnoDB需要完成所有的full purge和merge insert buffer，并且将所有的脏页刷新回磁盘。需要一些时间，在进行InnoDB升级时，必须将此参数设置为0，然后关闭数据库。
+* 1:表示不需要完成full purge和merge insert buffer操作，但是缓冲池中的一些数据脏页还是会刷新回磁盘。
+* 2:表示不完成full purge和merge insert buffer操作，也不将缓冲池中的数据脏页写回磁盘，而是将日志写入日志文件。不会有事务的丢失，在下次MySQL数据库启动时，会进行恢复操作。
+
+
+若没有正常的关闭数据库，例如使用kill命令关闭数据库、MySQL运行中重启服务器，或者关闭数据库时将参数`innodb_fast_shutdown`设为2，下次MySQL数据库启动时都会对InnoDB存储引擎的表进行恢复操作。
+
+参数`innodb_force_recovery`影响整个InnoDB存储引擎恢复的状况，默认为0，代表当发生需要恢复时，进行所有的恢复操作，当不能进行有效恢复时，如数据页发生了corruption，MySQL数据库可能发生宕机，并把错误写入错误日志。还可以设置6个非零值，大的数字表示包含了前面所有小数字表示的影响：
+
+* 1（SRV_FORCE_IGNORE_CORRUPT）：忽略检查到的corrupt页。
+* 2（SRV_FORCE_NO_BACKGROUND）：阻止Master Thread线程的运行，如Master Thread线程需要进行full merge操作，会导致crash。
+* 3（SRV_FORCE_NO_TRX_UNDO）：不进行事务的回滚操作。
+* 4（SRV_FORCE_NO_IBUF_MERGE）：不进行插入缓冲的合并操作。
+* 5（SRV_FORCE_NO_UNDO_LOG_SCAN）：不查看撤销日志（Undo Log），将未提交的事务视为已提交。
+* 6（SRV_FORCE_NO_LOG_SCAN）：不进行前滚的操作。
+
+在设置了`innodb_force_recovery`大于0后，可进行select、create和drop操作，但insert、update和delete操作是不允许的。（修改表涉及到脏页的刷新、undo log等）
+
+START TRANSACTION语句开启了事务，防止了自动提交的发生，UPDATE操作会产生大量的UNDO日志。人为通过kill命令杀掉MySQL数据库，下次MySQL数据库启动会对之前的UPDATE事务进行回滚操作，这些信息会记录在错误日志文件中。
