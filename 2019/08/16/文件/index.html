@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="InnoDB存储引擎表的各种类型文件。  参数文件：告知MYSQL实例启动时在哪里可以找到数据库文件，并且指定某些初始化参数，这些参数定义了某种内存结构的大小等设置，介绍各种参数的类型。 日志文件：记录MySQL实例对某种条件做出响应时写入的文件，如错误的日志文件、二进制日志文件、慢查询日志文件、查询日志文件等。 socket文件：当用UNIX域套接字方式进行连接时需要的文件。 pid文件：MyS">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-19T09:28:56.257Z">
+<meta property="og:updated_time" content="2019-08-19T09:37:51.968Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="文件">
 <meta name="twitter:description" content="InnoDB存储引擎表的各种类型文件。  参数文件：告知MYSQL实例启动时在哪里可以找到数据库文件，并且指定某些初始化参数，这些参数定义了某种内存结构的大小等设置，介绍各种参数的类型。 日志文件：记录MySQL实例对某种条件做出响应时写入的文件，如错误的日志文件、二进制日志文件、慢查询日志文件、查询日志文件等。 socket文件：当用UNIX域套接字方式进行连接时需要的文件。 pid文件：MyS">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  5,985
+                  5,980
                 </span>
               
 
@@ -643,16 +643,13 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center"></td>
+<td style="text-align:center">占用1字节，表示重做日志的类型</td>
+<td style="text-align:center">表示表空间的ID，采用压缩的方式，占用空间可能小于4字节</td>
+<td style="text-align:center">表示页的偏移量，采用压缩的方式</td>
+<td style="text-align:center">表示每个重做日志的数据部分，恢复时需要调用相应的函数进行解析</td>
 </tr>
 </tbody>
 </table>
-<ul>
-<li>redo_log_type：占用1字节，表示重做日志的类型</li>
-<li>space：表示表空间的ID，采用压缩的方式，占用空间可能小于4字节</li>
-<li>page_no：表示页的偏移量，采用压缩的方式</li>
-<li>redo_log_body：表示每个重做日志的数据部分，恢复时需要调用相应的函数进行解析</li>
-</ul>
 <p>从重做日志缓冲往磁盘写入时按照512个字节（一个扇区）的大小进行写入，因为扇区是写入的最小单位，可以保证写入必定是成功的。重做日志的写入过程中不需要有doublewrite。</p>
 <p>参数<code>innodb_flush_log_at_trx_commit</code>控制在提交时，处理重做日志的方式：</p>
 <ul>
