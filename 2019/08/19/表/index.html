@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="技术博客,笔记,随笔 " />
+  <meta name="keywords" content="mysql,note,innodb,table," />
 
 
 
@@ -85,17 +85,18 @@
 
 
 
-<meta name="description" content="个人博客,随笔">
-<meta name="keywords" content="PHP,GO,技术,随笔">
-<meta property="og:type" content="website">
-<meta property="og:title" content="水木年华">
-<meta property="og:url" content="bighua.top/tags/table/index.html">
+<meta name="description" content="索引组织表表根据主键顺序组织存放，称为索引组织表，每个表中都有个主键，若创建表时没有显示地定义主键，则存储引擎按如下方式选择或创建主键：  首先判断表中是否有非空的唯一索引（Unique Not Null），有则该列即为主键。 不符合上述条件则自动创建一个6字节大小的指针。  若有多个非空唯一索引则选择建表时第一个定义的非空唯一索引列为主键。根据定义索引的顺序，而不是根据建表时列的顺序。 Inno">
+<meta name="keywords" content="mysql,note,innodb,table">
+<meta property="og:type" content="article">
+<meta property="og:title" content="表">
+<meta property="og:url" content="bighua.top/2019/08/19/表/index.html">
 <meta property="og:site_name" content="水木年华">
-<meta property="og:description" content="个人博客,随笔">
+<meta property="og:description" content="索引组织表表根据主键顺序组织存放，称为索引组织表，每个表中都有个主键，若创建表时没有显示地定义主键，则存储引擎按如下方式选择或创建主键：  首先判断表中是否有非空的唯一索引（Unique Not Null），有则该列即为主键。 不符合上述条件则自动创建一个6字节大小的指针。  若有多个非空唯一索引则选择建表时第一个定义的非空唯一索引列为主键。根据定义索引的顺序，而不是根据建表时列的顺序。 Inno">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-08-21T11:43:27.963Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="水木年华">
-<meta name="twitter:description" content="个人博客,随笔">
+<meta name="twitter:title" content="表">
+<meta name="twitter:description" content="索引组织表表根据主键顺序组织存放，称为索引组织表，每个表中都有个主键，若创建表时没有显示地定义主键，则存储引擎按如下方式选择或创建主键：  首先判断表中是否有非空的唯一索引（Unique Not Null），有则该列即为主键。 不符合上述条件则自动创建一个6字节大小的指针。  若有多个非空唯一索引则选择建表时第一个定义的非空唯一索引列为主键。根据定义索引的顺序，而不是根据建表时列的顺序。 Inno">
 
 
 
@@ -125,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="bighua.top/tags/table/"/>
+  <link rel="canonical" href="bighua.top/2019/08/19/表/"/>
 
 
 
 
 
-  <title>标签: table | 水木年华</title>
+  <title>表 | 水木年华</title>
   
 
 
@@ -150,7 +151,7 @@
     
   
 
-  <div class="container sidebar-position-right ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -288,54 +289,416 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h2>table<small>标签</small>
-        </h2>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="bighua.top/2019/08/19/表/">
 
-      <h3 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cocowh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="水木年华">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2019/08/19/表/" itemprop="url">
-              
-                <span itemprop="name">表</span>
-              
-            </a>
         
-      </h3>
+          <h2 class="post-title" itemprop="name headline">表</h2>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-08-19T14:26:08+08:00"
-              content="2019-08-19" >
-          08-19
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-19T14:26:08+08:00">
+                2019-08-19
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL技术内幕-InnoDB存储引擎/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL技术内幕-InnoDB存储引擎</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/08/19/表/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/08/19/表/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/08/19/表/" class="leancloud_visitors" data-flag-title="表">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>被翻阅
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,466
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
 
       
-    </div>
+      
 
+      
+        <h3 id="索引组织表"><a href="#索引组织表" class="headerlink" title="索引组织表"></a>索引组织表</h3><p>表根据主键顺序组织存放，称为索引组织表，每个表中都有个主键，若创建表时没有显示地定义主键，则存储引擎按如下方式选择或创建主键：</p>
+<ul>
+<li>首先判断表中是否有非空的唯一索引（Unique Not Null），有则该列即为主键。</li>
+<li>不符合上述条件则自动创建一个6字节大小的指针。</li>
+</ul>
+<p>若有多个非空唯一索引则选择建表时第一个定义的非空唯一索引列为主键。根据定义索引的顺序，而不是根据建表时列的顺序。</p>
+<h3 id="InnoDB逻辑存储结构"><a href="#InnoDB逻辑存储结构" class="headerlink" title="InnoDB逻辑存储结构"></a>InnoDB逻辑存储结构</h3><p>所有数据被逻辑地存放在一个空间中，称之为表空间。由段（segment）、区（extent）、页（page）组成。</p>
+<h4 id="表空间"><a href="#表空间" class="headerlink" title="表空间"></a>表空间</h4><p>表空间是InnoDB存储引擎逻辑结构的最高层，所有的数据都存放在表空间中。</p>
+<p>启用参数<code>innodb_file_per_table</code>，每张表的数据可以单独放到一个表空间内，只存放数据、索引和插入缓冲Bitmap页，其他类的数据如回滚（undo）信息，插入缓冲索引页、系统事务信息，二次写缓冲等还是存放在原来的共享表空间内。</p>
+<h4 id="段"><a href="#段" class="headerlink" title="段"></a>段</h4><p>常见的段有：数据段、索引段、回滚段等。数据段即为B+树的叶子节点，索引段即为B+树的非索引节点，回滚段较特殊。InnoDB中对段的管理由其自身完成。</p>
+<h4 id="区"><a href="#区" class="headerlink" title="区"></a>区</h4><p>区由连续页组成的空间，任何情况下每个区的大小都是1MB，为保证区中页的连续性，InnoDB存储引擎一次从磁盘中申请4～5个区，默认情况下InnoDB存储引擎页的大小为16KB，一个区中一共有64个连续的页。</p>
+<p>InnoDB v1.0.x开始引入压缩页，每个页的大小可以通过参数<code>KEY_BLOCK_SIZE</code>设置为2K、4K、8K，因此每个区对应页的数量就应该为512、256、128.</p>
+<p>InnoDB v1.2.x新增参数<code>innodb_page_size</code>，可将默认页的大小设置为4K、8K，但是页中的数据库不是压缩。此时页的数量为256、128，不论页的大小怎么变化，区的大小总是1M。</p>
+<p>在每个段的开始先用32个页大小的碎片页来存放数据，使用完后才是64个连续页的申请。对于一些小表，或者是undo这类的段，可以在开始时申请较少的空间，节省磁盘容量的开销。</p>
+<h4 id="页"><a href="#页" class="headerlink" title="页"></a>页</h4><p>页是InnoDB磁盘管理的最小单位，默认每个页的大小为16KB。v1.2.x开始可通过参数<code>innodb_page_size</code>将页的大小设置为4K、8K、16K。设置完成后，表中页的大小都为<code>innodb_page_size</code>，不可以对其再次进行修改，除非通过mysqldump导入和导出操作来产生新的库。</p>
+<p>常见的页类型：</p>
+<ul>
+<li>数据页（B-Tree Node）</li>
+<li>undo页（undo LogPage）</li>
+<li>系统页（System Page）</li>
+<li>事务数据页（Transaction system Page）</li>
+<li>插入缓冲位图页（Insert Buffer Bitmap）</li>
+<li>插入缓冲空闲列表页（Insert Buffer Free List）</li>
+<li>未压缩的二进制大对象页（Uncompressed BLOG Page）</li>
+</ul>
+<h4 id="行"><a href="#行" class="headerlink" title="行"></a>行</h4><p>InnoDB存储引擎面向列的（row-oriented），数据是按行进行存放的。每个页最多允许存放16KB/2-200行，即7992行记录。存在column-oriented的数据库，MySQL infobright存储引擎按列来存放数据。</p>
+<h3 id="InnoDB行记录格式"><a href="#InnoDB行记录格式" class="headerlink" title="InnoDB行记录格式"></a>InnoDB行记录格式</h3><p>书中介绍不完善，参考博客<a href="https://www.cnblogs.com/wilburxu/p/9435818.html" target="_blank" rel="noopener">MySQL InnoDB 行记录格式</a>。</p>
+<h4 id="Compact行记录格式"><a href="#Compact行记录格式" class="headerlink" title="Compact行记录格式"></a>Compact行记录格式</h4><p>在MySQL 5.0中引入，设计目标是高效地存储数据。</p>
+<p>存储方式：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">变长字段长度列表</th>
+<th style="text-align:center">NULL标志位</th>
+<th style="text-align:center">记录头信息</th>
+<th style="text-align:center">列1数据</th>
+<th style="text-align:center">列2数据</th>
+<th style="text-align:center">……</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">按列的顺序逆序放置，若列表的长度小于255字节用1字节表示，若大于255字节用2字节表示，VARCHAR类型的最大长度为65535，不超过两字节</td>
+<td style="text-align:center">有NULL值列用1表示，占1字节</td>
+<td style="text-align:center">固定占用5字节</td>
+<td style="text-align:center">列数据</td>
+<td style="text-align:center">列数据</td>
+<td style="text-align:center">列数据</td>
+</tr>
+</tbody>
+</table>
+<p>记录头信息每位含义：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">大小（bit）</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">（）</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">未知</td>
+</tr>
+<tr>
+<td style="text-align:center">（）</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">未知</td>
+</tr>
+<tr>
+<td style="text-align:center">deleted_flag</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">该行是否已被删除</td>
+</tr>
+<tr>
+<td style="text-align:center">min_rec_flag</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">为1，若该记录是预先被定义为最小的记录</td>
+</tr>
+<tr>
+<td style="text-align:center">n_owned</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">该记录拥有的记录数</td>
+</tr>
+<tr>
+<td style="text-align:center">heap_no</td>
+<td style="text-align:center">13</td>
+<td style="text-align:center">索引堆中该条记录的排序记录</td>
+</tr>
+<tr>
+<td style="text-align:center">record_type</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">记录类型，000表示普通、001表示B+ Tree节点指针、010表示Infimun，011表示Supermum、1xx表示保留</td>
+</tr>
+<tr>
+<td style="text-align:center">next_record</td>
+<td style="text-align:center">16</td>
+<td style="text-align:center">页中下一条记录的相应位置</td>
+</tr>
+</tbody>
+</table>
+<p>数据列NULL值不占任何空间，除了占有NULL标志位，实际存储不占有任何空间。每行数据除了用户定义的列外，还有两个隐藏列，事务ID列和回滚指针列，分别为6字节和7字节大小。若InnoDB表没有定义主键，每行还会增加一个6字节的rowid列。</p>
+<p>InnoDB存储引擎在页内部通过一种链表的结构来串连各个行记录。</p>
+<h4 id="Redundant行记录格式"><a href="#Redundant行记录格式" class="headerlink" title="Redundant行记录格式"></a>Redundant行记录格式</h4><p>MySQL v5.0之前的InnoDB行记录存储方式，为兼容之前版本的页格式。</p>
+<p>存储方式：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">字段长度偏移列表</th>
+<th style="text-align:center">记录头信息</th>
+<th style="text-align:center">列1数据</th>
+<th style="text-align:center">列2数据</th>
+<th style="text-align:center">……</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">按列的顺序逆序放置，若列表的长度小于255字节用1字节表示，若大于255字节用2字节表示</td>
+<td style="text-align:center">占用六字节</td>
+<td style="text-align:center">列数据</td>
+<td style="text-align:center">列数据</td>
+<td style="text-align:center">列数据</td>
+</tr>
+</tbody>
+</table>
+<p>记录头信息含义：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">大小（bit）</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">（）</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">未知</td>
+</tr>
+<tr>
+<td style="text-align:center">（）</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">未知   </td>
+</tr>
+<tr>
+<td style="text-align:center">deleted_flag</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">该行是否已被删除</td>
+</tr>
+<tr>
+<td style="text-align:center">min_rec_flag</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">为1，若该记录是预先被定义为最小的记录</td>
+</tr>
+<tr>
+<td style="text-align:center">n_owned</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">该记录拥有的记录数</td>
+</tr>
+<tr>
+<td style="text-align:center">heap_no</td>
+<td style="text-align:center">13</td>
+<td style="text-align:center">索引堆中该条记录的索引号</td>
+</tr>
+<tr>
+<td style="text-align:center">n_flieds</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">记录中列的数量</td>
+</tr>
+<tr>
+<td style="text-align:center">1 byte_offs_flag</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">偏移列表为1字节还是2字节</td>
+</tr>
+<tr>
+<td style="text-align:center">next_record</td>
+<td style="text-align:center">16</td>
+<td style="text-align:center">页中下一条记录的相对位置</td>
+</tr>
+</tbody>
+</table>
+<p>对于VARCHAR类型的NULL值，Redundant行记录格式不占用空间，CHAR类型的NULL值需要占用空间。</p>
+<h4 id="行溢出数据"><a href="#行溢出数据" class="headerlink" title="行溢出数据"></a>行溢出数据</h4>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"><i class="fa fa-tag"></i> mysql</a>
+          
+            <a href="/tags/note/" rel="tag"><i class="fa fa-tag"></i> note</a>
+          
+            <a href="/tags/innodb/" rel="tag"><i class="fa fa-tag"></i> innodb</a>
+          
+            <a href="/tags/table/" rel="tag"><i class="fa fa-tag"></i> table</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/16/InnoDB存储引擎源代码的编译和调试/" rel="next" title="InnoDB存储引擎源代码的编译和调试">
+                <i class="fa fa-chevron-left"></i> InnoDB存储引擎源代码的编译和调试
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -343,6 +706,15 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -365,8 +737,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -483,6 +864,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#索引组织表"><span class="nav-number">1.</span> <span class="nav-text">索引组织表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB逻辑存储结构"><span class="nav-number">2.</span> <span class="nav-text">InnoDB逻辑存储结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#表空间"><span class="nav-number">2.1.</span> <span class="nav-text">表空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#段"><span class="nav-number">2.2.</span> <span class="nav-text">段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#区"><span class="nav-number">2.3.</span> <span class="nav-text">区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#页"><span class="nav-number">2.4.</span> <span class="nav-text">页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#行"><span class="nav-number">2.5.</span> <span class="nav-text">行</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB行记录格式"><span class="nav-number">3.</span> <span class="nav-text">InnoDB行记录格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Compact行记录格式"><span class="nav-number">3.1.</span> <span class="nav-text">Compact行记录格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redundant行记录格式"><span class="nav-number">3.2.</span> <span class="nav-text">Redundant行记录格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#行溢出数据"><span class="nav-number">3.3.</span> <span class="nav-text">行溢出数据</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -646,6 +1043,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -1149,26 +1550,6 @@
   
 
   
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
   
 
 
