@@ -3,6 +3,33 @@
   
     
     <entry>
+      <title>InnoDB存储引擎源代码的编译和调试</title>
+      <link href="/2019/09/18/InnoDB%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E6%BA%90%E4%BB%A3%E7%A0%81%E7%9A%84%E7%BC%96%E8%AF%91%E5%92%8C%E8%B0%83%E8%AF%95/"/>
+      <url>/2019/09/18/InnoDB%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E6%BA%90%E4%BB%A3%E7%A0%81%E7%9A%84%E7%BC%96%E8%AF%91%E5%92%8C%E8%B0%83%E8%AF%95/</url>
+      
+        <content type="html"><![CDATA[<p><a href="https://dev.mysql.com/downloads/mysql/" target="_blank" rel="noopener">源码</a></p><h3 id="InnoDB源码结构"><a href="#InnoDB源码结构" class="headerlink" title="InnoDB源码结构"></a>InnoDB源码结构</h3><p>MySQL源码目录下storage文件夹下，文件夹名即为存储引擎名。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">wuhua:storage wuhua$ pwd</span><br><span class="line">/Users/wuhua/Downloads/mysql-8.0.17/storage</span><br><span class="line">wuhua:storage wuhua$ tree -L 1</span><br><span class="line">.</span><br><span class="line">├── archive</span><br><span class="line">├── blackhole</span><br><span class="line">├── csv</span><br><span class="line">├── example</span><br><span class="line">├── federated</span><br><span class="line">├── heap</span><br><span class="line">├── innobase</span><br><span class="line">├── myisam</span><br><span class="line">├── myisammrg</span><br><span class="line">├── ndb</span><br><span class="line">├── perfschema</span><br><span class="line">├── secondary_engine_mock</span><br><span class="line">└── temptable</span><br><span class="line"></span><br><span class="line">13 directories, 0 files</span><br></pre></td></tr></table></figure><p>InnoDB源码结构：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">wuhua:innobase wuhua$ tree -L 1</span><br><span class="line">.</span><br><span class="line">├── CMakeLists.txt   </span><br><span class="line">├── COPYING.Google</span><br><span class="line">├── COPYING.Percona</span><br><span class="line">├── Doxyfile</span><br><span class="line">├── api</span><br><span class="line">├── arch</span><br><span class="line">├── btr            //B+ tree的实现</span><br><span class="line">├── buf            //缓冲池的实现，包括LRU算法，Flush刷新算法</span><br><span class="line">├── clone</span><br><span class="line">├── data</span><br><span class="line">├── dict//InnoDB存储引擎中内存数据字典的实现</span><br><span class="line">├── eval</span><br><span class="line">├── fil//InnoDB存储引擎中文件数据结构及对文件的一些操作</span><br><span class="line">├── fsp//file space，对InnoDB engine物理文件的管理，如页、区、段等</span><br><span class="line">├── fts</span><br><span class="line">├── fut</span><br><span class="line">├── gis</span><br><span class="line">├── ha//哈希算法的实现</span><br><span class="line">├── handler//继承MySQL的handler，插件式存储引擎的实现</span><br><span class="line">├── ibuf//插入缓冲的实现</span><br><span class="line">├── include//头文件（.h，.ic）</span><br><span class="line">├── innodb.cmake</span><br><span class="line">├── lob</span><br><span class="line">├── lock//锁的实现，如S锁、X锁，以及定义锁的一系列算法</span><br><span class="line">├── log//日志缓冲和重做日志文件的实现</span><br><span class="line">├── mach</span><br><span class="line">├── mem//辅助缓冲池的实现，用来申请一些数据结构的内存</span><br><span class="line">├── mtr//事务的底层实现</span><br><span class="line">├── os//封装一些对于操作系统的操作</span><br><span class="line">├── page//页的实现</span><br><span class="line">├── pars</span><br><span class="line">├── que</span><br><span class="line">├── read</span><br><span class="line">├── rem</span><br><span class="line">├── row//对于各种类型行数据的操作</span><br><span class="line">├── srv//对于InnoDB engine参数的设计</span><br><span class="line">├── sync//InnoDB engine互斥量（Mutex）的实现</span><br><span class="line">├── trx//事务的实现</span><br><span class="line">├── usr</span><br><span class="line">└── ut//工具类</span><br></pre></td></tr></table></figure><h3 id="编译调试"><a href="#编译调试" class="headerlink" title="编译调试"></a>编译调试</h3><p>源码中及各存储引擎中README文档。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> MySQL技术内幕-InnoDB存储引擎 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> mysql </tag>
+            
+            <tag> note </tag>
+            
+            <tag> innodb </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>性能调优</title>
       <link href="/2019/09/17/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/"/>
       <url>/2019/09/17/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/</url>
@@ -175,33 +202,6 @@
             <tag> innodb </tag>
             
             <tag> table </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    <entry>
-      <title>InnoDB存储引擎源代码的编译和调试</title>
-      <link href="/2019/08/16/InnoDB%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E6%BA%90%E4%BB%A3%E7%A0%81%E7%9A%84%E7%BC%96%E8%AF%91%E5%92%8C%E8%B0%83%E8%AF%95/"/>
-      <url>/2019/08/16/InnoDB%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E6%BA%90%E4%BB%A3%E7%A0%81%E7%9A%84%E7%BC%96%E8%AF%91%E5%92%8C%E8%B0%83%E8%AF%95/</url>
-      
-        <content type="html"><![CDATA[]]></content>
-      
-      
-      <categories>
-          
-          <category> MySQL技术内幕-InnoDB存储引擎 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> mysql </tag>
-            
-            <tag> note </tag>
-            
-            <tag> innodb </tag>
             
         </tags>
       
