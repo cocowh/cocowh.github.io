@@ -9,7 +9,7 @@ comments: true
 * 性别：男
 * 出生年月：1995/02
 * Email： cocowh@qq.com
-* 博客： cocowh.github.io
+* 博客： http://bighua.top
 * GitHub： https://github.com/cocowh
 
 ---
@@ -26,3 +26,12 @@ comments: true
 2018/07-至今
 * 公司：好未来
 * 职位：后台研发
+
+----
+
+### 技术栈
+* PHP
+* Golang
+* Java
+* Redis
+* MySQL
