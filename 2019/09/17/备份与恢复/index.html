@@ -72,7 +72,7 @@
 
 
 
-  <meta name="keywords" content="mysql,note," />
+  <meta name="keywords" content="mysql,note,innodb,backup,recovery," />
 
 
 
@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="定义数据库和实例 数据库：物理操作系统文件或其他形式文件类型的集合。 实例：MySQL数据库由后台线程以及一个共享内存区组成。  MySQL设计为单进程多线程架构，数据库实例在系统上表现为一个进程。 启动实例时，MySQL数据库会去读取配置文件，根据配置文件的参数来启动数据库实例，没有配置文件时，按照编译时的默认参数设置启动实例。使用mysql --help | grep my.cnf查看启动时从">
-<meta name="keywords" content="mysql,note">
+<meta name="description" content="备份工具：mysqldump、ibbackup、replication、xtrabackup、LVM快照备份等。 备份与恢复概述根据备份方法分：  Hot Backup（热备份）：数据库运行中直接备份，对正在运行的数据库操作无任何影响，也称为Online Backup（在线备份）。 Cold Backup（冷备份）：数据库停止时备份，一般只需要复制相关的数据库物理文件，也称为Offline Bac">
+<meta name="keywords" content="mysql,note,innodb,backup,recovery">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL体系结构和存储引擎">
-<meta property="og:url" content="bighua.top/2019/01/10/MySQL体系结构和存储引擎/index.html">
+<meta property="og:title" content="备份与恢复">
+<meta property="og:url" content="bighua.top/2019/09/17/备份与恢复/index.html">
 <meta property="og:site_name" content="水木年华">
-<meta property="og:description" content="定义数据库和实例 数据库：物理操作系统文件或其他形式文件类型的集合。 实例：MySQL数据库由后台线程以及一个共享内存区组成。  MySQL设计为单进程多线程架构，数据库实例在系统上表现为一个进程。 启动实例时，MySQL数据库会去读取配置文件，根据配置文件的参数来启动数据库实例，没有配置文件时，按照编译时的默认参数设置启动实例。使用mysql --help | grep my.cnf查看启动时从">
+<meta property="og:description" content="备份工具：mysqldump、ibbackup、replication、xtrabackup、LVM快照备份等。 备份与恢复概述根据备份方法分：  Hot Backup（热备份）：数据库运行中直接备份，对正在运行的数据库操作无任何影响，也称为Online Backup（在线备份）。 Cold Backup（冷备份）：数据库停止时备份，一般只需要复制相关的数据库物理文件，也称为Offline Bac">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-15T07:27:51.274Z">
+<meta property="og:updated_time" content="2019-09-14T10:45:06.507Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL体系结构和存储引擎">
-<meta name="twitter:description" content="定义数据库和实例 数据库：物理操作系统文件或其他形式文件类型的集合。 实例：MySQL数据库由后台线程以及一个共享内存区组成。  MySQL设计为单进程多线程架构，数据库实例在系统上表现为一个进程。 启动实例时，MySQL数据库会去读取配置文件，根据配置文件的参数来启动数据库实例，没有配置文件时，按照编译时的默认参数设置启动实例。使用mysql --help | grep my.cnf查看启动时从">
+<meta name="twitter:title" content="备份与恢复">
+<meta name="twitter:description" content="备份工具：mysqldump、ibbackup、replication、xtrabackup、LVM快照备份等。 备份与恢复概述根据备份方法分：  Hot Backup（热备份）：数据库运行中直接备份，对正在运行的数据库操作无任何影响，也称为Online Backup（在线备份）。 Cold Backup（冷备份）：数据库停止时备份，一般只需要复制相关的数据库物理文件，也称为Offline Bac">
 
 
 
@@ -126,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="bighua.top/2019/01/10/MySQL体系结构和存储引擎/"/>
+  <link rel="canonical" href="bighua.top/2019/09/17/备份与恢复/"/>
 
 
 
 
 
-  <title>MySQL体系结构和存储引擎 | 水木年华</title>
+  <title>备份与恢复 | 水木年华</title>
   
 
 
@@ -303,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="bighua.top/2019/01/10/MySQL体系结构和存储引擎/">
+    <link itemprop="mainEntityOfPage" href="bighua.top/2019/09/17/备份与恢复/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="cocowh">
@@ -320,7 +320,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">MySQL体系结构和存储引擎</h2>
+          <h2 class="post-title" itemprop="name headline">备份与恢复</h2>
         
 
         <div class="post-meta">
@@ -332,8 +332,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-10T17:07:34+08:00">
-                2019-01-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-17T14:26:59+08:00">
+                2019-09-17
               </time>
             
 
@@ -373,8 +373,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/01/10/MySQL体系结构和存储引擎/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/01/10/MySQL体系结构和存储引擎/" itemprop="commentCount"></span>
+                <a href="/2019/09/17/备份与恢复/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/17/备份与恢复/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,7 +382,7 @@
 
           
           
-             <span id="/2019/01/10/MySQL体系结构和存储引擎/" class="leancloud_visitors" data-flag-title="MySQL体系结构和存储引擎">
+             <span id="/2019/09/17/备份与恢复/" class="leancloud_visitors" data-flag-title="备份与恢复">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,909
+                  3,029
                 </span>
               
 
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  8
+                  11
                 </span>
               
             </div>
@@ -449,46 +449,174 @@
       
 
       
-        <h3 id="定义数据库和实例"><a href="#定义数据库和实例" class="headerlink" title="定义数据库和实例"></a>定义数据库和实例</h3><ul>
-<li>数据库：物理操作系统文件或其他形式文件类型的集合。</li>
-<li>实例：MySQL数据库由后台线程以及一个共享内存区组成。</li>
-</ul>
-<p>MySQL设计为单进程多线程架构，数据库实例在系统上表现为一个进程。</p>
-<p>启动实例时，MySQL数据库会去读取配置文件，根据配置文件的参数来启动数据库实例，没有配置文件时，按照编译时的默认参数设置启动实例。使用<code>mysql --help | grep my.cnf</code>查看启动时从哪些位置查找配置文件。当几个配置文件都有同一个参数，MySQL数据库以读取到的最后一个配置文件中的参数为准。</p>
-<p>配置文件参数<code>datadir</code>指定了数据库所在的路径。linux操作系统下默认为<code>/usr/local/mysql/data</code>，该路径只是一个链接，指向<code>/opt/mysql_data</code>目录，必须保证该目录的用户和权限使mysql用户和组可以访问。</p>
-<h3 id="MySQL体系结构"><a href="#MySQL体系结构" class="headerlink" title="MySQL体系结构"></a>MySQL体系结构</h3><p>MySQL组成部分：  </p>
+        <p>备份工具：mysqldump、ibbackup、replication、xtrabackup、LVM快照备份等。</p>
+<h3 id="备份与恢复概述"><a href="#备份与恢复概述" class="headerlink" title="备份与恢复概述"></a>备份与恢复概述</h3><p>根据备份方法分：</p>
 <ul>
-<li>连接池组件</li>
-<li>管理服务和工具组件</li>
-<li>SQL接口组件</li>
-<li>查询分析器组件</li>
-<li>优化器组件</li>
-<li>缓冲（cache）组件</li>
-<li>插件式存储引擎</li>
-<li><p>物理文件</p>
-<p>区别于其他数据库的重要特点是插件式的表存储引擎。MySQL插件式存储引擎架构提供一系列标准的管理和服务支持，这些标准与存储引擎本身无关，存储引擎是底层物理结构的实现。存储引擎是基于表的，而不是数据库。</p>
-</li>
+<li>Hot Backup（热备份）：数据库运行中直接备份，对正在运行的数据库操作无任何影响，也称为Online Backup（在线备份）。</li>
+<li>Cold Backup（冷备份）：数据库停止时备份，一般只需要复制相关的数据库物理文件，也称为Offline Backup（离线备份）。</li>
+<li>Warm Backup（温备份）：数据库运行中进行备份，会对当前数据库操作有所影响，例如需要加全局读锁以保证备份数据的一致性。</li>
 </ul>
-<h3 id="MySQL存储引擎"><a href="#MySQL存储引擎" class="headerlink" title="MySQL存储引擎"></a>MySQL存储引擎</h3><p>每个存储引擎都有各自的特点，能够根据具体的应用建立不同存储引擎表。用户可以根据MySQL预定义的存储引擎接口编写自己的存储引擎。</p>
-<p>通过<code>SHOW ENGINES</code>语句或者通过查找<code>information_schema</code>架构下的ENGINES表，查看当前使用的MySQL数据库所支持的存储引擎。</p>
-<h4 id="InnoDB存储引擎"><a href="#InnoDB存储引擎" class="headerlink" title="InnoDB存储引擎"></a>InnoDB存储引擎</h4><p>InnoDB存储引擎支持事务，设计目标面向在线事务处理的应用。行锁设计、支持外键，支持类似Oracle的非锁定读，即默认读取操作不会产生锁。</p>
-<p>InnoDB存储引擎将数据放在一个逻辑的表空间中，表空间由InnoDB存储引擎自身进行管理。每个InnoDB存储引擎的表单独存放到一个ibd文件中。InnoDB存储引擎支持用裸设备（row disk）来建立其表空间。</p>
-<p>InnoDB通过使用多版本并发控制（MVCC）来获得高并发，实现了SQL标准的4种隔离级别，默认为REPEATABLE级别。使用被称为next-key locking策略避免幻读现象的产生。还提供了插入缓存（insert buffer）、二次写（double write）、自适应哈希索引（adaptive hash index）、预读（read ahead）等高性能和高可用的功能。</p>
-<p>InnoDB存储引擎采用聚集（clustered）的方式存储表中的数据，每张表的存储都是按主键的顺序进行存放。当没有显示的指定主键，InnoDB存储引擎会为每一行生成一个6字节的ROWID，并以此作为主键。</p>
-<h4 id="MyISAM存储引擎"><a href="#MyISAM存储引擎" class="headerlink" title="MyISAM存储引擎"></a>MyISAM存储引擎</h4><p>MyISAM存储引擎不支持事务，支持全文索引，表锁设计，主要面向一些OLAP数据库应用。MyISAM存储引擎的缓冲池只缓存索引文件，而不缓存数据文件。</p>
-<p>MyISAM存储引擎表由MYD和MYI组成，MYD用来存放数据文件，MYI用来存放索引文件。可以通过使用<code>myisampack</code>工具进一步压缩数据文件，因myisampack工具使用哈夫曼编码静态算法来压缩数据，所以压缩后的表是只读的，也可以使用myisampack工具解压数据文件。</p>
-<p>V5.0前MyISAM默认支持的表大小为4GB，制定MAX_ROWS和AVG_ROW_LENGTH属性拓展为大于4GB的表。V5.0及以后，默认支持256TB的表单数据。</p>
-<h3 id="连接MySQL"><a href="#连接MySQL" class="headerlink" title="连接MySQL"></a>连接MySQL</h3><p>连接MySQL操作是一个连接进程和MySQL数据库实例进行通信。</p>
-<h4 id="TCP-IP"><a href="#TCP-IP" class="headerlink" title="TCP/IP"></a>TCP/IP</h4><p>TCP/IP套接字方式是MySQL数据库在任何平台下都提供的连接方式。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">wuhua:~ wuhua$ mysql -h 127.0.0.1 -u root -p</span><br><span class="line">Enter password: </span><br><span class="line">Welcome to the MySQL monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 2</span><br><span class="line">Server version: 5.7.22 MySQL Community Server (GPL)</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle is a registered trademark of Oracle Corporation and/or its</span><br><span class="line">affiliates. Other names may be trademarks of their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type &apos;help;&apos; or &apos;\h&apos; for help. Type &apos;\c&apos; to clear the current input statement.</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
-<p>通过TCP/IP连接到MySQL实例时，MySQL会先检查一张权限视图，判断发起请求的客户端IP是否允许连接到MySQL实例。视图在mysql结构下，表名为<code>user</code>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use mysql</span><br><span class="line">Database changed</span><br><span class="line">mysql&gt; show columns from user;</span><br><span class="line">+------------------------+-----------------------------------+------+-----+-----------------------+-------+</span><br><span class="line">| Field                  | Type                              | Null | Key | Default               | Extra |</span><br><span class="line">+------------------------+-----------------------------------+------+-----+-----------------------+-------+</span><br><span class="line">| Host                   | char(60)                          | NO   | PRI |                       |       |</span><br><span class="line">| User                   | char(32)                          | NO   | PRI |                       |       |</span><br><span class="line">| Select_priv            | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Insert_priv            | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Update_priv            | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Delete_priv            | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Create_priv            | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Drop_priv              | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Reload_priv            | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Shutdown_priv          | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Process_priv           | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| File_priv              | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Grant_priv             | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| References_priv        | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Index_priv             | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Alter_priv             | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Show_db_priv           | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Super_priv             | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Create_tmp_table_priv  | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Lock_tables_priv       | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Execute_priv           | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Repl_slave_priv        | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Repl_client_priv       | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Create_view_priv       | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Show_view_priv         | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Create_routine_priv    | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Alter_routine_priv     | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Create_user_priv       | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Event_priv             | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Trigger_priv           | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| Create_tablespace_priv | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| ssl_type               | enum(&apos;&apos;,&apos;ANY&apos;,&apos;X509&apos;,&apos;SPECIFIED&apos;) | NO   |     |                       |       |</span><br><span class="line">| ssl_cipher             | blob                              | NO   |     | NULL                  |       |</span><br><span class="line">| x509_issuer            | blob                              | NO   |     | NULL                  |       |</span><br><span class="line">| x509_subject           | blob                              | NO   |     | NULL                  |       |</span><br><span class="line">| max_questions          | int(11) unsigned                  | NO   |     | 0                     |       |</span><br><span class="line">| max_updates            | int(11) unsigned                  | NO   |     | 0                     |       |</span><br><span class="line">| max_connections        | int(11) unsigned                  | NO   |     | 0                     |       |</span><br><span class="line">| max_user_connections   | int(11) unsigned                  | NO   |     | 0                     |       |</span><br><span class="line">| plugin                 | char(64)                          | NO   |     | mysql_native_password |       |</span><br><span class="line">| authentication_string  | text                              | YES  |     | NULL                  |       |</span><br><span class="line">| password_expired       | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">| password_last_changed  | timestamp                         | YES  |     | NULL                  |       |</span><br><span class="line">| password_lifetime      | smallint(5) unsigned              | YES  |     | NULL                  |       |</span><br><span class="line">| account_locked         | enum(&apos;N&apos;,&apos;Y&apos;)                     | NO   |     | N                     |       |</span><br><span class="line">+------------------------+-----------------------------------+------+-----+-----------------------+-------+</span><br><span class="line">45 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; SELECT host,user,password_expired FROM user;</span><br><span class="line">+-----------+---------------+------------------+</span><br><span class="line">| host      | user          | password_expired |</span><br><span class="line">+-----------+---------------+------------------+</span><br><span class="line">| localhost | root          | N                |</span><br><span class="line">| localhost | mysql.session | N                |</span><br><span class="line">| localhost | mysql.sys     | N                |</span><br><span class="line">+-----------+---------------+------------------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
-<h4 id="命名管道和共享内存"><a href="#命名管道和共享内存" class="headerlink" title="命名管道和共享内存"></a>命名管道和共享内存</h4><p>Win 2000、Win XP、Win 2003和Win Vista以及在此之上的平台，若两个需要进程通信的进程在同一台服务器上，可以使用命名管道。MySQL数据库须在配置文件中启用–enable-named-pipe。V4.1后提供共享内存的连接方式，须在配置文件中添加–shared-memory，在连接时客户端还必须使用–protocol=memory选项。</p>
-<h4 id="UNIX套接字"><a href="#UNIX套接字" class="headerlink" title="UNIX套接字"></a>UNIX套接字</h4><p>Linux和UNIX环境下，可以使用UNIX域套接字，因其非网络协议，只能在MySQL客户端和数据库实例在一台服务器上的情况下使用。用户可以在配置文件中指定套接字文件的路径<code>--socket=/tmp/mysql.sock</code>。</p>
-<p>查询UNIX域套接字文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show variables like &apos;socket&apos;;</span><br><span class="line">+---------------+-----------------+</span><br><span class="line">| Variable_name | Value           |</span><br><span class="line">+---------------+-----------------+</span><br><span class="line">| socket        | /tmp/mysql.sock |</span><br><span class="line">+---------------+-----------------+</span><br><span class="line">1 row in set (0.03 sec)</span><br></pre></td></tr></table></figure>
-<p>使用UNIX域套接字方式进行连接：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">wuhua:~ wuhua$ mysql -uroot -S /tmp/mysql.sock -p</span><br><span class="line">Enter password: </span><br><span class="line">Welcome to the MySQL monitor.  Commands end with ; or \g.</span><br><span class="line">Your MySQL connection id is 4</span><br><span class="line">Server version: 5.7.22 MySQL Community Server (GPL)</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.</span><br><span class="line"></span><br><span class="line">Oracle is a registered trademark of Oracle Corporation and/or its</span><br><span class="line">affiliates. Other names may be trademarks of their respective</span><br><span class="line">owners.</span><br><span class="line"></span><br><span class="line">Type &apos;help;&apos; or &apos;\h&apos; for help. Type &apos;\c&apos; to clear the current input statement.</span><br></pre></td></tr></table></figure>
+<p>按备份后文件的内容分：</p>
+<ul>
+<li>逻辑备份：备份的文件可读，一般是文本文件，内容一般由一条条SQL语句或者是表内实际数据组成。可观察到出文件的内容，一般适用于数据库的升级、迁移等工作。恢复时间较长。</li>
+<li>裸文件备份：复制数据库的物理文件，既可以是数据库运行中的复制，也可以是数据库停止运行时直接的数据文件复制，恢复时间较短。</li>
+</ul>
+<p>按备份数据的内容：</p>
+<ul>
+<li>完全备份：对数据库进行一个完成的备份。</li>
+<li>增量备份：在上次完全备份的基础上，对于更改的数据进行备份。</li>
+<li>日志备份：针对MySQL DB二进制日志的备份，通过对一个完全备份进行二进制日志的重做（replay）来完成数据库的point-in-time的恢复工作。</li>
+</ul>
+<p>MySQl数据库复制（replication）的原理就是异步实时地将二进制日志重做传送并应用到从（slave/standby）数据库。MySQL未提供真正的增量备份方法，大部分通过二进制日志完成增量备份的工作。效率较真正的增量备份低。</p>
+<p>增量备份只需要记录当前每页最后的检查点的LSN，若大于之前全备份时的LSN，则备份该页，否则不用备份，是xtrabackup工具增量备份的原理。</p>
+<p>数据库备份的一致性要求在备份的时间数据在这一时间点上是一致的。InnoDB engine支持MVCC，实现一致的备份比较简单。可先开启一个事务，然后导出一组相关的表，最后提交，事务的隔离级别必须设置为REPEATABLE READ。</p>
+<p>mysqldump备份工具，可通过添加–single-transaction选项获得InnoDB存储引擎的一致性备份（必i 加选项）。</p>
+<h3 id="冷备"><a href="#冷备" class="headerlink" title="冷备"></a>冷备</h3><p>InnoDB engine冷备需要备份MySQL数据库的frm文件，共享表空间文件，独立表空间文件（*.idb），重做日志文件。定期备份MySQL数据库的配置文件my.cnf，有利于恢复的操作。</p>
+<p>优点：</p>
+<ul>
+<li>备份简单，只要复制相关文件即可。</li>
+<li>备份文件易于在不同操作系统，不同MySQL版本上进行恢复。</li>
+<li>恢复简单，只需要把文件恢复到指定位置。</li>
+<li>恢复速度快，不需要执行任何SQL语句，不需要重建索引。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>冷备文件通常比逻辑文件大很大，表空间中存放着很多其他的数据，如undo段，插入缓冲等信息。</li>
+<li>不总是可以轻易跨平台。操作系统、MySQL的版本、文件大小写敏感和浮点数格式会成为问题。</li>
+</ul>
+<h3 id="逻辑备份"><a href="#逻辑备份" class="headerlink" title="逻辑备份"></a>逻辑备份</h3><h4 id="mysqldump"><a href="#mysqldump" class="headerlink" title="mysqldump"></a>mysqldump</h4><p>开始用于完成转存数据库备份及不同数据库之间的移植。</p>
+<p>语法：</p>
+<p><code>mysqldump [arguments] &gt; file_name</code></p>
+<p>参数可通过mysqldump –help查看：</p>
+<ul>
+<li>–single-transaction：保证备份的一致性。备份开始前先执行START TRANSACTION命令，一次获得备份的一致性，只对InnoDB engine有效。启用该参数时需确保没有任何其他任何的DDL语句执行，一致性读并不能隔离DDL操作。</li>
+<li>–lock-tables（-l）：备份过程中依次锁住每个架构下的所有表，一般用于MyISAM engine，当备份时只能对数据库进行读取操作，备份依然可以保证一致性。InnoDB engine不需要使用此参数，用–single-transaction， –lock-tables和–single-transaction互斥，不能同时使用。</li>
+<li>–lock-all-tables（-x）：备份过程中对所有表上锁，避免–lock-tables不能同时锁住所有表的问题。</li>
+<li>–add-drop-database：在CREATE DATABASE前先运行DROP DATABASE。需与–all-databases或–databases选型一起使用。默认情况下到处的文本文件中并不会有CREATE DATABASE，除非指定该参数。</li>
+<li>–master-data [=value]：产生的备份转存文件主要用来建立一个replication。value为1时，转存文件中记录CHANGE MASTER语句，值为2时，CHANGE MASTER语句被写出SQL注释。默认值为空。会自动忽略–lock-tables选项，若没有选用–single-transaction则自动使用–lock-all-tables选项。</li>
+<li>–enents（-E）：备份事件调度器。</li>
+<li>–routines（-R）：备份存储过程和函数。</li>
+<li>–triggers：备份触发器。</li>
+<li>–hex-blob：将BINARY、VARBINARY、BLOG和BIT列类型备份为十六进制的格式。mysqldump文件导出的文本文件上述类型在文本文件模式下可能有些字符不可见，添加此选型会以十六进制的方式显示。</li>
+<li>–tab=path（-T path）：产生TAB分割的数据文件。每张表，mysqldump创建一个包含CREATE TABLE语句的table_name.sql文件，和包含数据的tbl_name.txt文件。可使用–fields-terminated=…，–fields-enclosed-by=…，–fields-optionally-enclosed-by=…，–fields-escaped-by=…，–lines-terminated-by=…来改变默认的分隔符、换行符等。</li>
+<li>–where=’where_condition’ (-w ‘where_condition’)：导出给定条件的数据。</li>
+<li>–all-databases: 备份所有数据库</li>
+<li>–databases： 备份指定数据库</li>
+</ul>
+<h4 id="SELECT…INTO-OUTFILE"><a href="#SELECT…INTO-OUTFILE" class="headerlink" title="SELECT…INTO OUTFILE"></a>SELECT…INTO OUTFILE</h4><p>逻辑备份方法，道出一张表中的数据。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">SELECT [column 1],[column 2] ...</span><br><span class="line">INTO</span><br><span class="line">OUTFILE &apos;file_name&apos;</span><br><span class="line">[</span><br><span class="line">&#123;FIELDS | COLUMNS&#125;</span><br><span class="line">[TERMINATED BY &apos;string&apos;]</span><br><span class="line">[[OPTIONALLY] ENCLOSED BY &apos;char&apos;]</span><br><span class="line">[ESCAPED BY &apos;char&apos;]</span><br><span class="line">]</span><br><span class="line">[</span><br><span class="line">LINES</span><br><span class="line">[SATRTING BY &apos;string&apos;]</span><br><span class="line">[TERMINATED BY &apos;string&apos;]</span><br><span class="line">]</span><br><span class="line">FROM TABLE WHERE ...</span><br></pre></td></tr></table></figure>
+<p>FIELDS[TERMINATED BY ‘string’]表示每个列的分隔符，[[OPTIONALLY] ENCLOSED BY ‘char’]表示对于字符串的包含符，[ESCAPED BY ‘char’]表示转义符。[STARTING BY ‘string’]表示每行的开始符号，[TERMINATED BY ‘string’]表示每行的结束符号。没指定FIELDS和LINES选型时的默认值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FLELDS TERMINATED BY &apos;\t&apos; ENCLOSED BY &apos;&apos; ESCAPED BY &apos;\\&apos;</span><br><span class="line">LINES TERMINATED BY &apos;\n&apos; STARTING BY &apos;&apos;</span><br></pre></td></tr></table></figure>
+<p>file_name表示导出的文件，路径权限必须是mysql：mysql的。</p>
+<h4 id="逻辑备份的恢复"><a href="#逻辑备份的恢复" class="headerlink" title="逻辑备份的恢复"></a>逻辑备份的恢复</h4><p>mysqldump只需执行文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p &lt; test_backup.sql</span><br><span class="line">Enter password:</span><br></pre></td></tr></table></figure>
+<p>导入时包含了创建和删除数据库的SQL语句，须确保删除架构时，架构目录下没有其他与数据相关的文件。</p>
+<p>mysqldump可导出存储过程、导出触发器、导出事件、导出数据，不能导出视图。需导出视图定义或备份视图定义的frm文件，在恢复时进行导入。</p>
+<h4 id="LOAD-DATA-INFILE"><a href="#LOAD-DATA-INFILE" class="headerlink" title="LOAD DATA INFILE"></a>LOAD DATA INFILE</h4><p>通过mysqldump-tab或者SELECT INTO OUTFILE导出的数据，可通过命令LOAD DATA INFILE进行导入。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[REPLACE | IGNORE] </span><br><span class="line">INTO TABLE tbl_name</span><br><span class="line">[CHARACTER SET charset_name]</span><br><span class="line">[</span><br><span class="line">&#123;FIELDS | COLUMNS&#125;</span><br><span class="line">[TERMINATED BY &apos;string&apos;]</span><br><span class="line">[[OPTIONALLY] ENCLOSED BY &apos;char&apos;]</span><br><span class="line">[ESCAPED BY &apos;char&apos;]</span><br><span class="line">]</span><br><span class="line">[</span><br><span class="line">LINE </span><br><span class="line">[STARTING BY &apos;string&apos;]</span><br><span class="line">[TERMINATED BY &apos;string&apos;]</span><br><span class="line">]</span><br><span class="line">[IGNORE number LINES]</span><br><span class="line">[(col_name_or_user_var,...)]</span><br><span class="line">[SET col_name=expr,...]</span><br></pre></td></tr></table></figure>
+<p>需拥有INFILE权限。导入格式的选项同SELECT INTO OUTFILE命令一致。IGNORE number LINES可忽略导入的前几行。</p>
+<h4 id="mysqlimport"><a href="#mysqlimport" class="headerlink" title="mysqlimport"></a>mysqlimport</h4><p>MySQL DB提供的命令行程序，时LOAD DATA INFILE的命令接口，大多数选项与LOAD DATA INFILE语法相同。</p>
+<p><code>mysqlimport [option] db_name textfile1 [textfile2 ...]</code></p>
+<p>该命令可用来导入多张表，通过–user-thread参数并发导入不同的文件。</p>
+<h3 id="二进制日志备份与恢复"><a href="#二进制日志备份与恢复" class="headerlink" title="二进制日志备份与恢复"></a>二进制日志备份与恢复</h3><p>可通过二进制日志完成point-in-time的恢复工作。MySQL DB replication同样需要二进制日志。默认并不启用二进制日志，需先启用。在配置文件中配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">log-bin=mysql-bin</span><br><span class="line">sync-binlog=1</span><br><span class="line">innodb_support_xa=1</span><br></pre></td></tr></table></figure>
+<p>备份二进制日志文件前，可通过FLUSH LOGS命令生成一个新的二进制日志文件，然后备份之前的二进制日志文件。</p>
+<p>恢复二进制日志，通过mysqlbinlog：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqlbinlog [options] log_file | mysql -u root -p</span><br></pre></td></tr></table></figure>
+<p>恢复多个二进制日志文件应该同时恢复，而不是一个一个地恢复。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqlbinlog binlog.[0-10]* | mysql -u root -p</span><br></pre></td></tr></table></figure>
+<p>可通过mysqlbinlog导入到一个文件再通过SOURCE命令导入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysqlbinlog binlog_file1 &gt; binglog_file</span><br><span class="line">mysqlbinlog binlog_file2 &gt;&gt; binlog_file</span><br><span class="line">mysql -u root -p -e &quot;scorce binlog_file&quot;</span><br></pre></td></tr></table></figure>
+<p>–start-position和–stop-position选项可指定二进制日志的某个偏移量来进行恢复，可跳过某些不正确的语句。–start-datetime和–stop-datetime选项可用来指定从二进制的某个时间点进行恢复。用法一致。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqlbinglog --start-position=199512 binlog_file | mysql -u root -p</span><br></pre></td></tr></table></figure>
+<h3 id="热备"><a href="#热备" class="headerlink" title="热备"></a>热备</h3><h4 id="ibbackup"><a href="#ibbackup" class="headerlink" title="ibbackup"></a>ibbackup</h4><p>InnoDB engine提供的热备份工具，可同时备份MyISAM engine和InnoDB engine。</p>
+<p>对InnoDB engine table备份工作原理：</p>
+<ul>
+<li>记录备份开始时，InnoDB engine重做日志文件检查点的LSN。</li>
+<li>复制共享表空间文件以及独立表空间文件。</li>
+<li>记录复制完成表空间文件后，InnoDB engine重做日志文件检查点的LSN。</li>
+<li>复制在备份时产生的重做日志</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>在线备份，不阻塞任何SQL语句。</li>
+<li>备份性能好，实质是复制数据库文件和重做日志文件。</li>
+<li>支持压缩备份，通过选项，可支持不同级别的压缩。</li>
+<li>跨平台支持，ibbackup可运行在Linux、Windows以及主流的Unix系统平台上。</li>
+</ul>
+<p>ibbackup恢复InnoDB engine table：</p>
+<ul>
+<li>恢复表空间文件。</li>
+<li>应用重做日志文件。</li>
+</ul>
+<p>xtrabackup实现了ibbackup的功能，拓展支持了真正的增量备份功能。</p>
+<h4 id="xtrabackup"><a href="#xtrabackup" class="headerlink" title="xtrabackup"></a>xtrabackup</h4><p>网址：<a href="https://launchpad.net/percona-xtrabackup" target="_blank" rel="noopener">xtrabackup</a>。</p>
+<p>命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xtrabackup --backup | --prepare [OPTIONS]</span><br></pre></td></tr></table></figure>
+<p>开始备份时，首先记录重做日志的位置，然后对备份的InnoDB engine table的物理文件，即共享表空间文件和独立表空间文件进行复制，最后记录备份完成后的重做日志位置。</p>
+<h4 id="xtrabackup实现增量备份"><a href="#xtrabackup实现增量备份" class="headerlink" title="xtrabackup实现增量备份"></a>xtrabackup实现增量备份</h4><p>原理：</p>
+<ol>
+<li>先完成一个全备，记录下此时额检查点LSN。</li>
+<li>增量备份时，比较表空间中每个页的LSN是否大于上次备份时的LSN，是则备份该页，同时记录当前检查点的LSN。</li>
+</ol>
+<h3 id="快照备份"><a href="#快照备份" class="headerlink" title="快照备份"></a>快照备份</h3><p>通过文件系统支持的快照功能对数据库进行备份。前提是将所有数据库文件放在同一文件分区中，然后对分区进行快照操作。支持快照功能的文件系统和设备有FreeBSD的UFS文件系统，Solaris的ZFS文件系统，GUN/Linux的逻辑管理器（Logical Volume Manager，LVM）等。UFS和ZFS的快照实现大致和LVM相似。</p>
+<p>LVM使用写时复制（Copy-on-write）技术创建快照。</p>
+<p>参阅<a href="https://www.cnblogs.com/kevingrace/p/6129660.html" target="_blank" rel="noopener">Mysql备份系列（4）–lvm-snapshot备份mysql数据(全量+增量）操作记录</a>。</p>
+<h3 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h3><p>复制（replication）是MySQL DB提供的一种高可用高性能解决方案，一般用于建立大型应用。步骤：</p>
+<ul>
+<li>主服务器（master）把数据更改记录到二进制日志（binlog）中。</li>
+<li>从服务器（slave）把主服务器的二进制日志复制到自己的中继日志（relay log）中。</li>
+<li>从服务器重做中继日志中的重做日志，把更改应用到自己的数据库上，以达到数据的最终一致。</li>
+</ul>
+<p>实质是一个完全备份加上二进制日志备份的还原。复制是异步实时的，存在主动服务器之间的执行延时。可通过SHOW SLAVE STATUS和SHOW MASTE STATUS查看当前的延时。</p>
+<p>主要变量：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">变量</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Slave_IO_State</td>
+<td style="text-align:center">当前IO线程的状态</td>
+</tr>
+<tr>
+<td style="text-align:center">Master_Log_File</td>
+<td style="text-align:center">当前同步的主服务器的二进制日志</td>
+</tr>
+<tr>
+<td style="text-align:center">Read_Master_Log_Pos</td>
+<td style="text-align:center">显示当前同步到主服务器上二进制日志的偏移量位置，单位字节。</td>
+</tr>
+<tr>
+<td style="text-align:center">Relay_Master_Log_File</td>
+<td style="text-align:center">当前中继日志同步的二进制日志</td>
+</tr>
+<tr>
+<td style="text-align:center">Relay_Log_File</td>
+<td style="text-align:center">显示当前写入的中继日志</td>
+</tr>
+<tr>
+<td style="text-align:center">Relay_Log_Log</td>
+<td style="text-align:center">显示当前执行到中继日志的便宜量位置</td>
+</tr>
+<tr>
+<td style="text-align:center">Slave_IO_Running</td>
+<td style="text-align:center">从服务器中IO线程的运行状态，YES代表正常</td>
+</tr>
+<tr>
+<td style="text-align:center">Slave_SQL_Running</td>
+<td style="text-align:center">从服务器中SQL线程的运行状态，YES代表正常</td>
+</tr>
+<tr>
+<td style="text-align:center">Exec_Master_Log_Pos</td>
+<td style="text-align:center">表示同步到主服务器的二进制日志偏移量的位置，Read_Master_Log_Pos-Exec_Master_Log_Pos可表示当前SQL线程运行的延时，单位是字节。</td>
+</tr>
+</tbody>
+</table>
+
       
     </div>
     
@@ -509,6 +637,12 @@
           
             <a href="/tags/note/" rel="tag"><i class="fa fa-tag"></i> note</a>
           
+            <a href="/tags/innodb/" rel="tag"><i class="fa fa-tag"></i> innodb</a>
+          
+            <a href="/tags/backup/" rel="tag"><i class="fa fa-tag"></i> backup</a>
+          
+            <a href="/tags/recovery/" rel="tag"><i class="fa fa-tag"></i> recovery</a>
+          
         </div>
       
 
@@ -520,8 +654,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/11/19/Netty实战笔记/" rel="next" title="Netty实战笔记">
-                <i class="fa fa-chevron-left"></i> Netty实战笔记
+              <a href="/2019/09/16/事务/" rel="next" title="事务">
+                <i class="fa fa-chevron-left"></i> 事务
               </a>
             
           </div>
@@ -529,10 +663,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/01/15/InnoDB存储引擎/" rel="prev" title="InnoDB存储引擎">
-                InnoDB存储引擎 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -728,7 +858,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义数据库和实例"><span class="nav-number">1.</span> <span class="nav-text">定义数据库和实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL体系结构"><span class="nav-number">2.</span> <span class="nav-text">MySQL体系结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL存储引擎"><span class="nav-number">3.</span> <span class="nav-text">MySQL存储引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#InnoDB存储引擎"><span class="nav-number">3.1.</span> <span class="nav-text">InnoDB存储引擎</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MyISAM存储引擎"><span class="nav-number">3.2.</span> <span class="nav-text">MyISAM存储引擎</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接MySQL"><span class="nav-number">4.</span> <span class="nav-text">连接MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-IP"><span class="nav-number">4.1.</span> <span class="nav-text">TCP/IP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命名管道和共享内存"><span class="nav-number">4.2.</span> <span class="nav-text">命名管道和共享内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UNIX套接字"><span class="nav-number">4.3.</span> <span class="nav-text">UNIX套接字</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#备份与恢复概述"><span class="nav-number">1.</span> <span class="nav-text">备份与恢复概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#冷备"><span class="nav-number">2.</span> <span class="nav-text">冷备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逻辑备份"><span class="nav-number">3.</span> <span class="nav-text">逻辑备份</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mysqldump"><span class="nav-number">3.1.</span> <span class="nav-text">mysqldump</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SELECT…INTO-OUTFILE"><span class="nav-number">3.2.</span> <span class="nav-text">SELECT…INTO OUTFILE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#逻辑备份的恢复"><span class="nav-number">3.3.</span> <span class="nav-text">逻辑备份的恢复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LOAD-DATA-INFILE"><span class="nav-number">3.4.</span> <span class="nav-text">LOAD DATA INFILE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mysqlimport"><span class="nav-number">3.5.</span> <span class="nav-text">mysqlimport</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二进制日志备份与恢复"><span class="nav-number">4.</span> <span class="nav-text">二进制日志备份与恢复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#热备"><span class="nav-number">5.</span> <span class="nav-text">热备</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ibbackup"><span class="nav-number">5.1.</span> <span class="nav-text">ibbackup</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#xtrabackup"><span class="nav-number">5.2.</span> <span class="nav-text">xtrabackup</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#xtrabackup实现增量备份"><span class="nav-number">5.3.</span> <span class="nav-text">xtrabackup实现增量备份</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快照备份"><span class="nav-number">6.</span> <span class="nav-text">快照备份</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复制"><span class="nav-number">7.</span> <span class="nav-text">复制</span></a></li></ol></div>
             
 
           </div>
