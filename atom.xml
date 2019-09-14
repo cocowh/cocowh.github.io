@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="bighua.top/"/>
-  <updated>2019-09-14T10:45:06.507Z</updated>
+  <updated>2019-09-14T12:01:07.553Z</updated>
   <id>bighua.top/</id>
   
   <author>
@@ -15,6 +15,39 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>性能调优</title>
+    <link href="bighua.top/2019/09/17/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/"/>
+    <id>bighua.top/2019/09/17/性能调优/</id>
+    <published>2019-09-17T06:27:16.000Z</published>
+    <updated>2019-09-14T12:01:07.553Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="选择合适的CPU"><a href="#选择合适的CPU" class="headerlink" title="选择合适的CPU"></a>选择合适的CPU</h3><p>InnoDB eigine一般应用OLTP数据库应用，特点：</p><ul><li>用户操作并发量大</li><li>事务处理的时间一般比较短</li><li>查询的语句较为简单，一般都走索引</li><li>复杂的查询较少</li></ul><p>对CPU要求不是很高，复杂的查询操作如比较、排序、连接等消耗CPU的操作较少发生。OLAP是CPU密集型的操作，OLTP是IO密集型的操作。需注意提高IO。</p><p>未获得更多内存的支持，CPU必须是64位的。InnoDB设计架构，主要的后台操作在一个单独的master thread中完成，不能很好的支持多核的应用。多核CPU应选取InnoDB v1.1或更高版本。可通过参数<code>innodb_read_io_threads</code>和<code>innodb_write_io_threads</code>增大IO的线程，更有效地利用CPU的多核性能。</p><p>当前MySQl版本中，一条SQL语句只能在一个CPU中工作，不支持多CPU的处理。</p><h3 id="内存的重要性"><a href="#内存的重要性" class="headerlink" title="内存的重要性"></a>内存的重要性</h3><p>内存的大小最能直接反映数据库的性能。开发前应预估“活跃”数据库的大小，以此确定数据库服务器内存的大小。通过查看当前服务器的状态，比较物理磁盘的读取和内存读取的比例判断缓冲池的命中率，通常InnoDB engine的缓冲池命中率不应小于99%。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show  global status like &apos;innodb%read%&apos;\G</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">Variable_name: Innodb_buffer_pool_read_ahead_rnd</span><br><span class="line">        Value: 0</span><br><span class="line">*************************** 2. row ***************************</span><br><span class="line">Variable_name: Innodb_buffer_pool_read_ahead</span><br><span class="line">        Value: 0</span><br><span class="line">*************************** 3. row ***************************</span><br><span class="line">Variable_name: Innodb_buffer_pool_read_ahead_evicted</span><br><span class="line">        Value: 0</span><br><span class="line">*************************** 4. row ***************************</span><br><span class="line">Variable_name: Innodb_buffer_pool_read_requests</span><br><span class="line">        Value: 5373</span><br><span class="line">*************************** 5. row ***************************</span><br><span class="line">Variable_name: Innodb_buffer_pool_reads</span><br><span class="line">        Value: 488</span><br><span class="line">*************************** 6. row ***************************</span><br><span class="line">Variable_name: Innodb_data_pending_reads</span><br><span class="line">        Value: 0</span><br><span class="line">*************************** 7. row ***************************</span><br><span class="line">Variable_name: Innodb_data_read</span><br><span class="line">        Value: 8065536</span><br><span class="line">*************************** 8. row ***************************</span><br><span class="line">Variable_name: Innodb_data_reads</span><br><span class="line">        Value: 549</span><br><span class="line">*************************** 9. row ***************************</span><br><span class="line">Variable_name: Innodb_pages_read</span><br><span class="line">        Value: 487</span><br><span class="line">*************************** 10. row ***************************</span><br><span class="line">Variable_name: Innodb_rows_read</span><br><span class="line">        Value: 120</span><br><span class="line">10 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure><p>当前服务器的状态参数：</p><table><thead><tr><th style="text-align:center">参数</th><th style="text-align:center">说明 </th></tr></thead><tbody><tr><td style="text-align:center">Innodb_buffer_pool_reads</td><td style="text-align:center">表示从物理磁盘读取页的次数</td></tr><tr><td style="text-align:center">Innodb_buffer_pool_read_ahead</td><td style="text-align:center">预读的次数</td></tr><tr><td style="text-align:center">Innodb_buffer_pool_read_ahead_evicted</td><td style="text-align:center">预读的页，一般用于判断预读的效率</td></tr><tr><td style="text-align:center">Innodb_buffer_pool_read_requests</td><td style="text-align:center">从缓冲池中读取页的次数</td></tr><tr><td style="text-align:center">Innodb_data_read</td><td style="text-align:center">总共读入的字节数</td></tr><tr><td style="text-align:center">Innodb_data_reads</td><td style="text-align:center">发起读取请求的次数，每次读取可能需要读取多个页</td></tr></tbody></table><p>缓冲池命中率 = Innodb_buffer_pool_read_requests / (Innodb_buffer_pool_read_requests +  Innodb_buffer_pool_read_ahead + Innodb_data_reads)</p><p>平均每次读取的字节数=Innodb_data_read /  Innodb_data_reads</p><h3 id="磁盘对数据库性能的影响"><a href="#磁盘对数据库性能的影响" class="headerlink" title="磁盘对数据库性能的影响"></a>磁盘对数据库性能的影响</h3><h4 id="传统机械硬盘"><a href="#传统机械硬盘" class="headerlink" title="传统机械硬盘"></a>传统机械硬盘</h4><p>服务器领域一般使用SAS或SATA接口的硬盘，服务器机械硬盘向小型化转型。</p><p>重要指标：寻道时间、转速。</p><p>通常可将多块机械硬盘组成RAID提高数据库的性能，也可将数据文件分布在不同的磁盘上来达到访问负载的均衡。</p><h4 id="固态硬盘"><a href="#固态硬盘" class="headerlink" title="固态硬盘"></a>固态硬盘</h4><p>基于闪存的硬盘，内部由山村（Flash Memory）组成。具有低延时性、低功耗、防震性等。企业级应用一般使用固态硬盘，通过并联多块闪存进一步提高数据传输的吞吐量。</p><p>闪存是一个完全的电子设备，没有传统机械硬盘的读写磁盘。不需要耗费大量的时间进行磁头旋转和定位来查找数据。固态硬盘可以提供一致的随机访问时间。闪存中的数据是不可更新的，只能通过扇区的覆盖重写，在覆盖重写之前，需要执行耗时的擦除操作。擦除操作不能在所含扇区上完成，需要在删除整个被称为擦除块的基础上完成，擦除块的尺寸大于扇区的大小，通常为128KB或者256KB。每个擦除块有擦写次数限制（已有算法解决）。需要考虑固态硬盘在写入方面存在的问题。</p><p>闪存提供的读写速度是非对称的，读取速度远快于写入的速度。通过增加通道数量，可线性提高固态硬盘的性能。固态硬盘的访问延时一般小于0.1ms左右。</p><p>可通过增加参数<code>innodb_io_capacity</code>的值，充分利用固态硬盘带来高的IOPS特性。InnoSQL及InnoDB  v1.2可选择关闭邻接页的刷新，为数据库带来一定效果的提升。</p><p>可利用InnoSQL开发的L2 Cache解决方案，在内存缓冲池和传统存储层之间建立一层基于闪存固态硬盘的二级缓冲池，以此扩充缓冲池的容量，充分利用固态硬盘的超高速随机读写性能，提高数据库的性能。</p><h3 id="合理地设置RAID"><a href="#合理地设置RAID" class="headerlink" title="合理地设置RAID"></a>合理地设置RAID</h3><h4 id="RAID（Redundant-Array-of-Independent-Disks，独立磁盘冗余数组）基本思想是把多个相对便宜的磁盘组合起来，成为一个磁盘数组，使性能达到甚至超过一个价格昂贵、容量巨大的硬盘。将多个硬盘组合成为一个逻辑扇区，RAID好比一个单独的硬盘或逻辑存储单元，操作系统只会把它当作一个硬盘。"><a href="#RAID（Redundant-Array-of-Independent-Disks，独立磁盘冗余数组）基本思想是把多个相对便宜的磁盘组合起来，成为一个磁盘数组，使性能达到甚至超过一个价格昂贵、容量巨大的硬盘。将多个硬盘组合成为一个逻辑扇区，RAID好比一个单独的硬盘或逻辑存储单元，操作系统只会把它当作一个硬盘。" class="headerlink" title="RAID（Redundant Array of Independent Disks，独立磁盘冗余数组）基本思想是把多个相对便宜的磁盘组合起来，成为一个磁盘数组，使性能达到甚至超过一个价格昂贵、容量巨大的硬盘。将多个硬盘组合成为一个逻辑扇区，RAID好比一个单独的硬盘或逻辑存储单元，操作系统只会把它当作一个硬盘。"></a>RAID（Redundant Array of Independent Disks，独立磁盘冗余数组）基本思想是把多个相对便宜的磁盘组合起来，成为一个磁盘数组，使性能达到甚至超过一个价格昂贵、容量巨大的硬盘。将多个硬盘组合成为一个逻辑扇区，RAID好比一个单独的硬盘或逻辑存储单元，操作系统只会把它当作一个硬盘。</h4><p>RAID作用：</p><ul><li>增强数据集成度</li><li>增强容错功能</li><li>增加处理量或容量</li></ul><p>RAID组合方式：</p><ul><li>RAID 0:将多个磁盘合并成一个大的磁盘，不会有冗余，并行I/O，速度最快。也称为带区集，将多个磁盘并列起来，使之成为一个大磁盘，存放数据时，将数据按照磁盘的个数进行分段，同时将这些数据写进这些盘中。没有冗余功能，若一个磁盘损坏，所有的数据都会丢失。多磁盘效能受限于总I/O瓶颈，RAID效能随边际递减。</li><li>RAID 1:两组以上的N个磁盘相互作为镜像，在一些多线程操作系统中能有很好的读取速度，写入速度略降低。除非拥有相同数据的主磁盘与镜像同时损坏，否则只要有一个磁盘正常的工作即可维持工作，可靠性最高，利用率最低。</li><li>RAID 5:兼顾存储性能、数据安全和存储成本。使用Disk Strping（硬盘分区）技术。至少需要三个磁盘，不对存储的数据进行备份，把数据和相对应的奇偶校验信息存储到组成RAID 5的各个磁盘上，奇偶校验信息和相应的数据分别存储于不同的磁盘上，有一个磁盘损坏后，利用剩下额数据相应的奇偶校验信息恢复被损坏的数据。</li><li>RAID 10和RAID 01:RAID 10先镜像再分区数据，将所有磁盘分为两组，视为RAID 0的最低组合，然后将这两组各自视为RAID 1运作。RAID 01于RAID 10程序相反，先分区再将数据镜射到两组硬盘。</li><li>RAID 50:镜像阵列条带，至少由六块硬盘组成，同RAID 0一样，数据被分区称条带，在同一时间内向多块磁盘写入；同RAID 5一样，以数据的校验保证数据的安全，校验条带均匀分布在各个磁盘上，目的在于提高RAID 5的读写性能。</li></ul><p>对数据库，RAID 10是最好的选择，同时兼顾RAID 1和RAID 0的特性。</p><h4 id="RAID-Write-Back功能"><a href="#RAID-Write-Back功能" class="headerlink" title="RAID Write Back功能"></a>RAID Write Back功能</h4><p>指RAID控制器能够将写入的数据放入自身的缓存中，并把他们安排到后面再执行。不同等待物理磁盘实际写入的完成，写入更快。</p><p>数据库或操作系统关机时，Write Back功能可能会破坏数据库的数据。因写入可能还在RAID卡的缓存中，没有完全写入磁盘。为解决此问题大部分硬件RAID卡提供电池备份单元。</p><p>没有启用Write Back功能，则RAID卡设置中显示为Write Through，没有缓冲写入。Write Through模式下，可通过参数<code>innodb_flush_log_at_trx_commit</code>设置为0提高执行存储过程的性能。</p><h3 id="基准测试工具"><a href="#基准测试工具" class="headerlink" title="基准测试工具"></a>基准测试工具</h3><ul><li>sysbench<a href="https://www.jianshu.com/p/4a37a6a452d9" target="_blank" rel="noopener">基准测试工具Sysbench</a></li><li>mysql-tpcc<a href="https://www.hi-linux.com/posts/38534.html" target="_blank" rel="noopener">TPCC-MySQL 的安装与使用</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;选择合适的CPU&quot;&gt;&lt;a href=&quot;#选择合适的CPU&quot; class=&quot;headerlink&quot; title=&quot;选择合适的CPU&quot;&gt;&lt;/a&gt;选择合适的CPU&lt;/h3&gt;&lt;p&gt;InnoDB eigine一般应用OLTP数据库应用，特点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;用户
+      
+    
+    </summary>
+    
+      <category term="MySQL技术内幕-InnoDB存储引擎" scheme="bighua.top/categories/MySQL%E6%8A%80%E6%9C%AF%E5%86%85%E5%B9%95-InnoDB%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/"/>
+    
+    
+      <category term="mysql" scheme="bighua.top/tags/mysql/"/>
+    
+      <category term="note" scheme="bighua.top/tags/note/"/>
+    
+      <category term="innodb" scheme="bighua.top/tags/innodb/"/>
+    
+      <category term="majorization" scheme="bighua.top/tags/majorization/"/>
+    
+  </entry>
   
   <entry>
     <title>备份与恢复</title>
@@ -198,30 +231,6 @@
       <category term="note" scheme="bighua.top/tags/note/"/>
     
       <category term="innodb" scheme="bighua.top/tags/innodb/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>性能调优</title>
-    <link href="bighua.top/2019/08/16/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/"/>
-    <id>bighua.top/2019/08/16/性能调优/</id>
-    <published>2019-08-16T06:27:16.000Z</published>
-    <updated>2019-08-16T06:36:31.868Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-      <category term="MySQL技术内幕-InnoDB存储引擎" scheme="bighua.top/categories/MySQL%E6%8A%80%E6%9C%AF%E5%86%85%E5%B9%95-InnoDB%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/"/>
-    
-    
-      <category term="mysql" scheme="bighua.top/tags/mysql/"/>
-    
-      <category term="note" scheme="bighua.top/tags/note/"/>
-    
-      <category term="innodb" scheme="bighua.top/tags/innodb/"/>
-    
-      <category term="majorization" scheme="bighua.top/tags/majorization/"/>
     
   </entry>
   
