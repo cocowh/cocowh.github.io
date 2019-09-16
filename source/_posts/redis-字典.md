@@ -2,9 +2,10 @@
 title: redis-字典
 tags: [redis,dict,字典]
 comments: true
-categories: [redis]
+categories: [redis设计与实现]
 date: 2018-09-10 21:30:23
 ---
+
 又称符号表、关联数组或映射，一种用于保存键值对的抽象数据结构。
 
 一个键可以和一个值进行关联，字典中的每个键都是独一无二的，通过键查找与之关联的值、更新值或删除整个键值对。

@@ -2,7 +2,7 @@
 title: redis-整数集合
 tags: [redis,intset]
 comments: true
-categories: [redis]
+categories: [redis设计与实现]
 date: 2018-09-13 21:42:03
 ---
 是集合键的底层实现之一，当一个集合只包含整数值元素，并且集合的元素数量不多时，redis使用整数集合作为集合键的底层实现。

@@ -2,7 +2,7 @@
 title: redis-简单动态字符串
 tags: [redis,sds]
 comments: true
-categories: [redis]
+categories: [redis设计与实现]
 date: 2018-09-08 21:16:08
 ---
 redis未直接使用C语言传统的字符串表示，而是自己构建了一种名为简单动态字符串（simple dynamic string，SDS）的抽象类型。C字符串只会作为字符串字面量用在一些无需对字符串值进行修改的地方。包含字符串值的键值对在底层都是由SDS实现的。

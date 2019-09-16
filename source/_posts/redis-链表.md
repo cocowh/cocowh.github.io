@@ -2,7 +2,7 @@
 title: redis-链表
 tags: [redis,链表]
 comments: true
-categories: [redis]
+categories: [redis设计与实现]
 date: 2018-09-09 21:24:28
 ---
 redis构建了自己的链表实现。
