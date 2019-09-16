@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="又称符号表、关联数组或映射，一种用于保存键值对的抽象数据结构。 一个键可以和一个值进行关联，字典中的每个键都是独一无二的，通过键查找与之关联的值、更新值或删除整个键值对。 redis构建了自己的字典实现，redis数据库使用字典作为底层实现，对数据库的增、删、改、查操作也是构建在对字典的操作之上。字典还是哈希键的底层实现之一，当一个哈希键包含的键值对比较多，又或者键值对中的元素都是比较长的字符串时">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-30T11:56:56.982Z">
+<meta property="og:updated_time" content="2019-09-16T08:20:02.567Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis-字典">
 <meta name="twitter:description" content="又称符号表、关联数组或映射，一种用于保存键值对的抽象数据结构。 一个键可以和一个值进行关联，字典中的每个键都是独一无二的，通过键查找与之关联的值、更新值或删除整个键值对。 redis构建了自己的字典实现，redis数据库使用字典作为底层实现，对数据库的增、删、改、查操作也是构建在对字典的操作之上。字典还是哈希键的底层实现之一，当一个哈希键包含的键值对比较多，又或者键值对中的元素都是比较长的字符串时">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,321
+                  2,323
                 </span>
               
 
@@ -460,7 +460,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">typedef struct dictEntry &#123;</span><br><span class="line">	void *key;//键</span><br><span class="line">	union &#123;</span><br><span class="line">		void *val;</span><br><span class="line">		uint64_tu64;</span><br><span class="line">		int64_ts64;</span><br><span class="line">	&#125; v; //值</span><br><span class="line">	struct dictEntry *next;//指向下个哈希表节点，形成链表</span><br><span class="line">&#125; dictEntry;</span><br></pre></td></tr></table></figure>
 <p>next属性是一个指向哈希表节点的指针，可以将多个哈希表值相同的键值对链接在一起，以此来解决键冲突的问题。</p>
 <h4 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h4><p>由dict.h/dict结构表示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">typedef struct dict &#123;</span><br><span class="line">	dictType *type;//类型特定函数</span><br><span class="line">	void *privdata;//私有数据</span><br><span class="line">	dictht ht[2];//哈希表</span><br><span class="line">	int rehashidx;//rehash索引，当rehash不再进行时，值为-1  </span><br><span class="line">	</span><br><span class="line">&#125; dict;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">typedef struct dict &#123;</span><br><span class="line">	dictType *type;//类型特定函数</span><br><span class="line">	void *privdata;//私有数据</span><br><span class="line">	dictht ht[2];//哈希表</span><br><span class="line">	int trehashidx;//rehash索引，当rehash不再进行时，值为-1  </span><br><span class="line">	</span><br><span class="line">&#125; dict;</span><br></pre></td></tr></table></figure>
 <p>type属性和privdata属性是针对不同类型的键值对，为创建多态字典而设置：</p>
 <ul>
 <li>type属性是一个指向dictType结构的指针，每个dictType结构保存了一簇用于操作特定类型键值对的函数，redis会为用途不同的字典设置不同的类型特定函数。</li>
@@ -477,8 +477,12 @@
 <p>redis的哈希表使用链表链地址法来解决键冲突，每个哈希表节点都有一个next指针，多个哈希表节点可以使用next指针构成一个单向链表，被分配到同一个索引上的多个节点可以用这个单项链表连接起来，解决键冲突问题。速度考虑，程序总是将新节点添加到链表的表头位置，排在其他已有节点的前面。</p>
 <h3 id="rehash"><a href="#rehash" class="headerlink" title="rehash"></a>rehash</h3><p>为让哈希表的负载因子维持在一个合理的范围之内，哈希表保存的键值对数量太多或者太少时，程序需要对哈希表的大小进行相应的拓展或者收缩，通过执行rehash（重新散列）操作来完成。步骤如下：</p>
 <ol>
-<li>为字典的ht[1]哈希表分配空间，哈希表的空间的大小取决于要执行的操作，以及ht[0]当前包含的键值对数量。</li>
-<li>若执行的是扩展操作，则ht[1]的大小为第一个大于等于ht[0].used*2的2^n;<br>若执行的是收缩操作，那么ht[1]的大小为第一个大于等于ht[0].used的2^n。<br>将保存在ht[0]中的所有键值对rehash到ht[1]上面：rehash重新计算键的哈希值和索引，然后将键值对放置到ht[1]哈希表的指定位置上。</li>
+<li>为字典的ht[1]哈希表分配空间，哈希表的空间的大小取决于要执行的操作，以及ht[0]当前包含的键值对数量。<ol>
+<li>若执行的是扩展操作，则ht[1]的大小为第一个大于等于ht[0].used*2的2^n;</li>
+<li>若执行的是扩展操作，则ht[1]的大小为第一个大于等于ht[0].used*2的2^n;</li>
+</ol>
+</li>
+<li>将保存在ht[0]中的所有键值对rehash到ht[1]上面：rehash重新计算键的哈希值和索引，然后将键值对放置到ht[1]哈希表的指定位置上。</li>
 <li>当ht[0]包含的所有键值对都迁移到了ht[1]之后（ht[0]表变为空表），释放ht[0]，将ht[1]设置为ht[0]，并在ht[1]新创建一个空白哈希表，为下一次rehash作准备。</li>
 </ol>
 <p><code>哈希表的拓展和收缩</code>：</p>
@@ -824,7 +828,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">192.6k</span>
+    <span title="本站字数总计">192.9k</span>
   
 </div>
 

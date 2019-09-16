@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="是集合键的底层实现之一，当一个集合只包含整数值元素，并且集合的元素数量不多时，redis使用整数集合作为集合键的底层实现。 整数集合的实现是redis用于保存整数值的集合抽象数据结构，可以保存类型为int16_t、int32_t或者int64_t的整数值，并且保证集合中不会出现重复元素。 由intset.h/intset结构表示: 12345typedef struct intset &amp;#123;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-30T11:56:56.983Z">
+<meta property="og:updated_time" content="2019-09-16T12:05:51.438Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis-整数集合">
 <meta name="twitter:description" content="是集合键的底层实现之一，当一个集合只包含整数值元素，并且集合的元素数量不多时，redis使用整数集合作为集合键的底层实现。 整数集合的实现是redis用于保存整数值的集合抽象数据结构，可以保存类型为int16_t、int32_t或者int64_t的整数值，并且保证集合中不会出现重复元素。 由intset.h/intset结构表示: 12345typedef struct intset &amp;#123;">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  782
+                  806
                 </span>
               
 
@@ -456,11 +456,12 @@
 <p>contents数组是整数集合的底层实现：整数集合的每个元素都是contents数组的一个数组项，数组中各项按值从小到大排列，且数组中不包含重复项。</p>
 <p>length属性记录整数集合包含的元素数量，即contents数组的长度。</p>
 <p>contents数组的真正类型取决于encoding属性的值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * intset 的编码方式</span><br><span class="line"> */</span><br><span class="line">#define INTSET_ENC_INT16 (sizeof(int16_t))</span><br><span class="line">#define INTSET_ENC_INT32 (sizeof(int32_t))</span><br><span class="line">#define INTSET_ENC_INT64 (sizeof(int64_t))</span><br></pre></td></tr></table></figure>
 <p>根据整数集合的升级规则，当向一个底层为int16_t数组的整数集合添加一个int64_t类型的整数值时，整数集合已有的所有元素都会被转换成int64_t类型。</p>
 <h3 id="升级"><a href="#升级" class="headerlink" title="升级"></a>升级</h3><p>将新元素添加到整数集合里面且新元素的类型比整数集合现有所有元素的类型都要长时，整数集合需要先进行升级，然后将新元素添加到整数集合里面。</p>
 <p>升级过程：</p>
 <ul>
-<li>根据新元素的类型，拓展整数集合底层数组的空间大小，并未新元素分配空间。</li>
+<li>根据新元素的类型，拓展整数集合底层数组的空间大小，并为新元素分配空间。</li>
 <li>将底层数组现有的所有元素都转换成与新元素相同的类型，并将转换后的元素放置到正确的位置上，在放置的过程中维持底层数组的有序性质不变。</li>
 <li>将新元素添加到底层数组中。</li>
 </ul>
@@ -800,7 +801,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">192.6k</span>
+    <span title="本站字数总计">192.9k</span>
   
 </div>
 

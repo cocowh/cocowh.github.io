@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="跳跃表是一种有序的数据结构，通过在每个节点中维持多个指向其他节点的指针，达到快速访问节点的目的。支持平均O(logN)，最坏O(N)复杂度的节点查找。可以通过顺序性操作来批量处理节点。 redis使用跳跃表作为有序集合键的底层实现之一，若有序集合包含的元素数量比较多，或者有序集合中元素的成员是比较长的字符串时，redis就会使用跳跃表来作为有序集合键的底层实现。 redis只在实现有序集合键和在集">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-30T11:56:56.973Z">
+<meta property="og:updated_time" content="2019-09-16T12:00:57.138Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis-跳跃表">
 <meta name="twitter:description" content="跳跃表是一种有序的数据结构，通过在每个节点中维持多个指向其他节点的指针，达到快速访问节点的目的。支持平均O(logN)，最坏O(N)复杂度的节点查找。可以通过顺序性操作来批量处理节点。 redis使用跳跃表作为有序集合键的底层实现之一，若有序集合包含的元素数量比较多，或者有序集合中元素的成员是比较长的字符串时，redis就会使用跳跃表来作为有序集合键的底层实现。 redis只在实现有序集合键和在集">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,135
+                  1,440
                 </span>
               
 
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  4
+                  5
                 </span>
               
             </div>
@@ -453,6 +453,10 @@
 <p>redis使用跳跃表作为有序集合键的底层实现之一，若有序集合包含的元素数量比较多，或者有序集合中元素的成员是比较长的字符串时，redis就会使用跳跃表来作为有序集合键的底层实现。</p>
 <p>redis只在实现有序集合键和在集群节点用作内部数据结构用到跳跃表。</p>
 <h3 id="跳跃表的实现"><a href="#跳跃表的实现" class="headerlink" title="跳跃表的实现"></a>跳跃表的实现</h3><p>由redis.h/zskiplistNode和redis.h/zskiplist两个结构定义，前者用于表示跳跃表节点，后者用于保存跳跃表节点的相关信息，例如节点的数量、指向表头节点和表尾节点的指针等。</p>
+<p>zskiplist结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">typedef struct zskiplist &#123;</span><br><span class="line"></span><br><span class="line">    // 表头节点和表尾节点,指向跳跃表的表头节点和表尾节点</span><br><span class="line">    struct zskiplistNode *header, *tail;</span><br><span class="line"></span><br><span class="line">    // 表中节点的数量</span><br><span class="line">    unsigned long length;</span><br><span class="line"></span><br><span class="line">    // 表中层数最大的节点的层数</span><br><span class="line">    int level;</span><br><span class="line"></span><br><span class="line">&#125; zskiplist;</span><br></pre></td></tr></table></figure>
+<p>zskiplistNode结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">typedef struct zskiplistNode &#123;</span><br><span class="line"></span><br><span class="line">    // 成员对象，指向一个字符串对象，保存着一个SDS值</span><br><span class="line">    robj *obj;</span><br><span class="line"></span><br><span class="line">    // 分值，跳跃表中所有节点按分值从小到大排序</span><br><span class="line">    double score;</span><br><span class="line"></span><br><span class="line">    // 后退指针，用于从表尾向表头方向访问节点</span><br><span class="line">    struct zskiplistNode *backward;</span><br><span class="line">		</span><br><span class="line">	 //level数组可包含多个元素，每个元素包含一个指向其他节点的指针，通过层快速访问其他节点</span><br><span class="line">    //每创建一个节点根据幂次定律随机生成一个介于1和32之间的level作为数据的大小，大小为层的高度</span><br><span class="line">    struct zskiplistLevel &#123;</span><br><span class="line"></span><br><span class="line">        // 前进指针，用于从表头向表尾方向访问节点</span><br><span class="line">        struct zskiplistNode *forward;</span><br><span class="line"></span><br><span class="line">        // 跨度，用于记录两个节点之间的距离，两个节点之间跨度越大，相聚越远，指向NULL跨度0</span><br><span class="line">        unsigned int span;</span><br><span class="line"></span><br><span class="line">    &#125; level[];</span><br><span class="line"></span><br><span class="line">&#125; zskiplistNode;</span><br></pre></td></tr></table></figure>
 <h4 id="跳跃表节点"><a href="#跳跃表节点" class="headerlink" title="跳跃表节点"></a>跳跃表节点</h4><p>由redis.h/zskiplistNode结构定义：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">typedef struct zskiplistNode &#123;</span><br><span class="line">	struct zskiplistLevel &#123;</span><br><span class="line">		struct zskiplistNode *forward;//前进指针</span><br><span class="line">		unsigned int 	span;//跨度</span><br><span class="line">	&#125; level[];//层</span><br><span class="line">	struct zskiplistNode *backward;//后退指针</span><br><span class="line">	double score;//分值</span><br><span class="line">	robj *obj;//成员对象</span><br><span class="line">&#125; zskiplistNode;</span><br></pre></td></tr></table></figure>
 <ul>
@@ -810,7 +814,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">192.6k</span>
+    <span title="本站字数总计">192.9k</span>
   
 </div>
 

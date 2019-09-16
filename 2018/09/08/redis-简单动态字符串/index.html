@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="redis未直接使用C语言传统的字符串表示，而是自己构建了一种名为简单动态字符串（simple dynamic string，SDS）的抽象类型。C字符串只会作为字符串字面量用在一些无需对字符串值进行修改的地方。包含字符串值的键值对在底层都是由SDS实现的。 12127.0.0.1:6379&amp;gt; rpush fruits &amp;quot;banana&amp;quot; &amp;quot;apple&amp;quot;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-30T11:56:56.986Z">
+<meta property="og:updated_time" content="2019-09-16T07:57:21.859Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis-简单动态字符串">
 <meta name="twitter:description" content="redis未直接使用C语言传统的字符串表示，而是自己构建了一种名为简单动态字符串（simple dynamic string，SDS）的抽象类型。C字符串只会作为字符串字面量用在一些无需对字符串值进行修改的地方。包含字符串值的键值对在底层都是由SDS实现的。 12127.0.0.1:6379&amp;gt; rpush fruits &amp;quot;banana&amp;quot; &amp;quot;apple&amp;quot;">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,300
+                  2,299
                 </span>
               
 
@@ -487,7 +487,7 @@
 <h4 id="二进制安全"><a href="#二进制安全" class="headerlink" title="二进制安全"></a>二进制安全</h4><p>C字符串中的字符必须符合某种编码（ASCII），且除字符串末尾外，字符串里面不能包含空字符。限制C字符串只能保存文本数据，而不能保存图像、音频、视频、压缩文件这样的二进制数据。</p>
 <p>为确保redis可以适用于各种不同的使用场景，SDS的API都是二进制安全的（binary-safe），所有SDS API都会以处理二进制的方式来处理SDS存放在buf数组里的数据，程序不会对其中的数据做任何限制、过滤、或者假设，数据在写入时是什么样子，被读取时就是什么样子。</p>
 <p>redis不是使用buf字节数组保存字符，而是保存一系列二进制数据。SDS使用len属性的值而不是空字符来判断字符串是否结束。</p>
-<h4 id="兼容部分C字符串函数"><a href="#兼容部分C字符串函数" class="headerlink" title="兼容部分C字符串函数"></a>兼容部分C字符串函数</h4><p>SDS的API是二进制安全的，但一样遵循C字符串以空字符结尾的惯例：这些API会将SDS保存的数据的末尾设置为空字符，并且会在为buf数组分配空间时多分配一个字节来容纳这个空字符，为了让保存文本数据的SDS可以重用一部分&lt;string.h&gt;库定义的函数，避免了不必要的代码重复。</p>
+<h4 id="兼容部分C字符串函数"><a href="#兼容部分C字符串函数" class="headerlink" title="兼容部分C字符串函数"></a>兼容部分C字符串函数</h4><p>SDS的API是二进制安全的，但一样遵循C字符串以空字符结尾的惯例：这些API会将SDS保存的数据的末尾设置为空字符，并且会在为buf数组分配空间时多分配一个字节来容纳这个空字符，为了让保存文本数据的SDS可以重用一部分\&lt;string.h>库定义的函数，避免了不必要的代码重复。</p>
 <h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>C字符串和SDS之间的区别：</p>
 <table>
 <thead>
@@ -514,8 +514,8 @@
 <td style="text-align:left">可以保存文本或者二进制数据</td>
 </tr>
 <tr>
-<td style="text-align:left">可以使用所有&lt;string.h&gt;库中的函数</td>
-<td style="text-align:left">可以使用一部分&lt;string.h&gt;库中的函数</td>
+<td style="text-align:left">可以使用所有\&lt;string.h>库中的函数</td>
+<td style="text-align:left">可以使用一部分\&lt;string.h>库中的函数</td>
 </tr>
 </tbody>
 </table>
@@ -880,7 +880,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">192.6k</span>
+    <span title="本站字数总计">192.9k</span>
   
 </div>
 

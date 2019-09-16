@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="redis构建了自己的链表实现。 列表键的底层实现之一就是链表，当一个列表键包含了数量比较多的元素，又或者列表中包含的元素都是比较长的字符串时，redis就会使用链表作为列表键的底层实现。 除链表键之外，发布与订阅、慢查询、监视器等功能也用到了链表，redis服务器本身还使用链表来保存多个客户端的状态信息，使用链表来构建客户端输出缓冲区。 链表和链表节点的实现链表节点由adlist.h/listN">
+<meta name="description" content="redis构建了自己的链表实现。 列表键的底层实现之一就是链表，当一个列表键包含了数量比较多的元素，又或者列表中包含的元素都是比较长的字符串时，redis就会使用链表作为列表键的底层实现。 除列表键之外，发布与订阅、慢查询、监视器等功能也用到了链表，redis服务器本身还使用链表来保存多个客户端的状态信息，使用链表来构建客户端输出缓冲区。 链表和链表节点的实现链表节点由adlist.h/listN">
 <meta name="keywords" content="redis,链表">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis-链表">
 <meta property="og:url" content="bighua.top/2018/09/09/redis-链表/index.html">
 <meta property="og:site_name" content="水木年华">
-<meta property="og:description" content="redis构建了自己的链表实现。 列表键的底层实现之一就是链表，当一个列表键包含了数量比较多的元素，又或者列表中包含的元素都是比较长的字符串时，redis就会使用链表作为列表键的底层实现。 除链表键之外，发布与订阅、慢查询、监视器等功能也用到了链表，redis服务器本身还使用链表来保存多个客户端的状态信息，使用链表来构建客户端输出缓冲区。 链表和链表节点的实现链表节点由adlist.h/listN">
+<meta property="og:description" content="redis构建了自己的链表实现。 列表键的底层实现之一就是链表，当一个列表键包含了数量比较多的元素，又或者列表中包含的元素都是比较长的字符串时，redis就会使用链表作为列表键的底层实现。 除列表键之外，发布与订阅、慢查询、监视器等功能也用到了链表，redis服务器本身还使用链表来保存多个客户端的状态信息，使用链表来构建客户端输出缓冲区。 链表和链表节点的实现链表节点由adlist.h/listN">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-30T11:56:56.989Z">
+<meta property="og:updated_time" content="2019-09-16T08:02:55.819Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis-链表">
-<meta name="twitter:description" content="redis构建了自己的链表实现。 列表键的底层实现之一就是链表，当一个列表键包含了数量比较多的元素，又或者列表中包含的元素都是比较长的字符串时，redis就会使用链表作为列表键的底层实现。 除链表键之外，发布与订阅、慢查询、监视器等功能也用到了链表，redis服务器本身还使用链表来保存多个客户端的状态信息，使用链表来构建客户端输出缓冲区。 链表和链表节点的实现链表节点由adlist.h/listN">
+<meta name="twitter:description" content="redis构建了自己的链表实现。 列表键的底层实现之一就是链表，当一个列表键包含了数量比较多的元素，又或者列表中包含的元素都是比较长的字符串时，redis就会使用链表作为列表键的底层实现。 除列表键之外，发布与订阅、慢查询、监视器等功能也用到了链表，redis服务器本身还使用链表来保存多个客户端的状态信息，使用链表来构建客户端输出缓冲区。 链表和链表节点的实现链表节点由adlist.h/listN">
 
 
 
@@ -451,7 +451,7 @@
       
         <p>redis构建了自己的链表实现。</p>
 <p>列表键的底层实现之一就是链表，当一个列表键包含了数量比较多的元素，又或者列表中包含的元素都是比较长的字符串时，redis就会使用链表作为列表键的底层实现。</p>
-<p>除链表键之外，发布与订阅、慢查询、监视器等功能也用到了链表，redis服务器本身还使用链表来保存多个客户端的状态信息，使用链表来构建客户端输出缓冲区。</p>
+<p>除列表键之外，发布与订阅、慢查询、监视器等功能也用到了链表，redis服务器本身还使用链表来保存多个客户端的状态信息，使用链表来构建客户端输出缓冲区。</p>
 <h3 id="链表和链表节点的实现"><a href="#链表和链表节点的实现" class="headerlink" title="链表和链表节点的实现"></a>链表和链表节点的实现</h3><p>链表节点由adlist.h/listNode结构来表示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">typedef struct listNode &#123;</span><br><span class="line">	struct listNode *prev;//前置节点</span><br><span class="line">	struct listNode *next;//后置节点</span><br><span class="line">	void *value;//节点的值</span><br><span class="line">&#125; listNode;</span><br></pre></td></tr></table></figure></p>
 <p>使用多个listNode结构可组成链表，使用adlist.h/list来持有链表，操作起来更方便：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">typedef struct list &#123;</span><br><span class="line">	listNode *head;//表头节点</span><br><span class="line">	listNode *tail;//表尾节点</span><br><span class="line">	unsigned long len;//链表所包含的节点的数量</span><br><span class="line">	void *(*dup)(void *ptr);//节点值复制函数</span><br><span class="line">	void *(*free)(void *ptr);//节点值释放函数</span><br><span class="line">	int (*match)(void *ptr, void *key);//节点值对比函数</span><br><span class="line">&#125; list;</span><br></pre></td></tr></table></figure>
@@ -865,7 +865,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">192.6k</span>
+    <span title="本站字数总计">192.9k</span>
   
 </div>
 
