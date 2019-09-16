@@ -14,6 +14,53 @@ redis只在实现有序集合键和在集群节点用作内部数据结构用到
 ### 跳跃表的实现
 由redis.h/zskiplistNode和redis.h/zskiplist两个结构定义，前者用于表示跳跃表节点，后者用于保存跳跃表节点的相关信息，例如节点的数量、指向表头节点和表尾节点的指针等。
 
+zskiplist结构：
+
+```
+typedef struct zskiplist {
+
+    // 表头节点和表尾节点,指向跳跃表的表头节点和表尾节点
+    struct zskiplistNode *header, *tail;
+
+    // 表中节点的数量
+    unsigned long length;
+
+    // 表中层数最大的节点的层数
+    int level;
+
+} zskiplist;
+```
+
+
+zskiplistNode结构：
+
+```
+typedef struct zskiplistNode {
+
+    // 成员对象，指向一个字符串对象，保存着一个SDS值
+    robj *obj;
+
+    // 分值，跳跃表中所有节点按分值从小到大排序
+    double score;
+
+    // 后退指针，用于从表尾向表头方向访问节点
+    struct zskiplistNode *backward;
+		
+	 //level数组可包含多个元素，每个元素包含一个指向其他节点的指针，通过层快速访问其他节点
+    //每创建一个节点根据幂次定律随机生成一个介于1和32之间的level作为数据的大小，大小为层的高度
+    struct zskiplistLevel {
+
+        // 前进指针，用于从表头向表尾方向访问节点
+        struct zskiplistNode *forward;
+
+        // 跨度，用于记录两个节点之间的距离，两个节点之间跨度越大，相聚越远，指向NULL跨度0
+        unsigned int span;
+
+    } level[];
+
+} zskiplistNode;
+```
+
 #### 跳跃表节点
 由redis.h/zskiplistNode结构定义：
 
