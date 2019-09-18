@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="是集合键的底层实现之一，当一个集合只包含整数值元素，并且集合的元素数量不多时，redis使用整数集合作为集合键的底层实现。 整数集合的实现是redis用于保存整数值的集合抽象数据结构，可以保存类型为int16_t、int32_t或者int64_t的整数值，并且保证集合中不会出现重复元素。 由intset.h/intset结构表示: 12345typedef struct intset &amp;#123;">
+<meta name="description" content="详细参阅redis源码解读(四):基础数据结构之intset。 是集合键的底层实现之一，当一个集合只包含整数值元素，并且集合的元素数量不多时，redis使用整数集合作为集合键的底层实现。 整数集合的实现是redis用于保存整数值的集合抽象数据结构，可以保存类型为int16_t、int32_t或者int64_t的整数值，并且保证集合中不会出现重复元素。 由intset.h/intset结构表示: 1">
 <meta name="keywords" content="redis,intset">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis-整数集合">
 <meta property="og:url" content="bighua.top/2018/09/13/redis-整数集合/index.html">
 <meta property="og:site_name" content="水木年华">
-<meta property="og:description" content="是集合键的底层实现之一，当一个集合只包含整数值元素，并且集合的元素数量不多时，redis使用整数集合作为集合键的底层实现。 整数集合的实现是redis用于保存整数值的集合抽象数据结构，可以保存类型为int16_t、int32_t或者int64_t的整数值，并且保证集合中不会出现重复元素。 由intset.h/intset结构表示: 12345typedef struct intset &amp;#123;">
+<meta property="og:description" content="详细参阅redis源码解读(四):基础数据结构之intset。 是集合键的底层实现之一，当一个集合只包含整数值元素，并且集合的元素数量不多时，redis使用整数集合作为集合键的底层实现。 整数集合的实现是redis用于保存整数值的集合抽象数据结构，可以保存类型为int16_t、int32_t或者int64_t的整数值，并且保证集合中不会出现重复元素。 由intset.h/intset结构表示: 1">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-16T12:09:28.261Z">
+<meta property="og:updated_time" content="2019-09-17T07:32:52.998Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis-整数集合">
-<meta name="twitter:description" content="是集合键的底层实现之一，当一个集合只包含整数值元素，并且集合的元素数量不多时，redis使用整数集合作为集合键的底层实现。 整数集合的实现是redis用于保存整数值的集合抽象数据结构，可以保存类型为int16_t、int32_t或者int64_t的整数值，并且保证集合中不会出现重复元素。 由intset.h/intset结构表示: 12345typedef struct intset &amp;#123;">
+<meta name="twitter:description" content="详细参阅redis源码解读(四):基础数据结构之intset。 是集合键的底层实现之一，当一个集合只包含整数值元素，并且集合的元素数量不多时，redis使用整数集合作为集合键的底层实现。 整数集合的实现是redis用于保存整数值的集合抽象数据结构，可以保存类型为int16_t、int32_t或者int64_t的整数值，并且保证集合中不会出现重复元素。 由intset.h/intset结构表示: 1">
 
 
 
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  806
+                  824
                 </span>
               
 
@@ -449,7 +449,8 @@
       
 
       
-        <p>是集合键的底层实现之一，当一个集合只包含整数值元素，并且集合的元素数量不多时，redis使用整数集合作为集合键的底层实现。</p>
+        <p>详细参阅<a href="http://czrzchao.com/redisSourceIntset#intset" target="_blank" rel="noopener">redis源码解读(四):基础数据结构之intset</a>。</p>
+<p>是集合键的底层实现之一，当一个集合只包含整数值元素，并且集合的元素数量不多时，redis使用整数集合作为集合键的底层实现。</p>
 <h3 id="整数集合的实现"><a href="#整数集合的实现" class="headerlink" title="整数集合的实现"></a>整数集合的实现</h3><p>是redis用于保存整数值的集合抽象数据结构，可以保存类型为int16_t、int32_t或者int64_t的整数值，并且保证集合中不会出现重复元素。</p>
 <p>由intset.h/intset结构表示:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">typedef struct intset &#123;</span><br><span class="line">	unint32_t encoding;//编码方式</span><br><span class="line">	unint32_t length;//集合包含的元素数量</span><br><span class="line">	int8_t contents[];//保存元素的数组</span><br><span class="line">&#125; intset;</span><br></pre></td></tr></table></figure>
@@ -654,7 +655,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">62</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -676,7 +677,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-count">80</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -801,7 +802,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">193.6k</span>
+    <span title="本站字数总计">195.6k</span>
   
 </div>
 

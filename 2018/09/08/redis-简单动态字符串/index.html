@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="redis未直接使用C语言传统的字符串表示，而是自己构建了一种名为简单动态字符串（simple dynamic string，SDS）的抽象类型。C字符串只会作为字符串字面量用在一些无需对字符串值进行修改的地方。包含字符串值的键值对在底层都是由SDS实现的。 12127.0.0.1:6379&amp;gt; rpush fruits &amp;quot;banana&amp;quot; &amp;quot;apple&amp;quot;">
+<meta name="description" content="新版SDS参阅redis源码解读(一):基础数据结构之SDS ，对应redis v3.2，当前最新版5.x.x，变化不大。 redis未直接使用C语言传统的字符串表示，而是自己构建了一种名为简单动态字符串（simple dynamic string，SDS）的抽象类型。C字符串只会作为字符串字面量用在一些无需对字符串值进行修改的地方。包含字符串值的键值对在底层都是由SDS实现的。 12127.0.">
 <meta name="keywords" content="redis,sds">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis-简单动态字符串">
 <meta property="og:url" content="bighua.top/2018/09/08/redis-简单动态字符串/index.html">
 <meta property="og:site_name" content="水木年华">
-<meta property="og:description" content="redis未直接使用C语言传统的字符串表示，而是自己构建了一种名为简单动态字符串（simple dynamic string，SDS）的抽象类型。C字符串只会作为字符串字面量用在一些无需对字符串值进行修改的地方。包含字符串值的键值对在底层都是由SDS实现的。 12127.0.0.1:6379&amp;gt; rpush fruits &amp;quot;banana&amp;quot; &amp;quot;apple&amp;quot;">
+<meta property="og:description" content="新版SDS参阅redis源码解读(一):基础数据结构之SDS ，对应redis v3.2，当前最新版5.x.x，变化不大。 redis未直接使用C语言传统的字符串表示，而是自己构建了一种名为简单动态字符串（simple dynamic string，SDS）的抽象类型。C字符串只会作为字符串字面量用在一些无需对字符串值进行修改的地方。包含字符串值的键值对在底层都是由SDS实现的。 12127.0.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-16T12:08:12.034Z">
+<meta property="og:updated_time" content="2019-09-17T06:51:05.631Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis-简单动态字符串">
-<meta name="twitter:description" content="redis未直接使用C语言传统的字符串表示，而是自己构建了一种名为简单动态字符串（simple dynamic string，SDS）的抽象类型。C字符串只会作为字符串字面量用在一些无需对字符串值进行修改的地方。包含字符串值的键值对在底层都是由SDS实现的。 12127.0.0.1:6379&amp;gt; rpush fruits &amp;quot;banana&amp;quot; &amp;quot;apple&amp;quot;">
+<meta name="twitter:description" content="新版SDS参阅redis源码解读(一):基础数据结构之SDS ，对应redis v3.2，当前最新版5.x.x，变化不大。 redis未直接使用C语言传统的字符串表示，而是自己构建了一种名为简单动态字符串（simple dynamic string，SDS）的抽象类型。C字符串只会作为字符串字面量用在一些无需对字符串值进行修改的地方。包含字符串值的键值对在底层都是由SDS实现的。 12127.0.">
 
 
 
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,299
+                  2,881
                 </span>
               
 
@@ -428,7 +428,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  8
+                  11
                 </span>
               
             </div>
@@ -449,7 +449,9 @@
       
 
       
-        <p>redis未直接使用C语言传统的字符串表示，而是自己构建了一种名为简单动态字符串（simple dynamic string，SDS）的抽象类型。C字符串只会作为字符串字面量用在一些无需对字符串值进行修改的地方。包含字符串值的键值对在底层都是由SDS实现的。</p>
+        <p>新版SDS参阅<a href="http://czrzchao.com/redisSourceSds#sds" target="_blank" rel="noopener">redis源码解读(一):基础数据结构之SDS
+</a>，对应redis v3.2，当前最新版5.x.x，变化不大。</p>
+<p>redis未直接使用C语言传统的字符串表示，而是自己构建了一种名为简单动态字符串（simple dynamic string，SDS）的抽象类型。C字符串只会作为字符串字面量用在一些无需对字符串值进行修改的地方。包含字符串值的键值对在底层都是由SDS实现的。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; rpush fruits &quot;banana&quot; &quot;apple&quot; &quot;cheery&quot;</span><br><span class="line">(integer) 3</span><br></pre></td></tr></table></figure>
 <p>redis在数据库中创建一个新的键值对，其中：</p>
 <ul>
@@ -460,6 +462,19 @@
 <h3 id="SDS的定义"><a href="#SDS的定义" class="headerlink" title="SDS的定义"></a>SDS的定义</h3><p>sds.h/sdshdr:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct sdshdr &#123;</span><br><span class="line">	int len; //buf数组中已使用字节的数量、SDS所保存字符串的长度</span><br><span class="line">	int free; //buf数组中未使用字节的数量</span><br><span class="line">	char buf[]; //字节数组，用于保存字符串</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>遵循C字符串以空字符结尾的惯例，保存空字符的1字节空间不计算在SDS的len属性里面，为其分配额外的一字节空间和添加空字符到字符串末尾等操作都由SDS函数自动完成。</p>
+<p>当前最新版redis 5.x.x（v3.2改变），会根据存储的内容会选择不同的数据结构，结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">/* Note: sdshdr5 is never used, we just access the flags byte directly.</span><br><span class="line"> * However is here to document the layout of type 5 SDS strings. */</span><br><span class="line">struct __attribute__ ((__packed__)) sdshdr5 &#123;</span><br><span class="line">    unsigned char flags; /* 3 lsb of type, and 5 msb of string length */</span><br><span class="line">    char buf[];</span><br><span class="line">&#125;;</span><br><span class="line">struct __attribute__ ((__packed__)) sdshdr8 &#123;</span><br><span class="line">    uint8_t len; /* used */</span><br><span class="line">    uint8_t alloc; /* excluding the header and null terminator */</span><br><span class="line">    unsigned char flags; /* 3 lsb of type, 5 unused bits */</span><br><span class="line">    char buf[];</span><br><span class="line">&#125;;</span><br><span class="line">struct __attribute__ ((__packed__)) sdshdr16 &#123;</span><br><span class="line">    uint16_t len; /* used */</span><br><span class="line">    uint16_t alloc; /* excluding the header and null terminator */</span><br><span class="line">    unsigned char flags; /* 3 lsb of type, 5 unused bits */</span><br><span class="line">    char buf[];</span><br><span class="line">&#125;;</span><br><span class="line">struct __attribute__ ((__packed__)) sdshdr32 &#123;</span><br><span class="line">    uint32_t len; /* used */</span><br><span class="line">    uint32_t alloc; /* excluding the header and null terminator */</span><br><span class="line">    unsigned char flags; /* 3 lsb of type, 5 unused bits */</span><br><span class="line">    char buf[];</span><br><span class="line">&#125;;</span><br><span class="line">struct __attribute__ ((__packed__)) sdshdr64 &#123;</span><br><span class="line">    uint64_t len; /* used */</span><br><span class="line">    uint64_t alloc; /* excluding the header and null terminator */</span><br><span class="line">    unsigned char flags; /* 3 lsb of type, 5 unused bits */</span><br><span class="line">    char buf[];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>增加字段flags记录当前字节数组的属性、用来标识到底是sdshdr8还是sdshdr16等。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">static inline char sdsReqType(size_t string_size) &#123;</span><br><span class="line">    if (string_size &lt; 1&lt;&lt;5)</span><br><span class="line">        return SDS_TYPE_5;</span><br><span class="line">    if (string_size &lt; 1&lt;&lt;8)</span><br><span class="line">        return SDS_TYPE_8;</span><br><span class="line">    if (string_size &lt; 1&lt;&lt;16)</span><br><span class="line">        return SDS_TYPE_16;</span><br><span class="line">#if (LONG_MAX == LLONG_MAX)</span><br><span class="line">    if (string_size &lt; 1ll&lt;&lt;32)</span><br><span class="line">        return SDS_TYPE_32;</span><br><span class="line">    return SDS_TYPE_64;</span><br><span class="line">#else</span><br><span class="line">    return SDS_TYPE_32;</span><br><span class="line">#endif</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体更改原因参阅<a href="http://czrzchao.com/redisSourceSds#sds" target="_blank" rel="noopener">redis源码解读(一):基础数据结构之SDS</a>。</p>
+<p>摘录</p>
+<blockquote>
+<p>struct的分配的内存是内部最大元素的整数倍,<code>__attribute__ ((__packed__))</code>声明告诉编译器取消内存对齐优化，按照实际的占用字节数进行对齐，sdshdr16节省了1个字节，sdshdr32节省了3个字节，sdshdr64节省了7个字节。通过在malloc等c语言内存分配函数上封装了一层zmalloc，将内存分配收敛，并解决了内存对齐的问题，在申请和释放内存时：</p>
+</blockquote>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> #define update_zmalloc_stat_alloc(__n) do &#123; \</span><br><span class="line">    size_t _n = (__n); \</span><br><span class="line">    if (_n&amp;(sizeof(long)-1)) _n += sizeof(long)-(_n&amp;(sizeof(long)-1)); \</span><br><span class="line">    atomicIncr(used_memory,__n); \</span><br><span class="line">&#125; while(0)</span><br><span class="line"></span><br><span class="line">#define update_zmalloc_stat_free(__n) do &#123; \</span><br><span class="line">    size_t _n = (__n); \</span><br><span class="line">    if (_n&amp;(sizeof(long)-1)) _n += sizeof(long)-(_n&amp;(sizeof(long)-1)); \</span><br><span class="line">    atomicDecr(used_memory,__n); \</span><br><span class="line">&#125; while(0)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>先判断当前要分配的_n个内存是否是long类型的整数倍，如果不是就在_n的基础上加上内存大小差值，从而达到了内存对齐的保证。</p>
+</blockquote>
 <h3 id="SDS与C字符串的区别"><a href="#SDS与C字符串的区别" class="headerlink" title="SDS与C字符串的区别"></a>SDS与C字符串的区别</h3><p>C语言使用长度为N+1的字符数组表示长度为N的字符串，并且字符数组的最后一个元素总是空字符’\0’。但不能满足redis对字符串安全性、效率以及功能方面的要求。</p>
 <h4 id="常数复杂度获取字符串长度"><a href="#常数复杂度获取字符串长度" class="headerlink" title="常数复杂度获取字符串长度"></a>常数复杂度获取字符串长度</h4><p>C字符串需遍历整个字符串对字符进行计数，复杂度为O(N)，redis直接返回SDS的len属性值，复杂度O(1)。</p>
 <h4 id="杜绝缓冲区溢出"><a href="#杜绝缓冲区溢出" class="headerlink" title="杜绝缓冲区溢出"></a>杜绝缓冲区溢出</h4><p>C字符串不记录自身长度容易造成缓冲区溢出（buffer overflow），改写其后缓冲区的内容。</p>
@@ -643,8 +658,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/09/09/redis-链表/" rel="prev" title="redis-链表">
-                redis-链表 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/09/09/redis-双向链表/" rel="prev" title="redis-双向链表">
+                redis-双向链表 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -733,7 +748,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">62</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -755,7 +770,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">79</span>
+                  <span class="site-state-item-count">80</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -880,7 +895,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">193.6k</span>
+    <span title="本站字数总计">195.6k</span>
   
 </div>
 
