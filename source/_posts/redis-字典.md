@@ -6,6 +6,8 @@ categories: [redis设计与实现]
 date: 2018-09-10 21:30:23
 ---
 
+参阅[redis源码解读(三):基础数据结构之dict](http://czrzchao.com/redisSourceDict#dict)，redis v3.2和目前v5.x相同。
+
 又称符号表、关联数组或映射，一种用于保存键值对的抽象数据结构。
 
 一个键可以和一个值进行关联，字典中的每个键都是独一无二的，通过键查找与之关联的值、更新值或删除整个键值对。
@@ -36,8 +38,9 @@ typedef struct dictEntry {
 	void *key;//键
 	union {
 		void *val;
-		uint64_tu64;
-		int64_ts64;
+		uint64_t u64;
+		int64_t s64;
+		double d;
 	} v; //值
 	struct dictEntry *next;//指向下个哈希表节点，形成链表
 } dictEntry;

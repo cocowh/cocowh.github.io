@@ -5,8 +5,13 @@ comments: true
 categories: [redis设计与实现]
 date: 2018-09-13 21:42:03
 ---
+
+详细参阅[redis源码解读(四):基础数据结构之intset](http://czrzchao.com/redisSourceIntset#intset)。
+
 是集合键的底层实现之一，当一个集合只包含整数值元素，并且集合的元素数量不多时，redis使用整数集合作为集合键的底层实现。
+
 ### 整数集合的实现
+
 是redis用于保存整数值的集合抽象数据结构，可以保存类型为int16_t、int32_t或者int64_t的整数值，并且保证集合中不会出现重复元素。
 
 由intset.h/intset结构表示:

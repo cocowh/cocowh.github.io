@@ -1,10 +1,13 @@
 ---
-title: redis-链表
+title: redis-双向链表
 tags: [redis,链表]
 comments: true
 categories: [redis设计与实现]
 date: 2018-09-09 21:24:28
 ---
+
+更详细参阅[redis源码解读(二):基础数据结构之ADLIST](http://czrzchao.com/redisSourceAdlist#adlist)。
+
 redis构建了自己的链表实现。
 
 列表键的底层实现之一就是链表，当一个列表键包含了数量比较多的元素，又或者列表中包含的元素都是比较长的字符串时，redis就会使用链表作为列表键的底层实现。
@@ -12,7 +15,9 @@ redis构建了自己的链表实现。
 除列表键之外，发布与订阅、慢查询、监视器等功能也用到了链表，redis服务器本身还使用链表来保存多个客户端的状态信息，使用链表来构建客户端输出缓冲区。
 
 ### 链表和链表节点的实现
+
 链表节点由adlist.h/listNode结构来表示：
+
 ```
 typedef struct listNode {
 	struct listNode *prev;//前置节点

@@ -5,6 +5,9 @@ comments: true
 categories: [redis设计与实现]
 date: 2018-09-08 21:16:08
 ---
+新版SDS参阅[redis源码解读(一):基础数据结构之SDS
+](http://czrzchao.com/redisSourceSds#sds)，对应redis v3.2，当前最新版5.x.x，变化不大。
+
 redis未直接使用C语言传统的字符串表示，而是自己构建了一种名为简单动态字符串（simple dynamic string，SDS）的抽象类型。C字符串只会作为字符串字面量用在一些无需对字符串值进行修改的地方。包含字符串值的键值对在底层都是由SDS实现的。
 
 ```
@@ -29,6 +32,80 @@ struct sdshdr {
 }
 ```
 遵循C字符串以空字符结尾的惯例，保存空字符的1字节空间不计算在SDS的len属性里面，为其分配额外的一字节空间和添加空字符到字符串末尾等操作都由SDS函数自动完成。
+
+当前最新版redis 5.x.x（v3.2改变），会根据存储的内容会选择不同的数据结构，结构：
+
+```
+/* Note: sdshdr5 is never used, we just access the flags byte directly.
+ * However is here to document the layout of type 5 SDS strings. */
+struct __attribute__ ((__packed__)) sdshdr5 {
+    unsigned char flags; /* 3 lsb of type, and 5 msb of string length */
+    char buf[];
+};
+struct __attribute__ ((__packed__)) sdshdr8 {
+    uint8_t len; /* used */
+    uint8_t alloc; /* excluding the header and null terminator */
+    unsigned char flags; /* 3 lsb of type, 5 unused bits */
+    char buf[];
+};
+struct __attribute__ ((__packed__)) sdshdr16 {
+    uint16_t len; /* used */
+    uint16_t alloc; /* excluding the header and null terminator */
+    unsigned char flags; /* 3 lsb of type, 5 unused bits */
+    char buf[];
+};
+struct __attribute__ ((__packed__)) sdshdr32 {
+    uint32_t len; /* used */
+    uint32_t alloc; /* excluding the header and null terminator */
+    unsigned char flags; /* 3 lsb of type, 5 unused bits */
+    char buf[];
+};
+struct __attribute__ ((__packed__)) sdshdr64 {
+    uint64_t len; /* used */
+    uint64_t alloc; /* excluding the header and null terminator */
+    unsigned char flags; /* 3 lsb of type, 5 unused bits */
+    char buf[];
+};
+```
+增加字段flags记录当前字节数组的属性、用来标识到底是sdshdr8还是sdshdr16等。
+
+```
+static inline char sdsReqType(size_t string_size) {
+    if (string_size < 1<<5)
+        return SDS_TYPE_5;
+    if (string_size < 1<<8)
+        return SDS_TYPE_8;
+    if (string_size < 1<<16)
+        return SDS_TYPE_16;
+#if (LONG_MAX == LLONG_MAX)
+    if (string_size < 1ll<<32)
+        return SDS_TYPE_32;
+    return SDS_TYPE_64;
+#else
+    return SDS_TYPE_32;
+#endif
+}
+```
+
+具体更改原因参阅[redis源码解读(一):基础数据结构之SDS](http://czrzchao.com/redisSourceSds#sds)。
+
+摘录
+>struct的分配的内存是内部最大元素的整数倍,`__attribute__ ((__packed__))`声明告诉编译器取消内存对齐优化，按照实际的占用字节数进行对齐，sdshdr16节省了1个字节，sdshdr32节省了3个字节，sdshdr64节省了7个字节。通过在malloc等c语言内存分配函数上封装了一层zmalloc，将内存分配收敛，并解决了内存对齐的问题，在申请和释放内存时：
+
+ ```
+ #define update_zmalloc_stat_alloc(__n) do { \
+    size_t _n = (__n); \
+    if (_n&(sizeof(long)-1)) _n += sizeof(long)-(_n&(sizeof(long)-1)); \
+    atomicIncr(used_memory,__n); \
+} while(0)
+
+#define update_zmalloc_stat_free(__n) do { \
+    size_t _n = (__n); \
+    if (_n&(sizeof(long)-1)) _n += sizeof(long)-(_n&(sizeof(long)-1)); \
+    atomicDecr(used_memory,__n); \
+} while(0)
+ ```
+>先判断当前要分配的\_n个内存是否是long类型的整数倍，如果不是就在_n的基础上加上内存大小差值，从而达到了内存对齐的保证。
 
 ### SDS与C字符串的区别
 C语言使用长度为N+1的字符数组表示长度为N的字符串，并且字符数组的最后一个元素总是空字符’\0’。但不能满足redis对字符串安全性、效率以及功能方面的要求。
