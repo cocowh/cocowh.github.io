@@ -1,6 +1,6 @@
 ---
 title: redis-RDB持久化
-tags: [redis,RDB,]
+tags: [redis,RDB]
 comments: true
 categories: [redis设计与实现]
 date: 2019-09-18 20:47:08
