@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="redis,AOF," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="水木年华" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="RDB持久化通过保存数据库中的键值对来记录数据库状态的不同，AOF持久化通过保存Redis服务器所执行的写命令来记录数据状态。 AOF持久化redis.conf的APPEND ONLY MODE决定是否开启AOF持久化，位于redis.conf的dir选项目录下默认名appendonly.aof。 1wuhua:redis wuhua$ cat appendonly.aof 1234wuhua:~">
+<meta name="keywords" content="redis,AOF">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis-AOF持久化">
+<meta property="og:url" content="bighua.top/2019/09/19/redis-AOF持久化/index.html">
+<meta property="og:site_name" content="水木年华">
+<meta property="og:description" content="RDB持久化通过保存数据库中的键值对来记录数据库状态的不同，AOF持久化通过保存Redis服务器所执行的写命令来记录数据状态。 AOF持久化redis.conf的APPEND ONLY MODE决定是否开启AOF持久化，位于redis.conf的dir选项目录下默认名appendonly.aof。 1wuhua:redis wuhua$ cat appendonly.aof 1234wuhua:~">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-23T09:32:44.735Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="redis-AOF持久化">
+<meta name="twitter:description" content="RDB持久化通过保存数据库中的键值对来记录数据库状态的不同，AOF持久化通过保存Redis服务器所执行的写命令来记录数据状态。 AOF持久化redis.conf的APPEND ONLY MODE决定是否开启AOF持久化，位于redis.conf的dir选项目录下默认名appendonly.aof。 1wuhua:redis wuhua$ cat appendonly.aof 1234wuhua:~">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Joker'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"未找到搜索结果: ${query}","hits_stats":"${hits} 个结果耗费 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="bighua.top/2019/09/19/redis-AOF持久化/"/>
+
+
+
+
+
+  <title>redis-AOF持久化 | 水木年华</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">水木年华</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">行到水穷处,坐看云起时</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="bighua.top/2019/09/19/redis-AOF持久化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cocowh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="水木年华">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">redis-AOF持久化</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-19T16:57:17+08:00">
+                2019-09-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis设计与实现/" itemprop="url" rel="index">
+                    <span itemprop="name">redis设计与实现</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/09/19/redis-AOF持久化/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/19/redis-AOF持久化/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/09/19/redis-AOF持久化/" class="leancloud_visitors" data-flag-title="redis-AOF持久化">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>被翻阅
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,952
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  16
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>RDB持久化通过保存数据库中的键值对来记录数据库状态的不同，AOF持久化通过保存Redis服务器所执行的写命令来记录数据状态。</p>
+<h3 id="AOF持久化"><a href="#AOF持久化" class="headerlink" title="AOF持久化"></a>AOF持久化</h3><p>redis.conf的APPEND ONLY MODE决定是否开启AOF持久化，位于redis.conf的dir选项目录下默认名appendonly.aof。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wuhua:redis wuhua$ cat appendonly.aof</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wuhua:~ wuhua$ redis-cli </span><br><span class="line">127.0.0.1:6379&gt; set aofkey aofvalue</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">wuhua:redis wuhua$ cat appendonly.aof </span><br><span class="line">*2</span><br><span class="line">$6</span><br><span class="line">SELECT</span><br><span class="line">$1</span><br><span class="line">0</span><br><span class="line">*3</span><br><span class="line">$3</span><br><span class="line">set</span><br><span class="line">$6</span><br><span class="line">aofkey</span><br><span class="line">$8</span><br><span class="line">aofvalue</span><br><span class="line">wuhua:redis wuhua$</span><br></pre></td></tr></table></figure>
+<p>分文件追加、文件写入、文件同步三个步骤。</p>
+<p>服务器执行完一个写命令后，以协议格式将被执行的写命令追加到服务器状态的aof_buf缓冲区的末尾。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">struct redisServer &#123;</span><br><span class="line">	 ...</span><br><span class="line">	 /* AOF persistence */</span><br><span class="line">    int aof_enabled;                /* AOF configuration */</span><br><span class="line">    int aof_state;                  /* AOF_(ON|OFF|WAIT_REWRITE) */</span><br><span class="line">    int aof_fsync;                  /* Kind of fsync() policy */</span><br><span class="line">    char *aof_filename;             /* Name of the AOF file */</span><br><span class="line">    int aof_no_fsync_on_rewrite;    /* Don&apos;t fsync if a rewrite is in prog. */</span><br><span class="line">    int aof_rewrite_perc;           /* Rewrite AOF if % growth is &gt; M and... */</span><br><span class="line">    off_t aof_rewrite_min_size;     /* the AOF file is at least N bytes. */</span><br><span class="line">    off_t aof_rewrite_base_size;    /* AOF size on latest startup or rewrite. */</span><br><span class="line">    off_t aof_current_size;         /* AOF current size. */</span><br><span class="line">    off_t aof_fsync_offset;         /* AOF offset which is already synced to disk. */</span><br><span class="line">    int aof_rewrite_scheduled;      /* Rewrite once BGSAVE terminates. */</span><br><span class="line">    pid_t aof_child_pid;            /* PID if rewriting process */</span><br><span class="line">    list *aof_rewrite_buf_blocks;   /* Hold changes during an AOF rewrite. */</span><br><span class="line">    sds aof_buf;      /* AOF buffer, written before entering the event loop */</span><br><span class="line">    int aof_fd;       /* File descriptor of currently selected AOF file */</span><br><span class="line">    int aof_selected_db; /* Currently selected DB in AOF */</span><br><span class="line">    time_t aof_flush_postponed_start; /* UNIX time of postponed AOF flush */</span><br><span class="line">    time_t aof_last_fsync;            /* UNIX time of last fsync() */</span><br><span class="line">    time_t aof_rewrite_time_last;   /* Time used by last AOF rewrite run. */</span><br><span class="line">    time_t aof_rewrite_time_start;  /* Current AOF rewrite start time. */</span><br><span class="line">    int aof_lastbgrewrite_status;   /* C_OK or C_ERR */</span><br><span class="line">    unsigned long aof_delayed_fsync;  /* delayed AOF fsync() counter */</span><br><span class="line">    int aof_rewrite_incremental_fsync;/* fsync incrementally while aof rewriting? */</span><br><span class="line">    int rdb_save_incremental_fsync;   /* fsync incrementally while rdb saving? */</span><br><span class="line">    int aof_last_write_status;      /* C_OK or C_ERR */</span><br><span class="line">    int aof_last_write_errno;       /* Valid if aof_last_write_status is ERR */</span><br><span class="line">    int aof_load_truncated;         /* Don&apos;t stop on unexpected AOF EOF. */</span><br><span class="line">    int aof_use_rdb_preamble;       /* Use RDB preamble on AOF rewrites. */</span><br><span class="line">    /* AOF pipes used to communicate between parent and child during rewrite. */</span><br><span class="line">    int aof_pipe_write_data_to_child;</span><br><span class="line">    int aof_pipe_read_data_from_parent;</span><br><span class="line">    int aof_pipe_write_ack_to_parent;</span><br><span class="line">    int aof_pipe_read_ack_from_child;</span><br><span class="line">    int aof_pipe_write_ack_to_child;</span><br><span class="line">    int aof_pipe_read_ack_from_parent;</span><br><span class="line">    int aof_stop_sending_diff;     /* If true stop sending accumulated diffs</span><br><span class="line">                                      to child process. */</span><br><span class="line">    sds aof_child_diff;             /* AOF diff accumulator child side. */</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>Redis服务进程是一个事件循环，循环中的文件事件负责接收客户端的命令请求，以及向客户端发送命令回复，时间事件负责执行serverCron这类需要定时运行的函数。</p>
+<p>服务每结束结束一个事件循环之前，调用flushAppendOnlyFile函数，决定是否将aof_buf缓冲区中的内容写入保存到AOF文件中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">/* This is our timer interrupt, called server.hz times per second.</span><br><span class="line"> * Here is where we do a number of things that need to be done asynchronously.</span><br><span class="line"> * For instance:</span><br><span class="line"> *</span><br><span class="line"> * - Active expired keys collection (it is also performed in a lazy way on</span><br><span class="line"> *   lookup).</span><br><span class="line"> * - Software watchdog.</span><br><span class="line"> * - Update some statistic.flushAppendOnlyFile</span><br><span class="line"> * - Incremental rehashing of the DBs hash tables.</span><br><span class="line"> * - Triggering BGSAVE / AOF rewrite, and handling of terminated children.</span><br><span class="line"> * - Clients timeout of different kinds.</span><br><span class="line"> * - Replication reconnection.</span><br><span class="line"> * - Many more...</span><br><span class="line"> *</span><br><span class="line"> * Everything directly called here will be called server.hz times per second,</span><br><span class="line"> * so in order to throttle execution of things we want to do less frequently</span><br><span class="line"> * a macro is used: run_with_period(milliseconds) &#123; .... &#125;</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">int serverCron(struct aeEventLoop *eventLoop, long long id, void *clientData) &#123;</span><br><span class="line">	...</span><br><span class="line">	 /* AOF postponed flush: Try at every cron cycle if the slow fsync</span><br><span class="line">     * completed. */</span><br><span class="line">    if (server.aof_flush_postponed_start) flushAppendOnlyFile(0);</span><br><span class="line"></span><br><span class="line">    /* AOF write errors: in this case we have a buffer to flush as well and</span><br><span class="line">     * clear the AOF error in case of success to make the DB writable again,</span><br><span class="line">     * however to try every second is enough in case of &apos;hz&apos; is set to</span><br><span class="line">     * an higher frequency. */</span><br><span class="line">    run_with_period(1000) &#123;</span><br><span class="line">        if (server.aof_last_write_status == C_ERR)</span><br><span class="line">            flushAppendOnlyFile(0);</span><br><span class="line">    &#125;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/* This function gets called every time Redis is entering the</span><br><span class="line"> * main loop of the event driven library, that is, before to sleep</span><br><span class="line"> * for ready file descriptors. */</span><br><span class="line">void beforeSleep(struct aeEventLoop *eventLoop) &#123;</span><br><span class="line">	 ...</span><br><span class="line">    /* Write the AOF buffer on disk */</span><br><span class="line">	 flushAppendOnlyFile(0);</span><br><span class="line">	 ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int prepareForShutdown(int flags) &#123;</span><br><span class="line">	...</span><br><span class="line">	/* Append only file: flush buffers and fsync() the AOF at exit */</span><br><span class="line">	serverLog(LL_NOTICE,&quot;Calling fsync() on the AOF file.&quot;);</span><br><span class="line">	flushAppendOnlyFile(1);</span><br><span class="line">	redis_fsync(server.aof_fd);</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>appendfsync选项决定flushAppendOnlyFile函数的行为：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">appendfsync选项值</th>
+<th style="text-align:center">flushAppendOnlyFile函数行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">always</td>
+<td style="text-align:center">将aof_buf缓冲区中的所有内容写入并同步到AOF文件，最安全但效率最慢</td>
+</tr>
+<tr>
+<td style="text-align:center">everysec</td>
+<td style="text-align:center">默认值，将aof_buf缓冲区中的所有内容写入到AOF文件，若上次同步AOF文件的时间距离现在超过1s，则再次对AOF文件进行同步，且同步操作由一个线程专门负责，效率快但最多丢失1s内数据风险</td>
+</tr>
+<tr>
+<td style="text-align:center">no</td>
+<td style="text-align:center">将aof_buf缓冲区中的内容写入到AOF文件，但并不对AOF文件进行同步，同步由操作系统决定</td>
+</tr>
+</tbody>
+</table>
+<p>调用write函数将数据写入文件，通常将其保存在一个内存缓冲区中，待其被填满或超过指定时限，才真正将缓冲区中的数据写入到磁盘。可通过fsync和fdatasync两个同步函数，强制让操作系统立即将缓冲区中的数据写入硬盘。</p>
+<h3 id="AOF文件的载入和还原"><a href="#AOF文件的载入和还原" class="headerlink" title="AOF文件的载入和还原"></a>AOF文件的载入和还原</h3><p>Redis命令只能在客户端上下文中执行，创建不带网络连接的伪客户端执行AOF文件保存的写命令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">/* ----------------------------------------------------------------------------</span><br><span class="line"> * AOF loading</span><br><span class="line"> * ------------------------------------------------------------------------- */</span><br><span class="line"></span><br><span class="line">/* In Redis commands are always executed in the context of a client, so in</span><br><span class="line"> * order to load the append only file we need to create a fake client. */</span><br><span class="line">struct client *createFakeClient(void) &#123;</span><br><span class="line">    struct client *c = zmalloc(sizeof(*c));</span><br><span class="line"></span><br><span class="line">    selectDb(c,0);</span><br><span class="line">    c-&gt;fd = -1;</span><br><span class="line">    c-&gt;name = NULL;</span><br><span class="line">    c-&gt;querybuf = sdsempty();</span><br><span class="line">    c-&gt;querybuf_peak = 0;</span><br><span class="line">    c-&gt;argc = 0;</span><br><span class="line">    c-&gt;argv = NULL;</span><br><span class="line">    c-&gt;bufpos = 0;</span><br><span class="line">    c-&gt;flags = 0;</span><br><span class="line">    c-&gt;btype = BLOCKED_NONE;</span><br><span class="line">    /* We set the fake client as a slave waiting for the synchronization</span><br><span class="line">     * so that Redis will not try to send replies to this client. */</span><br><span class="line">    c-&gt;replstate = SLAVE_STATE_WAIT_BGSAVE_START;</span><br><span class="line">    c-&gt;reply = listCreate();</span><br><span class="line">    c-&gt;reply_bytes = 0;</span><br><span class="line">    c-&gt;obuf_soft_limit_reached_time = 0;</span><br><span class="line">    c-&gt;watched_keys = listCreate();</span><br><span class="line">    c-&gt;peerid = NULL;</span><br><span class="line">    c-&gt;resp = 2;</span><br><span class="line">    c-&gt;user = NULL;</span><br><span class="line">    listSetFreeMethod(c-&gt;reply,freeClientReplyValue);</span><br><span class="line">    listSetDupMethod(c-&gt;reply,dupClientReplyValue);</span><br><span class="line">    initClientMultiState(c);</span><br><span class="line">    return c;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="AOF重写"><a href="#AOF重写" class="headerlink" title="AOF重写"></a>AOF重写</h3><p>解决AOF文件体积膨胀问题，创建一个新的AOF文件替代现有的AOF文件，新旧文件保存的数据库状态相同，新AOF文件不包含任何浪费的冗余命令，实际不需要对现有的AOF文件进行任何读取、分析或者写入操作，读取服务器当前的数据库状态实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">/* ----------------------------------------------------------------------------</span><br><span class="line"> * AOF background rewrite</span><br><span class="line"> * ------------------------------------------------------------------------- */</span><br><span class="line"></span><br><span class="line">/* This is how rewriting of the append only file in background works:</span><br><span class="line"> *</span><br><span class="line"> * 1) The user calls BGREWRITEAOF</span><br><span class="line"> * 2) Redis calls this function, that forks():</span><br><span class="line"> *    2a) the child rewrite the append only file in a temp file.</span><br><span class="line"> *    2b) the parent accumulates differences in server.aof_rewrite_buf.</span><br><span class="line"> * 3) When the child finished &apos;2a&apos; exists.</span><br><span class="line"> * 4) The parent will trap the exit code, if it&apos;s OK, will append the</span><br><span class="line"> *    data accumulated into server.aof_rewrite_buf into the temp file, and</span><br><span class="line"> *    finally will rename(2) the temp file in the actual file name.</span><br><span class="line"> *    The the new file is reopened as the new append only file. Profit!</span><br><span class="line"> */</span><br><span class="line">int rewriteAppendOnlyFileBackground(void) &#123;</span><br><span class="line">    pid_t childpid;</span><br><span class="line">    long long start;</span><br><span class="line"></span><br><span class="line">    if (server.aof_child_pid != -1 || server.rdb_child_pid != -1) return C_ERR;</span><br><span class="line">    if (aofCreatePipes() != C_OK) return C_ERR;</span><br><span class="line">    openChildInfoPipe();</span><br><span class="line">    start = ustime();</span><br><span class="line">    if ((childpid = fork()) == 0) &#123;</span><br><span class="line">        char tmpfile[256];</span><br><span class="line"></span><br><span class="line">        /* Child */</span><br><span class="line">        closeListeningSockets(0);</span><br><span class="line">        redisSetProcTitle(&quot;redis-aof-rewrite&quot;);</span><br><span class="line">        snprintf(tmpfile,256,&quot;temp-rewriteaof-bg-%d.aof&quot;, (int) getpid());</span><br><span class="line">        if (rewriteAppendOnlyFile(tmpfile) == C_OK) &#123;</span><br><span class="line">            size_t private_dirty = zmalloc_get_private_dirty(-1);</span><br><span class="line"></span><br><span class="line">            if (private_dirty) &#123;</span><br><span class="line">                serverLog(LL_NOTICE,</span><br><span class="line">                    &quot;AOF rewrite: %zu MB of memory used by copy-on-write&quot;,</span><br><span class="line">                    private_dirty/(1024*1024));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            server.child_info_data.cow_size = private_dirty;</span><br><span class="line">            sendChildInfo(CHILD_INFO_TYPE_AOF);</span><br><span class="line">            exitFromChild(0);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            exitFromChild(1);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        /* Parent */</span><br><span class="line">        server.stat_fork_time = ustime()-start;</span><br><span class="line">        server.stat_fork_rate = (double) zmalloc_used_memory() * 1000000 / server.stat_fork_time / (1024*1024*1024); /* GB per second. */</span><br><span class="line">        latencyAddSampleIfNeeded(&quot;fork&quot;,server.stat_fork_time/1000);</span><br><span class="line">        if (childpid == -1) &#123;</span><br><span class="line">            closeChildInfoPipe();</span><br><span class="line">            serverLog(LL_WARNING,</span><br><span class="line">                &quot;Can&apos;t rewrite append only file in background: fork: %s&quot;,</span><br><span class="line">                strerror(errno));</span><br><span class="line">            aofClosePipes();</span><br><span class="line">            return C_ERR;</span><br><span class="line">        &#125;</span><br><span class="line">        serverLog(LL_NOTICE,</span><br><span class="line">            &quot;Background append only file rewriting started by pid %d&quot;,childpid);</span><br><span class="line">        server.aof_rewrite_scheduled = 0;</span><br><span class="line">        server.aof_rewrite_time_start = time(NULL);</span><br><span class="line">        server.aof_child_pid = childpid;</span><br><span class="line">        updateDictResizePolicy();</span><br><span class="line">        /* We set appendseldb to -1 in order to force the next call to the</span><br><span class="line">         * feedAppendOnlyFile() to issue a SELECT command, so the differences</span><br><span class="line">         * accumulated by the parent into server.aof_rewrite_buf will start</span><br><span class="line">         * with a SELECT statement and it will be safe to merge. */</span><br><span class="line">        server.aof_selected_db = -1;</span><br><span class="line">        replicationScriptCacheFlush();</span><br><span class="line">        return C_OK;</span><br><span class="line">    &#125;</span><br><span class="line">    return C_OK; /* unreached */</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>子进程进行“重写”，根据数据类型调用不同的重写规则。子进程带有服务器进程的数据副本，可在避免使用锁的情况下，保证数据的安全性。</p>
+<p>设置AOF重写缓冲区，在服务器创建重写子进程后使用，当redis服务器执行完一个写命令后，会同时将这个写命令发送给AOF缓冲区和AOF重写缓冲区。子进程完成重写后向父进程发送一个信号，父进车收到信号后，调用信号处理函数将AOF重写缓冲区中的所有内容写入到新的AOF文件中并对新的AOF文件进行改名，原子地覆盖现有的AOF文件，完成新旧两个AOF文件的替换。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br></pre></td><td class="code"><pre><span class="line">/* A background append only file rewriting (BGREWRITEAOF) terminated its work.</span><br><span class="line"> * Handle this. */</span><br><span class="line">void backgroundRewriteDoneHandler(int exitcode, int bysignal) &#123;</span><br><span class="line">    if (!bysignal &amp;&amp; exitcode == 0) &#123;</span><br><span class="line">        int newfd, oldfd;</span><br><span class="line">        char tmpfile[256];</span><br><span class="line">        long long now = ustime();</span><br><span class="line">        mstime_t latency;</span><br><span class="line"></span><br><span class="line">        serverLog(LL_NOTICE,</span><br><span class="line">            &quot;Background AOF rewrite terminated with success&quot;);</span><br><span class="line"></span><br><span class="line">        /* Flush the differences accumulated by the parent to the</span><br><span class="line">         * rewritten AOF. */</span><br><span class="line">        latencyStartMonitor(latency);</span><br><span class="line">        snprintf(tmpfile,256,&quot;temp-rewriteaof-bg-%d.aof&quot;,</span><br><span class="line">            (int)server.aof_child_pid);</span><br><span class="line">        newfd = open(tmpfile,O_WRONLY|O_APPEND);</span><br><span class="line">        if (newfd == -1) &#123;</span><br><span class="line">            serverLog(LL_WARNING,</span><br><span class="line">                &quot;Unable to open the temporary AOF produced by the child: %s&quot;, strerror(errno));</span><br><span class="line">            goto cleanup;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        if (aofRewriteBufferWrite(newfd) == -1) &#123;</span><br><span class="line">            serverLog(LL_WARNING,</span><br><span class="line">                &quot;Error trying to flush the parent diff to the rewritten AOF: %s&quot;, strerror(errno));</span><br><span class="line">            close(newfd);</span><br><span class="line">            goto cleanup;</span><br><span class="line">        &#125;</span><br><span class="line">        latencyEndMonitor(latency);</span><br><span class="line">        latencyAddSampleIfNeeded(&quot;aof-rewrite-diff-write&quot;,latency);</span><br><span class="line"></span><br><span class="line">        serverLog(LL_NOTICE,</span><br><span class="line">            &quot;Residual parent diff successfully flushed to the rewritten AOF (%.2f MB)&quot;, (double) aofRewriteBufferSize() / (1024*1024));</span><br><span class="line"></span><br><span class="line">        /* The only remaining thing to do is to rename the temporary file to</span><br><span class="line">         * the configured file and switch the file descriptor used to do AOF</span><br><span class="line">         * writes. We don&apos;t want close(2) or rename(2) calls to block the</span><br><span class="line">         * server on old file deletion.</span><br><span class="line">         *</span><br><span class="line">         * There are two possible scenarios:</span><br><span class="line">         *</span><br><span class="line">         * 1) AOF is DISABLED and this was a one time rewrite. The temporary</span><br><span class="line">         * file will be renamed to the configured file. When this file already</span><br><span class="line">         * exists, it will be unlinked, which may block the server.</span><br><span class="line">         *</span><br><span class="line">         * 2) AOF is ENABLED and the rewritten AOF will immediately start</span><br><span class="line">         * receiving writes. After the temporary file is renamed to the</span><br><span class="line">         * configured file, the original AOF file descriptor will be closed.</span><br><span class="line">         * Since this will be the last reference to that file, closing it</span><br><span class="line">         * causes the underlying file to be unlinked, which may block the</span><br><span class="line">         * server.</span><br><span class="line">         *</span><br><span class="line">         * To mitigate the blocking effect of the unlink operation (either</span><br><span class="line">         * caused by rename(2) in scenario 1, or by close(2) in scenario 2), we</span><br><span class="line">         * use a background thread to take care of this. First, we</span><br><span class="line">         * make scenario 1 identical to scenario 2 by opening the target file</span><br><span class="line">         * when it exists. The unlink operation after the rename(2) will then</span><br><span class="line">         * be executed upon calling close(2) for its descriptor. Everything to</span><br><span class="line">         * guarantee atomicity for this switch has already happened by then, so</span><br><span class="line">         * we don&apos;t care what the outcome or duration of that close operation</span><br><span class="line">         * is, as long as the file descriptor is released again. */</span><br><span class="line">        if (server.aof_fd == -1) &#123;</span><br><span class="line">            /* AOF disabled */</span><br><span class="line"></span><br><span class="line">            /* Don&apos;t care if this fails: oldfd will be -1 and we handle that.</span><br><span class="line">             * One notable case of -1 return is if the old file does</span><br><span class="line">             * not exist. */</span><br><span class="line">            oldfd = open(server.aof_filename,O_RDONLY|O_NONBLOCK);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            /* AOF enabled */</span><br><span class="line">            oldfd = -1; /* We&apos;ll set this to the current AOF filedes later. */</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        /* Rename the temporary file. This will not unlink the target file if</span><br><span class="line">         * it exists, because we reference it with &quot;oldfd&quot;. */</span><br><span class="line">        latencyStartMonitor(latency);</span><br><span class="line">        if (rename(tmpfile,server.aof_filename) == -1) &#123;</span><br><span class="line">            serverLog(LL_WARNING,</span><br><span class="line">                &quot;Error trying to rename the temporary AOF file %s into %s: %s&quot;,</span><br><span class="line">                tmpfile,</span><br><span class="line">                server.aof_filename,</span><br><span class="line">                strerror(errno));</span><br><span class="line">            close(newfd);</span><br><span class="line">            if (oldfd != -1) close(oldfd);</span><br><span class="line">            goto cleanup;</span><br><span class="line">        &#125;</span><br><span class="line">        latencyEndMonitor(latency);</span><br><span class="line">        latencyAddSampleIfNeeded(&quot;aof-rename&quot;,latency);</span><br><span class="line"></span><br><span class="line">        if (server.aof_fd == -1) &#123;</span><br><span class="line">            /* AOF disabled, we don&apos;t need to set the AOF file descriptor</span><br><span class="line">             * to this new file, so we can close it. */</span><br><span class="line">            close(newfd);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            /* AOF enabled, replace the old fd with the new one. */</span><br><span class="line">            oldfd = server.aof_fd;</span><br><span class="line">            server.aof_fd = newfd;</span><br><span class="line">            if (server.aof_fsync == AOF_FSYNC_ALWAYS)</span><br><span class="line">                redis_fsync(newfd);</span><br><span class="line">            else if (server.aof_fsync == AOF_FSYNC_EVERYSEC)</span><br><span class="line">                aof_background_fsync(newfd);</span><br><span class="line">            server.aof_selected_db = -1; /* Make sure SELECT is re-issued */</span><br><span class="line">            aofUpdateCurrentSize();</span><br><span class="line">            server.aof_rewrite_base_size = server.aof_current_size;</span><br><span class="line">            server.aof_current_size = server.aof_current_size;</span><br><span class="line"></span><br><span class="line">            /* Clear regular AOF buffer since its contents was just written to</span><br><span class="line">             * the new AOF from the background rewrite buffer. */</span><br><span class="line">            sdsfree(server.aof_buf);</span><br><span class="line">            server.aof_buf = sdsempty();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        server.aof_lastbgrewrite_status = C_OK;</span><br><span class="line"></span><br><span class="line">        serverLog(LL_NOTICE, &quot;Background AOF rewrite finished successfully&quot;);</span><br><span class="line">        /* Change state from WAIT_REWRITE to ON if needed */</span><br><span class="line">        if (server.aof_state == AOF_WAIT_REWRITE)</span><br><span class="line">            server.aof_state = AOF_ON;</span><br><span class="line"></span><br><span class="line">        /* Asynchronously close the overwritten AOF. */</span><br><span class="line">        if (oldfd != -1) bioCreateBackgroundJob(BIO_CLOSE_FILE,(void*)(long)oldfd,NULL,NULL);</span><br><span class="line"></span><br><span class="line">        serverLog(LL_VERBOSE,</span><br><span class="line">            &quot;Background AOF rewrite signal handler took %lldus&quot;, ustime()-now);</span><br><span class="line">    &#125; else if (!bysignal &amp;&amp; exitcode != 0) &#123;</span><br><span class="line">        /* SIGUSR1 is whitelisted, so we have a way to kill a child without</span><br><span class="line">         * tirggering an error condition. */</span><br><span class="line">        if (bysignal != SIGUSR1)</span><br><span class="line">            server.aof_lastbgrewrite_status = C_ERR;</span><br><span class="line">        serverLog(LL_WARNING,</span><br><span class="line">            &quot;Background AOF rewrite terminated with error&quot;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        server.aof_lastbgrewrite_status = C_ERR;</span><br><span class="line"></span><br><span class="line">        serverLog(LL_WARNING,</span><br><span class="line">            &quot;Background AOF rewrite terminated by signal %d&quot;, bysignal);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">cleanup:</span><br><span class="line">    aofClosePipes();</span><br><span class="line">    aofRewriteBufferReset();</span><br><span class="line">    aofRemoveTempFile(server.aof_child_pid);</span><br><span class="line">    server.aof_child_pid = -1;</span><br><span class="line">    server.aof_rewrite_time_last = time(NULL)-server.aof_rewrite_time_start;</span><br><span class="line">    server.aof_rewrite_time_start = -1;</span><br><span class="line">    /* Schedule a new rewrite if we are waiting for it to switch the AOF ON. */</span><br><span class="line">    if (server.aof_state == AOF_WAIT_REWRITE)</span><br><span class="line">        server.aof_rewrite_scheduled = 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/redis/" rel="tag"><i class="fa fa-tag"></i> redis</a>
+          
+            <a href="/tags/AOF/" rel="tag"><i class="fa fa-tag"></i> AOF</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/18/redis-RDB持久化/" rel="next" title="redis-RDB持久化">
+                <i class="fa fa-chevron-left"></i> redis-RDB持久化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="cocowh" />
+            
+              <p class="site-author-name" itemprop="name">cocowh</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">83</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/cocowh" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="cocowh@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.laruence.com/" title="Laruence" target="_blank">Laruence</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://gocn.vip/" title="Go中文社区" target="_blank">Go中文社区</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://tech.meituan.com/" title="美团技术团队" target="_blank">美团技术团队</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jm.taobao.org/" title="阿里中间件" target="_blank">阿里中间件</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://mysql.taobao.org/monthly/" title="阿里数据库内核月报" target="_blank">阿里数据库内核月报</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#AOF持久化"><span class="nav-number">1.</span> <span class="nav-text">AOF持久化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOF文件的载入和还原"><span class="nav-number">2.</span> <span class="nav-text">AOF文件的载入和还原</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOF重写"><span class="nav-number">3.</span> <span class="nav-text">AOF重写</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-pencil"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cocowh</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">本站字数总计&#58;</span>
+    
+    <span title="本站字数总计">206.2k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人观访
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次浏览
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '3mCBqGqA9pFYid0ahEXEfuyS-gzGzoHsz',
+        appKey: 'T9xYtLXoQcs9U2rSoBd82V9u',
+        placeholder: 'ヾﾉ≧∀≦)o来啊，快活啊!',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("3mCBqGqA9pFYid0ahEXEfuyS-gzGzoHsz", "T9xYtLXoQcs9U2rSoBd82V9u");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
