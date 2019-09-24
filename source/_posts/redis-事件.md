@@ -67,6 +67,17 @@ ae*系列文件，ae.h定义：
                            to do that in a group fashion. */
 ```
 
+文件事件：
+
+```
+/* File event structure */
+typedef struct aeFileEvent {
+    int mask; /* one of AE_(READABLE|WRITABLE|BARRIER) */
+    aeFileProc *rfileProc;
+    aeFileProc *wfileProc;
+    void *clientData;
+} aeFileEvent;
+```
 ### 文件事件处理器
 
 * 连接应答处理器：networking.c/acceptTcpHandler
@@ -78,7 +89,26 @@ ae*系列文件，ae.h定义：
 * 定时事件
 * 周期性事件
 
+
+```
+/* Time event structure */
+typedef struct aeTimeEvent {
+    long long id; /* time event identifier. */
+    long when_sec; /* seconds */
+    long when_ms; /* milliseconds */
+    aeTimeProc *timeProc;
+    aeEventFinalizerProc *finalizerProc;
+    void *clientData;
+    struct aeTimeEvent *prev;
+    struct aeTimeEvent *next;
+} aeTimeEvent;
+```
+
+
 将时间事件放在一个无序链表中，时间事件执行器运行时遍历整个链表，查找所有已到达的时间事件，调用相应的事件处理器。
+
+
+
 
 
 
