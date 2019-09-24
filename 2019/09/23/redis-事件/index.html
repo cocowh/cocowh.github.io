@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="文件事件，服务器对套接字操作的抽象，通过监听并处理这些事件完成一系列的网络通信操作。 时间事件：对定时操作的抽象。  ae*系列文件，ae.h定义： 12#define AE_FILE_EVENTS 1#define AE_TIME_EVENTS 2 文件事件基于Reactor模式开发的网络事件处理器，被称为文件事件处理器：  使用I/O多路复用程序同监听多个套接字，根据套接字目前执行的任务为套">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-23T12:04:30.147Z">
+<meta property="og:updated_time" content="2019-09-24T11:22:31.429Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis-事件">
 <meta name="twitter:description" content="文件事件，服务器对套接字操作的抽象，通过监听并处理这些事件完成一系列的网络通信操作。 时间事件：对定时操作的抽象。  ae*系列文件，ae.h定义： 12#define AE_FILE_EVENTS 1#define AE_TIME_EVENTS 2 文件事件基于Reactor模式开发的网络事件处理器，被称为文件事件处理器：  使用I/O多路复用程序同监听多个套接字，根据套接字目前执行的任务为套">
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  696
+                  770
                 </span>
               
 
@@ -472,6 +472,8 @@
 <p>选择系统中能提供的，性能最高的I/O多路复用函数库，有优先级次序。</p>
 <p>事件类型：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#define AE_NONE 0       /* No events registered. */</span><br><span class="line">#define AE_READABLE 1   /* Fire when descriptor is readable. */</span><br><span class="line">#define AE_WRITABLE 2   /* Fire when descriptor is writable. */</span><br><span class="line">#define AE_BARRIER 4    /* With WRITABLE, never fire the event if the</span><br><span class="line">                           READABLE event already fired in the same event</span><br><span class="line">                           loop iteration. Useful when you want to persist</span><br><span class="line">                           things to disk before sending replies, and want</span><br><span class="line">                           to do that in a group fashion. */</span><br></pre></td></tr></table></figure>
+<p>文件事件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/* File event structure */</span><br><span class="line">typedef struct aeFileEvent &#123;</span><br><span class="line">    int mask; /* one of AE_(READABLE|WRITABLE|BARRIER) */</span><br><span class="line">    aeFileProc *rfileProc;</span><br><span class="line">    aeFileProc *wfileProc;</span><br><span class="line">    void *clientData;</span><br><span class="line">&#125; aeFileEvent;</span><br></pre></td></tr></table></figure>
 <h3 id="文件事件处理器"><a href="#文件事件处理器" class="headerlink" title="文件事件处理器"></a>文件事件处理器</h3><ul>
 <li>连接应答处理器：networking.c/acceptTcpHandler</li>
 <li>命令请求处理器：networking.c/readQueryFromClient</li>
@@ -481,6 +483,7 @@
 <li>定时事件</li>
 <li>周期性事件</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/* Time event structure */</span><br><span class="line">typedef struct aeTimeEvent &#123;</span><br><span class="line">    long long id; /* time event identifier. */</span><br><span class="line">    long when_sec; /* seconds */</span><br><span class="line">    long when_ms; /* milliseconds */</span><br><span class="line">    aeTimeProc *timeProc;</span><br><span class="line">    aeEventFinalizerProc *finalizerProc;</span><br><span class="line">    void *clientData;</span><br><span class="line">    struct aeTimeEvent *prev;</span><br><span class="line">    struct aeTimeEvent *next;</span><br><span class="line">&#125; aeTimeEvent;</span><br></pre></td></tr></table></figure>
 <p>将时间事件放在一个无序链表中，时间事件执行器运行时遍历整个链表，查找所有已到达的时间事件，调用相应的事件处理器。</p>
 
       
@@ -757,7 +760,7 @@
     
       <span class="post-meta-item-text">本站字数总计&#58;</span>
     
-    <span title="本站字数总计">206.9k</span>
+    <span title="本站字数总计">207.0k</span>
   
 </div>
 
