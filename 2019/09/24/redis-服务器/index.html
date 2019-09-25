@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="redis,server," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="水木年华" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="命令请求的执行过程经networking网络事件请求解析后调用server.c/processCommand执行命令。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747">
+<meta name="keywords" content="redis,server">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis-服务器">
+<meta property="og:url" content="bighua.top/2019/09/24/redis-服务器/index.html">
+<meta property="og:site_name" content="水木年华">
+<meta property="og:description" content="命令请求的执行过程经networking网络事件请求解析后调用server.c/processCommand执行命令。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-25T13:51:08.323Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="redis-服务器">
+<meta name="twitter:description" content="命令请求的执行过程经networking网络事件请求解析后调用server.c/processCommand执行命令。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Joker'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"未找到搜索结果: ${query}","hits_stats":"${hits} 个结果耗费 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="bighua.top/2019/09/24/redis-服务器/"/>
+
+
+
+
+
+  <title>redis-服务器 | 水木年华</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">水木年华</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">行到水穷处,坐看云起时</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="bighua.top/2019/09/24/redis-服务器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cocowh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="水木年华">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">redis-服务器</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-24T22:13:59+08:00">
+                2019-09-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis设计与实现/" itemprop="url" rel="index">
+                    <span itemprop="name">redis设计与实现</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/09/24/redis-服务器/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/24/redis-服务器/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/09/24/redis-服务器/" class="leancloud_visitors" data-flag-title="redis-服务器">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>被翻阅
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  5,078
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  28
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="命令请求的执行过程"><a href="#命令请求的执行过程" class="headerlink" title="命令请求的执行过程"></a>命令请求的执行过程</h3><p>经networking网络事件请求解析后调用server.c/processCommand执行命令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br></pre></td><td class="code"><pre><span class="line">/* If this function gets called we already read a whole</span><br><span class="line"> * command, arguments are in the client argv/argc fields.</span><br><span class="line"> * processCommand() execute the command or prepare the</span><br><span class="line"> * server for a bulk read from the client.</span><br><span class="line"> *</span><br><span class="line"> * If C_OK is returned the client is still alive and valid and</span><br><span class="line"> * other operations can be performed by the caller. Otherwise</span><br><span class="line"> * if C_ERR is returned the client was destroyed (i.e. after QUIT). */</span><br><span class="line">int processCommand(client *c) &#123;</span><br><span class="line">    moduleCallCommandFilters(c);</span><br><span class="line"></span><br><span class="line">    /* The QUIT command is handled separately. Normal command procs will</span><br><span class="line">     * go through checking for replication and QUIT will cause trouble</span><br><span class="line">     * when FORCE_REPLICATION is enabled and would be implemented in</span><br><span class="line">     * a regular command proc. */</span><br><span class="line">    if (!strcasecmp(c-&gt;argv[0]-&gt;ptr,&quot;quit&quot;)) &#123;</span><br><span class="line">        addReply(c,shared.ok);</span><br><span class="line">        c-&gt;flags |= CLIENT_CLOSE_AFTER_REPLY;</span><br><span class="line">        return C_ERR;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Now lookup the command and check ASAP about trivial error conditions</span><br><span class="line">     * such as wrong arity, bad command name and so forth. */</span><br><span class="line">    c-&gt;cmd = c-&gt;lastcmd = lookupCommand(c-&gt;argv[0]-&gt;ptr);</span><br><span class="line">    if (!c-&gt;cmd) &#123;</span><br><span class="line">        flagTransaction(c);</span><br><span class="line">        sds args = sdsempty();</span><br><span class="line">        int i;</span><br><span class="line">        for (i=1; i &lt; c-&gt;argc &amp;&amp; sdslen(args) &lt; 128; i++)</span><br><span class="line">            args = sdscatprintf(args, &quot;`%.*s`, &quot;, 128-(int)sdslen(args), (char*)c-&gt;argv[i]-&gt;ptr);</span><br><span class="line">        addReplyErrorFormat(c,&quot;unknown command `%s`, with args beginning with: %s&quot;,</span><br><span class="line">            (char*)c-&gt;argv[0]-&gt;ptr, args);</span><br><span class="line">        sdsfree(args);</span><br><span class="line">        return C_OK;</span><br><span class="line">    &#125; else if ((c-&gt;cmd-&gt;arity &gt; 0 &amp;&amp; c-&gt;cmd-&gt;arity != c-&gt;argc) ||</span><br><span class="line">               (c-&gt;argc &lt; -c-&gt;cmd-&gt;arity)) &#123;</span><br><span class="line">        flagTransaction(c);</span><br><span class="line">        addReplyErrorFormat(c,&quot;wrong number of arguments for &apos;%s&apos; command&quot;,</span><br><span class="line">            c-&gt;cmd-&gt;name);</span><br><span class="line">        return C_OK;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Check if the user is authenticated. This check is skipped in case</span><br><span class="line">     * the default user is flagged as &quot;nopass&quot; and is active. */</span><br><span class="line">    int auth_required = !(DefaultUser-&gt;flags &amp; USER_FLAG_NOPASS) &amp;&amp;</span><br><span class="line">                        !c-&gt;authenticated;</span><br><span class="line">    if (auth_required || DefaultUser-&gt;flags &amp; USER_FLAG_DISABLED) &#123;</span><br><span class="line">        /* AUTH and HELLO are valid even in non authenticated state. */</span><br><span class="line">        if (c-&gt;cmd-&gt;proc != authCommand || c-&gt;cmd-&gt;proc == helloCommand) &#123;</span><br><span class="line">            flagTransaction(c);</span><br><span class="line">            addReply(c,shared.noautherr);</span><br><span class="line">            return C_OK;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Check if the user can run this command according to the current</span><br><span class="line">     * ACLs. */</span><br><span class="line">    int acl_retval = ACLCheckCommandPerm(c);</span><br><span class="line">    if (acl_retval != ACL_OK) &#123;</span><br><span class="line">        flagTransaction(c);</span><br><span class="line">        if (acl_retval == ACL_DENIED_CMD)</span><br><span class="line">            addReplyErrorFormat(c,</span><br><span class="line">                &quot;-NOPERM this user has no permissions to run &quot;</span><br><span class="line">                &quot;the &apos;%s&apos; command or its subcommand&quot;, c-&gt;cmd-&gt;name);</span><br><span class="line">        else</span><br><span class="line">            addReplyErrorFormat(c,</span><br><span class="line">                &quot;-NOPERM this user has no permissions to access &quot;</span><br><span class="line">                &quot;one of the keys used as arguments&quot;);</span><br><span class="line">        return C_OK;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* If cluster is enabled perform the cluster redirection here.</span><br><span class="line">     * However we don&apos;t perform the redirection if:</span><br><span class="line">     * 1) The sender of this command is our master.</span><br><span class="line">     * 2) The command has no key arguments. */</span><br><span class="line">    if (server.cluster_enabled &amp;&amp;</span><br><span class="line">        !(c-&gt;flags &amp; CLIENT_MASTER) &amp;&amp;</span><br><span class="line">        !(c-&gt;flags &amp; CLIENT_LUA &amp;&amp;</span><br><span class="line">          server.lua_caller-&gt;flags &amp; CLIENT_MASTER) &amp;&amp;</span><br><span class="line">        !(c-&gt;cmd-&gt;getkeys_proc == NULL &amp;&amp; c-&gt;cmd-&gt;firstkey == 0 &amp;&amp;</span><br><span class="line">          c-&gt;cmd-&gt;proc != execCommand))</span><br><span class="line">    &#123;</span><br><span class="line">        int hashslot;</span><br><span class="line">        int error_code;</span><br><span class="line">        clusterNode *n = getNodeByQuery(c,c-&gt;cmd,c-&gt;argv,c-&gt;argc,</span><br><span class="line">                                        &amp;hashslot,&amp;error_code);</span><br><span class="line">        if (n == NULL || n != server.cluster-&gt;myself) &#123;</span><br><span class="line">            if (c-&gt;cmd-&gt;proc == execCommand) &#123;</span><br><span class="line">                discardTransaction(c);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                flagTransaction(c);</span><br><span class="line">            &#125;</span><br><span class="line">            clusterRedirectClient(c,n,hashslot,error_code);</span><br><span class="line">            return C_OK;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Handle the maxmemory directive.</span><br><span class="line">     *</span><br><span class="line">     * Note that we do not want to reclaim memory if we are here re-entering</span><br><span class="line">     * the event loop since there is a busy Lua script running in timeout</span><br><span class="line">     * condition, to avoid mixing the propagation of scripts with the</span><br><span class="line">     * propagation of DELs due to eviction. */</span><br><span class="line">    if (server.maxmemory &amp;&amp; !server.lua_timedout) &#123;</span><br><span class="line">        int out_of_memory = freeMemoryIfNeededAndSafe() == C_ERR;</span><br><span class="line">        /* freeMemoryIfNeeded may flush slave output buffers. This may result</span><br><span class="line">         * into a slave, that may be the active client, to be freed. */</span><br><span class="line">        if (server.current_client == NULL) return C_ERR;</span><br><span class="line"></span><br><span class="line">        /* It was impossible to free enough memory, and the command the client</span><br><span class="line">         * is trying to execute is denied during OOM conditions or the client</span><br><span class="line">         * is in MULTI/EXEC context? Error. */</span><br><span class="line">        if (out_of_memory &amp;&amp;</span><br><span class="line">            (c-&gt;cmd-&gt;flags &amp; CMD_DENYOOM ||</span><br><span class="line">             (c-&gt;flags &amp; CLIENT_MULTI &amp;&amp; c-&gt;cmd-&gt;proc != execCommand))) &#123;</span><br><span class="line">            flagTransaction(c);</span><br><span class="line">            addReply(c, shared.oomerr);</span><br><span class="line">            return C_OK;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Make sure to use a reasonable amount of memory for client side</span><br><span class="line">     * caching metadata. */</span><br><span class="line">    if (server.tracking_clients) trackingLimitUsedSlots();</span><br><span class="line"></span><br><span class="line">    /* Don&apos;t accept write commands if there are problems persisting on disk</span><br><span class="line">     * and if this is a master instance. */</span><br><span class="line">    int deny_write_type = writeCommandsDeniedByDiskError();</span><br><span class="line">    if (deny_write_type != DISK_ERROR_TYPE_NONE &amp;&amp;</span><br><span class="line">        server.masterhost == NULL &amp;&amp;</span><br><span class="line">        (c-&gt;cmd-&gt;flags &amp; CMD_WRITE ||</span><br><span class="line">         c-&gt;cmd-&gt;proc == pingCommand))</span><br><span class="line">    &#123;</span><br><span class="line">        flagTransaction(c);</span><br><span class="line">        if (deny_write_type == DISK_ERROR_TYPE_RDB)</span><br><span class="line">            addReply(c, shared.bgsaveerr);</span><br><span class="line">        else</span><br><span class="line">            addReplySds(c,</span><br><span class="line">                sdscatprintf(sdsempty(),</span><br><span class="line">                &quot;-MISCONF Errors writing to the AOF file: %s\r\n&quot;,</span><br><span class="line">                strerror(server.aof_last_write_errno)));</span><br><span class="line">        return C_OK;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Don&apos;t accept write commands if there are not enough good slaves and</span><br><span class="line">     * user configured the min-slaves-to-write option. */</span><br><span class="line">    if (server.masterhost == NULL &amp;&amp;</span><br><span class="line">        server.repl_min_slaves_to_write &amp;&amp;</span><br><span class="line">        server.repl_min_slaves_max_lag &amp;&amp;</span><br><span class="line">        c-&gt;cmd-&gt;flags &amp; CMD_WRITE &amp;&amp;</span><br><span class="line">        server.repl_good_slaves_count &lt; server.repl_min_slaves_to_write)</span><br><span class="line">    &#123;</span><br><span class="line">        flagTransaction(c);</span><br><span class="line">        addReply(c, shared.noreplicaserr);</span><br><span class="line">        return C_OK;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Don&apos;t accept write commands if this is a read only slave. But</span><br><span class="line">     * accept write commands if this is our master. */</span><br><span class="line">    if (server.masterhost &amp;&amp; server.repl_slave_ro &amp;&amp;</span><br><span class="line">        !(c-&gt;flags &amp; CLIENT_MASTER) &amp;&amp;</span><br><span class="line">        c-&gt;cmd-&gt;flags &amp; CMD_WRITE)</span><br><span class="line">    &#123;</span><br><span class="line">        addReply(c, shared.roslaveerr);</span><br><span class="line">        return C_OK;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Only allow a subset of commands in the context of Pub/Sub if the</span><br><span class="line">     * connection is in RESP2 mode. With RESP3 there are no limits. */</span><br><span class="line">    if ((c-&gt;flags &amp; CLIENT_PUBSUB &amp;&amp; c-&gt;resp == 2) &amp;&amp;</span><br><span class="line">        c-&gt;cmd-&gt;proc != pingCommand &amp;&amp;</span><br><span class="line">        c-&gt;cmd-&gt;proc != subscribeCommand &amp;&amp;</span><br><span class="line">        c-&gt;cmd-&gt;proc != unsubscribeCommand &amp;&amp;</span><br><span class="line">        c-&gt;cmd-&gt;proc != psubscribeCommand &amp;&amp;</span><br><span class="line">        c-&gt;cmd-&gt;proc != punsubscribeCommand) &#123;</span><br><span class="line">        addReplyError(c,&quot;only (P)SUBSCRIBE / (P)UNSUBSCRIBE / PING / QUIT allowed in this context&quot;);</span><br><span class="line">        return C_OK;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Only allow commands with flag &quot;t&quot;, such as INFO, SLAVEOF and so on,</span><br><span class="line">     * when slave-serve-stale-data is no and we are a slave with a broken</span><br><span class="line">     * link with master. */</span><br><span class="line">    if (server.masterhost &amp;&amp; server.repl_state != REPL_STATE_CONNECTED &amp;&amp;</span><br><span class="line">        server.repl_serve_stale_data == 0 &amp;&amp;</span><br><span class="line">        !(c-&gt;cmd-&gt;flags &amp; CMD_STALE))</span><br><span class="line">    &#123;</span><br><span class="line">        flagTransaction(c);</span><br><span class="line">        addReply(c, shared.masterdownerr);</span><br><span class="line">        return C_OK;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Loading DB? Return an error if the command has not the</span><br><span class="line">     * CMD_LOADING flag. */</span><br><span class="line">    if (server.loading &amp;&amp; !(c-&gt;cmd-&gt;flags &amp; CMD_LOADING)) &#123;</span><br><span class="line">        addReply(c, shared.loadingerr);</span><br><span class="line">        return C_OK;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Lua script too slow? Only allow a limited number of commands. */</span><br><span class="line">    if (server.lua_timedout &amp;&amp;</span><br><span class="line">          c-&gt;cmd-&gt;proc != authCommand &amp;&amp;</span><br><span class="line">          c-&gt;cmd-&gt;proc != helloCommand &amp;&amp;</span><br><span class="line">          c-&gt;cmd-&gt;proc != replconfCommand &amp;&amp;</span><br><span class="line">        !(c-&gt;cmd-&gt;proc == shutdownCommand &amp;&amp;</span><br><span class="line">          c-&gt;argc == 2 &amp;&amp;</span><br><span class="line">          tolower(((char*)c-&gt;argv[1]-&gt;ptr)[0]) == &apos;n&apos;) &amp;&amp;</span><br><span class="line">        !(c-&gt;cmd-&gt;proc == scriptCommand &amp;&amp;</span><br><span class="line">          c-&gt;argc == 2 &amp;&amp;</span><br><span class="line">          tolower(((char*)c-&gt;argv[1]-&gt;ptr)[0]) == &apos;k&apos;))</span><br><span class="line">    &#123;</span><br><span class="line">        flagTransaction(c);</span><br><span class="line">        addReply(c, shared.slowscripterr);</span><br><span class="line">        return C_OK;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Exec the command */</span><br><span class="line">    if (c-&gt;flags &amp; CLIENT_MULTI &amp;&amp;</span><br><span class="line">        c-&gt;cmd-&gt;proc != execCommand &amp;&amp; c-&gt;cmd-&gt;proc != discardCommand &amp;&amp;</span><br><span class="line">        c-&gt;cmd-&gt;proc != multiCommand &amp;&amp; c-&gt;cmd-&gt;proc != watchCommand)</span><br><span class="line">    &#123;</span><br><span class="line">        queueMultiCommand(c);</span><br><span class="line">        addReply(c,shared.queued);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        call(c,CMD_CALL_FULL);</span><br><span class="line">        c-&gt;woff = server.master_repl_offset;</span><br><span class="line">        if (listLength(server.ready_keys))</span><br><span class="line">            handleClientsBlockedOnKeys();</span><br><span class="line">    &#125;</span><br><span class="line">    return C_OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="发送命令请求"><a href="#发送命令请求" class="headerlink" title="发送命令请求"></a>发送命令请求</h4><p>客户端讲命令请求转换成协议格式，通过连接到服务器的套接字，将协议格式的命令请求发送给服务器。</p>
+<h4 id="读取命令请求"><a href="#读取命令请求" class="headerlink" title="读取命令请求"></a>读取命令请求</h4><p>套接字可读，服务器调用命令请求处理器：</p>
+<ul>
+<li>读取协议格式命令请求，保存到客户端输入缓冲区</li>
+<li>解析输入缓冲区命令请求，提取命令参数、命令、命令个数，server.h/redisServer.clients.argc、redisServer.clients.argv</li>
+<li>调用命令执行器，执行客户端指定的指令</li>
+</ul>
+<p>读取解析部分在网络IO请求networking.c。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">/* Parse the flags string description &apos;strflags&apos; and set them to the</span><br><span class="line"> * command &apos;c&apos;. If the flags are all valid C_OK is returned, otherwise</span><br><span class="line"> * C_ERR is returned (yet the recognized flags are set in the command). */</span><br><span class="line">int populateCommandTableParseFlags(struct redisCommand *c, char *strflags) &#123;</span><br><span class="line">    int argc;</span><br><span class="line">    sds *argv;</span><br><span class="line"></span><br><span class="line">    /* Split the line into arguments for processing. */</span><br><span class="line">    argv = sdssplitargs(strflags,&amp;argc);</span><br><span class="line">    if (argv == NULL) return C_ERR;</span><br><span class="line"></span><br><span class="line">    for (int j = 0; j &lt; argc; j++) &#123;</span><br><span class="line">        char *flag = argv[j];</span><br><span class="line">        if (!strcasecmp(flag,&quot;write&quot;)) &#123;</span><br><span class="line">            c-&gt;flags |= CMD_WRITE|CMD_CATEGORY_WRITE;</span><br><span class="line">        &#125; else if (!strcasecmp(flag,&quot;read-only&quot;)) &#123;</span><br><span class="line">            c-&gt;flags |= CMD_READONLY|CMD_CATEGORY_READ;</span><br><span class="line">        &#125; else if (!strcasecmp(flag,&quot;use-memory&quot;)) &#123;</span><br><span class="line">            c-&gt;flags |= CMD_DENYOOM;</span><br><span class="line">        &#125; else if (!strcasecmp(flag,&quot;admin&quot;)) &#123;</span><br><span class="line">            c-&gt;flags |= CMD_ADMIN|CMD_CATEGORY_ADMIN|CMD_CATEGORY_DANGEROUS;</span><br><span class="line">        &#125; else if (!strcasecmp(flag,&quot;pub-sub&quot;)) &#123;</span><br><span class="line">            c-&gt;flags |= CMD_PUBSUB|CMD_CATEGORY_PUBSUB;</span><br><span class="line">        &#125; else if (!strcasecmp(flag,&quot;no-script&quot;)) &#123;</span><br><span class="line">            c-&gt;flags |= CMD_NOSCRIPT;</span><br><span class="line">        &#125; else if (!strcasecmp(flag,&quot;random&quot;)) &#123;</span><br><span class="line">            c-&gt;flags |= CMD_RANDOM;</span><br><span class="line">        &#125; else if (!strcasecmp(flag,&quot;to-sort&quot;)) &#123;</span><br><span class="line">            c-&gt;flags |= CMD_SORT_FOR_SCRIPT;</span><br><span class="line">        &#125; else if (!strcasecmp(flag,&quot;ok-loading&quot;)) &#123;</span><br><span class="line">            c-&gt;flags |= CMD_LOADING;</span><br><span class="line">        &#125; else if (!strcasecmp(flag,&quot;ok-stale&quot;)) &#123;</span><br><span class="line">            c-&gt;flags |= CMD_STALE;</span><br><span class="line">        &#125; else if (!strcasecmp(flag,&quot;no-monitor&quot;)) &#123;</span><br><span class="line">            c-&gt;flags |= CMD_SKIP_MONITOR;</span><br><span class="line">        &#125; else if (!strcasecmp(flag,&quot;no-slowlog&quot;)) &#123;</span><br><span class="line">            c-&gt;flags |= CMD_SKIP_SLOWLOG;</span><br><span class="line">        &#125; else if (!strcasecmp(flag,&quot;cluster-asking&quot;)) &#123;</span><br><span class="line">            c-&gt;flags |= CMD_ASKING;</span><br><span class="line">        &#125; else if (!strcasecmp(flag,&quot;fast&quot;)) &#123;</span><br><span class="line">            c-&gt;flags |= CMD_FAST | CMD_CATEGORY_FAST;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            /* Parse ACL categories here if the flag name starts with @. */</span><br><span class="line">            uint64_t catflag;</span><br><span class="line">            if (flag[0] == &apos;@&apos; &amp;&amp;</span><br><span class="line">                (catflag = ACLGetCommandCategoryFlagByName(flag+1)) != 0)</span><br><span class="line">            &#123;</span><br><span class="line">                c-&gt;flags |= catflag;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                sdsfreesplitres(argv,argc);</span><br><span class="line">                return C_ERR;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    /* If it&apos;s not @fast is @slow in this binary world. */</span><br><span class="line">    if (!(c-&gt;flags &amp; CMD_CATEGORY_FAST)) c-&gt;flags |= CMD_CATEGORY_SLOW;</span><br><span class="line"></span><br><span class="line">    sdsfreesplitres(argv,argc);</span><br><span class="line">    return C_OK;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/* Populates the Redis Command Table starting from the hard coded list</span><br><span class="line"> * we have on top of redis.c file. */</span><br><span class="line">void populateCommandTable(void) &#123;</span><br><span class="line">    int j;</span><br><span class="line">    int numcommands = sizeof(redisCommandTable)/sizeof(struct redisCommand);</span><br><span class="line"></span><br><span class="line">    for (j = 0; j &lt; numcommands; j++) &#123;</span><br><span class="line">        struct redisCommand *c = redisCommandTable+j;</span><br><span class="line">        int retval1, retval2;</span><br><span class="line"></span><br><span class="line">        /* Translate the command string flags description into an actual</span><br><span class="line">         * set of flags. */</span><br><span class="line">        if (populateCommandTableParseFlags(c,c-&gt;sflags) == C_ERR)</span><br><span class="line">            serverPanic(&quot;Unsupported command flag&quot;);</span><br><span class="line"></span><br><span class="line">        c-&gt;id = ACLGetCommandID(c-&gt;name); /* Assign the ID used for ACL. */</span><br><span class="line">        retval1 = dictAdd(server.commands, sdsnew(c-&gt;name), c);</span><br><span class="line">        /* Populate an additional dictionary that will be unaffected</span><br><span class="line">         * by rename-command statements in redis.conf. */</span><br><span class="line">        retval2 = dictAdd(server.orig_commands, sdsnew(c-&gt;name), c);</span><br><span class="line">        serverAssert(retval1 == DICT_OK &amp;&amp; retval2 == DICT_OK);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="命令执行器查找命令实现"><a href="#命令执行器查找命令实现" class="headerlink" title="命令执行器查找命令实现"></a>命令执行器查找命令实现</h4><p>在server.c/redisCommandTable中查找argv[0]所指定命令，将找到的命令保存到客户端状态的server.h/redisServer.clients.cmd属性中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">struct redisCommand &#123;</span><br><span class="line">    char *name;</span><br><span class="line">    redisCommandProc *proc;</span><br><span class="line">    int arity;</span><br><span class="line">    char *sflags;   /* Flags as string representation, one char per flag. */</span><br><span class="line">    uint64_t flags; /* The actual flags, obtained from the &apos;sflags&apos; field. */</span><br><span class="line">    /* Use a function to determine keys arguments in a command line.</span><br><span class="line">     * Used for Redis Cluster redirect. */</span><br><span class="line">    redisGetKeysProc *getkeys_proc;</span><br><span class="line">    /* What keys should be loaded in background when calling this command? */</span><br><span class="line">    int firstkey; /* The first argument that&apos;s a key (0 = no keys) */</span><br><span class="line">    int lastkey;  /* The last argument that&apos;s a key */</span><br><span class="line">    int keystep;  /* The step between first and last key */</span><br><span class="line">    long long microseconds, calls;</span><br><span class="line">    int id;     /* Command ID. This is a progressive ID starting from 0 that</span><br><span class="line">                   is assigned at runtime, and is used in order to check</span><br><span class="line">                   ACLs. A connection is able to execute a given command if</span><br><span class="line">                   the user associated to the connection has this command</span><br><span class="line">                   bit set in the bitmap of allowed commands. */</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="命令执行器执行预备操作"><a href="#命令执行器执行预备操作" class="headerlink" title="命令执行器执行预备操作"></a>命令执行器执行预备操作</h4><h4 id="命令执行器调用命令执行函数"><a href="#命令执行器调用命令执行函数" class="headerlink" title="命令执行器调用命令执行函数"></a>命令执行器调用命令执行函数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br></pre></td><td class="code"><pre><span class="line">/* Call() is the core of Redis execution of a command.</span><br><span class="line"> *</span><br><span class="line"> * The following flags can be passed:</span><br><span class="line"> * CMD_CALL_NONE        No flags.</span><br><span class="line"> * CMD_CALL_SLOWLOG     Check command speed and log in the slow log if needed.</span><br><span class="line"> * CMD_CALL_STATS       Populate command stats.</span><br><span class="line"> * CMD_CALL_PROPAGATE_AOF   Append command to AOF if it modified the dataset</span><br><span class="line"> *                          or if the client flags are forcing propagation.</span><br><span class="line"> * CMD_CALL_PROPAGATE_REPL  Send command to salves if it modified the dataset</span><br><span class="line"> *                          or if the client flags are forcing propagation.</span><br><span class="line"> * CMD_CALL_PROPAGATE   Alias for PROPAGATE_AOF|PROPAGATE_REPL.</span><br><span class="line"> * CMD_CALL_FULL        Alias for SLOWLOG|STATS|PROPAGATE.</span><br><span class="line"> *</span><br><span class="line"> * The exact propagation behavior depends on the client flags.</span><br><span class="line"> * Specifically:</span><br><span class="line"> *</span><br><span class="line"> * 1. If the client flags CLIENT_FORCE_AOF or CLIENT_FORCE_REPL are set</span><br><span class="line"> *    and assuming the corresponding CMD_CALL_PROPAGATE_AOF/REPL is set</span><br><span class="line"> *    in the call flags, then the command is propagated even if the</span><br><span class="line"> *    dataset was not affected by the command.</span><br><span class="line"> * 2. If the client flags CLIENT_PREVENT_REPL_PROP or CLIENT_PREVENT_AOF_PROP</span><br><span class="line"> *    are set, the propagation into AOF or to slaves is not performed even</span><br><span class="line"> *    if the command modified the dataset.</span><br><span class="line"> *</span><br><span class="line"> * Note that regardless of the client flags, if CMD_CALL_PROPAGATE_AOF</span><br><span class="line"> * or CMD_CALL_PROPAGATE_REPL are not set, then respectively AOF or</span><br><span class="line"> * slaves propagation will never occur.</span><br><span class="line"> *</span><br><span class="line"> * Client flags are modified by the implementation of a given command</span><br><span class="line"> * using the following API:</span><br><span class="line"> *</span><br><span class="line"> * forceCommandPropagation(client *c, int flags);</span><br><span class="line"> * preventCommandPropagation(client *c);</span><br><span class="line"> * preventCommandAOF(client *c);</span><br><span class="line"> * preventCommandReplication(client *c);</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line">void call(client *c, int flags) &#123;</span><br><span class="line">    long long dirty, start, duration;</span><br><span class="line">    int client_old_flags = c-&gt;flags;</span><br><span class="line">    struct redisCommand *real_cmd = c-&gt;cmd;</span><br><span class="line"></span><br><span class="line">    /* Sent the command to clients in MONITOR mode, only if the commands are</span><br><span class="line">     * not generated from reading an AOF. */</span><br><span class="line">    if (listLength(server.monitors) &amp;&amp;</span><br><span class="line">        !server.loading &amp;&amp;</span><br><span class="line">        !(c-&gt;cmd-&gt;flags &amp; (CMD_SKIP_MONITOR|CMD_ADMIN)))</span><br><span class="line">    &#123;</span><br><span class="line">        replicationFeedMonitors(c,server.monitors,c-&gt;db-&gt;id,c-&gt;argv,c-&gt;argc);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Initialization: clear the flags that must be set by the command on</span><br><span class="line">     * demand, and initialize the array for additional commands propagation. */</span><br><span class="line">    c-&gt;flags &amp;= ~(CLIENT_FORCE_AOF|CLIENT_FORCE_REPL|CLIENT_PREVENT_PROP);</span><br><span class="line">    redisOpArray prev_also_propagate = server.also_propagate;</span><br><span class="line">    redisOpArrayInit(&amp;server.also_propagate);</span><br><span class="line"></span><br><span class="line">    /* Call the command. */</span><br><span class="line">    dirty = server.dirty;</span><br><span class="line">    start = ustime();</span><br><span class="line">    c-&gt;cmd-&gt;proc(c);</span><br><span class="line">    duration = ustime()-start;</span><br><span class="line">    dirty = server.dirty-dirty;</span><br><span class="line">    if (dirty &lt; 0) dirty = 0;</span><br><span class="line"></span><br><span class="line">    /* When EVAL is called loading the AOF we don&apos;t want commands called</span><br><span class="line">     * from Lua to go into the slowlog or to populate statistics. */</span><br><span class="line">    if (server.loading &amp;&amp; c-&gt;flags &amp; CLIENT_LUA)</span><br><span class="line">        flags &amp;= ~(CMD_CALL_SLOWLOG | CMD_CALL_STATS);</span><br><span class="line"></span><br><span class="line">    /* If the caller is Lua, we want to force the EVAL caller to propagate</span><br><span class="line">     * the script if the command flag or client flag are forcing the</span><br><span class="line">     * propagation. */</span><br><span class="line">    if (c-&gt;flags &amp; CLIENT_LUA &amp;&amp; server.lua_caller) &#123;</span><br><span class="line">        if (c-&gt;flags &amp; CLIENT_FORCE_REPL)</span><br><span class="line">            server.lua_caller-&gt;flags |= CLIENT_FORCE_REPL;</span><br><span class="line">        if (c-&gt;flags &amp; CLIENT_FORCE_AOF)</span><br><span class="line">            server.lua_caller-&gt;flags |= CLIENT_FORCE_AOF;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Log the command into the Slow log if needed, and populate the</span><br><span class="line">     * per-command statistics that we show in INFO commandstats. */</span><br><span class="line">    if (flags &amp; CMD_CALL_SLOWLOG &amp;&amp; !(c-&gt;cmd-&gt;flags &amp; CMD_SKIP_SLOWLOG)) &#123;</span><br><span class="line">        char *latency_event = (c-&gt;cmd-&gt;flags &amp; CMD_FAST) ?</span><br><span class="line">                              &quot;fast-command&quot; : &quot;command&quot;;</span><br><span class="line">        latencyAddSampleIfNeeded(latency_event,duration/1000);</span><br><span class="line">        slowlogPushEntryIfNeeded(c,c-&gt;argv,c-&gt;argc,duration);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (flags &amp; CMD_CALL_STATS) &#123;</span><br><span class="line">        /* use the real command that was executed (cmd and lastamc) may be</span><br><span class="line">         * different, in case of MULTI-EXEC or re-written commands such as</span><br><span class="line">         * EXPIRE, GEOADD, etc. */</span><br><span class="line">        real_cmd-&gt;microseconds += duration;</span><br><span class="line">        real_cmd-&gt;calls++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Propagate the command into the AOF and replication link */</span><br><span class="line">    if (flags &amp; CMD_CALL_PROPAGATE &amp;&amp;</span><br><span class="line">        (c-&gt;flags &amp; CLIENT_PREVENT_PROP) != CLIENT_PREVENT_PROP)</span><br><span class="line">    &#123;</span><br><span class="line">        int propagate_flags = PROPAGATE_NONE;</span><br><span class="line"></span><br><span class="line">        /* Check if the command operated changes in the data set. If so</span><br><span class="line">         * set for replication / AOF propagation. */</span><br><span class="line">        if (dirty) propagate_flags |= (PROPAGATE_AOF|PROPAGATE_REPL);</span><br><span class="line"></span><br><span class="line">        /* If the client forced AOF / replication of the command, set</span><br><span class="line">         * the flags regardless of the command effects on the data set. */</span><br><span class="line">        if (c-&gt;flags &amp; CLIENT_FORCE_REPL) propagate_flags |= PROPAGATE_REPL;</span><br><span class="line">        if (c-&gt;flags &amp; CLIENT_FORCE_AOF) propagate_flags |= PROPAGATE_AOF;</span><br><span class="line"></span><br><span class="line">        /* However prevent AOF / replication propagation if the command</span><br><span class="line">         * implementations called preventCommandPropagation() or similar,</span><br><span class="line">         * or if we don&apos;t have the call() flags to do so. */</span><br><span class="line">        if (c-&gt;flags &amp; CLIENT_PREVENT_REPL_PROP ||</span><br><span class="line">            !(flags &amp; CMD_CALL_PROPAGATE_REPL))</span><br><span class="line">                propagate_flags &amp;= ~PROPAGATE_REPL;</span><br><span class="line">        if (c-&gt;flags &amp; CLIENT_PREVENT_AOF_PROP ||</span><br><span class="line">            !(flags &amp; CMD_CALL_PROPAGATE_AOF))</span><br><span class="line">                propagate_flags &amp;= ~PROPAGATE_AOF;</span><br><span class="line"></span><br><span class="line">        /* Call propagate() only if at least one of AOF / replication</span><br><span class="line">         * propagation is needed. Note that modules commands handle replication</span><br><span class="line">         * in an explicit way, so we never replicate them automatically. */</span><br><span class="line">        if (propagate_flags != PROPAGATE_NONE &amp;&amp; !(c-&gt;cmd-&gt;flags &amp; CMD_MODULE))</span><br><span class="line">            propagate(c-&gt;cmd,c-&gt;db-&gt;id,c-&gt;argv,c-&gt;argc,propagate_flags);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Restore the old replication flags, since call() can be executed</span><br><span class="line">     * recursively. */</span><br><span class="line">    c-&gt;flags &amp;= ~(CLIENT_FORCE_AOF|CLIENT_FORCE_REPL|CLIENT_PREVENT_PROP);</span><br><span class="line">    c-&gt;flags |= client_old_flags &amp;</span><br><span class="line">        (CLIENT_FORCE_AOF|CLIENT_FORCE_REPL|CLIENT_PREVENT_PROP);</span><br><span class="line"></span><br><span class="line">    /* Handle the alsoPropagate() API to handle commands that want to propagate</span><br><span class="line">     * multiple separated commands. Note that alsoPropagate() is not affected</span><br><span class="line">     * by CLIENT_PREVENT_PROP flag. */</span><br><span class="line">    if (server.also_propagate.numops) &#123;</span><br><span class="line">        int j;</span><br><span class="line">        redisOp *rop;</span><br><span class="line"></span><br><span class="line">        if (flags &amp; CMD_CALL_PROPAGATE) &#123;</span><br><span class="line">            for (j = 0; j &lt; server.also_propagate.numops; j++) &#123;</span><br><span class="line">                rop = &amp;server.also_propagate.ops[j];</span><br><span class="line">                int target = rop-&gt;target;</span><br><span class="line">                /* Whatever the command wish is, we honor the call() flags. */</span><br><span class="line">                if (!(flags&amp;CMD_CALL_PROPAGATE_AOF)) target &amp;= ~PROPAGATE_AOF;</span><br><span class="line">                if (!(flags&amp;CMD_CALL_PROPAGATE_REPL)) target &amp;= ~PROPAGATE_REPL;</span><br><span class="line">                if (target)</span><br><span class="line">                    propagate(rop-&gt;cmd,rop-&gt;dbid,rop-&gt;argv,rop-&gt;argc,target);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        redisOpArrayFree(&amp;server.also_propagate);</span><br><span class="line">    &#125;</span><br><span class="line">    server.also_propagate = prev_also_propagate;</span><br><span class="line"></span><br><span class="line">    /* If the client has keys tracking enabled for client side caching,</span><br><span class="line">     * make sure to remember the keys it fetched via this command. */</span><br><span class="line">    if (c-&gt;cmd-&gt;flags &amp; CMD_READONLY) &#123;</span><br><span class="line">        client *caller = (c-&gt;flags &amp; CLIENT_LUA &amp;&amp; server.lua_caller) ?</span><br><span class="line">                            server.lua_caller : c;</span><br><span class="line">        if (caller-&gt;flags &amp; CLIENT_TRACKING)</span><br><span class="line">            trackingRememberKeys(caller);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    server.stat_numcommands++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="命令执行器执行后续工作"><a href="#命令执行器执行后续工作" class="headerlink" title="命令执行器执行后续工作"></a>命令执行器执行后续工作</h4><p>慢日志查询、AOF、主从复制等。</p>
+<h4 id="将命令回复发送给客户端"><a href="#将命令回复发送给客户端" class="headerlink" title="将命令回复发送给客户端"></a>将命令回复发送给客户端</h4><p>networking.c中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/* Write event handler. Just send data to the client. */</span><br><span class="line">void sendReplyToClient(aeEventLoop *el, int fd, void *privdata, int mask) &#123;</span><br><span class="line">    UNUSED(el);</span><br><span class="line">    UNUSED(mask);</span><br><span class="line">    writeToClient(fd,privdata,1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="客户端接收并打印命令回复"><a href="#客户端接收并打印命令回复" class="headerlink" title="客户端接收并打印命令回复"></a>客户端接收并打印命令回复</h4><p>例如redis-cli，cliReadReply将回复命令回复格式化后写入标准输出。</p>
+<h3 id="serverCron函数"><a href="#serverCron函数" class="headerlink" title="serverCron函数"></a>serverCron函数</h3><p>每隔100毫秒运行一次，负责管理服务器的资源，保持服务器自身的良好运转。</p>
+<h4 id="更新服务器时间缓存"><a href="#更新服务器时间缓存" class="headerlink" title="更新服务器时间缓存"></a>更新服务器时间缓存</h4><p>redisServer.unixtime和redisServer.mstime，不精准，只在打印日志、更新服务器的LRU时钟、决定是否持久化、计算服务器上线时间等对精度要求不高时使用。对键设置过期时间、添加慢日志等高精度服务器再次执行系统调用。</p>
+<h4 id="更新LRU时钟"><a href="#更新LRU时钟" class="headerlink" title="更新LRU时钟"></a>更新LRU时钟</h4><p>redisServer.lruclock，INFO server的lru_clock值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; info server</span><br><span class="line"># Server</span><br><span class="line">redis_version:4.0.10</span><br><span class="line">redis_git_sha1:00000000</span><br><span class="line">redis_git_dirty:0</span><br><span class="line">redis_build_id:ea14acb2d1b3b56f</span><br><span class="line">redis_mode:standalone</span><br><span class="line">os:Darwin 18.7.0 x86_64</span><br><span class="line">arch_bits:64</span><br><span class="line">multiplexing_api:kqueue</span><br><span class="line">atomicvar_api:atomic-builtin</span><br><span class="line">gcc_version:4.2.1</span><br><span class="line">process_id:440</span><br><span class="line">run_id:cdd4befae14640bdb75dd1ed60c3880aadd8e9d1</span><br><span class="line">tcp_port:6379</span><br><span class="line">uptime_in_seconds:247596</span><br><span class="line">uptime_in_days:2</span><br><span class="line">hz:10</span><br><span class="line">lru_clock:9135224</span><br><span class="line">executable:/usr/local/opt/redis/bin/redis-server</span><br><span class="line">config_file:/usr/local/etc/redis.conf</span><br></pre></td></tr></table></figure>
+<p>每个Redis对象都有一个时钟保存对象最后一次被命令访问的时间。</p>
+<p>server.h/redisObject.lru。、</p>
+<p>redisServer.lruclock - redisObject.lru即为对象空转时间。</p>
+<h4 id="更新服务器每秒执行次数"><a href="#更新服务器每秒执行次数" class="headerlink" title="更新服务器每秒执行次数"></a>更新服务器每秒执行次数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">run_with_period(100) &#123;</span><br><span class="line">     trackInstantaneousMetric(STATS_METRIC_COMMAND,server.stat_numcommands);</span><br><span class="line">     trackInstantaneousMetric(STATS_METRIC_NET_INPUT,</span><br><span class="line">             server.stat_net_input_bytes);</span><br><span class="line">     trackInstantaneousMetric(STATS_METRIC_NET_OUTPUT,</span><br><span class="line">             server.stat_net_output_bytes);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>serverCron的trackInstantaneousMetric函数没100毫秒执行一次，估算并记录服务器最近一秒钟处理命令请求数量。</p>
+<p>INFO stats的instantaneous_ops_per_sec值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; info stats</span><br><span class="line"># Stats</span><br><span class="line">total_connections_received:2</span><br><span class="line">total_commands_processed:6</span><br><span class="line">instantaneous_ops_per_sec:0</span><br><span class="line">total_net_input_bytes:162</span><br><span class="line">total_net_output_bytes:21919</span><br><span class="line">instantaneous_input_kbps:0.00</span><br><span class="line">instantaneous_output_kbps:0.00</span><br><span class="line">rejected_connections:0</span><br><span class="line">sync_full:0</span><br><span class="line">sync_partial_ok:0</span><br><span class="line">sync_partial_err:0</span><br><span class="line">expired_keys:0</span><br><span class="line">expired_stale_perc:0.00</span><br><span class="line">expired_time_cap_reached_count:0</span><br><span class="line">evicted_keys:0</span><br><span class="line">keyspace_hits:0</span><br><span class="line">keyspace_misses:0</span><br><span class="line">pubsub_channels:0</span><br><span class="line">pubsub_patterns:0</span><br><span class="line">latest_fork_usec:27954</span><br><span class="line">migrate_cached_sockets:0</span><br><span class="line">slave_expires_tracked_keys:0</span><br><span class="line">active_defrag_hits:0</span><br><span class="line">active_defrag_misses:0</span><br><span class="line">active_defrag_key_hits:0</span><br><span class="line">active_defrag_key_misses:0</span><br></pre></td></tr></table></figure>
+<h4 id="更新服务器内存峰值记录"><a href="#更新服务器内存峰值记录" class="headerlink" title="更新服务器内存峰值记录"></a>更新服务器内存峰值记录</h4><p>redisServer.stat_peak_memory</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/* Record the max memory used since the server was started. */</span><br><span class="line">if (zmalloc_used_memory() &gt; server.stat_peak_memory)</span><br><span class="line">    server.stat_peak_memory = zmalloc_used_memory();</span><br></pre></td></tr></table></figure>
+<h4 id="处理SIGTERM信号"><a href="#处理SIGTERM信号" class="headerlink" title="处理SIGTERM信号"></a>处理SIGTERM信号</h4><p>启动服务器时，为服务器进程的SIGTERM信号关联处理器sigShutdownHandler函数，该函数负责在服务器接到SIGTERM信号时，设置服务器状态的shutdown_asap标识。</p>
+<p>根据redisServer.shutdown_asap属性决定是否关闭服务器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/* We received a SIGTERM, shutting down here in a safe way, as it is</span><br><span class="line">   * not ok doing so inside the signal handler. */</span><br><span class="line">  if (server.shutdown_asap) &#123;</span><br><span class="line">      if (prepareForShutdown(SHUTDOWN_NOFLAGS) == C_OK) exit(0);</span><br><span class="line">      serverLog(LL_WARNING,&quot;SIGTERM received but errors trying to shut down the server, check the logs for more information&quot;);</span><br><span class="line">      server.shutdown_asap = 0;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="管理客户端资源"><a href="#管理客户端资源" class="headerlink" title="管理客户端资源"></a>管理客户端资源</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/* We need to do a few operations on clients asynchronously. */</span><br><span class="line">clientsCron();</span><br></pre></td></tr></table></figure>
+<p>serverCron函数调用clientsCron函数，对一定数量的客户端进行检查：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/* This function is called by serverCron() and is used in order to perform</span><br><span class="line"> * operations on clients that are important to perform constantly. For instance</span><br><span class="line"> * we use this function in order to disconnect clients after a timeout, including</span><br><span class="line"> * clients blocked in some blocking command with a non-zero timeout.</span><br><span class="line"> *</span><br><span class="line"> * The function makes some effort to process all the clients every second, even</span><br><span class="line"> * if this cannot be strictly guaranteed, since serverCron() may be called with</span><br><span class="line"> * an actual frequency lower than server.hz in case of latency events like slow</span><br><span class="line"> * commands.</span><br><span class="line"> *</span><br><span class="line"> * It is very important for this function, and the functions it calls, to be</span><br><span class="line"> * very fast: sometimes Redis has tens of hundreds of connected clients, and the</span><br><span class="line"> * default server.hz value is 10, so sometimes here we need to process thousands</span><br><span class="line"> * of clients per second, turning this function into a source of latency.</span><br><span class="line"> */</span><br><span class="line">#define CLIENTS_CRON_MIN_ITERATIONS 5</span><br><span class="line">void clientsCron(void) &#123;</span><br><span class="line">    /* Try to process at least numclients/server.hz of clients</span><br><span class="line">     * per call. Since normally (if there are no big latency events) this</span><br><span class="line">     * function is called server.hz times per second, in the average case we</span><br><span class="line">     * process all the clients in 1 second. */</span><br><span class="line">    int numclients = listLength(server.clients);</span><br><span class="line">    int iterations = numclients/server.hz;</span><br><span class="line">    mstime_t now = mstime();</span><br><span class="line"></span><br><span class="line">    /* Process at least a few clients while we are at it, even if we need</span><br><span class="line">     * to process less than CLIENTS_CRON_MIN_ITERATIONS to meet our contract</span><br><span class="line">     * of processing each client once per second. */</span><br><span class="line">    if (iterations &lt; CLIENTS_CRON_MIN_ITERATIONS)</span><br><span class="line">        iterations = (numclients &lt; CLIENTS_CRON_MIN_ITERATIONS) ?</span><br><span class="line">                     numclients : CLIENTS_CRON_MIN_ITERATIONS;</span><br><span class="line"></span><br><span class="line">    while(listLength(server.clients) &amp;&amp; iterations--) &#123;</span><br><span class="line">        client *c;</span><br><span class="line">        listNode *head;</span><br><span class="line"></span><br><span class="line">        /* Rotate the list, take the current head, process.</span><br><span class="line">         * This way if the client must be removed from the list it&apos;s the</span><br><span class="line">         * first element and we don&apos;t incur into O(N) computation. */</span><br><span class="line">        listRotate(server.clients);</span><br><span class="line">        head = listFirst(server.clients);</span><br><span class="line">        c = listNodeValue(head);</span><br><span class="line">        /* The following functions do different service checks on the client.</span><br><span class="line">         * The protocol is that they return non-zero if the client was</span><br><span class="line">         * terminated. */</span><br><span class="line">        if (clientsCronHandleTimeout(c,now)) continue;</span><br><span class="line">        if (clientsCronResizeQueryBuffer(c)) continue;</span><br><span class="line">        if (clientsCronTrackExpansiveClients(c)) continue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>连接超时，释放客户端。</li>
+<li>输入缓冲区超限重新创建扩容。</li>
+</ul>
+<h4 id="管理数据库资源"><a href="#管理数据库资源" class="headerlink" title="管理数据库资源"></a>管理数据库资源</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/* Handle background operations on Redis databases. */</span><br><span class="line">  databasesCron();</span><br></pre></td></tr></table></figure>
+<p>对服务器中的一部分数据库进行检查，删除其中的过期键，在有需要时对字典进行收缩。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">/* This function handles &apos;background&apos; operations we are required to do</span><br><span class="line"> * incrementally in Redis databases, such as active key expiring, resizing,</span><br><span class="line"> * rehashing. */</span><br><span class="line">void databasesCron(void) &#123;</span><br><span class="line">    /* Expire keys by random sampling. Not required for slaves</span><br><span class="line">     * as master will synthesize DELs for us. */</span><br><span class="line">    if (server.active_expire_enabled) &#123;</span><br><span class="line">        if (server.masterhost == NULL) &#123;</span><br><span class="line">            activeExpireCycle(ACTIVE_EXPIRE_CYCLE_SLOW);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            expireSlaveKeys();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Defrag keys gradually. */</span><br><span class="line">    if (server.active_defrag_enabled)</span><br><span class="line">        activeDefragCycle();</span><br><span class="line"></span><br><span class="line">    /* Perform hash tables rehashing if needed, but only if there are no</span><br><span class="line">     * other processes saving the DB on disk. Otherwise rehashing is bad</span><br><span class="line">     * as will cause a lot of copy-on-write of memory pages. */</span><br><span class="line">    if (server.rdb_child_pid == -1 &amp;&amp; server.aof_child_pid == -1) &#123;</span><br><span class="line">        /* We use global counters so if we stop the computation at a given</span><br><span class="line">         * DB we&apos;ll be able to start from the successive in the next</span><br><span class="line">         * cron loop iteration. */</span><br><span class="line">        static unsigned int resize_db = 0;</span><br><span class="line">        static unsigned int rehash_db = 0;</span><br><span class="line">        int dbs_per_call = CRON_DBS_PER_CALL;</span><br><span class="line">        int j;</span><br><span class="line"></span><br><span class="line">        /* Don&apos;t test more DBs than we have. */</span><br><span class="line">        if (dbs_per_call &gt; server.dbnum) dbs_per_call = server.dbnum;</span><br><span class="line"></span><br><span class="line">        /* Resize */</span><br><span class="line">        for (j = 0; j &lt; dbs_per_call; j++) &#123;</span><br><span class="line">            tryResizeHashTables(resize_db % server.dbnum);</span><br><span class="line">            resize_db++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        /* Rehash */</span><br><span class="line">        if (server.activerehashing) &#123;</span><br><span class="line">            for (j = 0; j &lt; dbs_per_call; j++) &#123;</span><br><span class="line">                int work_done = incrementallyRehash(rehash_db);</span><br><span class="line">                if (work_done) &#123;</span><br><span class="line">                    /* If the function did some work, stop here, we&apos;ll do</span><br><span class="line">                     * more at the next cron loop. */</span><br><span class="line">                    break;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    /* If this db didn&apos;t need rehash, we&apos;ll try the next one. */</span><br><span class="line">                    rehash_db++;</span><br><span class="line">                    rehash_db %= server.dbnum;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="执行被延迟的BGREWRITEAOF"><a href="#执行被延迟的BGREWRITEAOF" class="headerlink" title="执行被延迟的BGREWRITEAOF"></a>执行被延迟的BGREWRITEAOF</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/* Start a scheduled AOF rewrite if this was requested by the user while</span><br><span class="line"> * a BGSAVE was in progress. */</span><br><span class="line">if (server.rdb_child_pid == -1 &amp;&amp; server.aof_child_pid == -1 &amp;&amp;</span><br><span class="line">    server.aof_rewrite_scheduled)</span><br><span class="line">&#123;</span><br><span class="line">    rewriteAppendOnlyFileBackground();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="初始化服务器"><a href="#初始化服务器" class="headerlink" title="初始化服务器"></a>初始化服务器</h3><p>seerver.c-&gt;main调用initServerConfig初始化server变量：</p>
+<ul>
+<li>设置服务器的运行ID</li>
+<li>设置服务器的默认运行频率</li>
+<li>设置服务器的默认配置文件路径</li>
+<li>设置服务器的运行架构</li>
+<li>设置服务器的默认端口号</li>
+<li>设置服务器的默认RDB持久化条件和AOF持久化条件</li>
+<li>初始化服务器的LRU时钟</li>
+<li>创建命令表</li>
+</ul>
+<h4 id="载入配置选项"><a href="#载入配置选项" class="headerlink" title="载入配置选项"></a>载入配置选项</h4><ul>
+<li>若为属性的相应选项指定新的值，服务器使用指定值更新相应的属性</li>
+<li>若没有为属性的相应选项设置新的值，沿用initServerConfig函数为属性设置的默认值</li>
+</ul>
+<h4 id="初始化服务器数据结构"><a href="#初始化服务器数据结构" class="headerlink" title="初始化服务器数据结构"></a>初始化服务器数据结构</h4><p>调用initServer函数，为server.clients、server.db、server.pubsub_channels、server.lua、server.slowlog等分配内存或者关联初始化值。</p>
+<p>initServerConfig主要初始化一般属性、initServer主要负责初始化数据结构。</p>
+<p>还进行：</p>
+<ul>
+<li>为服务器设置进程信号处理器。</li>
+<li>创建共享对象。</li>
+<li>打开服务器的监听端口，为监听套接字关联连接应答事件处理器，等待服务器正式运行时接受客户端的连接。</li>
+<li>为serverCron函数创建时间事件，等待服务器正式运行时执行serverCron函数。</li>
+<li>若AOF持久化功能已打开，则打开现有的AOF文件，若AOF文件不存在则创建并打开一个新的AOF文件，为AOF写入做好准备。</li>
+<li>初始化服务器的后台I/O模块（bio），为I/O操作做准备。</li>
+</ul>
+<h4 id="还原数据库状态"><a href="#还原数据库状态" class="headerlink" title="还原数据库状态"></a>还原数据库状态</h4><p>完成对服务器server变量的初始化后，服务器载入RDB文件或AOF文件，根据文件记录的内容来还原服务器的数据库状态。</p>
+<h4 id="执行事件循环"><a href="#执行事件循环" class="headerlink" title="执行事件循环"></a>执行事件循环</h4><p>执行服务器的事件循环（loop），服务器可接受客户端的连接请求，并处理客户端发来的命令请求。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/redis/" rel="tag"><i class="fa fa-tag"></i> redis</a>
+          
+            <a href="/tags/server/" rel="tag"><i class="fa fa-tag"></i> server</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/24/redis-客户端/" rel="next" title="redis-客户端">
+                <i class="fa fa-chevron-left"></i> redis-客户端
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="cocowh" />
+            
+              <p class="site-author-name" itemprop="name">cocowh</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/cocowh" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="cocowh@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.laruence.com/" title="Laruence" target="_blank">Laruence</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://gocn.vip/" title="Go中文社区" target="_blank">Go中文社区</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://tech.meituan.com/" title="美团技术团队" target="_blank">美团技术团队</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jm.taobao.org/" title="阿里中间件" target="_blank">阿里中间件</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://mysql.taobao.org/monthly/" title="阿里数据库内核月报" target="_blank">阿里数据库内核月报</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#命令请求的执行过程"><span class="nav-number">1.</span> <span class="nav-text">命令请求的执行过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#发送命令请求"><span class="nav-number">1.1.</span> <span class="nav-text">发送命令请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#读取命令请求"><span class="nav-number">1.2.</span> <span class="nav-text">读取命令请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令执行器查找命令实现"><span class="nav-number">1.3.</span> <span class="nav-text">命令执行器查找命令实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令执行器执行预备操作"><span class="nav-number">1.4.</span> <span class="nav-text">命令执行器执行预备操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令执行器调用命令执行函数"><span class="nav-number">1.5.</span> <span class="nav-text">命令执行器调用命令执行函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令执行器执行后续工作"><span class="nav-number">1.6.</span> <span class="nav-text">命令执行器执行后续工作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将命令回复发送给客户端"><span class="nav-number">1.7.</span> <span class="nav-text">将命令回复发送给客户端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#客户端接收并打印命令回复"><span class="nav-number">1.8.</span> <span class="nav-text">客户端接收并打印命令回复</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#serverCron函数"><span class="nav-number">2.</span> <span class="nav-text">serverCron函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#更新服务器时间缓存"><span class="nav-number">2.1.</span> <span class="nav-text">更新服务器时间缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新LRU时钟"><span class="nav-number">2.2.</span> <span class="nav-text">更新LRU时钟</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新服务器每秒执行次数"><span class="nav-number">2.3.</span> <span class="nav-text">更新服务器每秒执行次数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新服务器内存峰值记录"><span class="nav-number">2.4.</span> <span class="nav-text">更新服务器内存峰值记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处理SIGTERM信号"><span class="nav-number">2.5.</span> <span class="nav-text">处理SIGTERM信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#管理客户端资源"><span class="nav-number">2.6.</span> <span class="nav-text">管理客户端资源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#管理数据库资源"><span class="nav-number">2.7.</span> <span class="nav-text">管理数据库资源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#执行被延迟的BGREWRITEAOF"><span class="nav-number">2.8.</span> <span class="nav-text">执行被延迟的BGREWRITEAOF</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化服务器"><span class="nav-number">3.</span> <span class="nav-text">初始化服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#载入配置选项"><span class="nav-number">3.1.</span> <span class="nav-text">载入配置选项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化服务器数据结构"><span class="nav-number">3.2.</span> <span class="nav-text">初始化服务器数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#还原数据库状态"><span class="nav-number">3.3.</span> <span class="nav-text">还原数据库状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#执行事件循环"><span class="nav-number">3.4.</span> <span class="nav-text">执行事件循环</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-pencil"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cocowh</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">本站字数总计&#58;</span>
+    
+    <span title="本站字数总计">213.9k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人观访
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次浏览
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '3mCBqGqA9pFYid0ahEXEfuyS-gzGzoHsz',
+        appKey: 'T9xYtLXoQcs9U2rSoBd82V9u',
+        placeholder: 'ヾﾉ≧∀≦)o来啊，快活啊!',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("3mCBqGqA9pFYid0ahEXEfuyS-gzGzoHsz", "T9xYtLXoQcs9U2rSoBd82V9u");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
