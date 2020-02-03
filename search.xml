@@ -3,6 +3,60 @@
   
     
     <entry>
+      <title>pomelo起步</title>
+      <link href="/2020/02/02/pomelo%E8%B5%B7%E6%AD%A5/"/>
+      <url>/2020/02/02/pomelo%E8%B5%B7%E6%AD%A5/</url>
+      
+        <content type="html"><![CDATA[<h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><p>参考<a href="https://github.com/NetEase/pomelo/wiki/%E5%AE%89%E8%A3%85pomelo" target="_blank" rel="noopener">安装pomelo</a></p><p>按部就班，注意相关版本号，没啥问题</p><h3 id="运行demo"><a href="#运行demo" class="headerlink" title="运行demo"></a>运行demo</h3><p>参考<a href="https://github.com/NetEase/pomelo/wiki/pomelo%E7%9A%84HelloWorld" target="_blank" rel="noopener">pomelo的HelloWorld</a></p><p>按部就班，文档更新有点过时。</p><h4 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h4><p>按部就班，根据输出日志可了解大概启动流程。</p><h4 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h4><p>运行客户端提示了一些语法问题：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">wuhua:web-server wuhua$ node app </span><br><span class="line">Warning: express.createServer() is deprecated, express</span><br><span class="line">applications no longer inherit from http.Server,</span><br><span class="line">please use:</span><br><span class="line"></span><br><span class="line">  var express = require(&quot;express&quot;);</span><br><span class="line">  var app = express();</span><br><span class="line"></span><br><span class="line">connect.multipart() will be removed in connect 3.0</span><br><span class="line">visit https://github.com/senchalabs/connect/wiki/Connect-3.0 for alternatives</span><br><span class="line">connect.limit() will be removed in connect 3.0</span><br><span class="line">Web server has started.</span><br><span class="line">Please log on http://127.0.0.1:3001/index.html</span><br><span class="line">(node:68041) [DEP0066] DeprecationWarning: OutgoingMessage.prototype._headers is deprecated</span><br></pre></td></tr></table></figure><p>根据提示修正找到文件web-server/app.js：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var express = require(&apos;express&apos;);</span><br><span class="line">var app = express.createServer();</span><br><span class="line"></span><br><span class="line">==&gt;</span><br><span class="line"></span><br><span class="line">var express = require(&apos;express&apos;);</span><br><span class="line">var app = express();</span><br></pre></td></tr></table></figure><p>再运行无语法提示。</p><p>此依赖的还是express 3.4.8版本，比较旧。</p><h3 id="pomelo命令"><a href="#pomelo命令" class="headerlink" title="pomelo命令"></a>pomelo命令</h3><p>参考<a href="https://github.com/NetEase/pomelo/wiki/pomelo%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8" target="_blank" rel="noopener">Pomelo命令行工具使用</a></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">wuhua:web-server wuhua$ which pomelo</span><br><span class="line">/usr/local/bin/pomelo</span><br><span class="line">wuhua:web-server wuhua$ pomelo --help</span><br><span class="line"></span><br><span class="line">  Usage: pomelo [options] [command]</span><br><span class="line"></span><br><span class="line">  Commands:</span><br><span class="line"></span><br><span class="line">    init [path]            create a new application</span><br><span class="line">    start [options]        start the application</span><br><span class="line">    list [options]         list the servers</span><br><span class="line">    add [options]          add a new server</span><br><span class="line">    stop [options]         stop the servers, for multiple servers, use `pomelo stop server-id-1 server-id-2`</span><br><span class="line">    kill [options]         kill the application</span><br><span class="line">    restart [options]      restart the servers, for multiple servers, use `pomelo restart server-id-1 server-id-2`</span><br><span class="line">    masterha [options]     start all the slaves of the master</span><br><span class="line">    *                     </span><br><span class="line"></span><br><span class="line">  Options:</span><br><span class="line"></span><br><span class="line">    -h, --help     output usage information</span><br><span class="line">    -V, --version  output the version number</span><br><span class="line">    </span><br><span class="line">wuhua:web-server wuhua$ pomelo -V</span><br><span class="line">2.2.7</span><br><span class="line">wuhua:web-server wuhua$ pomelo list</span><br><span class="line">try to connect 127.0.0.1:3005</span><br><span class="line">serverId           serverType pid   rss(M) heapTotal(M) heapUsed(M) uptime(m) </span><br><span class="line">connector-server-1 connector  68757 25.46  15.69        14.04       26.30     </span><br><span class="line">master-server-1    master     68756 23.34  13.56        12.07       26.31</span><br></pre></td></tr></table></figure><h4 id="小记"><a href="#小记" class="headerlink" title="小记"></a>小记</h4><p><code>pomelo start</code>可追加可选参数：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pomelo start [-e,--env &lt;env&gt;] [-d,--directory &lt;code directory&gt;]</span><br><span class="line">             [-D,--daemon]</span><br></pre></td></tr></table></figure><p>可在&lt;project_dir&gt;/game-server/config/servers.json中为不同的服务器中添加不同参数(node和v8支持的参数)，用来指定和影响node及v8的行为的。例如，当我们想对某一个服务器开启调试的时候，就可以在服务器配置中，增加args配置项，并在args中配置开启调试的端口:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;connector&quot;:[&#123;&quot;id&quot;:&quot;connector-server-1&quot;, &quot;host&quot;:&quot;127.0.0.1&quot;, &quot;port&quot;:4050, </span><br><span class="line">&quot;clientPort&quot;:3050, &quot;args&quot;:&quot;--debug=[port]&quot;&#125;]&#125;</span><br></pre></td></tr></table></figure><p>practice example：</p><figure class="highlight plain"><figcaption><span>change</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&quot;development&quot;:&#123;</span><br><span class="line">  &quot;connector&quot;: [</span><br><span class="line">  &#123;&quot;id&quot;: &quot;connector-server-1&quot;, &quot;host&quot;: &quot;127.0.0.1&quot;, &quot;port&quot;: 3150, &quot;clientHost&quot;: &quot;127.0.0.1&quot;, &quot;clientPort&quot;: 3010, &quot;args&quot;:&quot;--debug=[port]&quot;, &quot;frontend&quot;: true&#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure><p>run cli:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">wuhua:HelloWorld wuhua$ pwd</span><br><span class="line">/Users/wuhua/Desktop/pomelo/HelloWorld</span><br><span class="line">wuhua:HelloWorld wuhua$ pomelo start -d ./game-server -e development  -D</span><br><span class="line">The application is running in the background now.</span><br><span class="line"></span><br><span class="line">wuhua:HelloWorld wuhua$ pomelo list -h 127.0.0.1 -P 3005 -u admin -p admin</span><br><span class="line">try to connect 127.0.0.1:3005</span><br><span class="line">serverId        serverType pid   rss(M) heapTotal(M) heapUsed(M) uptime(m) </span><br><span class="line">master-server-1 master     70166 38.36  14.06        11.49       0.25</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> pomelo </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> note </tag>
+            
+            <tag> pomelo </tag>
+            
+            <tag> nodejs </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>简介</title>
+      <link href="/2019/12/16/%E7%AE%80%E4%BB%8B/"/>
+      <url>/2019/12/16/%E7%AE%80%E4%BB%8B/</url>
+      
+        <content type="html"><![CDATA[<p>###</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> UNIX网络编程-卷一：套接字联网API </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> note </tag>
+            
+            <tag> UNIX </tag>
+            
+            <tag> TCP/IP </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>redis-哨兵</title>
       <link href="/2019/09/26/redis-%E5%93%A8%E5%85%B5/"/>
       <url>/2019/09/26/redis-%E5%93%A8%E5%85%B5/</url>
@@ -634,9 +688,9 @@
             
             <tag> 笔记 </tag>
             
-            <tag> java </tag>
-            
             <tag> netty </tag>
+            
+            <tag> java </tag>
             
         </tags>
       
@@ -684,9 +738,9 @@
             
             <tag> 笔记 </tag>
             
-            <tag> java </tag>
-            
             <tag> netty </tag>
+            
+            <tag> java </tag>
             
         </tags>
       
@@ -1281,9 +1335,9 @@
       
         <tags>
             
-            <tag> hexo </tag>
-            
             <tag> git </tag>
+            
+            <tag> hexo </tag>
             
         </tags>
       
@@ -1680,9 +1734,9 @@
       
         <tags>
             
-            <tag> 随笔 </tag>
-            
             <tag> 心情 </tag>
+            
+            <tag> 随笔 </tag>
             
         </tags>
       

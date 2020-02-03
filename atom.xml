@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="bighua.top/"/>
-  <updated>2019-09-26T09:07:57.962Z</updated>
+  <updated>2020-02-03T10:27:25.628Z</updated>
   <id>bighua.top/</id>
   
   <author>
@@ -15,6 +15,65 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>pomelo起步</title>
+    <link href="bighua.top/2020/02/02/pomelo%E8%B5%B7%E6%AD%A5/"/>
+    <id>bighua.top/2020/02/02/pomelo起步/</id>
+    <published>2020-02-02T03:23:43.000Z</published>
+    <updated>2020-02-03T10:27:25.628Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><p>参考<a href="https://github.com/NetEase/pomelo/wiki/%E5%AE%89%E8%A3%85pomelo" target="_blank" rel="noopener">安装pomelo</a></p><p>按部就班，注意相关版本号，没啥问题</p><h3 id="运行demo"><a href="#运行demo" class="headerlink" title="运行demo"></a>运行demo</h3><p>参考<a href="https://github.com/NetEase/pomelo/wiki/pomelo%E7%9A%84HelloWorld" target="_blank" rel="noopener">pomelo的HelloWorld</a></p><p>按部就班，文档更新有点过时。</p><h4 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h4><p>按部就班，根据输出日志可了解大概启动流程。</p><h4 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h4><p>运行客户端提示了一些语法问题：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">wuhua:web-server wuhua$ node app </span><br><span class="line">Warning: express.createServer() is deprecated, express</span><br><span class="line">applications no longer inherit from http.Server,</span><br><span class="line">please use:</span><br><span class="line"></span><br><span class="line">  var express = require(&quot;express&quot;);</span><br><span class="line">  var app = express();</span><br><span class="line"></span><br><span class="line">connect.multipart() will be removed in connect 3.0</span><br><span class="line">visit https://github.com/senchalabs/connect/wiki/Connect-3.0 for alternatives</span><br><span class="line">connect.limit() will be removed in connect 3.0</span><br><span class="line">Web server has started.</span><br><span class="line">Please log on http://127.0.0.1:3001/index.html</span><br><span class="line">(node:68041) [DEP0066] DeprecationWarning: OutgoingMessage.prototype._headers is deprecated</span><br></pre></td></tr></table></figure><p>根据提示修正找到文件web-server/app.js：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var express = require(&apos;express&apos;);</span><br><span class="line">var app = express.createServer();</span><br><span class="line"></span><br><span class="line">==&gt;</span><br><span class="line"></span><br><span class="line">var express = require(&apos;express&apos;);</span><br><span class="line">var app = express();</span><br></pre></td></tr></table></figure><p>再运行无语法提示。</p><p>此依赖的还是express 3.4.8版本，比较旧。</p><h3 id="pomelo命令"><a href="#pomelo命令" class="headerlink" title="pomelo命令"></a>pomelo命令</h3><p>参考<a href="https://github.com/NetEase/pomelo/wiki/pomelo%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8" target="_blank" rel="noopener">Pomelo命令行工具使用</a></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">wuhua:web-server wuhua$ which pomelo</span><br><span class="line">/usr/local/bin/pomelo</span><br><span class="line">wuhua:web-server wuhua$ pomelo --help</span><br><span class="line"></span><br><span class="line">  Usage: pomelo [options] [command]</span><br><span class="line"></span><br><span class="line">  Commands:</span><br><span class="line"></span><br><span class="line">    init [path]            create a new application</span><br><span class="line">    start [options]        start the application</span><br><span class="line">    list [options]         list the servers</span><br><span class="line">    add [options]          add a new server</span><br><span class="line">    stop [options]         stop the servers, for multiple servers, use `pomelo stop server-id-1 server-id-2`</span><br><span class="line">    kill [options]         kill the application</span><br><span class="line">    restart [options]      restart the servers, for multiple servers, use `pomelo restart server-id-1 server-id-2`</span><br><span class="line">    masterha [options]     start all the slaves of the master</span><br><span class="line">    *                     </span><br><span class="line"></span><br><span class="line">  Options:</span><br><span class="line"></span><br><span class="line">    -h, --help     output usage information</span><br><span class="line">    -V, --version  output the version number</span><br><span class="line">    </span><br><span class="line">wuhua:web-server wuhua$ pomelo -V</span><br><span class="line">2.2.7</span><br><span class="line">wuhua:web-server wuhua$ pomelo list</span><br><span class="line">try to connect 127.0.0.1:3005</span><br><span class="line">serverId           serverType pid   rss(M) heapTotal(M) heapUsed(M) uptime(m) </span><br><span class="line">connector-server-1 connector  68757 25.46  15.69        14.04       26.30     </span><br><span class="line">master-server-1    master     68756 23.34  13.56        12.07       26.31</span><br></pre></td></tr></table></figure><h4 id="小记"><a href="#小记" class="headerlink" title="小记"></a>小记</h4><p><code>pomelo start</code>可追加可选参数：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pomelo start [-e,--env &lt;env&gt;] [-d,--directory &lt;code directory&gt;]</span><br><span class="line">             [-D,--daemon]</span><br></pre></td></tr></table></figure><p>可在&lt;project_dir&gt;/game-server/config/servers.json中为不同的服务器中添加不同参数(node和v8支持的参数)，用来指定和影响node及v8的行为的。例如，当我们想对某一个服务器开启调试的时候，就可以在服务器配置中，增加args配置项，并在args中配置开启调试的端口:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;connector&quot;:[&#123;&quot;id&quot;:&quot;connector-server-1&quot;, &quot;host&quot;:&quot;127.0.0.1&quot;, &quot;port&quot;:4050, </span><br><span class="line">&quot;clientPort&quot;:3050, &quot;args&quot;:&quot;--debug=[port]&quot;&#125;]&#125;</span><br></pre></td></tr></table></figure><p>practice example：</p><figure class="highlight plain"><figcaption><span>change</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&quot;development&quot;:&#123;</span><br><span class="line">  &quot;connector&quot;: [</span><br><span class="line">  &#123;&quot;id&quot;: &quot;connector-server-1&quot;, &quot;host&quot;: &quot;127.0.0.1&quot;, &quot;port&quot;: 3150, &quot;clientHost&quot;: &quot;127.0.0.1&quot;, &quot;clientPort&quot;: 3010, &quot;args&quot;:&quot;--debug=[port]&quot;, &quot;frontend&quot;: true&#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure><p>run cli:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">wuhua:HelloWorld wuhua$ pwd</span><br><span class="line">/Users/wuhua/Desktop/pomelo/HelloWorld</span><br><span class="line">wuhua:HelloWorld wuhua$ pomelo start -d ./game-server -e development  -D</span><br><span class="line">The application is running in the background now.</span><br><span class="line"></span><br><span class="line">wuhua:HelloWorld wuhua$ pomelo list -h 127.0.0.1 -P 3005 -u admin -p admin</span><br><span class="line">try to connect 127.0.0.1:3005</span><br><span class="line">serverId        serverType pid   rss(M) heapTotal(M) heapUsed(M) uptime(m) </span><br><span class="line">master-server-1 master     70166 38.36  14.06        11.49       0.25</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;环境搭建&quot;&gt;&lt;a href=&quot;#环境搭建&quot; class=&quot;headerlink&quot; title=&quot;环境搭建&quot;&gt;&lt;/a&gt;环境搭建&lt;/h3&gt;&lt;p&gt;参考&lt;a href=&quot;https://github.com/NetEase/pomelo/wiki/%E5%AE%89%E8
+      
+    
+    </summary>
+    
+      <category term="pomelo" scheme="bighua.top/categories/pomelo/"/>
+    
+    
+      <category term="note" scheme="bighua.top/tags/note/"/>
+    
+      <category term="pomelo" scheme="bighua.top/tags/pomelo/"/>
+    
+      <category term="nodejs" scheme="bighua.top/tags/nodejs/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>简介</title>
+    <link href="bighua.top/2019/12/16/%E7%AE%80%E4%BB%8B/"/>
+    <id>bighua.top/2019/12/16/简介/</id>
+    <published>2019-12-16T11:09:32.000Z</published>
+    <updated>2019-12-16T11:11:16.013Z</updated>
+    
+    <content type="html"><![CDATA[<p>###</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;###&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+      <category term="UNIX网络编程-卷一：套接字联网API" scheme="bighua.top/categories/UNIX%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B-%E5%8D%B7%E4%B8%80%EF%BC%9A%E5%A5%97%E6%8E%A5%E5%AD%97%E8%81%94%E7%BD%91API/"/>
+    
+    
+      <category term="note" scheme="bighua.top/tags/note/"/>
+    
+      <category term="UNIX" scheme="bighua.top/tags/UNIX/"/>
+    
+      <category term="TCP/IP" scheme="bighua.top/tags/TCP-IP/"/>
+    
+  </entry>
   
   <entry>
     <title>redis-哨兵</title>
@@ -555,61 +614,6 @@
       <category term="mac" scheme="bighua.top/tags/mac/"/>
     
       <category term="命令" scheme="bighua.top/tags/%E5%91%BD%E4%BB%A4/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Docker学习-安装配置</title>
-    <link href="bighua.top/2019/04/06/Docker%E5%AD%A6%E4%B9%A0-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/"/>
-    <id>bighua.top/2019/04/06/Docker学习-安装配置/</id>
-    <published>2019-04-06T07:50:07.000Z</published>
-    <updated>2019-04-11T12:33:14.177Z</updated>
-    
-    <content type="html"><![CDATA[<p>mac环境桌面版</p><p>下载</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">wuhua:src wuhua$ brew search docker</span><br><span class="line">==&gt; Formulae</span><br><span class="line">docker                                   docker-machine-completion</span><br><span class="line">docker-clean                             docker-machine-driver-hyperkit</span><br><span class="line">docker-cloud                             docker-machine-driver-vultr</span><br><span class="line">docker-completion                        docker-machine-driver-xhyve</span><br><span class="line">docker-compose                           docker-machine-nfs</span><br><span class="line">docker-compose-completion                docker-machine-parallels</span><br><span class="line">docker-credential-helper                 docker-squash</span><br><span class="line">docker-credential-helper-ecr             docker-swarm</span><br><span class="line">docker-gen                               docker2aci</span><br><span class="line">docker-ls                                dockerize</span><br><span class="line">docker-machine</span><br><span class="line"></span><br><span class="line">==&gt; Casks</span><br><span class="line">docker                                   homebrew/cask-versions/docker-edge</span><br><span class="line">docker-toolbox</span><br><span class="line">wuhua:src wuhua$ brew cask install docker</span><br><span class="line">Updating Homebrew...</span><br><span class="line">==&gt; Satisfying dependencies</span><br><span class="line">==&gt; Downloading https://download.docker.com/mac/stable/31259/Docker.dmg</span><br><span class="line">######################################################################## 100.0%</span><br><span class="line">==&gt; Verifying SHA-256 checksum for Cask &apos;docker&apos;.</span><br><span class="line">==&gt; Installing Cask docker</span><br><span class="line">==&gt; Moving App &apos;Docker.app&apos; to &apos;/Applications/Docker.app&apos;.</span><br><span class="line">🍺  docker was successfully installed!</span><br></pre></td></tr></table></figure><p>点<code>访达</code>边的<code>启动台</code> 可看到下载好的桌面版docker，点击启动按步骤操作输入密码授权</p><p>配置后启动查看信息</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">wuhua:src wuhua$ docker info</span><br><span class="line">Error response from daemon: Bad response from Docker engine</span><br><span class="line">wuhua:src wuhua$ docker info</span><br><span class="line">Containers: 0</span><br><span class="line"> Running: 0</span><br><span class="line"> Paused: 0</span><br><span class="line"> Stopped: 0</span><br><span class="line">Images: 0</span><br><span class="line">Server Version: 18.09.2</span><br><span class="line">Storage Driver: overlay2</span><br><span class="line"> Backing Filesystem: extfs</span><br><span class="line"> Supports d_type: true</span><br><span class="line"> Native Overlay Diff: true</span><br><span class="line">Logging Driver: json-file</span><br><span class="line">Cgroup Driver: cgroupfs</span><br><span class="line">Plugins:</span><br><span class="line"> Volume: local</span><br><span class="line"> Network: bridge host macvlan null overlay</span><br><span class="line"> Log: awslogs fluentd gcplogs gelf journald json-file local logentries splunk syslog</span><br><span class="line">Swarm: inactive</span><br><span class="line">Runtimes: runc</span><br><span class="line">Default Runtime: runc</span><br><span class="line">Init Binary: docker-init</span><br><span class="line">containerd version: 9754871865f7fe2f4e74d43e2fc7ccd237edcbce</span><br><span class="line">runc version: 09c8266bf2fcf9519a651b04ae54c967b9ab86ec</span><br><span class="line">init version: fec3683</span><br><span class="line">Security Options:</span><br><span class="line"> seccomp</span><br><span class="line">  Profile: default</span><br><span class="line">Kernel Version: 4.9.125-linuxkit</span><br><span class="line">Operating System: Docker for Mac</span><br><span class="line">OSType: linux</span><br><span class="line">Architecture: x86_64</span><br><span class="line">CPUs: 2</span><br><span class="line">Total Memory: 1.952GiB</span><br><span class="line">Name: linuxkit-025000000001</span><br><span class="line">ID: VWVF:EJP2:5EGI:AWPX:KD3K:5ILZ:KTJ6:CXKL:UBGN:XY5N:ZQUT:YDMB</span><br><span class="line">Docker Root Dir: /var/lib/docker</span><br><span class="line">Debug Mode (client): false</span><br><span class="line">Debug Mode (server): true</span><br><span class="line"> File Descriptors: 24</span><br><span class="line"> Goroutines: 51</span><br><span class="line"> System Time: 2019-04-06T07:47:49.465200315Z</span><br><span class="line"> EventsListeners: 2</span><br><span class="line">HTTP Proxy: gateway.docker.internal:3128</span><br><span class="line">HTTPS Proxy: gateway.docker.internal:3129</span><br><span class="line">Registry: https://index.docker.io/v1/</span><br><span class="line">Labels:</span><br><span class="line">Experimental: false</span><br><span class="line">Insecure Registries:</span><br><span class="line"> 127.0.0.0/8</span><br><span class="line">Registry Mirrors:</span><br><span class="line"> https://hqx51nri.mirror.aliyuncs.com/</span><br><span class="line">Live Restore Enabled: false</span><br><span class="line">Product License: Community Engine</span><br></pre></td></tr></table></figure><p>第一次<code>docker info</code>查询失败是因为未启动完毕。</p><p>关于docker命令参考<a href="http://www.runoob.com/docker/docker-command-manual.html" target="_blank" rel="noopener">Docker 命令大全</a></p><p>关于设置docker国内镜像参考<a href="https://www.cnblogs.com/anliven/p/6218741.html" target="_blank" rel="noopener">Docker国内镜像</a></p><p>关于其他系统Doker安装参考<a href="http://www.runoob.com/docker/macos-docker-install.html" target="_blank" rel="noopener">MacOS Docker 安装</a></p><p>关于<code>brew</code>和<code>brew cask</code>参考<a href="https://blog.csdn.net/yanxiaobo1991/article/details/78455908" target="_blank" rel="noopener">mac brew和brew cask的区别</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;mac环境桌面版&lt;/p&gt;
-&lt;p&gt;下载&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;lin
-      
-    
-    </summary>
-    
-      <category term="Docker" scheme="bighua.top/categories/Docker/"/>
-    
-    
-      <category term="Docker" scheme="bighua.top/tags/Docker/"/>
-    
-      <category term="mac" scheme="bighua.top/tags/mac/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>2018年终总结</title>
-    <link href="bighua.top/2019/02/02/2018%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/"/>
-    <id>bighua.top/2019/02/02/2018年终总结/</id>
-    <published>2019-02-01T17:19:30.000Z</published>
-    <updated>2019-02-04T17:17:33.587Z</updated>
-    
-    <content type="html"><![CDATA[<p>时间真快，距离开始创建博客已经过去快一年了。这期间，大学毕业，结束了四年相对来说最悠闲的时光；初入职场，参入工作，体回到码农的苦逼加班生活。</p><h3 id="上半年-大学毕业"><a href="#上半年-大学毕业" class="headerlink" title="上半年-大学毕业"></a>上半年-大学毕业</h3><p>从17年11月份确定毕设课题开始，毕设导师就开始积极联系我们进行相关课题的研究工作。可能是由于导师也是第一年回校园工作，对之前的毕设流程不了解，对我们的要求可以说是有点太过严谨。在10月末确定工作签好三方后，本想去公司实习一段时间，了解公司和相关技术，但是导师以毕设为由，建议将毕设弄差不多后再去实习。</p><p>17年末，过的很轻松，结束掉了大学最后的几门课程考试。这段时间， 每天基本睡到自然醒，中午一点多去梦泽园吃顿饭，回宿舍打游戏，晚上玩手机熬夜到很晚，第二天循环如此。这一段时间，应该是大学过的最爽的一段时间，不用再顾虑学习，确定好了工作，混吃等死。每天重复的事情——打游戏、睡觉、一切其他感兴趣的事情。有点遗憾是经济不支持，没能实现出去旅游四处走走的心愿。有点不爽的是，考试结束本来可以回家的，导师要求留校十天，进行毕设课题相关的工作。其实这十天完全没做多少毕设相关的工作，大多数时间依旧堕落的生活。放假前的例会，发给我们相关软硬件，让我们回家摸索。然而，春节期间谁会想到这玩意呢，怎么样带回去，再怎么样的带回来，再在例会前几天突击了解一下。</p><p>春节期间，由于工作的<code>理想工资</code>，自己快有点飘了，在各个房产软件上查看洛阳、信阳等各处楼盘的信息，心里决定一定要靠自己买到理想的、位置合适的一套房子。现在想想，当时的想法还有点太遥远，想要去实现，还远得很。</p><p>18年开学，晚来了一周多，如果不是导师要求例会，完全不想再返回学校。到学校后，发现很多同学已经开始或打算去实习了，这时有个换毕设课题的机会，跟与学校合作的企业去开发<code>养猪</code>项目，当作毕设课题，当时爽妈还建议我一起报，可以想着搞定毕设去公司实习，拒绝了，结合后来苦逼的毕设过程、没能够去公司实习、看他们<code>养猪</code>玩的不亦乐乎，简直想抽自己两巴掌，后悔得要死。后来18年大四最后一学期的前几个月——3月中旬至五月中旬——就如前面所说。每天在导师给找的办公室里做毕设相关——看资料、翻译、看源代码、记录，枯燥无聊。四月初感觉毕设做的差不多了想去实习，联系hr后反馈没有实习名额了，然后<code>养猪</code>的同学四处游山玩水，简直心里不爽到极点。不爽的最后也是有些收获的，阅读项目底层C语言源码，收获有一些，在18年的一篇日志中有些记录，这里就不重记了。到5月中旬，毕设论文准备的差不多了，就趁二姐回家，回家过了半个月，陪可爱的外甥女玩，很是惬意开心。6月初返校，修修改改准备最后的论文终稿、答辩PPT，10号答辩顺利通过，其实感觉我是通过的最顺利的一个，整个过程不到5分钟，没有安全相关的老师，没问什么问题，对做的工作进行了一些了解性提问，最后甚至还有个老师想要推优我的毕设论文。还好最终没推优，省去了一些麻烦事。作为一条咸鱼，已经不对大学再抱有任何幻想，只想着顺利毕业结束这不怎么样的四年。</p><p>这半年沉寂了N久的和尚之心也随着与李老师的几次会面交流在18年春天有了一些蠢蠢欲动，也是在枯燥的毕设过程中多了一些点缀。但是毕竟多年修炼有素，内心抑制住了，对于没有把握的事情不再轻易尝试。在四月时，自己曾一人骑着小蓝车再一次逛了一遍校园。从图书馆出发，骑到24节气看观赏的游客，骑到油菜田拍一片金黄、骑过基本建成养猪厂、骑过坟场前面旁边开的鲜花正盛的小户人家、骑过柳树随着春风摇曳着枝条的南湖边、骑过情侣经常约会的小树林、起过吐槽了四年的环湖跑路线、起过茶叶地、骑过种满各种花卉和作物的研究圆、起过二运篮球场旁边开满紫色小花的小树林、骑到清真食堂再感受一遍不怎么喜欢的饭菜最终还是照旧选择了炒饭，最后在慢慢走回去，体验这最后的悠闲时光。六月中旬班级毕业晚饭到毕设典礼以及最后的毕业离校时间，其实还是挺想留下来感受下这最后的相聚时光的，虽然回家过端午节并送二姐回家是提前离校原因之一，但是更过的原因是不想再见那些隔阂了很久的同学，想早点逃离这不爽快的生活。</p><p>总的来说，18年的上半年，生活的主要节奏是毕设，心中住进的人在毕设枯燥的生活中增添了一些别样色彩，可爱的外甥女，毕设离别。在技术上，学习了go的一点皮毛，复习一些c相关的东西，遗忘了PHP。</p><h3 id="下半年-参入工作"><a href="#下半年-参入工作" class="headerlink" title="下半年-参入工作"></a>下半年-参入工作</h3><p>拿到小强寄回的毕业证后，迟迟不想离家，想在家多待几天，定的火车票也很晚，直到日期到达不得不收拾行李开始北漂生活。六月二十八下午到北京，出站后马上办理了一卡通，先坐地铁去上班的地方看了一眼，拍了一张北大的竺可桢大楼，由于之前没租好房，然后立刻拖着行李开始去附近找中介看房子，然后这附近的房子符合心里价位预期的不是小就是破旧，最终没能定下，看完房子吃完晚饭差不多六点了，才开始考虑宾馆的事情。这个时候才开始去美团上看附近的青旅，基本上家家都爆满了。最后花了100多大洋找到一家<code>招待所</code>，直到七绕八绕问了路人才找到这家在地下二层的<code>招待所</code>。是的，地下室，很多间，里面住着不少人，看着有晾晒衣服的，其中不少工作服，例如交通协助员服、清洁工服等，虽然这里并没有阳关。里面用的公用的洗漱间和卫生间，有点高中公共卫生间的感觉，但是要比那糟糕多了，这里没有阳光，通气靠中央空调，异常潮湿，老旧残破。这个地下室在中关村靠近苏州街那边，具体的位置记不太清了。那天晚上才确认到，原来还真有在这种环境中常驻生活的人的，体会到生活的不易。虽然环境差了些，但我还是睡着了，因为太困了，拖着大行李箱跑了好久。</p><p>29号早晨离开地下室、拖着行李箱开始坐四号线往南走到自如上房价相对便宜点的站点下，但一下地铁，计算下路上消耗的时间就打消了租房的念头，然后又坐四号线往北走，到安河桥北下，计算公司地铁站点到安河桥北消耗的时间。下地铁后，之前在自如上关注的房源负责的中介联系上了我，说是十六号线永丰南有房源要马上释放了，想帮我抢，这个时候拖着行李跑了老半天的我简直感动到不行，然后立刻提供了账号，可惜她并没有帮我抢到，她甚至怀疑他们内部有挂，也是很有趣。然后从安河桥北站向外面忘了几眼，合计下地铁时间，就开始重新进站，向hr推荐的十六号线上的几点地点去，根据通勤时间以及自如上的房价，最终选择了在马连洼站下，然后开始搜索附近的中介，最后拖着行李先找了链家，他们的房源与自如上的是统一的，中介也是根据需求在自如上查找，最后给推荐了一个在圆明园别墅的将要退租的房源，但是到30号才能看房。出了链家，又找了一家不远的我爱我家，才知道他们的房源与平台展示的是不同步的，给推荐了三处房源，最终选择了30号可马上入住的肖家河，思考再三签了合同，交了12500元，花了人生中最大的一笔钱。这一晚，在同是应届生的同事租好的房子里打地铺凑合了一晚，他刚好租在隔壁小区，感谢这位热心广东同事。30号早去办完交接手续，就开始布置房子，正式入住了。七月一号，和这位广东同事一起去逛了故宫，但是实在太大了，我们只走了一条线就结束了，然后骑自行经过天安门，去同事推荐的美食街吃了碗面，坐地铁回家。</p><p>七月二号，正式入职，去总部本办理入职手续，花了一上午时间，吃完午饭去办公地点，由hr领着带到每个人的小组，交给组长。我们组长帆哥再带领我们去见经理、和前端负责人打招呼，然后给我们安排工位。接着hr带领我们熟悉办公环境，介绍我们所在的组，以及生活上的日常。</p><p>七月和八月这两个月算事这半年最轻松的，跟着新人培养计划熟悉相关技术和工具，做一个内部项目，每晚都能八点左右甚至吃完晚饭后直接回去，这两个月回去后还经常再开几把lol。到了九月份开始熟悉正在开发的正式项目X，就慢慢开始忙起来了。这两个月我们组有些人事变动，七月中旬刚聚餐完，下旬组长就开始离职前的最后休假了，到了九月中旬及十月中旬，陆续又有三名同事离开。技术上完全是学习状态，虽然之前撸项目PHP用的挺多，但是也快有大半年未接触过了，这大半年都投入到毕设和了解Go上去了，其他相关的技术如mysql、nginx、redis等也是学习使用状态。</p><p>刚开始接触正式项目X，有些吃力，没有从一开始就关注这个项目，业务完全不了解，读相关产品文档、wiki、代码都有些吃力。这时正值这个正式项目第一次上线，离职同事负责的模块留下了很多待解决bug，这时他的模块交给了另一个同事，待解决bug也基本都有这位交接的同事慢慢解决完了。他带着我开始熟悉这部分的业务，从一些新增的简单接口开始，慢慢熟悉了解整个模块。这时候也大部分都是在学习状态，跟着了解业务，跟着学会排查bug，解决bug。十月下旬述职转正，可能是不适应经理的冷脸，心里总是很紧张，比笔毕设答辩时还紧张，表现很差，最后顺序转正，算是正式员工可以有绩效了。</p><p>九月到十一月还不是很忙，基本上是熟悉业务写些小接口的状态，还可以有些时间进行其他的学习。十一月过的很糟心，三叔的离世。十一月末回来后，正式开始了这半年最繁忙的两个月。</p><p>十一月时接了一个评审中的项目A，十二月开始进入开发，但是十二月上旬，同事由于有其他工作需求解决，交给了我另一个项目B。还好的是老项目逻辑可以参考，坏的是时间很紧，根据排期只有一周多的时间就要体测，没有参入评审，对很多细节不了解，也给后来埋了不少坑。这一两周每天都回去很晚，整理老项目逻辑，开发，调试，该bug。十二月初，十一月评审的项目A也正式进入排期阶段，在做项目B的同时整理项目A相关产品文档，确定需求接口，再向被人要接口要排期。同时，十二月初，之前负责的项目X需要改版，之前写的接口基本不能复用，好在接口不多，在十二月中旬花了三四天完成。完成项目X的接口后，项目A也开始进入开发阶段，同时还要排查修改项目X和项目B的相关bug，直到项目A接口交付deadline的前一天——圣诞后两天，项目A需要的10个接口还有一半未完成，而在圣诞节这天项目X改版上线，通宵到四五点才回去。睡到中午醒，立刻开始项目A未完成的接口开发，一直到交付日期五点基本开发完。这两天简直有点吃不消，一直影响到一月，脸上又开始出现很多痘痘，脸色也很不好。一开始以为项目A只有刚开始需求的十多个新接口，其他的可以复用老接口，后来发现我错了，一月份的整个工作都消耗在了老接口的调试重写上，被提N多BUG，每天在改bug、熟悉老代码逻辑、调试接口中度过。目前还有一个遗留bug未解决，需要年后继续联调。在一月中旬，接了哟哥小工具的开发工作，开始以为是一个简单的小功能，最开始的产品需求也比较简单，可是后来出现一些问题后就突然麻烦起来，虽然目前给了一个折中解决方案，年后估计还有好一整。</p><p>这半年，也和几个老同学们聚过几次，去过北京几个地儿。技术上的状态，目前仍然是学习阶段，这半年大多时间都在用php撸业务去了，上半年了解的go也基本忘差不多了。上半年住进心里的李老师，我也终于鼓起勇气直面内心了一回，希望在新的一年里能有更多时间去争取。</p><p>一会就到站了，希望自己在新的一年里一切顺利，家人身体健康～</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;时间真快，距离开始创建博客已经过去快一年了。这期间，大学毕业，结束了四年相对来说最悠闲的时光；初入职场，参入工作，体回到码农的苦逼加班生活。&lt;/p&gt;
-&lt;h3 id=&quot;上半年-大学毕业&quot;&gt;&lt;a href=&quot;#上半年-大学毕业&quot; class=&quot;headerlink&quot; title
-      
-    
-    </summary>
-    
-      <category term="随笔" scheme="bighua.top/categories/%E9%9A%8F%E7%AC%94/"/>
-    
-    
-      <category term="随笔" scheme="bighua.top/tags/%E9%9A%8F%E7%AC%94/"/>
     
   </entry>
   
