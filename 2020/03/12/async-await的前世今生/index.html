@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="异步背景JS设计之初服务于浏览器GUI编程语言，保证界面流畅，UI线程不能阻塞，采用异步非阻塞编程模式。  执行一个指令不会马上返回结果而执行下一个任务，基于事件机制，实际处理这个调用的部件在完成后，通过状态、通知和回调来通知调用者。  一般处理异步操作，流程间有结果依赖关系，需要依靠上一执行结果开始下一执行操作。 node.js中的异步操作：  I/O 网络I/O 文件I/O DNS操作   非">
+<meta name="description" content="异步背景JS设计之初服务于浏览器GUI编程语言，保证界面流畅，UI线程不能阻塞，采用异步非阻塞编程模式。  执行一个指令不会马上返回结果而执行下一个任务，基于事件机制，实际处理这个调用的部件在完成后，通过状态、通知和回调来通知调用者。  node.js中的异步操作：    I/O 网络I/O 文件I/O DNS操作   非I/O 定时器（setTimeout，setInterval） microt">
 <meta name="keywords" content="ECMAScript,async,promise">
 <meta property="og:type" content="article">
 <meta property="og:title" content="async&#x2F;await的前世今生">
 <meta property="og:url" content="bighua.top/2020/03/12/async-await的前世今生/index.html">
 <meta property="og:site_name" content="水木年华">
-<meta property="og:description" content="异步背景JS设计之初服务于浏览器GUI编程语言，保证界面流畅，UI线程不能阻塞，采用异步非阻塞编程模式。  执行一个指令不会马上返回结果而执行下一个任务，基于事件机制，实际处理这个调用的部件在完成后，通过状态、通知和回调来通知调用者。  一般处理异步操作，流程间有结果依赖关系，需要依靠上一执行结果开始下一执行操作。 node.js中的异步操作：  I/O 网络I/O 文件I/O DNS操作   非">
+<meta property="og:description" content="异步背景JS设计之初服务于浏览器GUI编程语言，保证界面流畅，UI线程不能阻塞，采用异步非阻塞编程模式。  执行一个指令不会马上返回结果而执行下一个任务，基于事件机制，实际处理这个调用的部件在完成后，通过状态、通知和回调来通知调用者。  node.js中的异步操作：    I/O 网络I/O 文件I/O DNS操作   非I/O 定时器（setTimeout，setInterval） microt">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-03-13T05:08:22.048Z">
+<meta property="og:updated_time" content="2020-03-13T05:20:31.716Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="async&#x2F;await的前世今生">
-<meta name="twitter:description" content="异步背景JS设计之初服务于浏览器GUI编程语言，保证界面流畅，UI线程不能阻塞，采用异步非阻塞编程模式。  执行一个指令不会马上返回结果而执行下一个任务，基于事件机制，实际处理这个调用的部件在完成后，通过状态、通知和回调来通知调用者。  一般处理异步操作，流程间有结果依赖关系，需要依靠上一执行结果开始下一执行操作。 node.js中的异步操作：  I/O 网络I/O 文件I/O DNS操作   非">
+<meta name="twitter:description" content="异步背景JS设计之初服务于浏览器GUI编程语言，保证界面流畅，UI线程不能阻塞，采用异步非阻塞编程模式。  执行一个指令不会马上返回结果而执行下一个任务，基于事件机制，实际处理这个调用的部件在完成后，通过状态、通知和回调来通知调用者。  node.js中的异步操作：    I/O 网络I/O 文件I/O DNS操作   非I/O 定时器（setTimeout，setInterval） microt">
 
 
 
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,276
+                  1,240
                 </span>
               
 
@@ -453,8 +453,7 @@
 <blockquote>
 <p>执行一个指令不会马上返回结果而执行下一个任务，基于事件机制，实际处理这个调用的部件在完成后，通过状态、通知和回调来通知调用者。</p>
 </blockquote>
-<p>一般处理异步操作，流程间有结果依赖关系，需要依靠上一执行结果开始下一执行操作。</p>
-<p>node.js中的异步操作：</p>
+<p>node.js中的异步操作：  </p>
 <ul>
 <li>I/O<ul>
 <li>网络I/O</li>
