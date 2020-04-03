@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="初识Golang安装步骤：    在https://golang.google.cn/dl/选择合适的版本 下载 1wget -c https://storage.googleapis.com/golang/go1.10.2.linux-amd64.tar.gz  解压 1tar -C /usr/local/ -zxvf go1.10.2.linux-amd64.tar.gz  添加系统环境变量">
+<meta name="description" content="初识Golang安装步骤：    在https://golang.google.cn/dl/选择合适的版本 下载  1wget -c https://storage.googleapis.com/golang/go1.10.2.linux-amd64.tar.gz  解压  1tar -C /usr/local/ -zxvf go1.10.2.linux-amd64.tar.gz  添加系统环境变">
 <meta name="keywords" content="Golang,笔记,基础">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Golang笔记-基础篇(一)">
 <meta property="og:url" content="bighua.top/2018/04/10/Golang笔记-基础篇-一/index.html">
 <meta property="og:site_name" content="水木年华">
-<meta property="og:description" content="初识Golang安装步骤：    在https://golang.google.cn/dl/选择合适的版本 下载 1wget -c https://storage.googleapis.com/golang/go1.10.2.linux-amd64.tar.gz  解压 1tar -C /usr/local/ -zxvf go1.10.2.linux-amd64.tar.gz  添加系统环境变量">
+<meta property="og:description" content="初识Golang安装步骤：    在https://golang.google.cn/dl/选择合适的版本 下载  1wget -c https://storage.googleapis.com/golang/go1.10.2.linux-amd64.tar.gz  解压  1tar -C /usr/local/ -zxvf go1.10.2.linux-amd64.tar.gz  添加系统环境变">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-10-30T11:56:56.971Z">
+<meta property="og:updated_time" content="2020-04-03T04:04:55.127Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-基础篇(一)">
-<meta name="twitter:description" content="初识Golang安装步骤：    在https://golang.google.cn/dl/选择合适的版本 下载 1wget -c https://storage.googleapis.com/golang/go1.10.2.linux-amd64.tar.gz  解压 1tar -C /usr/local/ -zxvf go1.10.2.linux-amd64.tar.gz  添加系统环境变量">
+<meta name="twitter:description" content="初识Golang安装步骤：    在https://golang.google.cn/dl/选择合适的版本 下载  1wget -c https://storage.googleapis.com/golang/go1.10.2.linux-amd64.tar.gz  解压  1tar -C /usr/local/ -zxvf go1.10.2.linux-amd64.tar.gz  添加系统环境变">
 
 
 
@@ -412,7 +412,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  4,648
+                  4,652
                 </span>
               
 
@@ -452,33 +452,38 @@
         <h2 id="初识Golang"><a href="#初识Golang" class="headerlink" title="初识Golang"></a>初识Golang</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>步骤：  </p>
 <ul>
 <li>在<a href="https://golang.google.cn/dl/" target="_blank" rel="noopener">https://golang.google.cn/dl/</a>选择合适的版本</li>
-<li><p>下载</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -c https://storage.googleapis.com/golang/go1.10.2.linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>解压</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -C /usr/local/ -zxvf go1.10.2.linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>添加系统环境变量</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile.d/go.sh</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>添加内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:/usr/local/go/bin</span><br><span class="line">:wq!</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>使其生效</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile.d/go.sh</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>也可直接命令行输入<code>export PATH=$PATH:/usr/local/go/bin</code>或者在bash文件中添加。</p>
-</li>
-<li><p>添加GOPATH目录</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/dev/go</span><br><span class="line">vim /etc/profile.d/gopath.sh</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>添加内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export GOPATH=/root/dev/go</span><br><span class="line">:wq!</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>使其生效</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile.d/gopath.sh</span><br></pre></td></tr></table></figure>
-</li>
+<li>下载</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -c https://storage.googleapis.com/golang/go1.10.2.linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
+<ul>
+<li>解压</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -C /usr/local/ -zxvf go1.10.2.linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
+<ul>
+<li>添加系统环境变量</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile.d/go.sh</span><br></pre></td></tr></table></figure>
+<ul>
+<li>添加内容</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:/usr/local/go/bin</span><br><span class="line">:wq!</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使其生效</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile.d/go.sh</span><br></pre></td></tr></table></figure>
+<ul>
+<li>也可直接命令行输入<code>export PATH=$PATH:/usr/local/go/bin</code>或者在bash文件中添加。  </li>
+<li>添加GOPATH目录</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/dev/go</span><br><span class="line">vim /etc/profile.d/gopath.sh</span><br></pre></td></tr></table></figure>
+<ul>
+<li>添加内容</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export GOPATH=/root/dev/go</span><br><span class="line">:wq!</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使其生效</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile.d/gopath.sh</span><br></pre></td></tr></table></figure>
 <p>一般将软件安装到usr/local中，下载的压缩包解压缩后可直接使用，将其添加置环境变量并为其设置好工作目录即可。GOPATH目录为项目所在目录，可设置多个且随意设置，下方细说。</p>
 <h3 id="Go安装包文件夹"><a href="#Go安装包文件夹" class="headerlink" title="Go安装包文件夹"></a>Go安装包文件夹</h3><ul>
 <li>api文件夹：Go API检查器的辅助文件。</li>
@@ -488,16 +493,18 @@
 <li>src文件夹：所有标准库、Go语言工具，以及相关底层（C语言实现）的源码。</li>
 <li>test文件夹：测试Go语言自身代码的文件。</li>
 </ul>
-<h3 id="安装注意事项"><a href="#安装注意事项" class="headerlink" title="安装注意事项"></a>安装注意事项</h3><p>需要将工作区目录路径添加至环境变量GOPATH中,可指定多个工作区。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export GOPATH=$HOME/路径/工作区文件夹名:$HOME/路径/工作区文件夹名</span><br></pre></td></tr></table></figure></p>
+<h3 id="安装注意事项"><a href="#安装注意事项" class="headerlink" title="安装注意事项"></a>安装注意事项</h3><p>需要将工作区目录路径添加至环境变量GOPATH中,可指定多个工作区。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export GOPATH=$HOME/路径/工作区文件夹名:$HOME/路径/工作区文件夹名</span><br></pre></td></tr></table></figure>
 <p>可使用命令行，要保证$HOME值为正确的当前用户home路径，在此踩到过坑，centos7的HOME值为root（好几次在命令行设置后过一段时间又自动变为root），最后在.bash_profile中设置了HOME值，将上方的设置语句也添加到.bash_profile中，这样能保证每次启动都会设置此值为正确值。</p>
 <p>工作区文件夹即为我们的项目编码区，多个工作区可用“:”分开在后面继续添加，命令go get会将指定项目的源码下载到第一个工作区，在其中完成构建和安装，所以一般将第一个工作区设置为用来存放第三方代码库的工作区，存放自己的项目工程的工作区从第二个起。</p>
-<h3 id="代码包"><a href="#代码包" class="headerlink" title="代码包"></a>代码包</h3><p>Go的代码包是对代码进行构建和打包的基本单元，每个源码文件都必须以包声明语句作为文件中代码的第一句，包名即源码文件所在的文件夹名。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">package 文件夹名</span><br><span class="line">import 其他包名</span><br><span class="line">import (</span><br><span class="line">    其他包名</span><br><span class="line">    其他包名    </span><br><span class="line">    ...</span><br><span class="line">)</span><br><span class="line">import (</span><br><span class="line">    别名 其他包名</span><br><span class="line">    别名 其他包名</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<h3 id="代码包"><a href="#代码包" class="headerlink" title="代码包"></a>代码包</h3><p>Go的代码包是对代码进行构建和打包的基本单元，每个源码文件都必须以包声明语句作为文件中代码的第一句，包名即源码文件所在的文件夹名。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">package 文件夹名</span><br><span class="line">import 其他包名</span><br><span class="line">import (</span><br><span class="line">    其他包名</span><br><span class="line">    其他包名    </span><br><span class="line">    ...</span><br><span class="line">)</span><br><span class="line">import (</span><br><span class="line">    别名 其他包名</span><br><span class="line">    别名 其他包名</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 <p>上面给出了声明包以及导入包的三种形式。别名为“.”时可直接进行代码调用，别名为“_”时，仅对包初始化，无法调用。</p>
 <blockquote>
 <p>Go通过标示符首字母的大小写控制对应程序实体的访问权限，标示符首字母大写则其对应的程序实体可被本代码包之外的代码访问到，即可导出的。小写则对应的程序实体就只能被本包内的代码访问。</p>
 </blockquote>
 <p>init函数进行包初始化，main函数为程序入口。</p>
-<h3 id="main函数额init函数"><a href="#main函数额init函数" class="headerlink" title="main函数额init函数"></a>main函数额init函数</h3><p>init函数能够应用于所有的package，main函数只能应用于package main。这两个函数在定义时不能有任何的参数和返回值。一个package里面可以写任意多个init函数，为可读性和可维护性，建议在一个package中每个文件只写一个init函数。</p>
+<h3 id="main函数和init函数"><a href="#main函数和init函数" class="headerlink" title="main函数和init函数"></a>main函数和init函数</h3><p>init函数能够应用于所有的package，main函数只能应用于package main。这两个函数在定义时不能有任何的参数和返回值。一个package里面可以写任意多个init函数，为可读性和可维护性，建议在一个package中每个文件只写一个init函数。</p>
 <p>Go程序会自动调用init()和main()，不需要在任何地方调用这两个函数。每个package中的init函数都是可选的，但package main就必须包含一个main函数。  </p>
 <p>程序的初始化和执行都起始于main包，若main中还导入了其他的包，会在编译时将他们依次导入。若一个包被多个包同时导入，则只会被导入一次。若一个包被导入时该包还导入了其他的包，会先将其他包导入进来，然后再对这些包中的常量和变量进行初始化，接着执行init函数（若有），依次类推。所有被导入的包都加载完毕，开始对main包中的包级常量和变量进行初始化，然后执行main包中的init函数（若有），最后执行main函数。</p>
 <h3 id="标准命令"><a href="#标准命令" class="headerlink" title="标准命令"></a>标准命令</h3><p>go命令是Go语言的基本命令之一，于命令行中输入go，会直接输出所有常见的其他可用命令和相关信息。</p>
@@ -507,8 +514,10 @@
 <li>常量true、false和iota。  </li>
 <li>所有内建函数的名称，即append、cap、close、complex、copy、delete、imag、len、make、new、panic、print、println、real和recover。</li>
 </ol>
-<h4 id="空标识符"><a href="#空标识符" class="headerlink" title="空标识符"></a>空标识符</h4><p>由一个下划线_表示。一般用在不需要引入一个新邦定的声明中。例如在代码中存在一个变量x，但是却不存在对它的使用。这样的代码会使编译器报错。在变量x的声明代码后添加：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_ = x</span><br></pre></td></tr></table></figure></p>
-<p>可以绕过编译器检查，使它不产生任何编译错误。因为x在此处被使用到，但是对x未进行任何操作。在导入声明中，当我们只想执行一下某个代码包中的初始化函数，而不需要使用这个代码包中的任何程序实体的时候，可以编写导入语句为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import _ &quot;runtime/cgo&quot;</span><br></pre></td></tr></table></figure></p>
+<h4 id="空标识符"><a href="#空标识符" class="headerlink" title="空标识符"></a>空标识符</h4><p>由一个下划线_表示。一般用在不需要引入一个新邦定的声明中。例如在代码中存在一个变量x，但是却不存在对它的使用。这样的代码会使编译器报错。在变量x的声明代码后添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_ = x</span><br></pre></td></tr></table></figure>
+<p>可以绕过编译器检查，使它不产生任何编译错误。因为x在此处被使用到，但是对x未进行任何操作。在导入声明中，当我们只想执行一下某个代码包中的初始化函数，而不需要使用这个代码包中的任何程序实体的时候，可以编写导入语句为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import _ &quot;runtime/cgo&quot;</span><br></pre></td></tr></table></figure>
 <p>引入了这个代码包所需的所有操作，没有绑定到一个具体的名称上，在当前的源码文件中，我们无法对这个代码包中的任何程序实体进行调用。<br>以上，”_”会导致赋值或导入操作的相关准备工作的进行。</p>
 <h3 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h3><h4 id="1-程序声明-："><a href="#1-程序声明-：" class="headerlink" title="1. 程序声明 ："></a>1. 程序声明 ：</h4><pre><code>&gt; import、package
 </code></pre><h4 id="2-程序实体声明和定义："><a href="#2-程序实体声明和定义：" class="headerlink" title="2. 程序实体声明和定义："></a>2. 程序实体声明和定义：</h4><pre><code>&gt;chan、const、func、interface、map、struct、type、var
@@ -528,7 +537,8 @@
 <h4 id="潜在类型"><a href="#潜在类型" class="headerlink" title="潜在类型"></a>潜在类型</h4><blockquote>
 <p>每一个类型都会有一个潜在类型，若是预定义类型或者由类型字面量构造的符合类型，潜在类型就是它自身。</p>
 </blockquote>
-<p>可以用type声明自定义类型:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">type MyString string</span><br><span class="line">type iString MyString</span><br><span class="line">type MyStrings [3]string</span><br></pre></td></tr></table></figure></p>
+<p>可以用type声明自定义类型:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">type MyString string</span><br><span class="line">type iString MyString</span><br><span class="line">type MyStrings [3]string</span><br></pre></td></tr></table></figure>
 <p>可以把MyString看作string类型的一个别名类型，MyStrings、iString和MyString的潜在类型都是string。</p>
 <h3 id="操作符"><a href="#操作符" class="headerlink" title="操作符"></a>操作符</h3><h4 id="与C语言基本一致"><a href="#与C语言基本一致" class="headerlink" title="与C语言基本一致"></a>与C语言基本一致</h4><p>注意:</p>
 <blockquote>
@@ -577,21 +587,30 @@
 <blockquote>
 <p>0 &lt;= 元素下界索引 &lt;= 元素上界索引 &lt;= 容量上界索引 &lt;= 操作对象的容量  </p>
 </blockquote>
-<p>若不满足，则在表达式求值时造成一个越界错误并引发一个运行时恐慌。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[]int&#123;1,2,3,4,5&#125;[1:3] = []int&#123;2,3&#125;</span><br><span class="line">[]int&#123;1,2,3,4,5&#125;[3:] = []int&#123;1,2,3,4,5&#125;[3:5] = []int&#123;4,5&#125;</span><br><span class="line">[]int&#123;1,2,3,4,5&#125;[:3] = []int&#123;1,2,3,4,5&#125;[0:3] = []int&#123;1,2,3&#125;</span><br></pre></td></tr></table></figure></p>
+<p>若不满足，则在表达式求值时造成一个越界错误并引发一个运行时恐慌。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[]int&#123;1,2,3,4,5&#125;[1:3] = []int&#123;2,3&#125;</span><br><span class="line">[]int&#123;1,2,3,4,5&#125;[3:] = []int&#123;1,2,3,4,5&#125;[3:5] = []int&#123;4,5&#125;</span><br><span class="line">[]int&#123;1,2,3,4,5&#125;[:3] = []int&#123;1,2,3,4,5&#125;[0:3] = []int&#123;1,2,3&#125;</span><br></pre></td></tr></table></figure>
 <p>若a代表的是一个切片类型的值，那么表达式a[:]就等同于复制a所代表的值并将其作为此表达式的求值结果。否则表达式a[:]就意味着有一个包含了指向a的第一个元素的指针的切片类型值被创建。</p>
-<h4 id="5-类型断言"><a href="#5-类型断言" class="headerlink" title="5. 类型断言"></a>5. 类型断言</h4><p>对于一个求值结果为接口类型值表达式x和一个类型T，对应的类型断言为：<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x.(T)</span><br></pre></td></tr></table></figure></p>
-<p>用于判断“x不为nil且存储在其中的值是T类型的”这一假设是否成立。如果T不是一个接口类型，那么x.(T)将会判断x的动态类型是否与类型T一致，即为关于“类型T是否为x的动态类型”的判断。  类型T必须是x的一个实现类型，x必须是一个接口类型的值。<br>int(123).(int)引发编译错误:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">invalid type assertion: 123.(int)(non-interface type int on left )</span><br></pre></td></tr></table></figure></p>
-<p>即表达式int(123)的求值结果是int类型，而int类型并不是一个接口类型。将表达式改为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">interface&#123;&#125;(123).(int)</span><br></pre></td></tr></table></figure></p>
+<h4 id="5-类型断言"><a href="#5-类型断言" class="headerlink" title="5. 类型断言"></a>5. 类型断言</h4><p>对于一个求值结果为接口类型值表达式x和一个类型T，对应的类型断言为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x.(T)</span><br></pre></td></tr></table></figure>
+<p>用于判断“x不为nil且存储在其中的值是T类型的”这一假设是否成立。如果T不是一个接口类型，那么x.(T)将会判断x的动态类型是否与类型T一致，即为关于“类型T是否为x的动态类型”的判断。  类型T必须是x的一个实现类型，x必须是一个接口类型的值。<br>int(123).(int)引发编译错误:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">invalid type assertion: 123.(int)(non-interface type int on left )</span><br></pre></td></tr></table></figure>
+<p>即表达式int(123)的求值结果是int类型，而int类型并不是一个接口类型。将表达式改为：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">interface&#123;&#125;(123).(int)</span><br></pre></td></tr></table></figure>
 <p>则会顺利通过编译，表达式interface{}(123)将字面量123转换为interface{}类型的值。interface{}是一个特殊的接口类型，代表空接口，所有类型都是他的实现类型。<br>如果T不是一个接口类型且类型T不是x的类型的一个实现，那么类型断言x.(T)就是失败的，会引发一个运行时恐慌。</p>
 <blockquote>
 <p>只有在程序运行期间，x的动态类型才能够被获知，而在编译期间能够确定的只有T所代表的类型。  </p>
 </blockquote>
-<p>使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">v,ok := x.(T)</span><br><span class="line">``` </span><br><span class="line">断言成功v为已经被转换为T类型的表达式x的求值结果，否着为类型T的零值。ok可以判断断言是否成功，此时类型断言失败也不会引发运行时恐慌。</span><br><span class="line">#### 6. 调用</span><br><span class="line">如果由函数类型F的值f，表达式f(a1,a2,a3)表达了对函数f的调用，同时以a1、a2和a3作为参数传递给函数f。  </span><br><span class="line">方法是函数的一种，比函数多了一个接收者。接收者可以是该方法所属的结构体类型的值，或者与该结构体类型对应的那个指针类型的值。</span><br><span class="line">&gt;在求值一个表达式、赋值语句或者返回语句中包含的操作数的时候，所有的函数调用、方法调用和通信调用都会按照从左到右的顺序被求值。</span><br><span class="line">```code</span><br><span class="line">a := 10</span><br><span class="line">f := func()int&#123; a = a*2;return 5&#125;</span><br><span class="line">x := []int&#123;a,f()&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">v,ok := x.(T)</span><br><span class="line">``` </span><br><span class="line">断言成功v为已经被转换为T类型的表达式x的求值结果，否着为类型T的零值。ok可以判断断言是否成功，此时类型断言失败也不会引发运行时恐慌。</span><br><span class="line"></span><br><span class="line">#### 6. 调用</span><br><span class="line"></span><br><span class="line">如果由函数类型F的值f，表达式f(a1,a2,a3)表达了对函数f的调用，同时以a1、a2和a3作为参数传递给函数f。  </span><br><span class="line">方法是函数的一种，比函数多了一个接收者。接收者可以是该方法所属的结构体类型的值，或者与该结构体类型对应的那个指针类型的值。</span><br><span class="line"></span><br><span class="line">&gt;在求值一个表达式、赋值语句或者返回语句中包含的操作数的时候，所有的函数调用、方法调用和通信调用都会按照从左到右的顺序被求值。</span><br><span class="line"></span><br><span class="line">```code</span><br><span class="line">a := 10</span><br><span class="line">f := func()int&#123; a = a*2;return 5&#125;</span><br><span class="line">x := []int&#123;a,f()&#125;</span><br></pre></td></tr></table></figure>
 <p>在上例中，x的值可能是[]int{10,5},也可能是[]int{20,5}。（有待考证</p>
-<h4 id="7-可变长参数"><a href="#7-可变长参数" class="headerlink" title="7. 可变长参数"></a>7. 可变长参数</h4><p>如果函数f可以接受的参数的数量是不固定的，那么函数f就是一个能够接受可变长参数的函数，简称为可变参函数。<br>在可变函数的参数列表的最后总会出现一个可变长参数，这个可变长参数的类型声明形如…T。用于接受数量不定但类型均为T或其实现类型的参数值。等同于一个元素类型为T的切片类型的参数。对于函数f的每一次调用，被传递给可变长参数的值实际上都是包含了实际参数、元素类型为T的切片类型值。对可变参函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func appendIfAbsent(s []string,t ...string)[]string</span><br></pre></td></tr></table></figure></p>
-<p>可以这样编写针对他的调用表达式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">appendIfAbsent([]string&#123;&quot;A&quot;,&quot;B&quot;,&quot;C&quot;&#125;,&quot;C&quot;,&quot;N&quot;,&quot;E&quot;)</span><br></pre></td></tr></table></figure></p>
-<p>其中，与可变长参数t绑定的切片类型值为[]string{“C”,”B”,”E”}。<br>可以直接把一个类型T的切片类型值赋给…T类型的可变长参数，需要在欲赋予可变长参数的那个切片类型值的后面追加…。例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">appendIfAbsent([]string&#123;&quot;A&quot;,&quot;B&quot;,&quot;C&quot;&#125;,[]string&#123;&quot;C&quot;,&quot;B&quot;,&quot;E&quot;&#125;...)</span><br></pre></td></tr></table></figure></p>
-<p>若有元素类型为string的切片类型的变量s，则可以：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">appendIfAbsent([]string&#123;&quot;A&quot;,&quot;B&quot;,&quot;C&quot;&#125;,s...)</span><br></pre></td></tr></table></figure></p>
+<h4 id="7-可变长参数"><a href="#7-可变长参数" class="headerlink" title="7. 可变长参数"></a>7. 可变长参数</h4><p>如果函数f可以接受的参数的数量是不固定的，那么函数f就是一个能够接受可变长参数的函数，简称为可变参函数。<br>在可变函数的参数列表的最后总会出现一个可变长参数，这个可变长参数的类型声明形如…T。用于接受数量不定但类型均为T或其实现类型的参数值。等同于一个元素类型为T的切片类型的参数。对于函数f的每一次调用，被传递给可变长参数的值实际上都是包含了实际参数、元素类型为T的切片类型值。对可变参函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func appendIfAbsent(s []string,t ...string)[]string</span><br></pre></td></tr></table></figure>
+<p>可以这样编写针对他的调用表达式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">appendIfAbsent([]string&#123;&quot;A&quot;,&quot;B&quot;,&quot;C&quot;&#125;,&quot;C&quot;,&quot;N&quot;,&quot;E&quot;)</span><br></pre></td></tr></table></figure>
+<p>其中，与可变长参数t绑定的切片类型值为[]string{“C”,”B”,”E”}。<br>可以直接把一个类型T的切片类型值赋给…T类型的可变长参数，需要在欲赋予可变长参数的那个切片类型值的后面追加…。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">appendIfAbsent([]string&#123;&quot;A&quot;,&quot;B&quot;,&quot;C&quot;&#125;,[]string&#123;&quot;C&quot;,&quot;B&quot;,&quot;E&quot;&#125;...)</span><br></pre></td></tr></table></figure>
+<p>若有元素类型为string的切片类型的变量s，则可以：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">appendIfAbsent([]string&#123;&quot;A&quot;,&quot;B&quot;,&quot;C&quot;&#125;,s...)</span><br></pre></td></tr></table></figure>
 <p>此时可变长参数t的值就是变量s的值，即不会专门创建于个切片类型值来存储其中的实际参数。</p>
 
       
@@ -835,7 +854,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#初识Golang"><span class="nav-number">1.</span> <span class="nav-text">初识Golang</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go安装包文件夹"><span class="nav-number">1.2.</span> <span class="nav-text">Go安装包文件夹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装注意事项"><span class="nav-number">1.3.</span> <span class="nav-text">安装注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码包"><span class="nav-number">1.4.</span> <span class="nav-text">代码包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#main函数额init函数"><span class="nav-number">1.5.</span> <span class="nav-text">main函数额init函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准命令"><span class="nav-number">1.6.</span> <span class="nav-text">标准命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本词法"><span class="nav-number">2.</span> <span class="nav-text">基本词法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标识符"><span class="nav-number">2.1.</span> <span class="nav-text">标识符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#预定义标识符"><span class="nav-number">2.1.1.</span> <span class="nav-text">预定义标识符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#空标识符"><span class="nav-number">2.1.2.</span> <span class="nav-text">空标识符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关键字"><span class="nav-number">2.2.</span> <span class="nav-text">关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-程序声明-："><span class="nav-number">2.2.1.</span> <span class="nav-text">1. 程序声明 ：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-程序实体声明和定义："><span class="nav-number">2.2.2.</span> <span class="nav-text">2. 程序实体声明和定义：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-程序流程控制："><span class="nav-number">2.2.3.</span> <span class="nav-text">3. 程序流程控制：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字面量"><span class="nav-number">2.3.</span> <span class="nav-text">字面量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一类"><span class="nav-number">2.3.1.</span> <span class="nav-text">第一类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二类"><span class="nav-number">2.3.2.</span> <span class="nav-text">第二类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三类"><span class="nav-number">2.3.3.</span> <span class="nav-text">第三类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型"><span class="nav-number">2.4.</span> <span class="nav-text">类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本类型（预定义类型）："><span class="nav-number">2.4.1.</span> <span class="nav-text">基本类型（预定义类型）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复合类型"><span class="nav-number">2.4.2.</span> <span class="nav-text">复合类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态类型"><span class="nav-number">2.4.3.</span> <span class="nav-text">静态类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#潜在类型"><span class="nav-number">2.4.4.</span> <span class="nav-text">潜在类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作符"><span class="nav-number">2.5.</span> <span class="nav-text">操作符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#与C语言基本一致"><span class="nav-number">2.5.1.</span> <span class="nav-text">与C语言基本一致</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表达式"><span class="nav-number">2.6.</span> <span class="nav-text">表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-基本表达式"><span class="nav-number">2.6.1.</span> <span class="nav-text">1. 基本表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-选择符号和选择表达式"><span class="nav-number">2.6.2.</span> <span class="nav-text">2. 选择符号和选择表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#规则"><span class="nav-number">2.6.2.1.</span> <span class="nav-text">规则</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其它情况"><span class="nav-number">2.6.2.2.</span> <span class="nav-text">其它情况</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-索引符号和索引表达式"><span class="nav-number">2.6.3.</span> <span class="nav-text">3. 索引符号和索引表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#规则-1"><span class="nav-number">2.6.3.1.</span> <span class="nav-text">规则</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-切片符号和切片表达式"><span class="nav-number">2.6.4.</span> <span class="nav-text">4. 切片符号和切片表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-类型断言"><span class="nav-number">2.6.5.</span> <span class="nav-text">5. 类型断言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-可变长参数"><span class="nav-number">2.6.6.</span> <span class="nav-text">7. 可变长参数</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#初识Golang"><span class="nav-number">1.</span> <span class="nav-text">初识Golang</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go安装包文件夹"><span class="nav-number">1.2.</span> <span class="nav-text">Go安装包文件夹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装注意事项"><span class="nav-number">1.3.</span> <span class="nav-text">安装注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码包"><span class="nav-number">1.4.</span> <span class="nav-text">代码包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#main函数和init函数"><span class="nav-number">1.5.</span> <span class="nav-text">main函数和init函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准命令"><span class="nav-number">1.6.</span> <span class="nav-text">标准命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本词法"><span class="nav-number">2.</span> <span class="nav-text">基本词法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标识符"><span class="nav-number">2.1.</span> <span class="nav-text">标识符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#预定义标识符"><span class="nav-number">2.1.1.</span> <span class="nav-text">预定义标识符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#空标识符"><span class="nav-number">2.1.2.</span> <span class="nav-text">空标识符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关键字"><span class="nav-number">2.2.</span> <span class="nav-text">关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-程序声明-："><span class="nav-number">2.2.1.</span> <span class="nav-text">1. 程序声明 ：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-程序实体声明和定义："><span class="nav-number">2.2.2.</span> <span class="nav-text">2. 程序实体声明和定义：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-程序流程控制："><span class="nav-number">2.2.3.</span> <span class="nav-text">3. 程序流程控制：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字面量"><span class="nav-number">2.3.</span> <span class="nav-text">字面量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一类"><span class="nav-number">2.3.1.</span> <span class="nav-text">第一类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二类"><span class="nav-number">2.3.2.</span> <span class="nav-text">第二类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三类"><span class="nav-number">2.3.3.</span> <span class="nav-text">第三类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型"><span class="nav-number">2.4.</span> <span class="nav-text">类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本类型（预定义类型）："><span class="nav-number">2.4.1.</span> <span class="nav-text">基本类型（预定义类型）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复合类型"><span class="nav-number">2.4.2.</span> <span class="nav-text">复合类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态类型"><span class="nav-number">2.4.3.</span> <span class="nav-text">静态类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#潜在类型"><span class="nav-number">2.4.4.</span> <span class="nav-text">潜在类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作符"><span class="nav-number">2.5.</span> <span class="nav-text">操作符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#与C语言基本一致"><span class="nav-number">2.5.1.</span> <span class="nav-text">与C语言基本一致</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表达式"><span class="nav-number">2.6.</span> <span class="nav-text">表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-基本表达式"><span class="nav-number">2.6.1.</span> <span class="nav-text">1. 基本表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-选择符号和选择表达式"><span class="nav-number">2.6.2.</span> <span class="nav-text">2. 选择符号和选择表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#规则"><span class="nav-number">2.6.2.1.</span> <span class="nav-text">规则</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其它情况"><span class="nav-number">2.6.2.2.</span> <span class="nav-text">其它情况</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-索引符号和索引表达式"><span class="nav-number">2.6.3.</span> <span class="nav-text">3. 索引符号和索引表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#规则-1"><span class="nav-number">2.6.3.1.</span> <span class="nav-text">规则</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-切片符号和切片表达式"><span class="nav-number">2.6.4.</span> <span class="nav-text">4. 切片符号和切片表达式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-类型断言"><span class="nav-number">2.6.5.</span> <span class="nav-text">5. 类型断言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-可变长参数"><span class="nav-number">2.6.6.</span> <span class="nav-text">7. 可变长参数</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
