@@ -126,7 +126,7 @@ switch content := getContent(); content {
         fmt.Println("yes, he is")
 }
 ```
-#### 类型seitch语句
+#### 类型switch语句
 
 对类型进行判断而不是值。
 
