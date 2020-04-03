@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="数据类型基本数据类型 string、bool、byte、rune、int/uint、int8/uint8、int16\uint16、int32/uint32、int64/uint64、float32、float64、 complex64、complex128     分为三类。 布尔类型 bool：true、false  数值类型 特殊rune  类型rune的值由rune类型字面量代表，专用于存">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-04-03T05:57:31.093Z">
+<meta property="og:updated_time" content="2020-04-03T06:01:33.393Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-基础篇(二)">
 <meta name="twitter:description" content="数据类型基本数据类型 string、bool、byte、rune、int/uint、int8/uint8、int16\uint16、int32/uint32、int64/uint64、float32、float64、 complex64、complex128     分为三类。 布尔类型 bool：true、false  数值类型 特殊rune  类型rune的值由rune类型字面量代表，专用于存">
@@ -489,11 +489,11 @@
 <ul>
 <li>默认第一个元素值对应索引值0，之后的每个元素值的索引值都是在前一个元素值的索引值的基础上再加1，可以显式的指定索引值。</li>
 <li>在数组中未指定的元素将会被填充为元素类型的零值，可以通过显式地指定索引值来改变被填充元素值的位置。</li>
-<li>用特殊标记“…”替换为数组长度，意为并不显式地指定数组值的长度，而让Go语言编辑器为我们计算该值所包含的元素值的数量并以此确定这个长度的值。可以避免由于指定的长度和元素值的实际数量不相符而导致的多于零值元素或编译错误。<blockquote>
+<li>用特殊标记“…”替换为数组长度，意为并不显式地指定数组值的长度，而让Go语言编辑器为我们计算该值所包含的元素值的数量并以此确定这个长度的值。可以避免由于指定的长度和元素值的实际数量不相符而导致的多于零值元素或编译错误。</li>
+</ul>
+<blockquote>
 <p>0 &lt;= 索引值 &lt; 数组长度<br>指定的索引值不能与其他元素值的索引值重复，不论其他元素值的索引值是隐含对应的还是显式对应的。  </p>
 </blockquote>
-</li>
-</ul>
 <h4 id="3-属性和基本操作"><a href="#3-属性和基本操作" class="headerlink" title="3. 属性和基本操作"></a>3. 属性和基本操作</h4><p>使用函数len计算数组值长度</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">len([...]string&#123;&quot;I&quot;, &quot;am&quot;, &quot;a&quot;, &quot;loser&quot; &#125;)</span><br></pre></td></tr></table></figure>
 <p>通过索引值访问元素</p>
