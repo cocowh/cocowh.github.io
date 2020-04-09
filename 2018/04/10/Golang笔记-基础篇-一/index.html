@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="水木年华">
 <meta property="og:description" content="初识Golang安装步骤：    在https://golang.google.cn/dl/选择合适的版本 下载  1wget -c https://storage.googleapis.com/golang/go1.10.2.linux-amd64.tar.gz  解压  1tar -C /usr/local/ -zxvf go1.10.2.linux-amd64.tar.gz  添加系统环境变">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-04-03T04:55:49.518Z">
+<meta property="og:updated_time" content="2020-04-03T11:22:29.901Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang笔记-基础篇(一)">
 <meta name="twitter:description" content="初识Golang安装步骤：    在https://golang.google.cn/dl/选择合适的版本 下载  1wget -c https://storage.googleapis.com/golang/go1.10.2.linux-amd64.tar.gz  解压  1tar -C /usr/local/ -zxvf go1.10.2.linux-amd64.tar.gz  添加系统环境变">
@@ -602,7 +602,7 @@
 </blockquote>
 <p>使用</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">v,ok := x.(T)</span><br><span class="line">``` </span><br><span class="line">断言成功v为已经被转换为T类型的表达式x的求值结果，否着为类型T的零值。ok可以判断断言是否成功，此时类型断言失败也不会引发运行时恐慌。</span><br><span class="line"></span><br><span class="line">#### 调用</span><br><span class="line"></span><br><span class="line">如果由函数类型F的值f，表达式f(a1,a2,a3)表达了对函数f的调用，同时以a1、a2和a3作为参数传递给函数f。  </span><br><span class="line">方法是函数的一种，比函数多了一个接收者。接收者可以是该方法所属的结构体类型的值，或者与该结构体类型对应的那个指针类型的值。</span><br><span class="line"></span><br><span class="line">&gt;在求值一个表达式、赋值语句或者返回语句中包含的操作数的时候，所有的函数调用、方法调用和通信调用都会按照从左到右的顺序被求值。</span><br><span class="line"></span><br><span class="line">```code</span><br><span class="line">a := 10</span><br><span class="line">f := func()int&#123; a = a*2;return 5&#125;</span><br><span class="line">x := []int&#123;a,f()&#125;</span><br></pre></td></tr></table></figure>
-<p>在上例中，x的值可能是[]int{10,5},也可能是[]int{20,5}。（有待考证</p>
+<p>在上例中，x的值可能是[]int{10,5},也可能是[]int{20,5}。有待考证</p>
 <h4 id="可变长参数"><a href="#可变长参数" class="headerlink" title="可变长参数"></a>可变长参数</h4><p>如果函数f可以接受的参数的数量是不固定的，那么函数f就是一个能够接受可变长参数的函数，简称为可变参函数。<br>在可变函数的参数列表的最后总会出现一个可变长参数，这个可变长参数的类型声明形如…T。用于接受数量不定但类型均为T或其实现类型的参数值。等同于一个元素类型为T的切片类型的参数。对于函数f的每一次调用，被传递给可变长参数的值实际上都是包含了实际参数、元素类型为T的切片类型值。对可变参函数：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">func appendIfAbsent(s []string,t ...string)[]string</span><br></pre></td></tr></table></figure>
 <p>可以这样编写针对他的调用表达式：</p>
